@@ -22,7 +22,13 @@ if (-not (Test-Path $ServerExecutable)) {
 }
 
 dotnet build (Join-Path $RepoRoot "Hosihikari.Bindings.LeviLamina.slnx") -c Release --nologo -v:q
+if ($LASTEXITCODE -ne 0) {
+    throw "dotnet build failed with exit code $LASTEXITCODE."
+}
 & (Join-Path $RepoRoot "native\BindingShim\build.ps1") -LlvmRoot $LlvmRoot -GeneratorRoot $GeneratorRoot
+if ($LASTEXITCODE -ne 0) {
+    throw "the shim build failed with exit code $LASTEXITCODE."
+}
 
 $InteropDll = Join-Path $RepoRoot "src\Hosihikari.Bindings.LeviLamina.Interop\bin\Release\net10.0\Hosihikari.Bindings.LeviLamina.Interop.dll"
 $AbiDll = Join-Path (Split-Path $InteropDll -Parent) "Hosihikari.Bindings.Abi.dll"
