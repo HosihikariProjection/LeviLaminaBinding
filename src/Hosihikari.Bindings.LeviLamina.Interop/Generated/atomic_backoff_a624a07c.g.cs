@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail;
 
 public sealed unsafe partial class atomic_backoff : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public atomic_backoff(nint handle) : this(handle, true) { }
 
     internal atomic_backoff(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static atomic_backoff Borrow(nint handle) => new atomic_backoff(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class atomic_backoff : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static atomic_backoff Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_4e58c38b();
+        var handle = NativeMethods.TablePtr->C0.hs_create_4e58c38b();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class atomic_backoff : global::System.IDisposable
 
     public static atomic_backoff Create(bool arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_31808cc3(arg0);
+        var handle = NativeMethods.TablePtr->C0.hs_create_31808cc3(arg0);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,19 +62,19 @@ public sealed unsafe partial class atomic_backoff : global::System.IDisposable
 
     public void pause()
     {
-        NativeMethods.TablePtr->hs_method_dff43650((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_dff43650((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_a624a07c((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_a624a07c((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

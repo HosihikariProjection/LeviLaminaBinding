@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class CancellableCallback : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CancellableCallback(nint handle) : this(handle, true) { }
 
     internal CancellableCallback(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CancellableCallback Borrow(nint handle) => new CancellableCallback(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class CancellableCallback : global::System.IDisposa
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static CancellableCallback Create(nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        var handle = NativeMethods.TablePtr->hs_create_3e70cb9d((void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        var handle = NativeMethods.TablePtr->C0.hs_create_3e70cb9d((void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,25 +51,25 @@ public sealed unsafe partial class CancellableCallback : global::System.IDisposa
 
     public bool call()
     {
-        return NativeMethods.TablePtr->hs_method_9382df67((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_9382df67((void*)__hosihikari_shim_handle) != 0;
     }
 
     public bool cancel()
     {
-        return NativeMethods.TablePtr->hs_method_a18f4d5f((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_a18f4d5f((void*)__hosihikari_shim_handle) != 0;
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_50fc5317((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_50fc5317((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
 public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ForwardAwaiter_const_ll__coro__Executor___(nint handle) : this(handle, true) { }
 
     internal ForwardAwaiter_const_ll__coro__Executor___(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ForwardAwaiter_const_ll__coro__Executor___ Borrow(nint handle) => new ForwardAwaiter_const_ll__coro__Executor___(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : 
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,12 +44,12 @@ public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : 
 
     public bool await_ready()
     {
-        return NativeMethods.TablePtr->hs_method_7f13234a((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_7f13234a((void*)__hosihikari_shim_handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor await_resume()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)NativeMethods.TablePtr->hs_method_e3c5d3b6((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)NativeMethods.TablePtr->C0.hs_method_e3c5d3b6((void*)__hosihikari_shim_handle), false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::coroutine_handle<void>' is not a known bindable declaration.", false)]
@@ -58,19 +58,19 @@ public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : 
 
     public nint t
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_3cf3081b((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_3cf3081b((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_87455beb((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_87455beb((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

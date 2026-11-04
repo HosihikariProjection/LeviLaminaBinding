@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public PlayerInteractBlockEvent(nint handle) : this(handle, true) { }
 
     internal PlayerInteractBlockEvent(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static PlayerInteractBlockEvent Borrow(nint handle) => new PlayerInteractBlockEvent(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -45,80 +45,80 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
     public nint? block()
     {
         var __hs_hasValue = false;
-        var __hs_handle = NativeMethods.TablePtr->hs_method_f4b13300((void*)_handle, &__hs_hasValue);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f4b13300((void*)__hosihikari_shim_handle, &__hs_hasValue);
         return __hs_hasValue ? (nint)__hs_handle : null;
     }
 
     public nint blockPos()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_006a3ef8((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_006a3ef8((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 clickPos()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Vec3((nint)NativeMethods.TablePtr->hs_method_3ab96ca0((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Vec3((nint)NativeMethods.TablePtr->C0.hs_method_3ab96ca0((void*)__hosihikari_shim_handle), false);
     }
 
     public nint face()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_74e90d19((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_74e90d19((void*)__hosihikari_shim_handle);
     }
 
     public nint item()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_9ef832dd((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_9ef832dd((void*)__hosihikari_shim_handle);
     }
 
     public void serialize(nint arg0)
     {
-        NativeMethods.TablePtr->hs_method_367f4062((void*)_handle, (void*)arg0);
+        NativeMethods.TablePtr->C0.hs_method_367f4062((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent AsActorEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent((nint)NativeMethods.TablePtr->hs_cast_9feb0ef9((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent((nint)NativeMethods.TablePtr->C0.hs_cast_9feb0ef9((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__PlayerRightClickEvent_ AsCancellable_ll__event__PlayerRightClickEvent_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__PlayerRightClickEvent_((nint)NativeMethods.TablePtr->hs_cast_6f75d98c((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__PlayerRightClickEvent_((nint)NativeMethods.TablePtr->C0.hs_cast_6f75d98c((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->hs_cast_bc71a9c2((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_bc71a9c2((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent AsMobEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent((nint)NativeMethods.TablePtr->hs_cast_ee117a54((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent((nint)NativeMethods.TablePtr->C0.hs_cast_ee117a54((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerClickEvent AsPlayerClickEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerClickEvent((nint)NativeMethods.TablePtr->hs_cast_675e7cfb((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerClickEvent((nint)NativeMethods.TablePtr->C0.hs_cast_675e7cfb((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerEvent AsPlayerEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerEvent((nint)NativeMethods.TablePtr->hs_cast_84a360b9((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerEvent((nint)NativeMethods.TablePtr->C0.hs_cast_84a360b9((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerRightClickEvent AsPlayerRightClickEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerRightClickEvent((nint)NativeMethods.TablePtr->hs_cast_98e87017((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerRightClickEvent((nint)NativeMethods.TablePtr->C0.hs_cast_98e87017((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_ba545186((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_ba545186((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

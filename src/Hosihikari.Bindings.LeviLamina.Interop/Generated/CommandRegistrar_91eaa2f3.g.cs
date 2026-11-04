@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class CommandRegistrar
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CommandRegistrar(nint handle) : this(handle, true) { }
 
     internal CommandRegistrar(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CommandRegistrar Borrow(nint handle) => new CommandRegistrar(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class CommandRegistrar
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -82,7 +82,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_7027890d((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, type, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_7027890d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, type, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -131,7 +131,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_54e89d5e((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_54e89d5e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -171,7 +171,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_0bf55812((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_0bf55812((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -190,7 +190,7 @@ public sealed unsafe partial class CommandRegistrar
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar getInstance(bool isClientSide)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->hs_method_c8f00dfd(isClientSide), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_c8f00dfd(isClientSide), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle getOrCreateCommand(string name, string description, byte requirement, global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag flag, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
@@ -221,14 +221,14 @@ public sealed unsafe partial class CommandRegistrar
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->hs_method_650fa79f((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, requirement, (void*)flag.Handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)), false);
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->C0.hs_method_650fa79f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, requirement, (void*)flag.Handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)), false);
             }
         }
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar getServerInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->hs_method_0402fde1(), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_0402fde1(), false);
     }
 
     public bool hasEnum(string name)
@@ -246,7 +246,7 @@ public sealed unsafe partial class CommandRegistrar
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_method_3f1d97ed((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_3f1d97ed((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
         }
     }
 
@@ -265,7 +265,7 @@ public sealed unsafe partial class CommandRegistrar
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_method_5ed64b33((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_5ed64b33((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
         }
     }
 
@@ -304,7 +304,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_21c982c8((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_21c982c8((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -344,7 +344,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_bd62379b((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_bd62379b((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -397,7 +397,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_a1a34edb((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_a1a34edb((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }
@@ -437,7 +437,7 @@ public sealed unsafe partial class CommandRegistrar
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return NativeMethods.TablePtr->hs_method_ec359fd0((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_ec359fd0((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(values?.Length ?? 0)) != 0;
             }
         }
     }

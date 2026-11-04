@@ -8,18 +8,18 @@ public static unsafe partial class Functions
 {
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo getInfo(global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo((nint)NativeMethods.TablePtr->hs_function_aecf2df3((void*)arg0.Handle));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo((nint)NativeMethods.TablePtr->C0.hs_function_aecf2df3((void*)arg0.Handle));
     }
 
     public static string toString_92eb9ef4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace arg0)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_92eb9ef4((void*)arg0.Handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_92eb9ef4((void*)arg0.Handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static string toString_a0908623(global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry arg0)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_a0908623((void*)arg0.Handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_a0908623((void*)arg0.Handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 }

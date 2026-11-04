@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils;
 
 public sealed unsafe partial class HashedIdBase
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public HashedIdBase(nint handle) : this(handle, true) { }
 
     internal HashedIdBase(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static HashedIdBase Borrow(nint handle) => new HashedIdBase(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,24 +33,24 @@ public sealed unsafe partial class HashedIdBase
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public ulong hash
     {
-        get => NativeMethods.TablePtr->hs_get_f121c568((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_f121c568((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_f121c568((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_f121c568((void*)__hosihikari_shim_handle, value);
     }
 
     public sbyte operator_compare(global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase other)
     {
-        return NativeMethods.TablePtr->hs_method_96fec99d((void*)_handle, (void*)other.Handle);
+        return NativeMethods.TablePtr->C0.hs_method_96fec99d((void*)__hosihikari_shim_handle, (void*)other.Handle);
     }
 
     public bool operator_equal(global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase other)
     {
-        return NativeMethods.TablePtr->hs_method_a350e776((void*)_handle, (void*)other.Handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_a350e776((void*)__hosihikari_shim_handle, (void*)other.Handle) != 0;
     }
 }

@@ -6,8 +6,13 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public static unsafe partial class Functions
 {
+    public static bool operator_equal(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
+    {
+        return NativeMethods.TablePtr->C0.hs_function_db13c692((void*)other.Handle) != 0;
+    }
+
     public static void swap(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction l, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction r)
     {
-        NativeMethods.TablePtr->hs_function_1747d523((void*)l.Handle, (void*)r.Handle);
+        NativeMethods.TablePtr->C0.hs_function_1747d523((void*)l.Handle, (void*)r.Handle);
     }
 }

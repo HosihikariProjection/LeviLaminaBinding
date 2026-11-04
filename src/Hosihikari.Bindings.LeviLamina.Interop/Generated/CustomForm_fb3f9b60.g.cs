@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
 public sealed unsafe partial class CustomForm : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CustomForm(nint handle) : this(handle, true) { }
 
     internal CustomForm(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CustomForm Borrow(nint handle) => new CustomForm(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,7 +44,7 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
 
     public static CustomForm Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_efa252c2((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_efa252c2((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -55,24 +55,24 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm button(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, nint callbackInvoke, nint callbackUserData, nint callbackRelease, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ButtonOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_7c604bbc((void*)_handle, (void*)label.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_7c604bbc((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease, (void*)options.Handle), false);
     }
 
     public void close()
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_2c1a5681((void*)_handle, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_2c1a5681((void*)__hosihikari_shim_handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm closeButton()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_6836991e((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_6836991e((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm divider(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.DividerOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_7b94a684((void*)_handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_7b94a684((void*)__hosihikari_shim_handle, (void*)options.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm dropdown(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableNumber value, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.DropdownItemData[] items, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.DropdownOptions options)
@@ -86,34 +86,34 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         fixed (nint* __hs_vectorHandleData2 = __hs_vectorHandles2)
         {
             var __hs_vectorData2 = (void**)__hs_vectorHandleData2;
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_4850d8c2((void*)_handle, (void*)label.Handle, (void*)value.Handle, (void*)options.Handle, __hs_vectorData2, (nuint)(items?.Length ?? 0)), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_4850d8c2((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)value.Handle, (void*)options.Handle, __hs_vectorData2, (nuint)(items?.Length ?? 0)), false);
         }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm header(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 text, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.TextOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_8d2a1d7f((void*)_handle, (void*)text.Handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_8d2a1d7f((void*)__hosihikari_shim_handle, (void*)text.Handle, (void*)options.Handle), false);
     }
 
     public bool isShowing()
     {
-        return NativeMethods.TablePtr->hs_method_fe218c64((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_fe218c64((void*)__hosihikari_shim_handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm label(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 text, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.TextOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_18a698b9((void*)_handle, (void*)text.Handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_18a698b9((void*)__hosihikari_shim_handle, (void*)text.Handle, (void*)options.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_af7f6ac1((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_af7f6ac1((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
     public void show(nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_57e5bf34((void*)_handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_57e5bf34((void*)__hosihikari_shim_handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
@@ -123,35 +123,35 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm slider(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableNumber value, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_57217b04 min, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_57217b04 max, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.SliderOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_c910e915((void*)_handle, (void*)label.Handle, (void*)value.Handle, (void*)min.Handle, (void*)max.Handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_c910e915((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)value.Handle, (void*)min.Handle, (void*)max.Handle, (void*)options.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm spacer(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.SpacingOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_cbdfe00a((void*)_handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_cbdfe00a((void*)__hosihikari_shim_handle, (void*)options.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm textField(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableString text, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.TextFieldOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_046e7188((void*)_handle, (void*)label.Handle, (void*)text.Handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_046e7188((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)text.Handle, (void*)options.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm toggle(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableBoolean toggled, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ToggleOptions options)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->hs_method_903dc091((void*)_handle, (void*)label.Handle, (void*)toggled.Handle, (void*)options.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm((nint)NativeMethods.TablePtr->C0.hs_method_903dc091((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)toggled.Handle, (void*)options.Handle), false);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_fb3f9b60((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_fb3f9b60((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

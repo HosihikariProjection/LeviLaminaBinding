@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public RuntimeOverload(nint handle) : this(handle, true) { }
 
     internal RuntimeOverload(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static RuntimeOverload Borrow(nint handle) => new RuntimeOverload(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static RuntimeOverload Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_270aec83((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_270aec83((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,22 +51,22 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload deoption(byte option)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_8adc19c3((void*)_handle, option), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_8adc19c3((void*)__hosihikari_shim_handle, option), false);
     }
 
     public void execute(nint arg0Invoke, nint arg0UserData, nint arg0Release)
     {
-        NativeMethods.TablePtr->hs_method_df448e2e((void*)_handle, (void*)arg0Invoke, (void*)arg0UserData, (void*)arg0Release);
+        NativeMethods.TablePtr->C0.hs_method_df448e2e((void*)__hosihikari_shim_handle, (void*)arg0Invoke, (void*)arg0UserData, (void*)arg0Release);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload modify(nint fnInvoke, nint fnUserData, nint fnRelease)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_185c6fa2((void*)_handle, (void*)fnInvoke, (void*)fnUserData, (void*)fnRelease), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_185c6fa2((void*)__hosihikari_shim_handle, (void*)fnInvoke, (void*)fnUserData, (void*)fnRelease), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload option(byte option)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_57f82de7((void*)_handle, option), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_57f82de7((void*)__hosihikari_shim_handle, option), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload optional(string name, ulong kind)
@@ -84,7 +84,7 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_476ed114((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, kind), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_476ed114((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, kind), false);
         }
     }
 
@@ -116,7 +116,7 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         {
             fixed (byte* __hs_stringData2 = __hs_stringBytes2)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_194762e4((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, enumKind, __hs_stringData2, (nuint)__hs_stringByteCount2), false);
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_194762e4((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, enumKind, __hs_stringData2, (nuint)__hs_stringByteCount2), false);
             }
         }
     }
@@ -136,7 +136,7 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(postfix, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_c28ab4c5((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_c28ab4c5((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
@@ -155,7 +155,7 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_ea35375f((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, kind), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_ea35375f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, kind), false);
         }
     }
 
@@ -187,7 +187,7 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         {
             fixed (byte* __hs_stringData2 = __hs_stringBytes2)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_8ef6958d((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, enumKind, __hs_stringData2, (nuint)__hs_stringByteCount2), false);
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_8ef6958d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, enumKind, __hs_stringData2, (nuint)__hs_stringByteCount2), false);
             }
         }
     }
@@ -207,21 +207,21 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(text, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_05bd94b3((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_05bd94b3((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_0bf2d2ec((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_0bf2d2ec((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

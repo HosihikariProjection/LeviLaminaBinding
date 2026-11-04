@@ -8,12 +8,12 @@ public static unsafe partial class Functions
 {
     public static sbyte charFromInt(bool upper, byte i)
     {
-        return NativeMethods.TablePtr->hs_function_54df1b9b(upper, i);
+        return NativeMethods.TablePtr->C0.hs_function_54df1b9b(upper, i);
     }
 
     public static byte digitFromChar(sbyte chr)
     {
-        return NativeMethods.TablePtr->hs_function_eef5e3c7(chr);
+        return NativeMethods.TablePtr->C0.hs_function_eef5e3c7(chr);
     }
 
     public static bool isu8str(string str)
@@ -31,7 +31,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_function_f2b9ad2d(__hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
+            return NativeMethods.TablePtr->C0.hs_function_f2b9ad2d(__hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
         }
     }
 
@@ -50,7 +50,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_20f10663(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_20f10663(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -96,7 +96,7 @@ public static unsafe partial class Functions
             {
                 fixed (byte* __hs_stringData2 = __hs_stringBytes2)
                 {
-                    var __hs_view = NativeMethods.TablePtr->hs_function_70f68bfe(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2);
+                    var __hs_view = NativeMethods.TablePtr->C0.hs_function_70f68bfe(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2);
                     return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
                 }
             }
@@ -118,7 +118,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_a99aa63d(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_a99aa63d(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -138,7 +138,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_331a2e13(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_331a2e13(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -158,7 +158,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_2d798ca4(__hs_stringData0, (nuint)__hs_stringByteCount0, fromCodePage, toCodePage);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_2d798ca4(__hs_stringData0, (nuint)__hs_stringByteCount0, fromCodePage, toCodePage);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -178,7 +178,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return (nint)NativeMethods.TablePtr->hs_function_e3a654ce(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            return (nint)NativeMethods.TablePtr->C0.hs_function_e3a654ce(__hs_stringData0, (nuint)__hs_stringByteCount0);
         }
     }
 
@@ -197,7 +197,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_239146f8(__hs_stringData0, (nuint)__hs_stringByteCount0, upperCase, addSpace);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_239146f8(__hs_stringData0, (nuint)__hs_stringByteCount0, upperCase, addSpace);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -218,7 +218,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(arg0, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_expectedResult = NativeMethods.TablePtr->hs_function_35d1b980(__hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_expectedResult = NativeMethods.TablePtr->C0.hs_function_35d1b980(__hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
             return __hs_expectedResult != 0;
         }
@@ -239,7 +239,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_40d31f8a(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_40d31f8a(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -259,7 +259,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_0b6fe4e6(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_0b6fe4e6(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -279,14 +279,14 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_8da35773(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_8da35773(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
 
     public static string u8str2strConst(nint str)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_13542708((void*)str);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_13542708((void*)str);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 }

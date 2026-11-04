@@ -9,13 +9,13 @@ public static unsafe partial class Functions
     public static string? getSystemDefaultFontName()
     {
         var __hs_hasValue = false;
-        var __hs_view = NativeMethods.TablePtr->hs_function_a66d2574(&__hs_hasValue);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_a66d2574(&__hs_hasValue);
         return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
     }
 
     public static string[] getSystemFontNames()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_41dc0b9d();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_41dc0b9d();
         var __hs_items = (global::Hosihikari.Bindings.Abi.StringView*)__hs_view.Data;
         var __hs_result = __hs_view.Size == 0 ? global::System.Array.Empty<string>() : new string[checked((int)__hs_view.Size)];
         for (var __hs_i = 0; __hs_i < __hs_result.Length; __hs_i++)

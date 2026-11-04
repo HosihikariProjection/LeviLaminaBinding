@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_(nint handle) : this(handle, true) { }
 
     internal MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_ Borrow(nint handle) => new MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class MultiListener_ll__event__ServiceRegisterEvent
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public void call(global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event @event)
     {
-        NativeMethods.TablePtr->hs_method_8a180774((void*)_handle, (void*)@event.Handle);
+        NativeMethods.TablePtr->C0.hs_method_8a180774((void*)__hosihikari_shim_handle, (void*)@event.Handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
@@ -49,6 +49,6 @@ public sealed unsafe partial class MultiListener_ll__event__ServiceRegisterEvent
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase AsListenerBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)NativeMethods.TablePtr->hs_cast_2f8d55d6((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)NativeMethods.TablePtr->C0.hs_cast_2f8d55d6((void*)__hosihikari_shim_handle), false);
     }
 }

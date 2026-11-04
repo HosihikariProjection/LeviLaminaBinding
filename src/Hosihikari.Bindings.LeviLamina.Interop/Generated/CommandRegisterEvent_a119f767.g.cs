@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class CommandRegisterEvent
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CommandRegisterEvent(nint handle) : this(handle, true) { }
 
     internal CommandRegisterEvent(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CommandRegisterEvent Borrow(nint handle) => new CommandRegisterEvent(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,29 +33,29 @@ public sealed unsafe partial class CommandRegisterEvent
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public nint commandRegistry()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_4d71a0ac((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_4d71a0ac((void*)__hosihikari_shim_handle);
     }
 
     public void serialize(nint arg0)
     {
-        NativeMethods.TablePtr->hs_method_448b143b((void*)_handle, (void*)arg0);
+        NativeMethods.TablePtr->C0.hs_method_448b143b((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->hs_cast_5fd97bbf((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_5fd97bbf((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServerCommandRegisterEvent? TryAsServerCommandRegisterEvent()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_3a2492d0((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_3a2492d0((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServerCommandRegisterEvent((nint)__hs_handle, false) : null;
     }
 }

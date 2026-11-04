@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
 public sealed unsafe partial class LogMessage : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public LogMessage(nint handle) : this(handle, true) { }
 
     internal LogMessage(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static LogMessage Borrow(nint handle) => new LogMessage(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static LogMessage Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_8700b79c();
+        var handle = NativeMethods.TablePtr->C0.hs_create_8700b79c();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
 
     public static LogMessage Create_27674e0e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
     {
-        var handle = NativeMethods.TablePtr->hs_create_27674e0e((void*)other.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_27674e0e((void*)other.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,7 +62,7 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
 
     public static LogMessage Create_854a7168(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
     {
-        var handle = NativeMethods.TablePtr->hs_create_854a7168((void*)other.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_854a7168((void*)other.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -99,7 +99,7 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                var handle = NativeMethods.TablePtr->hs_create_076b1b16(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, lvl, (void*)tm.Handle);
+                var handle = NativeMethods.TablePtr->C0.hs_create_076b1b16(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, lvl, (void*)tm.Handle);
                 if (handle == null)
                 {
                     throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -114,7 +114,7 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
     {
         get
         {
-            var view = NativeMethods.TablePtr->hs_get_8c29d1b2((void*)_handle);
+            var view = NativeMethods.TablePtr->C0.hs_get_8c29d1b2((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
         }
     }
@@ -123,26 +123,26 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
     {
         get
         {
-            var view = NativeMethods.TablePtr->hs_get_54e7798d((void*)_handle);
+            var view = NativeMethods.TablePtr->C0.hs_get_54e7798d((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
         }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView AsLogMessageView()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView((nint)NativeMethods.TablePtr->hs_cast_91a3eab5((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView((nint)NativeMethods.TablePtr->C0.hs_cast_91a3eab5((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_fead0235((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_fead0235((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

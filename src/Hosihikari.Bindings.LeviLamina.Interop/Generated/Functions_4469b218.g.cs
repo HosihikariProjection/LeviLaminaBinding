@@ -8,11 +8,11 @@ public static unsafe partial class Functions
 {
     public static void printCurrentException(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger logger, int level, nint arg2)
     {
-        NativeMethods.TablePtr->hs_function_c7b18402((void*)logger.Handle, level, (void*)arg2);
+        NativeMethods.TablePtr->C0.hs_function_c7b18402((void*)logger.Handle, level, (void*)arg2);
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace stacktraceFromCurrentException(ulong skip, ulong maxDepth)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->hs_function_d65bfad9(skip, maxDepth));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->C0.hs_function_d65bfad9(skip, maxDepth));
     }
 }

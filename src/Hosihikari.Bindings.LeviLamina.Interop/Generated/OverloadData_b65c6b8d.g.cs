@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class OverloadData : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public OverloadData(nint handle) : this(handle, true) { }
 
     internal OverloadData(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static OverloadData Borrow(nint handle) => new OverloadData(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class OverloadData : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static OverloadData Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_b014024d((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_b014024d((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,20 +51,20 @@ public sealed unsafe partial class OverloadData : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData((nint)NativeMethods.TablePtr->hs_method_c306872e((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData((nint)NativeMethods.TablePtr->C0.hs_method_c306872e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_b65c6b8d((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_b65c6b8d((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

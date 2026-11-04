@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.network;
 
 public sealed unsafe partial class IPacketHandler : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public IPacketHandler(nint handle) : this(handle, true) { }
 
     internal IPacketHandler(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static IPacketHandler Borrow(nint handle) => new IPacketHandler(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class IPacketHandler : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -45,20 +45,20 @@ public sealed unsafe partial class IPacketHandler : global::System.IDisposable
 
     public static global::Hosihikari.Bindings.Abi.SharedHandle? CreateDirector(nint invoke, nint userData, nint release)
     {
-        var __hs_shared = NativeMethods.TablePtr->hs_director_19b21cf4((void*)invoke, (void*)userData, (void*)release);
+        var __hs_shared = NativeMethods.TablePtr->C0.hs_director_19b21cf4((void*)invoke, (void*)userData, (void*)release);
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_268b95ee((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_268b95ee((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

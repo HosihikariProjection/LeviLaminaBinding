@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class TightPair_ll__data__polymorphicCopy_ll__io__Formatter___std__unique_ptr_ll__io__Formatter___fals_fd321c2c
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TightPair_ll__data__polymorphicCopy_ll__io__Formatter___std__unique_ptr_ll__io__Formatter___fals_fd321c2c(nint handle) : this(handle, true) { }
 
     internal TightPair_ll__data__polymorphicCopy_ll__io__Formatter___std__unique_ptr_ll__io__Formatter___fals_fd321c2c(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TightPair_ll__data__polymorphicCopy_ll__io__Formatter___std__unique_ptr_ll__io__Formatter___fals_fd321c2c Borrow(nint handle) => new TightPair_ll__data__polymorphicCopy_ll__io__Formatter___std__unique_ptr_ll__io__Formatter___fals_fd321c2c(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,28 +33,28 @@ public sealed unsafe partial class TightPair_ll__data__polymorphicCopy_ll__io__F
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ first_9d4d6093()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->hs_method_9d4d6093((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->C0.hs_method_9d4d6093((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ first_9bccad5c()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->hs_method_9bccad5c((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->C0.hs_method_9bccad5c((void*)__hosihikari_shim_handle), false);
     }
 
     public nint second_73c45094()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_73c45094((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_73c45094((void*)__hosihikari_shim_handle);
     }
 
     public nint second_85bab499()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_85bab499((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_85bab499((void*)__hosihikari_shim_handle);
     }
 }

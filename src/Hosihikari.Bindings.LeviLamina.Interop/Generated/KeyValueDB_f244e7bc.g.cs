@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class KeyValueDB : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public KeyValueDB(nint handle) : this(handle, true) { }
 
     internal KeyValueDB(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static KeyValueDB Borrow(nint handle) => new KeyValueDB(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -53,7 +53,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(path, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_95636f1d(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var handle = NativeMethods.TablePtr->C0.hs_create_95636f1d(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -78,7 +78,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(path, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_bb79597a(__hs_stringData0, (nuint)__hs_stringByteCount0, createIfMiss, fixIfError, bloomFilterBit);
+            var handle = NativeMethods.TablePtr->C0.hs_create_bb79597a(__hs_stringData0, (nuint)__hs_stringByteCount0, createIfMiss, fixIfError, bloomFilterBit);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -90,7 +90,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
 
     public static KeyValueDB Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_fadc003b((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_fadc003b((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -114,13 +114,13 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_method_48307b42((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_48307b42((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
         }
     }
 
     public bool empty()
     {
-        return NativeMethods.TablePtr->hs_method_5c7dbf54((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_5c7dbf54((void*)__hosihikari_shim_handle) != 0;
     }
 
     public string? get(string key)
@@ -139,7 +139,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_method_137780a7((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_method_137780a7((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
         }
     }
@@ -159,7 +159,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_method_48d48e3e((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_48d48e3e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0) != 0;
         }
     }
 
@@ -169,7 +169,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB((nint)NativeMethods.TablePtr->hs_method_7a898d09((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB((nint)NativeMethods.TablePtr->C0.hs_method_7a898d09((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
     public bool set(string key, string val)
@@ -200,27 +200,27 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return NativeMethods.TablePtr->hs_method_6234755d((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
+                return NativeMethods.TablePtr->C0.hs_method_6234755d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
             }
         }
     }
 
     public bool write(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch batch)
     {
-        return NativeMethods.TablePtr->hs_method_7d81ee9b((void*)_handle, (void*)batch.Handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_7d81ee9b((void*)__hosihikari_shim_handle, (void*)batch.Handle) != 0;
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_f244e7bc((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_f244e7bc((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

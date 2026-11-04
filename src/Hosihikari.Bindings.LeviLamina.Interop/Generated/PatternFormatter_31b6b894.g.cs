@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
 public sealed unsafe partial class PatternFormatter : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public PatternFormatter(nint handle) : this(handle, true) { }
 
     internal PatternFormatter(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static PatternFormatter Borrow(nint handle) => new PatternFormatter(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -53,7 +53,7 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(pattern, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_103fbc3e(__hs_stringData0, (nuint)__hs_stringByteCount0, colored, bracketed);
+            var handle = NativeMethods.TablePtr->C0.hs_create_103fbc3e(__hs_stringData0, (nuint)__hs_stringByteCount0, colored, bracketed);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -65,50 +65,50 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
 
     public byte bracketed
     {
-        get => NativeMethods.TablePtr->hs_get_23b0f6aa((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_23b0f6aa((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_23b0f6aa((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_23b0f6aa((void*)__hosihikari_shim_handle, value);
     }
 
     public bool colored
     {
-        get => NativeMethods.TablePtr->hs_get_5480a5b6((void*)_handle) != 0;
-        set => NativeMethods.TablePtr->hs_set_5480a5b6((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_5480a5b6((void*)__hosihikari_shim_handle) != 0;
+        set => NativeMethods.TablePtr->C0.hs_set_5480a5b6((void*)__hosihikari_shim_handle, value);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: methods do not accept mutable string references.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: mutable string references require symbol dispatch.", false)]
     public void format(nint view, nint buffer) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: methods do not accept mutable string references.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: mutable string references require symbol dispatch.");
 
     public string pattern
     {
         get
         {
-            var view = NativeMethods.TablePtr->hs_get_e94cdd43((void*)_handle);
+            var view = NativeMethods.TablePtr->C0.hs_get_e94cdd43((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
         }
     }
 
     public nint styles
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_97685719((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_97685719((void*)__hosihikari_shim_handle);
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter AsFormatter()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->hs_cast_0836b530((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->C0.hs_cast_0836b530((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_31b6b894((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_31b6b894((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

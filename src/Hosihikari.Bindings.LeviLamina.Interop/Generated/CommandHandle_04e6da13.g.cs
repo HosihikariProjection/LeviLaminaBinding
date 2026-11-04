@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class CommandHandle
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CommandHandle(nint handle) : this(handle, true) { }
 
     internal CommandHandle(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CommandHandle Borrow(nint handle) => new CommandHandle(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class CommandHandle
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -57,13 +57,13 @@ public sealed unsafe partial class CommandHandle
         global::System.Text.Encoding.UTF8.GetBytes(alias, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->hs_method_0f895032((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->C0.hs_method_0f895032((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
     public string[] alias()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_51a27a86((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_51a27a86((void*)__hosihikari_shim_handle);
         var __hs_items = (global::Hosihikari.Bindings.Abi.StringView*)__hs_view.Data;
         var __hs_result = __hs_view.Size == 0 ? global::System.Array.Empty<string>() : new string[checked((int)__hs_view.Size)];
         for (var __hs_i = 0; __hs_i < __hs_result.Length; __hs_i++)
@@ -75,7 +75,7 @@ public sealed unsafe partial class CommandHandle
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload runtimeOverload(global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->hs_method_d854facb((void*)_handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_d854facb((void*)__hosihikari_shim_handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)));
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class ExecuteCommandEvent
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ExecuteCommandEvent(nint handle) : this(handle, true) { }
 
     internal ExecuteCommandEvent(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ExecuteCommandEvent Borrow(nint handle) => new ExecuteCommandEvent(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,51 +33,51 @@ public sealed unsafe partial class ExecuteCommandEvent
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public nint commandContext()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_3bf2e906((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_3bf2e906((void*)__hosihikari_shim_handle);
     }
 
     public nint minecraftCommands()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_12ff330c((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_12ff330c((void*)__hosihikari_shim_handle);
     }
 
     public void serialize(nint arg0)
     {
-        NativeMethods.TablePtr->hs_method_68caa5c1((void*)_handle, (void*)arg0);
+        NativeMethods.TablePtr->C0.hs_method_68caa5c1((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
     public nint suppressOutput()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_8fc39706((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_8fc39706((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->hs_cast_34f96e76((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_34f96e76((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_? TryAsCancellable_ll__event__ExecuteCommandEvent_()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_04404187((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_04404187((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecutedCommandEvent? TryAsExecutedCommandEvent()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_e71dc0c5((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_e71dc0c5((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecutedCommandEvent((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecutingCommandEvent? TryAsExecutingCommandEvent()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_40b30d00((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_40b30d00((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecutingCommandEvent((nint)__hs_handle, false) : null;
     }
 }

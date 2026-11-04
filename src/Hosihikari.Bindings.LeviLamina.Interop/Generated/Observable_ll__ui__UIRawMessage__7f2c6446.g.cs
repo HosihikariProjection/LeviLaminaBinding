@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Observable_ll__ui__UIRawMessage_(nint handle) : this(handle, true) { }
 
     internal Observable_ll__ui__UIRawMessage_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Observable_ll__ui__UIRawMessage_ Borrow(nint handle) => new Observable_ll__ui__UIRawMessage_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -52,7 +52,7 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage getData()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->hs_method_114db1ad((void*)_handle));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_114db1ad((void*)__hosihikari_shim_handle));
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
@@ -65,29 +65,29 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
 
     public void setData(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage value)
     {
-        NativeMethods.TablePtr->hs_method_4b4adab1((void*)_handle, (void*)value.Handle);
+        NativeMethods.TablePtr->C0.hs_method_4b4adab1((void*)__hosihikari_shim_handle, (void*)value.Handle);
     }
 
     public uint subscribe(nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        return NativeMethods.TablePtr->hs_method_3888e827((void*)_handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        return NativeMethods.TablePtr->C0.hs_method_3888e827((void*)__hosihikari_shim_handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
     }
 
     public bool unsubscribe(uint id)
     {
-        return NativeMethods.TablePtr->hs_method_8658992c((void*)_handle, id) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_8658992c((void*)__hosihikari_shim_handle, id) != 0;
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_7f2c6446((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_7f2c6446((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

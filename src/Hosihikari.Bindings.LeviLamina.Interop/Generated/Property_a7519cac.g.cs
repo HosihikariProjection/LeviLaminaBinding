@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
 public sealed unsafe partial class Property : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Property(nint handle) : this(handle, true) { }
 
     internal Property(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Property Borrow(nint handle) => new Property(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class Property : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static Property Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_e8842391();
+        var handle = NativeMethods.TablePtr->C0.hs_create_e8842391();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class Property : global::System.IDisposable
 
     public static Property Create_95a67ed4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_95a67ed4((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_95a67ed4((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,7 +62,7 @@ public sealed unsafe partial class Property : global::System.IDisposable
 
     public static Property Create_917bf7ba(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_917bf7ba((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_917bf7ba((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -74,29 +74,29 @@ public sealed unsafe partial class Property : global::System.IDisposable
     public void erase()
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_b66fd527((void*)_handle, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_b66fd527((void*)__hosihikari_shim_handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
     public bool operator_bool()
     {
-        return NativeMethods.TablePtr->hs_method_525dca87((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_525dca87((void*)__hosihikari_shim_handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property operator_assign_bfa12fa4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->hs_method_bfa12fa4((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->C0.hs_method_bfa12fa4((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property operator_assign_a1807e9e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->hs_method_a1807e9e((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->C0.hs_method_a1807e9e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
     public void set(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue value)
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_47592751((void*)_handle, (void*)value.Handle, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_47592751((void*)__hosihikari_shim_handle, (void*)value.Handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
@@ -116,7 +116,7 @@ public sealed unsafe partial class Property : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(json, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            NativeMethods.TablePtr->hs_method_d9c1fc42((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            NativeMethods.TablePtr->C0.hs_method_d9c1fc42((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
         }
     }
@@ -124,14 +124,14 @@ public sealed unsafe partial class Property : global::System.IDisposable
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_a7519cac((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_a7519cac((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TypedStorageImpl_2ULL__2ULL__CommandFlag_(nint handle) : this(handle, true) { }
 
     internal TypedStorageImpl_2ULL__2ULL__CommandFlag_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TypedStorageImpl_2ULL__2ULL__CommandFlag_ Borrow(nint handle) => new TypedStorageImpl_2ULL__2ULL__CommandFlag_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -48,68 +48,68 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
 
     public nint data
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_58da2b8f((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_58da2b8f((void*)__hosihikari_shim_handle);
     }
 
     public nint get_fbc66274()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_fbc66274((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_fbc66274((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag get_fe2bf2ba()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_fe2bf2ba((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_fe2bf2ba((void*)__hosihikari_shim_handle), false);
     }
 
     public nint get_656a0d6d()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_656a0d6d((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_656a0d6d((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag get_87d2ee40()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_87d2ee40((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_87d2ee40((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag operator_CommandFlag__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_6921b662((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_6921b662((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag operator_const_CommandFlag__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_43d716d3((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_43d716d3((void*)__hosihikari_shim_handle), false);
     }
 
     public nint operator_multiply_a1c72ce6()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_a1c72ce6((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_a1c72ce6((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag operator_multiply_d5988d23()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_d5988d23((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_d5988d23((void*)__hosihikari_shim_handle), false);
     }
 
     public nint operator_multiply_810ad943()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_810ad943((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_810ad943((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag operator_multiply_0d569cc4()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->hs_method_0d569cc4((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)NativeMethods.TablePtr->C0.hs_method_0d569cc4((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? operator_operator___78d43b82()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_78d43b82((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_78d43b82((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? operator_operator___27b49df6()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_27b49df6((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_27b49df6((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)__hs_handle, false) : null;
     }
 

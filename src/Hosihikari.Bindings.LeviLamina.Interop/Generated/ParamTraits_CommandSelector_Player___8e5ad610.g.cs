@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class ParamTraits_CommandSelector_Player__ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ParamTraits_CommandSelector_Player__(nint handle) : this(handle, true) { }
 
     internal ParamTraits_CommandSelector_Player__(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ParamTraits_CommandSelector_Player__ Borrow(nint handle) => new ParamTraits_CommandSelector_Player__(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,31 +33,31 @@ public sealed unsafe partial class ParamTraits_CommandSelector_Player__ : global
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static int parseRuleValue()
     {
-        return NativeMethods.TablePtr->hs_method_fc0d250b();
+        return NativeMethods.TablePtr->C0.hs_method_fc0d250b();
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandSelector_Player__ AsParamTraitsBase_CommandSelector_Player__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandSelector_Player__((nint)NativeMethods.TablePtr->hs_cast_004d109b((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandSelector_Player__((nint)NativeMethods.TablePtr->C0.hs_cast_004d109b((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_8e5ad610((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_8e5ad610((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

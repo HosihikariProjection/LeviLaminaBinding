@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.network;
 
 public sealed unsafe partial class PacketRegistrar
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public PacketRegistrar(nint handle) : this(handle, true) { }
 
     internal PacketRegistrar(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static PacketRegistrar Borrow(nint handle) => new PacketRegistrar(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,20 +33,20 @@ public sealed unsafe partial class PacketRegistrar
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.Packet? createPacket(ulong runtimeId)
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_441bd9bd((void*)_handle, runtimeId);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_441bd9bd((void*)__hosihikari_shim_handle, runtimeId);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.Packet((nint)__hs_handle) : null;
     }
 
     public ulong[] getHandledPackets(byte side)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_118ceb1d((void*)_handle, side);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_118ceb1d((void*)__hosihikari_shim_handle, side);
         var __hs_result = __hs_view.Size == 0 ? global::System.Array.Empty<ulong>() : new ulong[checked((int)__hs_view.Size)];
         if (__hs_view.Size > 0)
         {
@@ -58,13 +58,13 @@ public sealed unsafe partial class PacketRegistrar
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.IPacketHandler? getHandler(ulong runtimeId, byte side)
     {
         var __hs_hasValue = false;
-        var __hs_handle = NativeMethods.TablePtr->hs_method_b2afa9ba((void*)_handle, runtimeId, side, &__hs_hasValue);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b2afa9ba((void*)__hosihikari_shim_handle, runtimeId, side, &__hs_hasValue);
         return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.IPacketHandler((nint)__hs_handle, false) : null;
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar((nint)NativeMethods.TablePtr->hs_method_5ade0854(), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_5ade0854(), false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: vector return type 'std::pair<unsigned long long, std::basic_string<char>>' is not supported.", false)]
@@ -86,7 +86,7 @@ public sealed unsafe partial class PacketRegistrar
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_method_1be370c9((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, id, (void*)(handler?.Handle ?? 0), side, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData), handler is not null) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_1be370c9((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, id, (void*)(handler?.Handle ?? 0), side, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData), handler is not null) != 0;
         }
     }
 
@@ -100,11 +100,11 @@ public sealed unsafe partial class PacketRegistrar
 
     public bool unregisterHandler(ulong id, byte side)
     {
-        return NativeMethods.TablePtr->hs_method_04990f66((void*)_handle, id, side) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_04990f66((void*)__hosihikari_shim_handle, id, side) != 0;
     }
 
     public bool unregisterPacket(ulong id)
     {
-        return NativeMethods.TablePtr->hs_method_286661ab((void*)_handle, id) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_286661ab((void*)__hosihikari_shim_handle, id) != 0;
     }
 }

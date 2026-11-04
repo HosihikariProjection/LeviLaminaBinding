@@ -8,11 +8,11 @@ public static unsafe partial class Functions
 {
     public static byte decodeLookup(byte c)
     {
-        return NativeMethods.TablePtr->hs_function_aa322153(c);
+        return NativeMethods.TablePtr->C0.hs_function_aa322153(c);
     }
 
     public static byte encodeLookup(byte c)
     {
-        return NativeMethods.TablePtr->hs_function_9cef9b6d(c);
+        return NativeMethods.TablePtr->C0.hs_function_9cef9b6d(c);
     }
 }

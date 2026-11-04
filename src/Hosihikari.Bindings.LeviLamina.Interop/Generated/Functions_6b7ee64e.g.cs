@@ -21,7 +21,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_6cde4426(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_6cde4426(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -41,7 +41,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_62886255(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_62886255(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -61,13 +61,13 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(@in, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_function_578890e2(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            return NativeMethods.TablePtr->C0.hs_function_578890e2(__hs_stringData0, (nuint)__hs_stringByteCount0);
         }
     }
 
     public static ulong getEncodeLength_2e2a246d(ulong len)
     {
-        return NativeMethods.TablePtr->hs_function_2e2a246d(len);
+        return NativeMethods.TablePtr->C0.hs_function_2e2a246d(len);
     }
 
     public static ulong getEncodeLength_650a9adc(string str)
@@ -85,7 +85,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_function_650a9adc(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            return NativeMethods.TablePtr->C0.hs_function_650a9adc(__hs_stringData0, (nuint)__hs_stringByteCount0);
         }
     }
 }

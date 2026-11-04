@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.cereal;
 
 public sealed unsafe partial class DynamicValue : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public DynamicValue(nint handle) : this(handle, true) { }
 
     internal DynamicValue(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static DynamicValue Borrow(nint handle) => new DynamicValue(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static DynamicValue Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_3a25b1fb();
+        var handle = NativeMethods.TablePtr->C0.hs_create_3a25b1fb();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public static DynamicValue Create(bool value)
     {
-        var handle = NativeMethods.TablePtr->hs_create_af6f93a0(value);
+        var handle = NativeMethods.TablePtr->C0.hs_create_af6f93a0(value);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,7 +62,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public static DynamicValue Create_dc126234(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_dc126234((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_dc126234((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -73,7 +73,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public static DynamicValue Create(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.NullType arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_fb14efa6((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_fb14efa6((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -84,7 +84,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public static DynamicValue Create_925b22e9(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_925b22e9((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_925b22e9((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -95,7 +95,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public static DynamicValue Create_565569fd(nint value)
     {
-        var handle = NativeMethods.TablePtr->hs_create_565569fd((void*)value);
+        var handle = NativeMethods.TablePtr->C0.hs_create_565569fd((void*)value);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -119,7 +119,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_3f53fa35(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var handle = NativeMethods.TablePtr->C0.hs_create_3f53fa35(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -144,7 +144,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_0764b243(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var handle = NativeMethods.TablePtr->C0.hs_create_0764b243(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -154,9 +154,16 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
         }
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.", false)]
-    public static DynamicValue Create_ea8678a6(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.");
+    public static DynamicValue Create_ea8678a6()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_ea8678a6();
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new DynamicValue((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::unordered_map<std::basic_string<char>, cereal::DynamicValue, cereal::util::internal::StringViewHash, std::equal_to<void>>' is not a known bindable declaration.", false)]
     public static DynamicValue Create_e158ef2f(nint value) =>
@@ -173,7 +180,7 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
         fixed (nint* __hs_vectorHandleData0 = __hs_vectorHandles0)
         {
             var __hs_vectorData0 = (void**)__hs_vectorHandleData0;
-            var handle = NativeMethods.TablePtr->hs_create_cdb6c434(__hs_vectorData0, (nuint)(value?.Length ?? 0));
+            var handle = NativeMethods.TablePtr->C0.hs_create_cdb6c434(__hs_vectorData0, (nuint)(value?.Length ?? 0));
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -185,19 +192,19 @@ public sealed unsafe partial class DynamicValue : global::System.IDisposable
 
     public nint mValue
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_31923cf7((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_31923cf7((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_b685291d((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_b685291d((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

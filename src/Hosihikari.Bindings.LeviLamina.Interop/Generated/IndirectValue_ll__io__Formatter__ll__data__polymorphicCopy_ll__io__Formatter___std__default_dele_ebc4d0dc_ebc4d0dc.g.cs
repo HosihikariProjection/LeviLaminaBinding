@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc(nint handle) : this(handle, true) { }
 
     internal IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Borrow(nint handle) => new IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -60,70 +60,70 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? get_b17c0bfb()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_b17c0bfb((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b17c0bfb((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? get_2abcf897()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_2abcf897((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2abcf897((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ getCopyCtor_b13b0094()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->hs_method_b13b0094((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->C0.hs_method_b13b0094((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ getCopyCtor_15f4f740()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->hs_method_15f4f740((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)NativeMethods.TablePtr->C0.hs_method_15f4f740((void*)__hosihikari_shim_handle), false);
     }
 
     public nint getDeleter_4b749aae()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_4b749aae((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_4b749aae((void*)__hosihikari_shim_handle);
     }
 
     public nint getDeleter_9b683563()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_9b683563((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_9b683563((void*)__hosihikari_shim_handle);
     }
 
     public bool operator_bool()
     {
-        return NativeMethods.TablePtr->hs_method_8b9de394((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_8b9de394((void*)__hosihikari_shim_handle) != 0;
     }
 
     public nint operator_multiply_ad17d380()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_ad17d380((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_ad17d380((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter operator_multiply_db594926()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->hs_method_db594926((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->C0.hs_method_db594926((void*)__hosihikari_shim_handle), false);
     }
 
     public nint operator_multiply_273df807()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_273df807((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_273df807((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter operator_multiply_01d3c2c9()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->hs_method_01d3c2c9((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->C0.hs_method_01d3c2c9((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_operator___c50ef6b2()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_c50ef6b2((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c50ef6b2((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_operator___23b3117c()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_23b3117c((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_23b3117c((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
@@ -137,25 +137,25 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? release()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_532356ed((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_532356ed((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
     public void reset(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? ptr, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ copy)
     {
-        NativeMethods.TablePtr->hs_method_c0fd1b7f((void*)_handle, (void*)(ptr?.Handle ?? 0), (void*)copy.Handle);
+        NativeMethods.TablePtr->C0.hs_method_c0fd1b7f((void*)__hosihikari_shim_handle, (void*)(ptr?.Handle ?? 0), (void*)copy.Handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_ebc4d0dc((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_ebc4d0dc((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class DynamicListener : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public DynamicListener(nint handle) : this(handle, true) { }
 
     internal DynamicListener(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static DynamicListener Borrow(nint handle) => new DynamicListener(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class DynamicListener : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static DynamicListener Create(nint fnInvoke, nint fnUserData, nint fnRelease, int priority, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
-        var handle = NativeMethods.TablePtr->hs_create_28da94b8((void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, priority, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
+        var handle = NativeMethods.TablePtr->C0.hs_create_28da94b8((void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, priority, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,31 +51,31 @@ public sealed unsafe partial class DynamicListener : global::System.IDisposable
 
     public void call(global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event @event)
     {
-        NativeMethods.TablePtr->hs_method_3a89e15c((void*)_handle, (void*)@event.Handle);
+        NativeMethods.TablePtr->C0.hs_method_3a89e15c((void*)__hosihikari_shim_handle, (void*)@event.Handle);
     }
 
     public static global::Hosihikari.Bindings.Abi.SharedHandle? create(nint fnInvoke, nint fnUserData, nint fnRelease, int priority, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
-        var __hs_shared = NativeMethods.TablePtr->hs_method_deeb082b((void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, priority, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
+        var __hs_shared = NativeMethods.TablePtr->C0.hs_method_deeb082b((void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, priority, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase AsListenerBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)NativeMethods.TablePtr->hs_cast_4f5ad8f3((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)NativeMethods.TablePtr->C0.hs_cast_4f5ad8f3((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_c0b2d37b((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_c0b2d37b((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

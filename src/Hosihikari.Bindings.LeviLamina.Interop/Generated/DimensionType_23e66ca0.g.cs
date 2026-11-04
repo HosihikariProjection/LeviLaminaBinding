@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop;
 
 public sealed unsafe partial class DimensionType : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public DimensionType(nint handle) : this(handle, true) { }
 
     internal DimensionType(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static DimensionType Borrow(nint handle) => new DimensionType(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class DimensionType : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static DimensionType Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_6e024283();
+        var handle = NativeMethods.TablePtr->C0.hs_create_6e024283();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class DimensionType : global::System.IDisposable
 
     public static DimensionType Create(int value)
     {
-        var handle = NativeMethods.TablePtr->hs_create_d0dad7f7(value);
+        var handle = NativeMethods.TablePtr->C0.hs_create_d0dad7f7(value);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,20 +62,20 @@ public sealed unsafe partial class DimensionType : global::System.IDisposable
 
     public int mValue
     {
-        get => NativeMethods.TablePtr->hs_get_15b3a8b0((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_15b3a8b0((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_15b3a8b0((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_15b3a8b0((void*)__hosihikari_shim_handle, value);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_23e66ca0((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_23e66ca0((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

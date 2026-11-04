@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
 public sealed unsafe partial class UIObservable_double_ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public UIObservable_double_(nint handle) : this(handle, true) { }
 
     internal UIObservable_double_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static UIObservable_double_ Borrow(nint handle) => new UIObservable_double_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class UIObservable_double_ : global::System.IDispos
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,24 +44,24 @@ public sealed unsafe partial class UIObservable_double_ : global::System.IDispos
 
     public bool isClientWritable()
     {
-        return NativeMethods.TablePtr->hs_method_9dad79b5((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_9dad79b5((void*)__hosihikari_shim_handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_ AsObservable_double_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_((nint)NativeMethods.TablePtr->hs_cast_4fd28dfd((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_((nint)NativeMethods.TablePtr->C0.hs_cast_4fd28dfd((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_b620251e((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_b620251e((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

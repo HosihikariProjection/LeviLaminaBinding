@@ -8,6 +8,6 @@ public static unsafe partial class Functions
 {
     public static void closeScreen(nint player)
     {
-        NativeMethods.TablePtr->hs_function_67ee9f34((void*)player);
+        NativeMethods.TablePtr->C0.hs_function_67ee9f34((void*)player);
     }
 }

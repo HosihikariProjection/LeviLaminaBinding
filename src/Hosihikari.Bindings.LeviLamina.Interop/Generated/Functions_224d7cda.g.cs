@@ -34,20 +34,20 @@ public static unsafe partial class Functions
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return NativeMethods.TablePtr->hs_function_dd4e2756(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
+                return NativeMethods.TablePtr->C0.hs_function_dd4e2756(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
             }
         }
     }
 
     public static string getCallerModuleFileName(nint addr)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_cbf9710b((void*)addr);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_cbf9710b((void*)addr);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static nint getCurrentModuleHandle()
     {
-        return (nint)NativeMethods.TablePtr->hs_function_f07a905e();
+        return (nint)NativeMethods.TablePtr->C0.hs_function_f07a905e();
     }
 
     public static string getEnvironmentVariable(string name)
@@ -65,59 +65,59 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_7c0848cc(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_7c0848cc(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs getLocalTime()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs((nint)NativeMethods.TablePtr->hs_function_3c69b9e0());
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs((nint)NativeMethods.TablePtr->C0.hs_function_3c69b9e0());
     }
 
     public static string getModuleFileName(nint handle, nint process)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_4755a920((void*)handle, (void*)process);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_4755a920((void*)handle, (void*)process);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static nint getModuleHandle(nint addr)
     {
-        return (nint)NativeMethods.TablePtr->hs_function_95f051b8((void*)addr);
+        return (nint)NativeMethods.TablePtr->C0.hs_function_95f051b8((void*)addr);
     }
 
     public static string? getModulePath(nint handle, nint process)
     {
         var __hs_hasValue = false;
-        var __hs_view = NativeMethods.TablePtr->hs_function_6133d6e5((void*)handle, (void*)process, &__hs_hasValue);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_6133d6e5((void*)handle, (void*)process, &__hs_hasValue);
         return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
     }
 
     public static string getSystemLocaleCode()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_d9ffd751();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_d9ffd751();
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static string getSystemName()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_ce6d55d5();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_ce6d55d5();
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getSystemVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->hs_function_6b3caf2e());
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_6b3caf2e());
     }
 
     public static bool isStdoutSupportAnsi()
     {
-        return NativeMethods.TablePtr->hs_function_225890ae() != 0;
+        return NativeMethods.TablePtr->C0.hs_function_225890ae() != 0;
     }
 
     public static bool isWine()
     {
-        return NativeMethods.TablePtr->hs_function_f9775ca9() != 0;
+        return NativeMethods.TablePtr->C0.hs_function_f9775ca9() != 0;
     }
 
     public static string normalizePath(string path)
@@ -135,7 +135,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(path, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_2f27b604(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_2f27b604(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -168,7 +168,7 @@ public static unsafe partial class Functions
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return NativeMethods.TablePtr->hs_function_d6fb98f7(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
+                return NativeMethods.TablePtr->C0.hs_function_d6fb98f7(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1) != 0;
             }
         }
     }

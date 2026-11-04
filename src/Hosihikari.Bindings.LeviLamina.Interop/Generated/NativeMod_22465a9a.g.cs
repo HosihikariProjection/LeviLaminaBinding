@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.mod;
 
 public sealed unsafe partial class NativeMod
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public NativeMod(nint handle) : this(handle, true) { }
 
     internal NativeMod(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static NativeMod Borrow(nint handle) => new NativeMod(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class NativeMod
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,19 +44,19 @@ public sealed unsafe partial class NativeMod
 
     public static global::Hosihikari.Bindings.Abi.SharedHandle? current(nint handle)
     {
-        var __hs_shared = NativeMethods.TablePtr->hs_method_4bba2848((void*)handle);
+        var __hs_shared = NativeMethods.TablePtr->C0.hs_method_4bba2848((void*)handle);
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
     public static global::Hosihikari.Bindings.Abi.SharedHandle? getByHandle(nint handle)
     {
-        var __hs_shared = NativeMethods.TablePtr->hs_method_e62bf0c9((void*)handle);
+        var __hs_shared = NativeMethods.TablePtr->C0.hs_method_e62bf0c9((void*)handle);
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
     public nint getHandle()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_b9381af9((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_b9381af9((void*)__hosihikari_shim_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
@@ -65,6 +65,6 @@ public sealed unsafe partial class NativeMod
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod AsMod()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod((nint)NativeMethods.TablePtr->hs_cast_05efd4a9((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod((nint)NativeMethods.TablePtr->C0.hs_cast_05efd4a9((void*)__hosihikari_shim_handle), false);
     }
 }

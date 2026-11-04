@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils;
 
 public sealed unsafe partial class Compressor : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Compressor(nint handle) : this(handle, true) { }
 
     internal Compressor(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Compressor Borrow(nint handle) => new Compressor(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static Compressor Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
     {
-        var handle = NativeMethods.TablePtr->hs_create_740e1911((void*)arg0.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_740e1911((void*)arg0.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -56,19 +56,19 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
     public void finish()
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_5d22e940((void*)_handle, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_5d22e940((void*)__hosihikari_shim_handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor((nint)NativeMethods.TablePtr->hs_method_8799de9d((void*)_handle, (void*)arg0.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor((nint)NativeMethods.TablePtr->C0.hs_method_8799de9d((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
     }
 
     public void status()
     {
         var __hs_hasValue = false;
-        NativeMethods.TablePtr->hs_method_4739b571((void*)_handle, &__hs_hasValue);
+        NativeMethods.TablePtr->C0.hs_method_4739b571((void*)__hosihikari_shim_handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
@@ -88,7 +88,7 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(data, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            NativeMethods.TablePtr->hs_method_fde83ef3((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            NativeMethods.TablePtr->C0.hs_method_fde83ef3((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
         }
     }
@@ -96,14 +96,14 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_6277e111((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_6277e111((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

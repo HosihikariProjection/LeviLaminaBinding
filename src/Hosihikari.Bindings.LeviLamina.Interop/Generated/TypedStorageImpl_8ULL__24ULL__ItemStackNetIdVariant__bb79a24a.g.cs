@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_(nint handle) : this(handle, true) { }
 
     internal TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_ Borrow(nint handle) => new TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__ItemStackNetIdV
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -48,67 +48,67 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__ItemStackNetIdV
 
     public nint data
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_b935046b((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_b935046b((void*)__hosihikari_shim_handle);
     }
 
     public nint get_c69b89ef()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_c69b89ef((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_c69b89ef((void*)__hosihikari_shim_handle);
     }
 
     public nint get_af52b216()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_af52b216((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_af52b216((void*)__hosihikari_shim_handle);
     }
 
     public nint get_b3b2093d()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_b3b2093d((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_b3b2093d((void*)__hosihikari_shim_handle);
     }
 
     public nint get_813437cc()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_813437cc((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_813437cc((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_ItemStackNetIdVariant__()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_d2132e65((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_d2132e65((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_const_ItemStackNetIdVariant__()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_839925f6((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_839925f6((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_multiply_68f0d1f6()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_68f0d1f6((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_68f0d1f6((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_multiply_50697fc2()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_50697fc2((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_50697fc2((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_multiply_860b5e1a()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_860b5e1a((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_860b5e1a((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_multiply_d02dec0b()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_d02dec0b((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_d02dec0b((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_operator___d4678fe0()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_d4678fe0((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_d4678fe0((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_operator___ddccae14()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_ddccae14((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_ddccae14((void*)__hosihikari_shim_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]

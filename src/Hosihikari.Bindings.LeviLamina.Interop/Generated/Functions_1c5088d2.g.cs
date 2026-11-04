@@ -8,48 +8,48 @@ public static unsafe partial class Functions
 {
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getGameVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->hs_function_47446163());
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_47446163());
     }
 
     public static int getGamingStatus()
     {
-        return NativeMethods.TablePtr->hs_function_59ba700a();
+        return NativeMethods.TablePtr->C0.hs_function_59ba700a();
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getLoaderVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->hs_function_0ed67308());
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_0ed67308());
     }
 
     public static int getNetworkProtocolVersion()
     {
-        return NativeMethods.TablePtr->hs_function_c191e6d8();
+        return NativeMethods.TablePtr->C0.hs_function_c191e6d8();
     }
 
     public static string? getWorldConfigRoot()
     {
         var __hs_hasValue = false;
-        var __hs_view = NativeMethods.TablePtr->hs_function_b1211755(&__hs_hasValue);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_b1211755(&__hs_hasValue);
         return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
     }
 
     public static string? getWorldDataRoot()
     {
         var __hs_hasValue = false;
-        var __hs_view = NativeMethods.TablePtr->hs_function_049caffd(&__hs_hasValue);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_049caffd(&__hs_hasValue);
         return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
     }
 
     public static string? getWorldPath()
     {
         var __hs_hasValue = false;
-        var __hs_view = NativeMethods.TablePtr->hs_function_add048ab(&__hs_hasValue);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_add048ab(&__hs_hasValue);
         return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
     }
 
     public static bool isClient()
     {
-        return NativeMethods.TablePtr->hs_function_c2e9a8f8() != 0;
+        return NativeMethods.TablePtr->C0.hs_function_c2e9a8f8() != 0;
     }
 
     public static bool setServerMotd(string serverName, bool shouldAnnounce)
@@ -67,7 +67,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(serverName, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_function_1e09626f(__hs_stringData0, (nuint)__hs_stringByteCount0, shouldAnnounce) != 0;
+            return NativeMethods.TablePtr->C0.hs_function_1e09626f(__hs_stringData0, (nuint)__hs_stringByteCount0, shouldAnnounce) != 0;
         }
     }
 }

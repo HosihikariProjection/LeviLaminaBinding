@@ -8,6 +8,6 @@ public static unsafe partial class Functions
 {
     public static void mayPrintCommandError(nint arg0, global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput arg1, nint arg2)
     {
-        NativeMethods.TablePtr->hs_function_c5792e6d((void*)arg0, (void*)arg1.Handle, (void*)arg2);
+        NativeMethods.TablePtr->C0.hs_function_c5792e6d((void*)arg0, (void*)arg1.Handle, (void*)arg2);
     }
 }

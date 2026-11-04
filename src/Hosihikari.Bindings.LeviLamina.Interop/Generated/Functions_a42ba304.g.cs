@@ -8,7 +8,7 @@ public static unsafe partial class Functions
 {
     public static string getModsRoot()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_34ffcadf();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_34ffcadf();
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 }

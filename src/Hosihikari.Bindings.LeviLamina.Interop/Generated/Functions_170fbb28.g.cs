@@ -22,7 +22,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(filePath, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_handle = NativeMethods.TablePtr->hs_function_f92df458(__hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_function_f92df458(__hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle) : null;
         }
     }
@@ -43,7 +43,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(filePath, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_565d3372(__hs_stringData0, (nuint)__hs_stringByteCount0, isBinary, &__hs_hasValue);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_565d3372(__hs_stringData0, (nuint)__hs_stringByteCount0, isBinary, &__hs_hasValue);
             return __hs_hasValue ? global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size)) : null;
         }
     }
@@ -63,7 +63,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(src, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_function_e84993b5(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_function_e84993b5(__hs_stringData0, (nuint)__hs_stringByteCount0);
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
         }
     }
@@ -96,7 +96,7 @@ public static unsafe partial class Functions
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return NativeMethods.TablePtr->hs_function_91022f0f(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, isBinary) != 0;
+                return NativeMethods.TablePtr->C0.hs_function_91022f0f(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, isBinary) != 0;
             }
         }
     }

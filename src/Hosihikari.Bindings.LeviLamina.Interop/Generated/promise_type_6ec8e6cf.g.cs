@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation_Nested;
 
 public sealed unsafe partial class promise_type : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public promise_type(nint handle) : this(handle, true) { }
 
     internal promise_type(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static promise_type Borrow(nint handle) => new promise_type(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class promise_type : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,7 +44,7 @@ public sealed unsafe partial class promise_type : global::System.IDisposable
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation get_return_object()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation((nint)NativeMethods.TablePtr->hs_method_9a9417d2((void*)_handle));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation((nint)NativeMethods.TablePtr->C0.hs_method_9a9417d2((void*)__hosihikari_shim_handle));
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::suspend_always' is not a known bindable declaration.", false)]
@@ -53,24 +53,24 @@ public sealed unsafe partial class promise_type : global::System.IDisposable
 
     public void return_void()
     {
-        NativeMethods.TablePtr->hs_method_9405a437((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_9405a437((void*)__hosihikari_shim_handle);
     }
 
     public void unhandled_exception()
     {
-        NativeMethods.TablePtr->hs_method_9e85f4fd((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_9e85f4fd((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_6ec8e6cf((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_6ec8e6cf((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

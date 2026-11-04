@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class AnyFunctionObjBase
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public AnyFunctionObjBase(nint handle) : this(handle, true) { }
 
     internal AnyFunctionObjBase(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static AnyFunctionObjBase Borrow(nint handle) => new AnyFunctionObjBase(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class AnyFunctionObjBase
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -60,6 +60,6 @@ public sealed unsafe partial class AnyFunctionObjBase
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase AsAnyObjBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase((nint)NativeMethods.TablePtr->hs_cast_63d25aae((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase((nint)NativeMethods.TablePtr->C0.hs_cast_63d25aae((void*)__hosihikari_shim_handle), false);
     }
 }

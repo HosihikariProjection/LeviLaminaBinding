@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
 public sealed unsafe partial class SignatureElement : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public SignatureElement(nint handle) : this(handle, true) { }
 
     internal SignatureElement(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static SignatureElement Borrow(nint handle) => new SignatureElement(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static SignatureElement Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_169d3cd0();
+        var handle = NativeMethods.TablePtr->C0.hs_create_169d3cd0();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -50,16 +50,23 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.", false)]
-    public static SignatureElement Create_cedf0afa(nint @byte) =>
+    public static SignatureElement Create(nint @byte) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.", false)]
-    public static SignatureElement Create_9758b616(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.");
+    public static SignatureElement Create_9758b616()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9758b616();
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new SignatureElement((nint)handle);
+    }
 
     public static SignatureElement Create(byte @byte)
     {
-        var handle = NativeMethods.TablePtr->hs_create_91885b98(@byte);
+        var handle = NativeMethods.TablePtr->C0.hs_create_91885b98(@byte);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -70,12 +77,12 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
 
     public ulong hash()
     {
-        return NativeMethods.TablePtr->hs_method_4a91da7f((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_method_4a91da7f((void*)__hosihikari_shim_handle);
     }
 
     public bool isWildcard()
     {
-        return NativeMethods.TablePtr->hs_method_985014ba((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_985014ba((void*)__hosihikari_shim_handle) != 0;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::byte' is not a known bindable declaration.", false)]
@@ -84,7 +91,7 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
 
     public bool operator_equal(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement other)
     {
-        return NativeMethods.TablePtr->hs_method_2319360a((void*)_handle, (void*)other.Handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_2319360a((void*)__hosihikari_shim_handle, (void*)other.Handle) != 0;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.", false)]
@@ -93,19 +100,19 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
 
     public bool operator_equal(byte other)
     {
-        return NativeMethods.TablePtr->hs_method_1b15f4fa((void*)_handle, other) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_1b15f4fa((void*)__hosihikari_shim_handle, other) != 0;
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_d5da3fe3((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_d5da3fe3((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

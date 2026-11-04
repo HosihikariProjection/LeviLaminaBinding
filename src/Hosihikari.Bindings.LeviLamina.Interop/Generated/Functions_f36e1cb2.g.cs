@@ -21,7 +21,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(id, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return NativeMethods.TablePtr->hs_function_1890f49b(__hs_stringData0, (nuint)__hs_stringByteCount0, version);
+            return NativeMethods.TablePtr->C0.hs_function_1890f49b(__hs_stringData0, (nuint)__hs_stringByteCount0, version);
         }
     }
 }

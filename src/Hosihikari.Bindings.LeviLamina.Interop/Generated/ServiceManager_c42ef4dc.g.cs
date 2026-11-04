@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.service;
 
 public sealed unsafe partial class ServiceManager
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ServiceManager(nint handle) : this(handle, true) { }
 
     internal ServiceManager(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ServiceManager Borrow(nint handle) => new ServiceManager(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,20 +33,20 @@ public sealed unsafe partial class ServiceManager
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager((nint)NativeMethods.TablePtr->hs_method_240c2935(), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager((nint)NativeMethods.TablePtr->C0.hs_method_240c2935(), false);
     }
 
     public global::Hosihikari.Bindings.Abi.SharedHandle? getService(global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceIdView id)
     {
         var __hs_hasValue = false;
-        var __hs_expectedResult = NativeMethods.TablePtr->hs_method_87ca1adc((void*)_handle, (void*)id.Handle, &__hs_hasValue);
+        var __hs_expectedResult = NativeMethods.TablePtr->C0.hs_method_87ca1adc((void*)__hosihikari_shim_handle, (void*)id.Handle, &__hs_hasValue);
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
         var __hs_shared = __hs_expectedResult;
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
@@ -68,7 +68,7 @@ public sealed unsafe partial class ServiceManager
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_handle = NativeMethods.TablePtr->hs_method_8164fb4d((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8164fb4d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult((nint)__hs_handle) : null;
         }
     }
@@ -88,7 +88,7 @@ public sealed unsafe partial class ServiceManager
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_view = NativeMethods.TablePtr->hs_method_ab559b2a((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_view = NativeMethods.TablePtr->C0.hs_method_ab559b2a((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
             var __hs_items = (void**)__hs_view.Data;
             var __hs_result = __hs_view.Size == 0 ? global::System.Array.Empty<global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult>() : new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult[checked((int)__hs_view.Size)];
             for (var __hs_i = 0; __hs_i < __hs_result.Length; __hs_i++)
@@ -101,16 +101,16 @@ public sealed unsafe partial class ServiceManager
 
     public bool registerService(global::Hosihikari.Bindings.Abi.SharedHandle? service, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
-        return NativeMethods.TablePtr->hs_method_952e2d89((void*)_handle, service?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData), mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_952e2d89((void*)__hosihikari_shim_handle, service?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData), mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)) != 0;
     }
 
     public bool unregisterService(global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceIdView id)
     {
-        return NativeMethods.TablePtr->hs_method_b9950e80((void*)_handle, (void*)id.Handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_b9950e80((void*)__hosihikari_shim_handle, (void*)id.Handle) != 0;
     }
 
     public void unregisterService(global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod mod)
     {
-        NativeMethods.TablePtr->hs_method_e639a940((void*)_handle, (void*)mod.Handle);
+        NativeMethods.TablePtr->C0.hs_method_e639a940((void*)__hosihikari_shim_handle, (void*)mod.Handle);
     }
 }

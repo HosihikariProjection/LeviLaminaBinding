@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop;
 
 public sealed unsafe partial class CommandFlag : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public CommandFlag(nint handle) : this(handle, true) { }
 
     internal CommandFlag(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static CommandFlag Borrow(nint handle) => new CommandFlag(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class CommandFlag : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static CommandFlag Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_7e3de4f4();
+        var handle = NativeMethods.TablePtr->C0.hs_create_7e3de4f4();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class CommandFlag : global::System.IDisposable
 
     public static CommandFlag Create(ushort value)
     {
-        var handle = NativeMethods.TablePtr->hs_create_3a3ddaa4(value);
+        var handle = NativeMethods.TablePtr->C0.hs_create_3a3ddaa4(value);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,20 +62,20 @@ public sealed unsafe partial class CommandFlag : global::System.IDisposable
 
     public ushort value
     {
-        get => NativeMethods.TablePtr->hs_get_4658c6a0((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_4658c6a0((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_4658c6a0((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_4658c6a0((void*)__hosihikari_shim_handle, value);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_48e92a90((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_48e92a90((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

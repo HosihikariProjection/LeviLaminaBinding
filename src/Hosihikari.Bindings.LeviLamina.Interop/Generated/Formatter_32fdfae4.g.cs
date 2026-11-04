@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
 public sealed unsafe partial class Formatter : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Formatter(nint handle) : this(handle, true) { }
 
     internal Formatter(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Formatter Borrow(nint handle) => new Formatter(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class Formatter : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,26 +44,26 @@ public sealed unsafe partial class Formatter : global::System.IDisposable
 
     public static bool supportColorLog()
     {
-        return NativeMethods.TablePtr->hs_method_792d8900() != 0;
+        return NativeMethods.TablePtr->C0.hs_method_792d8900() != 0;
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.PatternFormatter? TryAsPatternFormatter()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_079fb70e((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_079fb70e((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.PatternFormatter((nint)__hs_handle, false) : null;
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_32fdfae4((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_32fdfae4((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

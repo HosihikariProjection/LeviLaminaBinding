@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public sealed unsafe partial class Stacktrace : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Stacktrace(nint handle) : this(handle, true) { }
 
     internal Stacktrace(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Stacktrace Borrow(nint handle) => new Stacktrace(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,19 +33,19 @@ public sealed unsafe partial class Stacktrace : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace current(ulong skip, ulong maxDepth)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->hs_method_16b128cf(skip, maxDepth));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->C0.hs_method_16b128cf(skip, maxDepth));
     }
 
     public bool empty()
     {
-        return NativeMethods.TablePtr->hs_method_98d6483c((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_98d6483c((void*)__hosihikari_shim_handle) != 0;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::thread::id' is not a known bindable declaration.", false)]
@@ -54,29 +54,29 @@ public sealed unsafe partial class Stacktrace : global::System.IDisposable
 
     public ulong getHash()
     {
-        return NativeMethods.TablePtr->hs_method_e66468aa((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_method_e66468aa((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry operator_index(ulong index)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry((nint)NativeMethods.TablePtr->hs_method_ca44197a((void*)_handle, index), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry((nint)NativeMethods.TablePtr->C0.hs_method_ca44197a((void*)__hosihikari_shim_handle, index), false);
     }
 
     public ulong size()
     {
-        return NativeMethods.TablePtr->hs_method_87be660e((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_method_87be660e((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_79549523((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_79549523((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

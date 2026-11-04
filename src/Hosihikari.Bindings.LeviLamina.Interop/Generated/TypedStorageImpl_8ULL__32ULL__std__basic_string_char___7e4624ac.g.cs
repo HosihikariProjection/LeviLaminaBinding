@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_string_char__ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TypedStorageImpl_8ULL__32ULL__std__basic_string_char__(nint handle) : this(handle, true) { }
 
     internal TypedStorageImpl_8ULL__32ULL__std__basic_string_char__(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TypedStorageImpl_8ULL__32ULL__std__basic_string_char__ Borrow(nint handle) => new TypedStorageImpl_8ULL__32ULL__std__basic_string_char__(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -48,77 +48,77 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
 
     public nint data
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_bf3d3526((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_bf3d3526((void*)__hosihikari_shim_handle);
     }
 
     public string get_750577a9()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_750577a9((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_750577a9((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string get_101e9c9a()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_101e9c9a((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_101e9c9a((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string get_3b706bac()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_3b706bac((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_3b706bac((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string get_4ecc1e38()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_4ecc1e38((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_4ecc1e38((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_const_std__basic_string_char___()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_8e77d7e1((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_8e77d7e1((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_std__basic_string_char___()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_f1a9e09e((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_f1a9e09e((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_multiply_42ae5cf2()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_42ae5cf2((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_42ae5cf2((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_multiply_05bd26fc()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_05bd26fc((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_05bd26fc((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_multiply_057e2007()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_057e2007((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_057e2007((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public string operator_multiply_f8cfb9e4()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_f8cfb9e4((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_f8cfb9e4((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public nint operator_operator___8edfad34()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_8edfad34((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_8edfad34((void*)__hosihikari_shim_handle);
     }
 
     public nint operator_operator___52937c63()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_52937c63((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_52937c63((void*)__hosihikari_shim_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
@@ -132,14 +132,14 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_7e4624ac((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_7e4624ac((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

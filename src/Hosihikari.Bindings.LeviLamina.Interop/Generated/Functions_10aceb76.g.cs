@@ -8,31 +8,31 @@ public static unsafe partial class Functions
 {
     public static bool check_delimiter(nint first, nint last, sbyte delimiter)
     {
-        return NativeMethods.TablePtr->hs_function_799121c6((void*)first, (void*)last, delimiter) != 0;
+        return NativeMethods.TablePtr->C0.hs_function_799121c6((void*)first, (void*)last, delimiter) != 0;
     }
 
     public static bool is_digit(sbyte c)
     {
-        return NativeMethods.TablePtr->hs_function_69a7aff2(c) != 0;
+        return NativeMethods.TablePtr->C0.hs_function_69a7aff2(c) != 0;
     }
 
     public static bool is_identifier_char(sbyte c)
     {
-        return NativeMethods.TablePtr->hs_function_38ad8cf8(c) != 0;
+        return NativeMethods.TablePtr->C0.hs_function_38ad8cf8(c) != 0;
     }
 
     public static bool is_letter(sbyte c)
     {
-        return NativeMethods.TablePtr->hs_function_b3f13297(c) != 0;
+        return NativeMethods.TablePtr->C0.hs_function_b3f13297(c) != 0;
     }
 
     public static ushort to_digit(sbyte c)
     {
-        return NativeMethods.TablePtr->hs_function_124f8f48(c);
+        return NativeMethods.TablePtr->C0.hs_function_124f8f48(c);
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result validate_identifiers(nint first, nint last)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)NativeMethods.TablePtr->hs_function_ac76fd0b((void*)first, (void*)last));
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)NativeMethods.TablePtr->C0.hs_function_ac76fd0b((void*)first, (void*)last));
     }
 }

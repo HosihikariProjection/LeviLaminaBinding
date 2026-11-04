@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.service;
 
 public sealed unsafe partial class PlayerInfo
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public PlayerInfo(nint handle) : this(handle, true) { }
 
     internal PlayerInfo(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static PlayerInfo Borrow(nint handle) => new PlayerInfo(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class PlayerInfo
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,7 +44,7 @@ public sealed unsafe partial class PlayerInfo
 
     public bool erase(global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID arg0)
     {
-        return NativeMethods.TablePtr->hs_method_9c9b63a5((void*)_handle, (void*)arg0.Handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_9c9b63a5((void*)__hosihikari_shim_handle, (void*)arg0.Handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry? fromName(string arg0)
@@ -63,7 +63,7 @@ public sealed unsafe partial class PlayerInfo
         global::System.Text.Encoding.UTF8.GetBytes(arg0, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_handle = NativeMethods.TablePtr->hs_method_f4b9630e((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f4b9630e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
         }
     }
@@ -71,7 +71,7 @@ public sealed unsafe partial class PlayerInfo
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry? fromUuid(global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID arg0)
     {
         var __hs_hasValue = false;
-        var __hs_handle = NativeMethods.TablePtr->hs_method_f4045e5b((void*)_handle, (void*)arg0.Handle, &__hs_hasValue);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f4045e5b((void*)__hosihikari_shim_handle, (void*)arg0.Handle, &__hs_hasValue);
         return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
     }
 
@@ -91,13 +91,13 @@ public sealed unsafe partial class PlayerInfo
         global::System.Text.Encoding.UTF8.GetBytes(arg0, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_handle = NativeMethods.TablePtr->hs_method_bfbc3d9c((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_bfbc3d9c((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
             return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
         }
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo((nint)NativeMethods.TablePtr->hs_method_2bde7741(), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo((nint)NativeMethods.TablePtr->C0.hs_method_2bde7741(), false);
     }
 }

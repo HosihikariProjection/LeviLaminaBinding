@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class AnyFunction : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public AnyFunction(nint handle) : this(handle, true) { }
 
     internal AnyFunction(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static AnyFunction Borrow(nint handle) => new AnyFunction(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static AnyFunction Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_1580d5ce();
+        var handle = NativeMethods.TablePtr->C0.hs_create_1580d5ce();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
 
     public static AnyFunction Create_3884d83f(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        var handle = NativeMethods.TablePtr->hs_create_3884d83f((void*)other.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_3884d83f((void*)other.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,7 +62,7 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
 
     public static AnyFunction Create_5830bcea(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        var handle = NativeMethods.TablePtr->hs_create_5830bcea((void*)other.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_5830bcea((void*)other.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -71,9 +71,16 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
         return new AnyFunction((nint)handle);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.", false)]
-    public static AnyFunction Create(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::nullptr_t' is not a known bindable declaration.");
+    public static AnyFunction Create_abc535ac()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_abc535ac();
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new AnyFunction((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::any' is not a known bindable declaration.", false)]
     public nint invoke(nint args) =>
@@ -81,35 +88,35 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
 
     public bool operator_bool()
     {
-        return NativeMethods.TablePtr->hs_method_0a5e165e((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_0a5e165e((void*)__hosihikari_shim_handle) != 0;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction operator_assign_ab62667b(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->hs_method_ab62667b((void*)_handle, (void*)other.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->C0.hs_method_ab62667b((void*)__hosihikari_shim_handle, (void*)other.Handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction operator_assign_e043fab8(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->hs_method_e043fab8((void*)_handle, (void*)other.Handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->C0.hs_method_e043fab8((void*)__hosihikari_shim_handle, (void*)other.Handle), false);
     }
 
     public void swap(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        NativeMethods.TablePtr->hs_method_258a5b19((void*)_handle, (void*)other.Handle);
+        NativeMethods.TablePtr->C0.hs_method_258a5b19((void*)__hosihikari_shim_handle, (void*)other.Handle);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_0ba86cd4((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_0ba86cd4((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

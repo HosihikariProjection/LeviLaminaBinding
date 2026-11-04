@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
 public sealed unsafe partial class ConsoleSink : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ConsoleSink(nint handle) : this(handle, true) { }
 
     internal ConsoleSink(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ConsoleSink Borrow(nint handle) => new ConsoleSink(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class ConsoleSink : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static ConsoleSink Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_dc14334a();
+        var handle = NativeMethods.TablePtr->C0.hs_create_dc14334a();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -55,30 +55,30 @@ public sealed unsafe partial class ConsoleSink : global::System.IDisposable
 
     public void append(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView view)
     {
-        NativeMethods.TablePtr->hs_method_e0073778((void*)_handle, (void*)view.Handle);
+        NativeMethods.TablePtr->C0.hs_method_e0073778((void*)__hosihikari_shim_handle, (void*)view.Handle);
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink AsSink()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)NativeMethods.TablePtr->hs_cast_7072bbdb((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)NativeMethods.TablePtr->C0.hs_cast_7072bbdb((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase AsSinkBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)NativeMethods.TablePtr->hs_cast_8db21214((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)NativeMethods.TablePtr->C0.hs_cast_8db21214((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_f7dc1ea8((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_f7dc1ea8((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

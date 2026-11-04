@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
 public sealed unsafe partial class ObservableBoolean : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ObservableBoolean(nint handle) : this(handle, true) { }
 
     internal ObservableBoolean(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ObservableBoolean Borrow(nint handle) => new ObservableBoolean(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,31 +33,31 @@ public sealed unsafe partial class ObservableBoolean : global::System.IDisposabl
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_ AsObservable_bool_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_((nint)NativeMethods.TablePtr->hs_cast_5579b63e((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_((nint)NativeMethods.TablePtr->C0.hs_cast_5579b63e((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_bool_ AsUIObservable_bool_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_bool_((nint)NativeMethods.TablePtr->hs_cast_07126781((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_bool_((nint)NativeMethods.TablePtr->C0.hs_cast_07126781((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_7493acf0((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_7493acf0((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

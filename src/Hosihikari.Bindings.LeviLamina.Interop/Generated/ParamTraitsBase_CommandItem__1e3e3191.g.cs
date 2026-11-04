@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class ParamTraitsBase_CommandItem_ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ParamTraitsBase_CommandItem_(nint handle) : this(handle, true) { }
 
     internal ParamTraitsBase_CommandItem_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ParamTraitsBase_CommandItem_ Borrow(nint handle) => new ParamTraitsBase_CommandItem_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,62 +33,61 @@ public sealed unsafe partial class ParamTraitsBase_CommandItem_ : global::System
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static int dataType()
     {
-        return NativeMethods.TablePtr->hs_method_a0f1544a();
+        return NativeMethods.TablePtr->C0.hs_method_a0f1544a();
     }
 
     public static string enumNameOrPostfix()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_600fb19c();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_600fb19c();
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static byte options()
     {
-        return NativeMethods.TablePtr->hs_method_88114132();
+        return NativeMethods.TablePtr->C0.hs_method_88114132();
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
     public static nint parseFn() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
 
-    public static nint parseRule()
-    {
-        return (nint)NativeMethods.TablePtr->hs_method_98af7625();
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the inline body addresses a template member the carrier does not export.", false)]
+    public static nint parseRule() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the inline body addresses a template member the carrier does not export.");
 
     public static string subChain()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_412d850e();
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_412d850e();
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
     public static void transformData(nint arg0, global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar arg1)
     {
-        NativeMethods.TablePtr->hs_method_4af91c37((void*)arg0, (void*)arg1.Handle);
+        NativeMethods.TablePtr->C0.hs_method_4af91c37((void*)arg0, (void*)arg1.Handle);
     }
 
     public static ushort typeId()
     {
-        return NativeMethods.TablePtr->hs_method_c9095bfc();
+        return NativeMethods.TablePtr->C0.hs_method_c9095bfc();
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_1e3e3191((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_1e3e3191((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

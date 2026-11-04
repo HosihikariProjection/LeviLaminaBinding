@@ -22,7 +22,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(data, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_expectedResult = NativeMethods.TablePtr->hs_function_e5a0a0b0(__hs_stringData0, (nuint)__hs_stringByteCount0, format, level, &__hs_hasValue);
+            var __hs_expectedResult = NativeMethods.TablePtr->C0.hs_function_e5a0a0b0(__hs_stringData0, (nuint)__hs_stringByteCount0, format, level, &__hs_hasValue);
             if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
             var __hs_view = __hs_expectedResult;
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
@@ -58,7 +58,7 @@ public static unsafe partial class Functions
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                NativeMethods.TablePtr->hs_function_dc8a6c92(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, format, level, &__hs_hasValue);
+                NativeMethods.TablePtr->C0.hs_function_dc8a6c92(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, format, level, &__hs_hasValue);
                 if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
             }
         }
@@ -80,7 +80,7 @@ public static unsafe partial class Functions
         global::System.Text.Encoding.UTF8.GetBytes(data, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var __hs_expectedResult = NativeMethods.TablePtr->hs_function_70d18b56(__hs_stringData0, (nuint)__hs_stringByteCount0, format, maxSize, &__hs_hasValue);
+            var __hs_expectedResult = NativeMethods.TablePtr->C0.hs_function_70d18b56(__hs_stringData0, (nuint)__hs_stringByteCount0, format, maxSize, &__hs_hasValue);
             if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
             var __hs_view = __hs_expectedResult;
             return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
@@ -116,7 +116,7 @@ public static unsafe partial class Functions
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                NativeMethods.TablePtr->hs_function_bba5e896(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, format, &__hs_hasValue);
+                NativeMethods.TablePtr->C0.hs_function_bba5e896(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, format, &__hs_hasValue);
                 if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
             }
         }
@@ -124,7 +124,7 @@ public static unsafe partial class Functions
 
     public static string extensionOf(int format)
     {
-        var __hs_view = NativeMethods.TablePtr->hs_function_6cbc62b3(format);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_function_6cbc62b3(format);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 }

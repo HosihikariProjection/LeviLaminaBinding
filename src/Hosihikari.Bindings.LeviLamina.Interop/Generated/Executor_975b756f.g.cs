@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
 public sealed unsafe partial class Executor : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Executor(nint handle) : this(handle, true) { }
 
     internal Executor(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Executor Borrow(nint handle) => new Executor(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class Executor : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -52,39 +52,39 @@ public sealed unsafe partial class Executor : global::System.IDisposable
 
     public string getName()
     {
-        var __hs_view = NativeMethods.TablePtr->hs_method_df718830((void*)_handle);
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_df718830((void*)__hosihikari_shim_handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor? TryAsInplaceExecutor()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_8bfa5543((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_8bfa5543((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ServerThreadExecutor? TryAsServerThreadExecutor()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_0797f1f9((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_0797f1f9((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ServerThreadExecutor((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor? TryAsThreadPoolExecutor()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_cast_6db6067d((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_6db6067d((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor((nint)__hs_handle, false) : null;
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_975b756f((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_975b756f((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

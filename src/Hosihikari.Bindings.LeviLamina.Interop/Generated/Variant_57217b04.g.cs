@@ -6,15 +6,15 @@ namespace Hosihikari.Bindings.LeviLamina.Interop;
 
 public sealed unsafe class Variant_57217b04 : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
 
-    public Variant_57217b04(nint handle) => _handle = handle;
+    public Variant_57217b04(nint handle) => __hosihikari_shim_handle = handle;
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     public static Variant_57217b04 CreateDouble(double value)
     {
-        var handle = NativeMethods.TablePtr->hs_variant_57217b04_create_0(value);
+        var handle = NativeMethods.TablePtr->C0.hs_variant_57217b04_create_0(value);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -24,7 +24,7 @@ public sealed unsafe class Variant_57217b04 : global::System.IDisposable
 
     public static Variant_57217b04 CreateObservableNumber(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableNumber value)
     {
-        var handle = NativeMethods.TablePtr->hs_variant_57217b04_create_1((void*)value.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_variant_57217b04_create_1((void*)value.Handle);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -32,7 +32,7 @@ public sealed unsafe class Variant_57217b04 : global::System.IDisposable
         return new Variant_57217b04((nint)handle);
     }
 
-    public int Index => NativeMethods.TablePtr->hs_variant_57217b04_index((void*)_handle);
+    public int Index => NativeMethods.TablePtr->C0.hs_variant_57217b04_index((void*)__hosihikari_shim_handle);
 
     public bool IsDouble => Index == 0;
 
@@ -45,7 +45,7 @@ public sealed unsafe class Variant_57217b04 : global::System.IDisposable
             return null;
         }
 
-        return NativeMethods.TablePtr->hs_variant_57217b04_get_0((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_variant_57217b04_get_0((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableNumber? AsObservableNumber()
@@ -55,16 +55,16 @@ public sealed unsafe class Variant_57217b04 : global::System.IDisposable
             return null;
         }
 
-        var __hs_handle = NativeMethods.TablePtr->hs_variant_57217b04_get_1((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_variant_57217b04_get_1((void*)__hosihikari_shim_handle);
         return __hs_handle == null ? null : new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableNumber((nint)__hs_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
-            NativeMethods.TablePtr->hs_variant_57217b04_destroy((void*)_handle);
-            _handle = 0;
+            NativeMethods.TablePtr->C0.hs_variant_57217b04_destroy((void*)__hosihikari_shim_handle);
+            __hosihikari_shim_handle = 0;
         }
     }
 }

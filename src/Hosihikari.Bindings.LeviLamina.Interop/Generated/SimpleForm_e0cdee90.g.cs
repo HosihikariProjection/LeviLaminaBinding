@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.form;
 
 public sealed unsafe partial class SimpleForm : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public SimpleForm(nint handle) : this(handle, true) { }
 
     internal SimpleForm(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static SimpleForm Borrow(nint handle) => new SimpleForm(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static SimpleForm Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_86b5a47e();
+        var handle = NativeMethods.TablePtr->C0.hs_create_86b5a47e();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -77,7 +77,7 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                var handle = NativeMethods.TablePtr->hs_create_0c247078(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1);
+                var handle = NativeMethods.TablePtr->C0.hs_create_0c247078(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1);
                 if (handle == null)
                 {
                     throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -129,7 +129,7 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
             {
                 fixed (byte* __hs_stringData2 = __hs_stringBytes2)
                 {
-                    return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_df9ab997((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
+                    return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_df9ab997((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
                 }
             }
         }
@@ -150,13 +150,13 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(text, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_da9cd1c5((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_da9cd1c5((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
         }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm appendDivider()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_24baaf0f((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_24baaf0f((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm appendHeader(string text)
@@ -174,7 +174,7 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(text, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_7a953dff((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_7a953dff((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
@@ -193,18 +193,18 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(text, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_c894d709((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_c894d709((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm sendTo(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_a8874cbb((void*)_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_a8874cbb((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm sendUpdate(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_ae16a484((void*)_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_ae16a484((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm setContent(string content)
@@ -222,7 +222,7 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(content, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_4b023d33((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_4b023d33((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
@@ -241,26 +241,26 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(title, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->hs_method_a8eac7f8((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.SimpleForm((nint)NativeMethods.TablePtr->C0.hs_method_a8eac7f8((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form AsForm()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form((nint)NativeMethods.TablePtr->hs_cast_e7f63b37((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form((nint)NativeMethods.TablePtr->C0.hs_cast_e7f63b37((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_e0cdee90((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_e0cdee90((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

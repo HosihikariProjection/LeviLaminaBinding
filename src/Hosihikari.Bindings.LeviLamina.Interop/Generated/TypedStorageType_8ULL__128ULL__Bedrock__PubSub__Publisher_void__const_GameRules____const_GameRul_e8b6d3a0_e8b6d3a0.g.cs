@@ -7,24 +7,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 [global::System.Obsolete("BindingShim cannot project any member of this type; it is exported for type identity only.", false)]
 public sealed partial class TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_e8b6d3a0
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_e8b6d3a0(nint handle) : this(handle, true) { }
 
     internal TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_e8b6d3a0(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_e8b6d3a0 Borrow(nint handle) => new TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_e8b6d3a0(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -34,8 +34,8 @@ public sealed partial class TypedStorageType_8ULL__128ULL__Bedrock__PubSub__Publ
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 }

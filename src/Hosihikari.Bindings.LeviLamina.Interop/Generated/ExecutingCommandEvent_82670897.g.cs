@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
 public sealed unsafe partial class ExecutingCommandEvent : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ExecutingCommandEvent(nint handle) : this(handle, true) { }
 
     internal ExecutingCommandEvent(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ExecutingCommandEvent Borrow(nint handle) => new ExecutingCommandEvent(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class ExecutingCommandEvent : global::System.IDispo
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,44 +44,44 @@ public sealed unsafe partial class ExecutingCommandEvent : global::System.IDispo
 
     public nint commandContext()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_88790774((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_88790774((void*)__hosihikari_shim_handle);
     }
 
     public void deserialize(nint arg0)
     {
-        NativeMethods.TablePtr->hs_method_b97254a8((void*)_handle, (void*)arg0);
+        NativeMethods.TablePtr->C0.hs_method_b97254a8((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
     public nint suppressOutput()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_25fe1a29((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_25fe1a29((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_ AsCancellable_ll__event__ExecuteCommandEvent_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_((nint)NativeMethods.TablePtr->hs_cast_edc5ae1f((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_((nint)NativeMethods.TablePtr->C0.hs_cast_edc5ae1f((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->hs_cast_11beca1d((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_11beca1d((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecuteCommandEvent AsExecuteCommandEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecuteCommandEvent((nint)NativeMethods.TablePtr->hs_cast_97614588((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecuteCommandEvent((nint)NativeMethods.TablePtr->C0.hs_cast_97614588((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_82670897((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_82670897((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

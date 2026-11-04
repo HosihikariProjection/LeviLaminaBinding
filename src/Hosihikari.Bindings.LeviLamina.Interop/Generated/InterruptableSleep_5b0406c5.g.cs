@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.thread;
 
 public sealed unsafe partial class InterruptableSleep : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public InterruptableSleep(nint handle) : this(handle, true) { }
 
     internal InterruptableSleep(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static InterruptableSleep Borrow(nint handle) => new InterruptableSleep(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class InterruptableSleep : global::System.IDisposab
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static InterruptableSleep Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_86816acd();
+        var handle = NativeMethods.TablePtr->C0.hs_create_86816acd();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,25 +51,25 @@ public sealed unsafe partial class InterruptableSleep : global::System.IDisposab
 
     public void interrupt()
     {
-        NativeMethods.TablePtr->hs_method_2af24211((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_2af24211((void*)__hosihikari_shim_handle);
     }
 
     public void sleep()
     {
-        NativeMethods.TablePtr->hs_method_17658bc0((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_17658bc0((void*)__hosihikari_shim_handle);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_5b0406c5((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_5b0406c5((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

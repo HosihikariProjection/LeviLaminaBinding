@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.network;
 
 public sealed unsafe partial class Packet : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public Packet(nint handle) : this(handle, true) { }
 
     internal Packet(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static Packet Borrow(nint handle) => new Packet(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class Packet : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -42,7 +42,7 @@ public sealed unsafe partial class Packet : global::System.IDisposable
     {
         get
         {
-            var view = NativeMethods.TablePtr->hs_get_2870745a();
+            var view = NativeMethods.TablePtr->C0.hs_get_2870745a();
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
         }
     }
@@ -57,22 +57,37 @@ public sealed unsafe partial class Packet : global::System.IDisposable
 
     public static byte Side
     {
-        get => NativeMethods.TablePtr->hs_get_dce6b8e0();
+        get => NativeMethods.TablePtr->C0.hs_get_dce6b8e0();
     }
 
     public bool canSendTo_73f4a348(nint identifier)
     {
-        return NativeMethods.TablePtr->hs_method_73f4a348((void*)_handle, (void*)identifier) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_73f4a348((void*)__hosihikari_shim_handle, (void*)identifier) != 0;
     }
 
     public bool canSendTo_9975f4b5(nint player)
     {
-        return NativeMethods.TablePtr->hs_method_9975f4b5((void*)_handle, (void*)player) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_9975f4b5((void*)__hosihikari_shim_handle, (void*)player) != 0;
+    }
+
+    public static bool canSendTo_e2780e10(ulong runtimeId, nint identifier)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_e2780e10(runtimeId, (void*)identifier) != 0;
+    }
+
+    public static bool canSendTo_8ab50873(ulong runtimeId, nint player)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_8ab50873(runtimeId, (void*)player) != 0;
     }
 
     public bool canSendToServer()
     {
-        return NativeMethods.TablePtr->hs_method_c10e1099((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_c10e1099((void*)__hosihikari_shim_handle) != 0;
+    }
+
+    public static bool canSendToServer(ulong runtimeId)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_9cc4db1f(runtimeId) != 0;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
@@ -81,31 +96,31 @@ public sealed unsafe partial class Packet : global::System.IDisposable
 
     public ulong getRuntimeId()
     {
-        return NativeMethods.TablePtr->hs_method_6e93c7b6((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_method_6e93c7b6((void*)__hosihikari_shim_handle);
     }
 
     public int mCompressible
     {
-        get => NativeMethods.TablePtr->hs_get_716af25e((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_716af25e((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_716af25e((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_716af25e((void*)__hosihikari_shim_handle, value);
     }
 
     public int mPriority
     {
-        get => NativeMethods.TablePtr->hs_get_63de7b64((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_63de7b64((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_63de7b64((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_63de7b64((void*)__hosihikari_shim_handle, value);
     }
 
     public int mReliability
     {
-        get => NativeMethods.TablePtr->hs_get_ac617d73((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_ac617d73((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_ac617d73((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_ac617d73((void*)__hosihikari_shim_handle, value);
     }
 
     public byte mSenderSubId
     {
-        get => NativeMethods.TablePtr->hs_get_da8873c4((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_da8873c4((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_da8873c4((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_da8873c4((void*)__hosihikari_shim_handle, value);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
@@ -114,42 +129,42 @@ public sealed unsafe partial class Packet : global::System.IDisposable
 
     public void sendTo(nint actor, nint? except)
     {
-        NativeMethods.TablePtr->hs_method_5741a673((void*)_handle, (void*)actor, (void*)(except ?? 0), except is not null);
+        NativeMethods.TablePtr->C0.hs_method_5741a673((void*)__hosihikari_shim_handle, (void*)actor, (void*)(except ?? 0), except is not null);
     }
 
     public void sendTo(nint pos, global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType dimId, nint? except)
     {
-        NativeMethods.TablePtr->hs_method_3d1e2b3c((void*)_handle, (void*)pos, (void*)dimId.Handle, (void*)(except ?? 0), except is not null);
+        NativeMethods.TablePtr->C0.hs_method_3d1e2b3c((void*)__hosihikari_shim_handle, (void*)pos, (void*)dimId.Handle, (void*)(except ?? 0), except is not null);
     }
 
     public void sendTo(nint player)
     {
-        NativeMethods.TablePtr->hs_method_acfa9263((void*)_handle, (void*)player);
+        NativeMethods.TablePtr->C0.hs_method_acfa9263((void*)__hosihikari_shim_handle, (void*)player);
     }
 
     public void sendToClient(nint identifier, byte clientId)
     {
-        NativeMethods.TablePtr->hs_method_4031e9e8((void*)_handle, (void*)identifier, clientId);
+        NativeMethods.TablePtr->C0.hs_method_4031e9e8((void*)__hosihikari_shim_handle, (void*)identifier, clientId);
     }
 
     public void sendToClient(nint identifierWithSubId)
     {
-        NativeMethods.TablePtr->hs_method_b59de195((void*)_handle, (void*)identifierWithSubId);
+        NativeMethods.TablePtr->C0.hs_method_b59de195((void*)__hosihikari_shim_handle, (void*)identifierWithSubId);
     }
 
     public void sendToClients()
     {
-        NativeMethods.TablePtr->hs_method_7de8df0e((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_7de8df0e((void*)__hosihikari_shim_handle);
     }
 
     public void sendToClients(nint exceptId, byte exceptSubid)
     {
-        NativeMethods.TablePtr->hs_method_67f84eaf((void*)_handle, (void*)exceptId, exceptSubid);
+        NativeMethods.TablePtr->C0.hs_method_67f84eaf((void*)__hosihikari_shim_handle, (void*)exceptId, exceptSubid);
     }
 
     public void sendToServer()
     {
-        NativeMethods.TablePtr->hs_method_67229f07((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_67229f07((void*)__hosihikari_shim_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
@@ -159,14 +174,14 @@ public sealed unsafe partial class Packet : global::System.IDisposable
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_015d20d0((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_015d20d0((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

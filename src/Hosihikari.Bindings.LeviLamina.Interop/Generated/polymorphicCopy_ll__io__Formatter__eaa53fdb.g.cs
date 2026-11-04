@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
 public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public polymorphicCopy_ll__io__Formatter_(nint handle) : this(handle, true) { }
 
     internal polymorphicCopy_ll__io__Formatter_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static polymorphicCopy_ll__io__Formatter_ Borrow(nint handle) => new polymorphicCopy_ll__io__Formatter_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -47,7 +47,7 @@ public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_call(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter t)
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_65dd2c26((void*)_handle, (void*)t.Handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_65dd2c26((void*)__hosihikari_shim_handle, (void*)t.Handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
@@ -57,14 +57,14 @@ public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_eaa53fdb((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_eaa53fdb((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested;
 
 public sealed unsafe partial class FinalAwaiter : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public FinalAwaiter(nint handle) : this(handle, true) { }
 
     internal FinalAwaiter(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static FinalAwaiter Borrow(nint handle) => new FinalAwaiter(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,31 +33,31 @@ public sealed unsafe partial class FinalAwaiter : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public bool await_ready()
     {
-        return NativeMethods.TablePtr->hs_method_1b7c3580((void*)_handle) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_1b7c3580((void*)__hosihikari_shim_handle) != 0;
     }
 
     public void await_resume()
     {
-        NativeMethods.TablePtr->hs_method_7592df76((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_7592df76((void*)__hosihikari_shim_handle);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_b925afe7((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_b925afe7((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

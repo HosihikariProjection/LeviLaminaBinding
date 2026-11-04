@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class ParamTraits_ll__command__RuntimeEnum_ : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public ParamTraits_ll__command__RuntimeEnum_(nint handle) : this(handle, true) { }
 
     internal ParamTraits_ll__command__RuntimeEnum_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static ParamTraits_ll__command__RuntimeEnum_ Borrow(nint handle) => new ParamTraits_ll__command__RuntimeEnum_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,36 +33,36 @@ public sealed unsafe partial class ParamTraits_ll__command__RuntimeEnum_ : globa
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static int dataType()
     {
-        return NativeMethods.TablePtr->hs_method_6ca7efb5();
+        return NativeMethods.TablePtr->C0.hs_method_6ca7efb5();
     }
 
     public static byte options()
     {
-        return NativeMethods.TablePtr->hs_method_e75901fe();
+        return NativeMethods.TablePtr->C0.hs_method_e75901fe();
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_ll__command__RuntimeEnum_ AsParamTraitsBase_ll__command__RuntimeEnum_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_ll__command__RuntimeEnum_((nint)NativeMethods.TablePtr->hs_cast_2289e867((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_ll__command__RuntimeEnum_((nint)NativeMethods.TablePtr->C0.hs_cast_2289e867((void*)__hosihikari_shim_handle), false);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_fa4754f7((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_fa4754f7((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public sealed unsafe partial class TypedStorageImpl_4ULL__4ULL__DimensionType_
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public TypedStorageImpl_4ULL__4ULL__DimensionType_(nint handle) : this(handle, true) { }
 
     internal TypedStorageImpl_4ULL__4ULL__DimensionType_(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static TypedStorageImpl_4ULL__4ULL__DimensionType_ Borrow(nint handle) => new TypedStorageImpl_4ULL__4ULL__DimensionType_(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__4ULL__DimensionType_
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -48,68 +48,68 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__4ULL__DimensionType_
 
     public nint data
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_a5d68bc3((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_a5d68bc3((void*)__hosihikari_shim_handle);
     }
 
     public nint get_ed5906da()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_ed5906da((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_ed5906da((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType get_6d14bc14()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_6d14bc14((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_6d14bc14((void*)__hosihikari_shim_handle), false);
     }
 
     public nint get_04ad0684()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_04ad0684((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_04ad0684((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType get_6cb63eaf()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_6cb63eaf((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_6cb63eaf((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType operator_DimensionType__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_eca564c2((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_eca564c2((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType operator_const_DimensionType__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_541c0591((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_541c0591((void*)__hosihikari_shim_handle), false);
     }
 
     public nint operator_multiply_83136bff()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_83136bff((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_83136bff((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType operator_multiply_5d4dc939()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_5d4dc939((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_5d4dc939((void*)__hosihikari_shim_handle), false);
     }
 
     public nint operator_multiply_1e51b674()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_1e51b674((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_1e51b674((void*)__hosihikari_shim_handle);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType operator_multiply_45c17232()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->hs_method_45c17232((void*)_handle), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)NativeMethods.TablePtr->C0.hs_method_45c17232((void*)__hosihikari_shim_handle), false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType? operator_operator___7a1bca7f()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_7a1bca7f((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7a1bca7f((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)__hs_handle, false) : null;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType? operator_operator___e47ae7b5()
     {
-        var __hs_handle = NativeMethods.TablePtr->hs_method_e47ae7b5((void*)_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e47ae7b5((void*)__hosihikari_shim_handle);
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.DimensionType((nint)__hs_handle, false) : null;
     }
 

@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory.ClosureBase_Nested;
 
 public sealed unsafe partial class PackedSelf : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public PackedSelf(nint handle) : this(handle, true) { }
 
     internal PackedSelf(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static PackedSelf Borrow(nint handle) => new PackedSelf(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,32 +33,32 @@ public sealed unsafe partial class PackedSelf : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public nint jitfn
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_74d115d4((void*)_handle);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_74d115d4((void*)__hosihikari_shim_handle);
     }
 
     public nint self
     {
-        get => (nint)NativeMethods.TablePtr->hs_get_c92db675((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_c92db675((void*)_handle, (void*)value);
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_c92db675((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_c92db675((void*)__hosihikari_shim_handle, (void*)value);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_fa6d91b2((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_fa6d91b2((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

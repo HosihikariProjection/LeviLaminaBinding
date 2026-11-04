@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.mce;
 
 public sealed unsafe partial class UUID : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public UUID(nint handle) : this(handle, true) { }
 
     internal UUID(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static UUID Borrow(nint handle) => new UUID(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class UUID : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -53,7 +53,7 @@ public sealed unsafe partial class UUID : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(uuidStr, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_3b1e3c64(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var handle = NativeMethods.TablePtr->C0.hs_create_3b1e3c64(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -78,7 +78,7 @@ public sealed unsafe partial class UUID : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(uuidStr, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            var handle = NativeMethods.TablePtr->hs_create_0c015fa2(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            var handle = NativeMethods.TablePtr->C0.hs_create_0c015fa2(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
                 throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -90,7 +90,7 @@ public sealed unsafe partial class UUID : global::System.IDisposable
 
     public static UUID Create(ulong a, ulong b)
     {
-        var handle = NativeMethods.TablePtr->hs_create_d4a48108(a, b);
+        var handle = NativeMethods.TablePtr->C0.hs_create_d4a48108(a, b);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -101,26 +101,26 @@ public sealed unsafe partial class UUID : global::System.IDisposable
 
     public ulong a
     {
-        get => NativeMethods.TablePtr->hs_get_bd270e19((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_bd270e19((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_bd270e19((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_bd270e19((void*)__hosihikari_shim_handle, value);
     }
 
     public ulong b
     {
-        get => NativeMethods.TablePtr->hs_get_3e6d566c((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_3e6d566c((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_3e6d566c((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_3e6d566c((void*)__hosihikari_shim_handle, value);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_ff8ccc92((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_ff8ccc92((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

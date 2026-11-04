@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
 public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public RuntimeCommand(nint handle) : this(handle, true) { }
 
     internal RuntimeCommand(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static RuntimeCommand Borrow(nint handle) => new RuntimeCommand(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,8 +33,8 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
@@ -44,17 +44,17 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
 
     public static void operator_delete(nint arg0)
     {
-        NativeMethods.TablePtr->hs_method_360e25b9((void*)arg0);
+        NativeMethods.TablePtr->C0.hs_method_360e25b9((void*)arg0);
     }
 
     public static void operator_delete(nint arg0, uint paramCount)
     {
-        NativeMethods.TablePtr->hs_method_9a996ccd((void*)arg0, paramCount);
+        NativeMethods.TablePtr->C0.hs_method_9a996ccd((void*)arg0, paramCount);
     }
 
     public static nint operator_new(ulong arg0, uint paramCount)
     {
-        return (nint)NativeMethods.TablePtr->hs_method_840715b8(arg0, paramCount);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_840715b8(arg0, paramCount);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType operator_index(string name)
@@ -72,26 +72,26 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->hs_method_23aef0d5((void*)_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->C0.hs_method_23aef0d5((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
         }
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType operator_index(ulong idx)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->hs_method_da2608f1((void*)_handle, idx), false);
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->C0.hs_method_da2608f1((void*)__hosihikari_shim_handle, idx), false);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_0b9817e9((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_0b9817e9((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

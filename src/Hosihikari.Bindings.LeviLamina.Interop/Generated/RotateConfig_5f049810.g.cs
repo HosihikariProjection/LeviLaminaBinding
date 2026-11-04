@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
 public sealed unsafe partial class RotateConfig : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public RotateConfig(nint handle) : this(handle, true) { }
 
     internal RotateConfig(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static RotateConfig Borrow(nint handle) => new RotateConfig(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,75 +33,75 @@ public sealed unsafe partial class RotateConfig : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public bool cleanup
     {
-        get => NativeMethods.TablePtr->hs_get_5b5ce809((void*)_handle) != 0;
-        set => NativeMethods.TablePtr->hs_set_5b5ce809((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_5b5ce809((void*)__hosihikari_shim_handle) != 0;
+        set => NativeMethods.TablePtr->C0.hs_set_5b5ce809((void*)__hosihikari_shim_handle, value);
     }
 
     public bool compress
     {
-        get => NativeMethods.TablePtr->hs_get_8f7e80e3((void*)_handle) != 0;
-        set => NativeMethods.TablePtr->hs_set_8f7e80e3((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_8f7e80e3((void*)__hosihikari_shim_handle) != 0;
+        set => NativeMethods.TablePtr->C0.hs_set_8f7e80e3((void*)__hosihikari_shim_handle, value);
     }
 
     public int interval
     {
-        get => NativeMethods.TablePtr->hs_get_d655c409((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_d655c409((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_d655c409((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_d655c409((void*)__hosihikari_shim_handle, value);
     }
 
     public ulong keepUncompressed
     {
-        get => NativeMethods.TablePtr->hs_get_ef65b198((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_ef65b198((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_ef65b198((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_ef65b198((void*)__hosihikari_shim_handle, value);
     }
 
     public int maxAgeDays
     {
-        get => NativeMethods.TablePtr->hs_get_b6142532((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_b6142532((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_b6142532((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_b6142532((void*)__hosihikari_shim_handle, value);
     }
 
     public ulong maxFileSize
     {
-        get => NativeMethods.TablePtr->hs_get_20b4bdbb((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_20b4bdbb((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_20b4bdbb((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_20b4bdbb((void*)__hosihikari_shim_handle, value);
     }
 
     public ulong maxFiles
     {
-        get => NativeMethods.TablePtr->hs_get_8a64f230((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_8a64f230((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_8a64f230((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_8a64f230((void*)__hosihikari_shim_handle, value);
     }
 
     public bool rotateOnOpen
     {
-        get => NativeMethods.TablePtr->hs_get_b8d001ba((void*)_handle) != 0;
-        set => NativeMethods.TablePtr->hs_set_b8d001ba((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_b8d001ba((void*)__hosihikari_shim_handle) != 0;
+        set => NativeMethods.TablePtr->C0.hs_set_b8d001ba((void*)__hosihikari_shim_handle, value);
     }
 
     public ulong totalSizeCap
     {
-        get => NativeMethods.TablePtr->hs_get_25878e6f((void*)_handle);
-        set => NativeMethods.TablePtr->hs_set_25878e6f((void*)_handle, value);
+        get => NativeMethods.TablePtr->C0.hs_get_25878e6f((void*)__hosihikari_shim_handle);
+        set => NativeMethods.TablePtr->C0.hs_set_25878e6f((void*)__hosihikari_shim_handle, value);
     }
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_5f049810((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_5f049810((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }

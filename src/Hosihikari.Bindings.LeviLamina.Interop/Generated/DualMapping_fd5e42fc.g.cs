@@ -6,24 +6,24 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
 public sealed unsafe partial class DualMapping : global::System.IDisposable
 {
-    private nint _handle;
+    private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
 
     public DualMapping(nint handle) : this(handle, true) { }
 
     internal DualMapping(nint handle, bool ownsHandle)
     {
-        _handle = handle;
+        __hosihikari_shim_handle = handle;
         _ownsHandle = ownsHandle;
     }
 
     public static DualMapping Borrow(nint handle) => new DualMapping(handle, false);
 
-    public nint Handle => _handle;
+    public nint Handle => __hosihikari_shim_handle;
 
     internal nint ReleaseHandle()
     {
-        if (_handle == 0)
+        if (__hosihikari_shim_handle == 0)
         {
             throw new global::System.ObjectDisposedException("handle");
         }
@@ -33,14 +33,14 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
             throw new global::System.InvalidOperationException("A borrowed handle cannot be released.");
         }
 
-        var __hs_handle = _handle;
-        _handle = 0;
+        var __hs_handle = __hosihikari_shim_handle;
+        __hosihikari_shim_handle = 0;
         return __hs_handle;
     }
 
     public static DualMapping Create()
     {
-        var handle = NativeMethods.TablePtr->hs_create_2e72a0cf();
+        var handle = NativeMethods.TablePtr->C0.hs_create_2e72a0cf();
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -51,7 +51,7 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
 
     public static DualMapping Create(ulong size)
     {
-        var handle = NativeMethods.TablePtr->hs_create_e5a81f46(size);
+        var handle = NativeMethods.TablePtr->C0.hs_create_e5a81f46(size);
         if (handle == null)
         {
             throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
@@ -62,40 +62,40 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
 
     public void alloc(ulong size)
     {
-        NativeMethods.TablePtr->hs_method_2ad35bbc((void*)_handle, size);
+        NativeMethods.TablePtr->C0.hs_method_2ad35bbc((void*)__hosihikari_shim_handle, size);
     }
 
     public nint executable()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_35b2a35f((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_35b2a35f((void*)__hosihikari_shim_handle);
     }
 
     public void free()
     {
-        NativeMethods.TablePtr->hs_method_8db21771((void*)_handle);
+        NativeMethods.TablePtr->C0.hs_method_8db21771((void*)__hosihikari_shim_handle);
     }
 
     public ulong size()
     {
-        return NativeMethods.TablePtr->hs_method_731d79ad((void*)_handle);
+        return NativeMethods.TablePtr->C0.hs_method_731d79ad((void*)__hosihikari_shim_handle);
     }
 
     public nint writable()
     {
-        return (nint)NativeMethods.TablePtr->hs_method_d56c2648((void*)_handle);
+        return (nint)NativeMethods.TablePtr->C0.hs_method_d56c2648((void*)__hosihikari_shim_handle);
     }
 
 
     public void Dispose()
     {
-        if (_handle != 0)
+        if (__hosihikari_shim_handle != 0)
         {
             if (_ownsHandle)
             {
-                NativeMethods.TablePtr->hs_destroy_fd5e42fc((void*)_handle);
+                NativeMethods.TablePtr->C0.hs_destroy_fd5e42fc((void*)__hosihikari_shim_handle);
             }
 
-            _handle = 0;
+            __hosihikari_shim_handle = 0;
         }
     }
 }
