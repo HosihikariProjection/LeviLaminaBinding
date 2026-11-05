@@ -4,8 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
-[global::System.Obsolete("BindingShim cannot project any member of this type; it is exported for type identity only.", false)]
-public sealed partial class TypedStorageImpl_8ULL__24ULL__Bedrock__NonOwnerPointer_LinkedAssetValidator__
+public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__Bedrock__NonOwnerPointer_LinkedAssetValidator__
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -39,78 +38,88 @@ public sealed partial class TypedStorageImpl_8ULL__24ULL__Bedrock__NonOwnerPoint
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
     public static TypedStorageImpl_8ULL__24ULL__Bedrock__NonOwnerPointer_LinkedAssetValidator__ Create_7168f808(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
     public static TypedStorageImpl_8ULL__24ULL__Bedrock__NonOwnerPointer_LinkedAssetValidator__ Create_d3ea0fb7(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
     public nint data
     {
-        get => throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
-        set => throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        get => (nint)NativeMethods.TablePtr->C0.hs_get_298df712((void*)__hosihikari_shim_handle);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint get_ca23a0d7() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint get_ca23a0d7()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_ca23a0d7((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint get_c5b8c18c() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint get_c5b8c18c()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_c5b8c18c((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint get_7ebe26e3() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint get_7ebe26e3()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_7ebe26e3((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint get_e4f6bec4() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint get_e4f6bec4()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_e4f6bec4((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_Bedrock__NonOwnerPointer_LinkedAssetValidator___() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_Bedrock__NonOwnerPointer_LinkedAssetValidator___()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_dce3c6ac((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_const_Bedrock__NonOwnerPointer_LinkedAssetValidator___() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_const_Bedrock__NonOwnerPointer_LinkedAssetValidator___()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_c8120d29((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_multiply_54fa6574() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_multiply_54fa6574()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_54fa6574((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_multiply_b0ea6ec2() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_multiply_b0ea6ec2()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_b0ea6ec2((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_multiply_05bd9898() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_multiply_05bd9898()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_05bd9898((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_multiply_24407513() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_multiply_24407513()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_24407513((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_operator___916ecaca() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_operator___916ecaca()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_916ecaca((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
-    public nint operator_operator___a5b30bcc() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+    public nint operator_operator___a5b30bcc()
+    {
+        return (nint)NativeMethods.TablePtr->C0.hs_method_a5b30bcc((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
     public nint operator_assign_c7790a78(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
     public nint operator_assign_9df6aea3(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
     public void Destroy() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template arguments are inaccessible or incomplete.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has no accessible destructor.");
 }

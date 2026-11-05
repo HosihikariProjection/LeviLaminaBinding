@@ -172,6 +172,9 @@
 #include "mc/deps/cereal/schema/dynamic/DynamicValue.h"
 #include "mc/deps/cereal/schema/dynamic/NullType.h"
 #include "mc/deps/core/math/Vec3.h"
+#include "mc/deps/ecs/gamerefs_entity/GameRefsEntity.h"
+#include "mc/deps/game_refs/OwnerPtr.h"
+#include "mc/deps/game_refs/WeakRef.h"
 #include "mc/platform/UUID.h"
 #include "mc/server/commands/CommandFlag.h"
 #include "mc/server/commands/CommandOutput.h"
@@ -5467,6 +5470,205 @@ catch (...)
 static void* hs_method_4c297392(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_86fb929e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8763d225(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_68b2ec68(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_eed02f1b(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ee39a0ed(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_499abef8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e7fe4256(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator const Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_bd20236b(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ff744507(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c4777e8f(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7657c4a8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_629a6b62(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3b542369(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12699,6 +12901,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_67397d89(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_9b6cbcd8(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0bec7f39(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a33e5c32(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_91dc0c84(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_786f8bba(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0643e70e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dacec8a9(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_647c6e63(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_be06fa21(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5da64402(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_913b6d3b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ce09451f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_82131320(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)->data));
@@ -14704,6 +15105,1001 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_1a9181d5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_81f35d38(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_81a9eb55(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_430349c5(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5337f699(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_db5a3437(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator Bedrock::UniqueOwnerPointer<ActorEventBroadcaster> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_22a4972d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<ActorEventBroadcaster> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f7fdd968(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_16e9c362(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ea2b2358(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7e84c50e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_23af0fb6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_877b7c57(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_56ecd6ea(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f4b40598(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2f18cb62(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e18d9679(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4b7bd122(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7f751a10(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator Bedrock::UniqueOwnerPointer<LoadingScreenIdManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_30cd6d51(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LoadingScreenIdManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5a11fc83(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3673ce6b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dd66ab5d(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0c367f68(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_74a5f854(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_81d09a09(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_b6898bd3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0af6fc48(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fc3fc3b9(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5fb9901c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_23280643(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7dd2158e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d95d6b65(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_52485759(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_eba60e70(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4d91a64c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e2a58f46(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_031d7acf(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_460d1549(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_f93bd749(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_22c4f8e2(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dc6a6434(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3987f062(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_cd52cb50(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4d2faf8d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator Bedrock::UniqueOwnerPointer<PlayerLocationReceiver> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_87d78bfa(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationReceiver> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c0706532(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b5cbf48e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5ea4b7bc(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a6303241(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8c98a415(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_106b73ad(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_b46ff30b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4467dc73(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4af25716(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_19544e71(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_73850157(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_548dd3a0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator Bedrock::UniqueOwnerPointer<PlayerLocationSender> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_98aaf999(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationSender> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1458a344(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d789baed(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d140bca2(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d90ebf88(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a8f3497d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d1e86bd8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_82968bc2(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->data));
@@ -15515,6 +16911,603 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_661c399c(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c91ae82c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e20e9c5f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_77025a9e(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f8ca8a69(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_64f0bbc9(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator OwnerPtr<BlockSource> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1a66d530(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator const OwnerPtr<BlockSource> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6ea413cb(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_caa899dd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_96cdc337(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_34ad796b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8ecfd32f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3a987da3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_cc476a9e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c2d3c600(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_49a333bf(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fc5d06fb(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c9143618(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_49a9c6c3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator OwnerPtr<LevelChunkSaveManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ef93c092(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator const OwnerPtr<LevelChunkSaveManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6435435a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dc64a0e5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_08075775(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_31a41222(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_63712149(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e7ea51ff(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_ce124628(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_540cf38d(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_417af0d9(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_10d0f1ec(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ac8a4039(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_13d29486(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator OwnerPtr<PauseManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_37dbe591(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator const OwnerPtr<PauseManager> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6b33f289(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_97429b1b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_cfa045f6(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_85bddf16(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e2a73dec(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_357a8829(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_e81739fc(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->data));
@@ -15702,6 +17695,404 @@ catch (...)
 static void* hs_method_4b1388fa(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_cb4ccf4b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8a866797(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_26d67d8c(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_02e8e431(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1e381d48(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b9b1a0f2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator WeakRef<Dimension> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2ffb7df4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator const WeakRef<Dimension> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_748023ce(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6f4f9afd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6519f673(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_efcfa7a7(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b464e895(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f2f9cb0c(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_7a961569(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2ec216f1(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1e097d72(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ef8e337a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d170d3d8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6e1de708(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator WeakRef<IContainerRegistryAccess> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1e6aa502(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator const WeakRef<IContainerRegistryAccess> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_afb6efa0(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2b50e8bd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2208b50a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b1c46f15(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_074435db(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_29b57f19(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18117,6 +20508,1001 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_e453a587(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d1251596(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f26d1d8b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c68b5294(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b8fafbd3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_94d5db52(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator Bedrock::NonOwnerPointer<CDNConfig> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_88260ce5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<CDNConfig> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a541c804(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c304afc7(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6ac91152(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_727fc502(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_500b39f6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c8e48322(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_63a605f6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e83f8206(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dcf50c0d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dcd2b640(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_da9d0923(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a890a8f6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator Bedrock::NonOwnerPointer<IPacketObserver> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1421fa01(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<IPacketObserver> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d4d2d2b7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d20f33f6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2b0aa2b2(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_690cdb33(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_802aa82b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_bebb8b44(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_298df712(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ca23a0d7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c5b8c18c(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7ebe26e3(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e4f6bec4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dce3c6ac(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator Bedrock::NonOwnerPointer<LinkedAssetValidator> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c8120d29(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<LinkedAssetValidator> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_54fa6574(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b0ea6ec2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_05bd9898(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_24407513(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_916ecaca(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a5b30bcc(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_a7272af4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b4f20b74(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_47f879f5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_88c37cfe(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d2736717(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_15c88e77(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator Bedrock::NonOwnerPointer<NetEventCallback> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8c5a1b3b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<NetEventCallback> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b8f33dcb(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b4e28a9e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d90025d7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_754287b4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_42051909(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fbbd92a0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_f47e5989(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_9a992878(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7e5c5988(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a908edd7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5d0bd8d9(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b4ad63e4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator Bedrock::NonOwnerPointer<ServerTextSettings> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a1f289a3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<ServerTextSettings> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8d2fa872(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3a2bfba1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3b955a45(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_13ecb7e8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8e61af1f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f48662ad(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_9b5637af(void* hs_self) try
 {
     delete static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self);
@@ -19911,6 +23297,404 @@ catch (...)
 static void* hs_method_f6d0c948(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_1cf6aa8a(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_cee384cf(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d193e007(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8fa7ef70(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_95016471(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7a09b6e2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator WeakRef<EntityContext> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_765caa72(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator const WeakRef<EntityContext> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2ef7f0d3(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_28ab6f3a(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8a48aa85(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1f1e6a67(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c65440bf(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fcfa3776(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_d0dd454d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_06916959(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_db678896(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_481860bf(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b5a58011(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_bf7e9759(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator brstd::flat_set<Bedrock::typeid_t<void> > &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dfe23214(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator const brstd::flat_set<Bedrock::typeid_t<void> > &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4ad67605(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e0b0e8ea(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4258513b(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a51d53e8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_cbb8ad6a(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2f4da82e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30496,6 +34280,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_b80a3c45(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_439ccd18(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_9fa6087e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ab341c3f(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4ea30958(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a6c7b164(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator OwnerPtr<EntityContext> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b99bc0e0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator const OwnerPtr<EntityContext> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_12f05b1a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e65a87c0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_00c5fd5a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5359c3c2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b24b4293(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d5a0f8a5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_947656c0(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)->data));
@@ -32716,6 +36699,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_86503f45(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_cc09372c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_eb31acca(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2fbc2cfd(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b49ce9d0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_55fadef6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0c403fc3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_9cb32da4(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_97294b64(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2eabb248(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_23d65f0b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ee156a7c(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e978a6ab(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_e42621cb(void* hs_self) try
 {
     delete static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self);
@@ -33955,6 +38137,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_976e8f16(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5d3636d8(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8fe804cd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ddcb09dd(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_09de42fd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ec5f8083(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator brstd::flat_map<BoneCacheKey, Matrix> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2f8efc95(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator const brstd::flat_map<BoneCacheKey, Matrix> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_bd4aa1e4(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8693569b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_0fc5b7e6(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3b927dc1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f96b8b41(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3c941c31(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_d3711ca6(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)->data));
@@ -34739,6 +39120,802 @@ catch (...)
 static void* hs_method_a3879cf2(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_382b309b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_613a5e1b(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7fa35988(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4cd4cd8c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3678f6df(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4df23304(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator Factory<BaseLightTextureImageBuilder, Level &, Scheduler &> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ba192507(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator const Factory<BaseLightTextureImageBuilder, Level &, Scheduler &> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_40d92f65(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1b8c3f46(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ec69e925(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ecb03ae5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_664528b8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e86d2098(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_fa1f3263(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_08432ed5(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7b057258(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_154ba358(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a91a1bd8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3db8dbb0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator brstd::move_only_function<bool () const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ac27066e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator const brstd::move_only_function<bool () const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_629bb7d6(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ca692c63(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_be89101a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fafff8ff(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4acd30b2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fd68f388(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_cc3cba02(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_030672de(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_343615c1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_9cdea5da(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7f5fb007(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4f5584e2(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_b1524168(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator const brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d3697c9c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_efa7af54(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_05d11780(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a4b7bf10(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_15be989f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d143a3f4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_f45097d9(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_913368df(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d3b3f156(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d1e9ad34(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_f51b341b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_36a9630e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel> >, br::worldgen::StructureSetRegistry &) const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6a9b91af(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator const brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel> >, br::worldgen::StructureSetRegistry &) const> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e9b67097(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d9e67057(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_24b22c9a(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7c2db32d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_503ee879(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e3166499(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38864,6 +44041,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_16ac02c5(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4a96ef9d(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3e1aaf54(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c9e71aa9(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_713d1bdd(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a1a5592a(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator Core::Cache<unsigned short, const Block *, const Block *> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e9d529a0(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator const Core::Cache<unsigned short, const Block *, const Block *> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6214e6b7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c28622ae(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ccac2b1c(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e5a9d7a8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c5e56fe1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5114bc3f(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c8712a94(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)->data));
@@ -40516,6 +45892,205 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_get_ba043dac(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_eb350981(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_1682f1f1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ec6c7e71(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fdb698d8(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_41aa06ef(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator Bedrock::PackedPointer::Packed<const char, 1, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_95335068(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator const Bedrock::PackedPointer::Packed<const char, 1, 0> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_55f93a94(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_39d30e4a(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a25f1987(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_88da666e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_18449394(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_74783e29(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_959087ee(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->data));
@@ -41101,6 +46676,603 @@ catch (...)
 static void* hs_method_e58afb41(void* hs_self) try
 {
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_d5eb1feb(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2087ca48(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_aa3a09f6(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_39a3b04f(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_48d1c180(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ca6c5ecf(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator ServiceRegistrationToken<DebuggerDiagnostics> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d4615ba4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator const ServiceRegistrationToken<DebuggerDiagnostics> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a5f36291(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_839409a3(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_145563a7(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5b0afbbf(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_134a01fa(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_219d0932(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_e0c04149(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_981efe31(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_768d7655(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_5589aec8(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_fb4c6e05(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_47e980ae(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator ServiceRegistrationToken<ServerInstance> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3ce02175(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator const ServiceRegistrationToken<ServerInstance> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_17d97ff8(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_620b1176(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_2cda9fda(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_01fa6cb1(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_dca17875(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ed523a6e(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_get_0f3442f7(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_6005dc70(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a9c5dc0b(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_53d755b4(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).get();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_22e8e041(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->get()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_7e4a807d(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator ServiceRegistrationToken<ServerPerformanceData> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3d6ed3de(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator const ServiceRegistrationToken<ServerPerformanceData> &()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_8ad31bc8(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_a4d80034(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_c586258b(void* hs_self) try
+{
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).operator*();
+    return const_cast<void*>(static_cast<void const*>(&hs_reference));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_e2306f44(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator*()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_ebd85cf4(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_13277350(void* hs_self) try
+{
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -76446,6 +82618,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2d24a809,
     &hs_method_ca689542,
     &hs_method_4c297392,
+    &hs_get_86fb929e,
+    &hs_method_8763d225,
+    &hs_method_68b2ec68,
+    &hs_method_eed02f1b,
+    &hs_method_ee39a0ed,
+    &hs_method_499abef8,
+    &hs_method_e7fe4256,
+    &hs_method_bd20236b,
+    &hs_method_ff744507,
+    &hs_method_c4777e8f,
+    &hs_method_7657c4a8,
+    &hs_method_629a6b62,
+    &hs_method_3b542369,
     &hs_get_58da2b8f,
     &hs_method_fbc66274,
     &hs_method_fe2bf2ba,
@@ -76918,6 +83103,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c58c217c,
     &hs_method_7bdff9a7,
     &hs_method_a3dda307,
+    &hs_get_67397d89,
+    &hs_method_9b6cbcd8,
+    &hs_method_0bec7f39,
+    &hs_method_a33e5c32,
+    &hs_method_91dc0c84,
+    &hs_method_786f8bba,
+    &hs_method_0643e70e,
+    &hs_method_dacec8a9,
+    &hs_method_647c6e63,
+    &hs_method_be06fa21,
+    &hs_method_5da64402,
+    &hs_method_913b6d3b,
+    &hs_method_ce09451f,
     &hs_get_82131320,
     &hs_method_0d47d23e,
     &hs_method_da2b07dc,
@@ -77049,6 +83247,71 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5df1792d,
     &hs_method_659f2660,
     &hs_method_de9ac1c7,
+    &hs_get_1a9181d5,
+    &hs_method_81f35d38,
+    &hs_method_81a9eb55,
+    &hs_method_430349c5,
+    &hs_method_5337f699,
+    &hs_method_db5a3437,
+    &hs_method_22a4972d,
+    &hs_method_f7fdd968,
+    &hs_method_16e9c362,
+    &hs_method_ea2b2358,
+    &hs_method_7e84c50e,
+    &hs_method_23af0fb6,
+    &hs_method_877b7c57,
+    &hs_get_56ecd6ea,
+    &hs_method_f4b40598,
+    &hs_method_2f18cb62,
+    &hs_method_e18d9679,
+    &hs_method_4b7bd122,
+    &hs_method_7f751a10,
+    &hs_method_30cd6d51,
+    &hs_method_5a11fc83,
+    &hs_method_3673ce6b,
+    &hs_method_dd66ab5d,
+    &hs_method_0c367f68,
+    &hs_method_74a5f854,
+    &hs_method_81d09a09,
+    &hs_get_b6898bd3,
+    &hs_method_0af6fc48,
+    &hs_method_fc3fc3b9,
+    &hs_method_5fb9901c,
+    &hs_method_23280643,
+    &hs_method_7dd2158e,
+    &hs_method_d95d6b65,
+    &hs_method_52485759,
+    &hs_method_eba60e70,
+    &hs_method_4d91a64c,
+    &hs_method_e2a58f46,
+    &hs_method_031d7acf,
+    &hs_method_460d1549,
+    &hs_get_f93bd749,
+    &hs_method_22c4f8e2,
+    &hs_method_dc6a6434,
+    &hs_method_3987f062,
+    &hs_method_cd52cb50,
+    &hs_method_4d2faf8d,
+    &hs_method_87d78bfa,
+    &hs_method_c0706532,
+    &hs_method_b5cbf48e,
+    &hs_method_5ea4b7bc,
+    &hs_method_a6303241,
+    &hs_method_8c98a415,
+    &hs_method_106b73ad,
+    &hs_get_b46ff30b,
+    &hs_method_4467dc73,
+    &hs_method_4af25716,
+    &hs_method_19544e71,
+    &hs_method_73850157,
+    &hs_method_548dd3a0,
+    &hs_method_98aaf999,
+    &hs_method_1458a344,
+    &hs_method_d789baed,
+    &hs_method_d140bca2,
+    &hs_method_d90ebf88,
+    &hs_method_a8f3497d,
+    &hs_method_d1e86bd8,
     &hs_get_82968bc2,
     &hs_method_1c8c8960,
     &hs_method_327624ed,
@@ -77102,6 +83365,45 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8b0a143c,
     &hs_method_6aafda47,
     &hs_method_28f9826f,
+    &hs_get_661c399c,
+    &hs_method_c91ae82c,
+    &hs_method_e20e9c5f,
+    &hs_method_77025a9e,
+    &hs_method_f8ca8a69,
+    &hs_method_64f0bbc9,
+    &hs_method_1a66d530,
+    &hs_method_6ea413cb,
+    &hs_method_caa899dd,
+    &hs_method_96cdc337,
+    &hs_method_34ad796b,
+    &hs_method_8ecfd32f,
+    &hs_method_3a987da3,
+    &hs_get_cc476a9e,
+    &hs_method_c2d3c600,
+    &hs_method_49a333bf,
+    &hs_method_fc5d06fb,
+    &hs_method_c9143618,
+    &hs_method_49a9c6c3,
+    &hs_method_ef93c092,
+    &hs_method_6435435a,
+    &hs_method_dc64a0e5,
+    &hs_method_08075775,
+    &hs_method_31a41222,
+    &hs_method_63712149,
+    &hs_method_e7ea51ff,
+    &hs_get_ce124628,
+    &hs_method_540cf38d,
+    &hs_method_417af0d9,
+    &hs_method_10d0f1ec,
+    &hs_method_ac8a4039,
+    &hs_method_13d29486,
+    &hs_method_37dbe591,
+    &hs_method_6b33f289,
+    &hs_method_97429b1b,
+    &hs_method_cfa045f6,
+    &hs_method_85bddf16,
+    &hs_method_e2a73dec,
+    &hs_method_357a8829,
     &hs_get_e81739fc,
     &hs_method_e27a518a,
     &hs_method_d5241994,
@@ -77115,6 +83417,32 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_034e59fc,
     &hs_method_d4dd1c48,
     &hs_method_4b1388fa,
+    &hs_get_cb4ccf4b,
+    &hs_method_8a866797,
+    &hs_method_26d67d8c,
+    &hs_method_02e8e431,
+    &hs_method_1e381d48,
+    &hs_method_b9b1a0f2,
+    &hs_method_2ffb7df4,
+    &hs_method_748023ce,
+    &hs_method_6f4f9afd,
+    &hs_method_6519f673,
+    &hs_method_efcfa7a7,
+    &hs_method_b464e895,
+    &hs_method_f2f9cb0c,
+    &hs_get_7a961569,
+    &hs_method_2ec216f1,
+    &hs_method_1e097d72,
+    &hs_method_ef8e337a,
+    &hs_method_d170d3d8,
+    &hs_method_6e1de708,
+    &hs_method_1e6aa502,
+    &hs_method_afb6efa0,
+    &hs_method_2b50e8bd,
+    &hs_method_2208b50a,
+    &hs_method_b1c46f15,
+    &hs_method_074435db,
+    &hs_method_29b57f19,
     &hs_get_c8acfabf,
     &hs_method_88499c61,
     &hs_method_424b30d4,
@@ -77272,6 +83600,71 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b519485c,
     &hs_method_b58fed8c,
     &hs_method_95b04516,
+    &hs_get_e453a587,
+    &hs_method_d1251596,
+    &hs_method_f26d1d8b,
+    &hs_method_c68b5294,
+    &hs_method_b8fafbd3,
+    &hs_method_94d5db52,
+    &hs_method_88260ce5,
+    &hs_method_a541c804,
+    &hs_method_c304afc7,
+    &hs_method_6ac91152,
+    &hs_method_727fc502,
+    &hs_method_500b39f6,
+    &hs_method_c8e48322,
+    &hs_get_63a605f6,
+    &hs_method_e83f8206,
+    &hs_method_dcf50c0d,
+    &hs_method_dcd2b640,
+    &hs_method_da9d0923,
+    &hs_method_a890a8f6,
+    &hs_method_1421fa01,
+    &hs_method_d4d2d2b7,
+    &hs_method_d20f33f6,
+    &hs_method_2b0aa2b2,
+    &hs_method_690cdb33,
+    &hs_method_802aa82b,
+    &hs_method_bebb8b44,
+    &hs_get_298df712,
+    &hs_method_ca23a0d7,
+    &hs_method_c5b8c18c,
+    &hs_method_7ebe26e3,
+    &hs_method_e4f6bec4,
+    &hs_method_dce3c6ac,
+    &hs_method_c8120d29,
+    &hs_method_54fa6574,
+    &hs_method_b0ea6ec2,
+    &hs_method_05bd9898,
+    &hs_method_24407513,
+    &hs_method_916ecaca,
+    &hs_method_a5b30bcc,
+    &hs_get_a7272af4,
+    &hs_method_b4f20b74,
+    &hs_method_47f879f5,
+    &hs_method_88c37cfe,
+    &hs_method_d2736717,
+    &hs_method_15c88e77,
+    &hs_method_8c5a1b3b,
+    &hs_method_b8f33dcb,
+    &hs_method_b4e28a9e,
+    &hs_method_d90025d7,
+    &hs_method_754287b4,
+    &hs_method_42051909,
+    &hs_method_fbbd92a0,
+    &hs_get_f47e5989,
+    &hs_method_9a992878,
+    &hs_method_7e5c5988,
+    &hs_method_a908edd7,
+    &hs_method_5d0bd8d9,
+    &hs_method_b4ad63e4,
+    &hs_method_a1f289a3,
+    &hs_method_8d2fa872,
+    &hs_method_3a2bfba1,
+    &hs_method_3b955a45,
+    &hs_method_13ecb7e8,
+    &hs_method_8e61af1f,
+    &hs_method_f48662ad,
     &hs_destroy_9b5637af,
     &hs_get_f07caabf,
     &hs_method_d707ff99,
@@ -77390,6 +83783,32 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_248f911d,
     &hs_method_fd2c6829,
     &hs_method_f6d0c948,
+    &hs_get_1cf6aa8a,
+    &hs_method_cee384cf,
+    &hs_method_d193e007,
+    &hs_method_8fa7ef70,
+    &hs_method_95016471,
+    &hs_method_7a09b6e2,
+    &hs_method_765caa72,
+    &hs_method_2ef7f0d3,
+    &hs_method_28ab6f3a,
+    &hs_method_8a48aa85,
+    &hs_method_1f1e6a67,
+    &hs_method_c65440bf,
+    &hs_method_fcfa3776,
+    &hs_get_d0dd454d,
+    &hs_method_06916959,
+    &hs_method_db678896,
+    &hs_method_481860bf,
+    &hs_method_b5a58011,
+    &hs_method_bf7e9759,
+    &hs_method_dfe23214,
+    &hs_method_4ad67605,
+    &hs_method_e0b0e8ea,
+    &hs_method_4258513b,
+    &hs_method_a51d53e8,
+    &hs_method_cbb8ad6a,
+    &hs_method_2f4da82e,
     &hs_get_76a26102,
     &hs_method_4035b2fa,
     &hs_method_836cf0b4,
@@ -78081,6 +84500,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_33944f46,
     &hs_method_09ddf6dd,
     &hs_method_1837328f,
+    &hs_get_b80a3c45,
+    &hs_method_439ccd18,
+    &hs_method_9fa6087e,
+    &hs_method_ab341c3f,
+    &hs_method_4ea30958,
+    &hs_method_a6c7b164,
+    &hs_method_b99bc0e0,
+    &hs_method_12f05b1a,
+    &hs_method_e65a87c0,
+    &hs_method_00c5fd5a,
+    &hs_method_5359c3c2,
+    &hs_method_b24b4293,
+    &hs_method_d5a0f8a5,
     &hs_get_947656c0,
     &hs_method_40b28637,
     &hs_method_4b4f6b38,
@@ -78225,6 +84657,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_dc736468,
     &hs_method_69f374a9,
     &hs_method_87fcec49,
+    &hs_get_86503f45,
+    &hs_method_cc09372c,
+    &hs_method_eb31acca,
+    &hs_method_2fbc2cfd,
+    &hs_method_b49ce9d0,
+    &hs_method_55fadef6,
+    &hs_method_0c403fc3,
+    &hs_method_9cb32da4,
+    &hs_method_97294b64,
+    &hs_method_2eabb248,
+    &hs_method_23d65f0b,
+    &hs_method_ee156a7c,
+    &hs_method_e978a6ab,
     &hs_destroy_e42621cb,
     &hs_create_e1958d05,
     &hs_get_4a661a30,
@@ -78306,6 +84751,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1c49c7ee,
     &hs_method_fffdcf5c,
     &hs_method_57dfddae,
+    &hs_get_976e8f16,
+    &hs_method_5d3636d8,
+    &hs_method_8fe804cd,
+    &hs_method_ddcb09dd,
+    &hs_method_09de42fd,
+    &hs_method_ec5f8083,
+    &hs_method_2f8efc95,
+    &hs_method_bd4aa1e4,
+    &hs_method_8693569b,
+    &hs_method_0fc5b7e6,
+    &hs_method_3b927dc1,
+    &hs_method_f96b8b41,
+    &hs_method_3c941c31,
     &hs_get_d3711ca6,
     &hs_method_1a05e8e2,
     &hs_method_589e2c29,
@@ -78358,6 +84816,58 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3d95799f,
     &hs_method_93387a4e,
     &hs_method_a3879cf2,
+    &hs_get_382b309b,
+    &hs_method_613a5e1b,
+    &hs_method_7fa35988,
+    &hs_method_4cd4cd8c,
+    &hs_method_3678f6df,
+    &hs_method_4df23304,
+    &hs_method_ba192507,
+    &hs_method_40d92f65,
+    &hs_method_1b8c3f46,
+    &hs_method_ec69e925,
+    &hs_method_ecb03ae5,
+    &hs_method_664528b8,
+    &hs_method_e86d2098,
+    &hs_get_fa1f3263,
+    &hs_method_08432ed5,
+    &hs_method_7b057258,
+    &hs_method_154ba358,
+    &hs_method_a91a1bd8,
+    &hs_method_3db8dbb0,
+    &hs_method_ac27066e,
+    &hs_method_629bb7d6,
+    &hs_method_ca692c63,
+    &hs_method_be89101a,
+    &hs_method_fafff8ff,
+    &hs_method_4acd30b2,
+    &hs_method_fd68f388,
+    &hs_get_cc3cba02,
+    &hs_method_030672de,
+    &hs_method_343615c1,
+    &hs_method_9cdea5da,
+    &hs_method_7f5fb007,
+    &hs_method_4f5584e2,
+    &hs_method_b1524168,
+    &hs_method_d3697c9c,
+    &hs_method_efa7af54,
+    &hs_method_05d11780,
+    &hs_method_a4b7bf10,
+    &hs_method_15be989f,
+    &hs_method_d143a3f4,
+    &hs_get_f45097d9,
+    &hs_method_913368df,
+    &hs_method_d3b3f156,
+    &hs_method_d1e9ad34,
+    &hs_method_f51b341b,
+    &hs_method_36a9630e,
+    &hs_method_6a9b91af,
+    &hs_method_e9b67097,
+    &hs_method_d9e67057,
+    &hs_method_24b22c9a,
+    &hs_method_7c2db32d,
+    &hs_method_503ee879,
+    &hs_method_e3166499,
     &hs_get_b28b829c,
     &hs_method_1f987356,
     &hs_method_ed21c1f0,
@@ -78605,6 +85115,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a6f5e64f,
     &hs_method_bacb51a3,
     &hs_method_9c1a12ab,
+    &hs_get_16ac02c5,
+    &hs_method_4a96ef9d,
+    &hs_method_3e1aaf54,
+    &hs_method_c9e71aa9,
+    &hs_method_713d1bdd,
+    &hs_method_a1a5592a,
+    &hs_method_e9d529a0,
+    &hs_method_6214e6b7,
+    &hs_method_c28622ae,
+    &hs_method_ccac2b1c,
+    &hs_method_e5a9d7a8,
+    &hs_method_c5e56fe1,
+    &hs_method_5114bc3f,
     &hs_get_c8712a94,
     &hs_method_c958041a,
     &hs_method_ce243f2c,
@@ -78713,6 +85236,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_eab099e1,
     &hs_method_97e03fa8,
     &hs_method_b4c66906,
+    &hs_get_ba043dac,
+    &hs_method_eb350981,
+    &hs_method_1682f1f1,
+    &hs_method_ec6c7e71,
+    &hs_method_fdb698d8,
+    &hs_method_41aa06ef,
+    &hs_method_95335068,
+    &hs_method_55f93a94,
+    &hs_method_39d30e4a,
+    &hs_method_a25f1987,
+    &hs_method_88da666e,
+    &hs_method_18449394,
+    &hs_method_74783e29,
     &hs_get_959087ee,
     &hs_method_5a529f7c,
     &hs_method_75afc690,
@@ -78752,6 +85288,45 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a8eaf57b,
     &hs_method_5cf01989,
     &hs_method_e58afb41,
+    &hs_get_d5eb1feb,
+    &hs_method_2087ca48,
+    &hs_method_aa3a09f6,
+    &hs_method_39a3b04f,
+    &hs_method_48d1c180,
+    &hs_method_ca6c5ecf,
+    &hs_method_d4615ba4,
+    &hs_method_a5f36291,
+    &hs_method_839409a3,
+    &hs_method_145563a7,
+    &hs_method_5b0afbbf,
+    &hs_method_134a01fa,
+    &hs_method_219d0932,
+    &hs_get_e0c04149,
+    &hs_method_981efe31,
+    &hs_method_768d7655,
+    &hs_method_5589aec8,
+    &hs_method_fb4c6e05,
+    &hs_method_47e980ae,
+    &hs_method_3ce02175,
+    &hs_method_17d97ff8,
+    &hs_method_620b1176,
+    &hs_method_2cda9fda,
+    &hs_method_01fa6cb1,
+    &hs_method_dca17875,
+    &hs_method_ed523a6e,
+    &hs_get_0f3442f7,
+    &hs_method_6005dc70,
+    &hs_method_a9c5dc0b,
+    &hs_method_53d755b4,
+    &hs_method_22e8e041,
+    &hs_method_7e4a807d,
+    &hs_method_3d6ed3de,
+    &hs_method_8ad31bc8,
+    &hs_method_a4d80034,
+    &hs_method_c586258b,
+    &hs_method_e2306f44,
+    &hs_method_ebd85cf4,
+    &hs_method_13277350,
     &hs_get_d9e7d587,
     &hs_method_bbb9eeeb,
     &hs_method_e0a6225e,
