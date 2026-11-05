@@ -54,9 +54,9 @@ public sealed unsafe partial class ParamTraitsBase_ll__command__RuntimeSoftEnum_
         return NativeMethods.TablePtr->C0.hs_method_467cbf90();
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the derived specialization overrides this member and the base body is not instantiable.", false)]
     public static nint parseFn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the derived specialization overrides this member and the base body is not instantiable.");
 
     [global::System.Obsolete("BindingShim cannot project this member: the inline body addresses a template member the carrier does not export.", false)]
     public static nint parseRule() =>

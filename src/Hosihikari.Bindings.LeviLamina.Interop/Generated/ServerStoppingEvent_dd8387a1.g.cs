@@ -38,9 +38,16 @@ public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposa
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static ServerStoppingEvent Create(nint server) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static ServerStoppingEvent Create(nint server)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c0e70e83((void*)server);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new ServerStoppingEvent((nint)handle);
+    }
 
     public void serialize(nint arg0)
     {

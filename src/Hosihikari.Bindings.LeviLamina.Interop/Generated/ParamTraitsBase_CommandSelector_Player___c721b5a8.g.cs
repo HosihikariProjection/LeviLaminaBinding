@@ -54,9 +54,10 @@ public sealed unsafe partial class ParamTraitsBase_CommandSelector_Player__ : gl
         return NativeMethods.TablePtr->C0.hs_method_925232ee();
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
-    public static nint parseFn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
+    public static nint parseFn()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_12f412f5();
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the inline body addresses a template member the carrier does not export.", false)]
     public static nint parseRule() =>

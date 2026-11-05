@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerInteractBlockEvent Create(nint player, nint item, nint blockPos, nint face, nint clickPos, nint block) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerInteractBlockEvent Create(nint player, nint item, nint blockPos, nint face, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 clickPos, nint? block)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9cac68c5((void*)player, (void*)item, (void*)blockPos, (void*)face, (void*)clickPos.Handle, (void*)(block ?? 0), block is not null);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerInteractBlockEvent((nint)handle);
+    }
 
     public nint? block()
     {

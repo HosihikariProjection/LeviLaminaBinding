@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerChangePermEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerChangePermEvent Create(nint player, nint newPerm) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerChangePermEvent Create(nint player, nint newPerm)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c819891c((void*)player, (void*)newPerm);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerChangePermEvent((nint)handle);
+    }
 
     public void deserialize(nint arg0)
     {

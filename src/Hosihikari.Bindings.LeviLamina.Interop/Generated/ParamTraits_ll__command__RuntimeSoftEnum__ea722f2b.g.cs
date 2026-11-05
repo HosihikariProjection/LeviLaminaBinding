@@ -48,9 +48,10 @@ public sealed unsafe partial class ParamTraits_ll__command__RuntimeSoftEnum_ : g
         return NativeMethods.TablePtr->C0.hs_method_86605e55();
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
-    public static nint parseFn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
+    public static nint parseFn()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_db7eb262();
+    }
 
     public static ushort typeId()
     {

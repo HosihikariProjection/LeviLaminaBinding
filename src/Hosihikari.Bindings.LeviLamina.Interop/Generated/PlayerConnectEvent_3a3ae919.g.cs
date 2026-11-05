@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerConnectEvent : global::System.IDisposab
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerConnectEvent Create(nint networkIdentifier, nint connectionRequest, nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerConnectEvent Create(nint networkIdentifier, nint connectionRequest, nint player)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_ba32fdb7((void*)networkIdentifier, (void*)connectionRequest, (void*)player);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerConnectEvent((nint)handle);
+    }
 
     public nint connectionRequest()
     {

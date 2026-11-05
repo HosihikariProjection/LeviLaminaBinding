@@ -38,9 +38,16 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static BlockChangedEvent Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static BlockChangedEvent Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_17b1672c((void*)blockSource, (void*)layer, (void*)previousBlock, (void*)newBlock, (void*)pos);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new BlockChangedEvent((nint)handle);
+    }
 
     public nint layer()
     {

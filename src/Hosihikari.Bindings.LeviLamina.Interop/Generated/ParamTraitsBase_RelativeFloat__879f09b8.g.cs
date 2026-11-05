@@ -54,9 +54,10 @@ public sealed unsafe partial class ParamTraitsBase_RelativeFloat_ : global::Syst
         return NativeMethods.TablePtr->C0.hs_method_f3168656();
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
-    public static nint parseFn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
+    public static nint parseFn()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_bd116dfa();
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the inline body addresses a template member the carrier does not export.", false)]
     public static nint parseRule() =>

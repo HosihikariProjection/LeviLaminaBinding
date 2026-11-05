@@ -197,6 +197,9 @@ public sealed class ShimSmokePlugin : IPlugin
                 new[] { new KeyValuePair<string, ulong>("three", 3) });
             log.AppendLine($"command_enum.pairs={(registered && added ? "ok" : "failed")}");
 
+            var intParser = Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
+            log.AppendLine($"member_function_pointer.parseFn={(intParser != 0 ? "ok" : "failed")}");
+
             var modRegistry = ModManagerRegistry.getInstance();
             using (var mod = modRegistry.getMod("hosihikari"))
             {

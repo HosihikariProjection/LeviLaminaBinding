@@ -38,9 +38,9 @@ public sealed unsafe partial class PlayerChatEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: constructors do not accept mutable string references.", false)]
     public static PlayerChatEvent Create(nint player, nint message) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors do not accept mutable string references.");
 
     public void deserialize(nint arg0)
     {

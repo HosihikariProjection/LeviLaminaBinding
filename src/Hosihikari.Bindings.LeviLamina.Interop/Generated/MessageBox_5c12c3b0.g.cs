@@ -38,9 +38,16 @@ public sealed unsafe partial class MessageBox : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static MessageBox Create(nint player, nint title) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static MessageBox Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 title)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_4d9dff1c((void*)player, (void*)title.Handle);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new MessageBox((nint)handle);
+    }
 
     public static MessageBox Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox arg0)
     {

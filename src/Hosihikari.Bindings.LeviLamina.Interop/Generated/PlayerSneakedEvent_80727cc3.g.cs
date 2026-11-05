@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerSneakedEvent : global::System.IDisposab
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerSneakedEvent Create(nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerSneakedEvent Create(nint player)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_59264ff8((void*)player);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerSneakedEvent((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent AsActorEvent()
     {

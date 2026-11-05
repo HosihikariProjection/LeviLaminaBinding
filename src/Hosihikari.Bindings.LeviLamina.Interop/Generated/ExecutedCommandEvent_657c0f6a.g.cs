@@ -38,9 +38,16 @@ public sealed unsafe partial class ExecutedCommandEvent : global::System.IDispos
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static ExecutedCommandEvent Create(nint result, nint minecraftCommands, nint commandContext, nint suppressOutput) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static ExecutedCommandEvent Create(nint result, nint minecraftCommands, nint commandContext, nint suppressOutput)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_81bc3e26((void*)result, (void*)minecraftCommands, (void*)commandContext, (void*)suppressOutput);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new ExecutedCommandEvent((nint)handle);
+    }
 
     public nint result()
     {

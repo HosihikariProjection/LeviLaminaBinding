@@ -38,9 +38,16 @@ public sealed unsafe partial class SpawningMobEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static SpawningMobEvent Create(nint blockSource, nint identifier, nint spawner, nint pos, nint naturalSpawn, nint surface, nint fromSpawner) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static SpawningMobEvent Create(nint blockSource, nint identifier, nint? spawner, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 pos, nint naturalSpawn, nint surface, nint fromSpawner)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_0fd3d4fa((void*)blockSource, (void*)identifier, (void*)(spawner ?? 0), (void*)pos.Handle, (void*)naturalSpawn, (void*)surface, (void*)fromSpawner, spawner is not null);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new SpawningMobEvent((nint)handle);
+    }
 
     public void deserialize(nint arg0)
     {

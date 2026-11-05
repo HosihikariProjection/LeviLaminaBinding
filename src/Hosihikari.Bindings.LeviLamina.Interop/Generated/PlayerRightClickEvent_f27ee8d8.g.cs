@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerRightClickEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerRightClickEvent Create(nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerRightClickEvent Create(nint player)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_5766ad9a((void*)player);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerRightClickEvent((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent AsActorEvent()
     {

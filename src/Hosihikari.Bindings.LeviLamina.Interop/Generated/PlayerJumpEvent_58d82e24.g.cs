@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerJumpEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerJumpEvent Create(nint player, nint fromPos, nint toPos) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerJumpEvent Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 fromPos, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 toPos)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_6c718692((void*)player, (void*)fromPos.Handle, (void*)toPos.Handle);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerJumpEvent((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 fromPosition()
     {

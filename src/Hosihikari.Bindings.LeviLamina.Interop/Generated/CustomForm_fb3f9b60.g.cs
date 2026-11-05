@@ -38,9 +38,16 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static CustomForm Create(nint player, nint title) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static CustomForm Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 title)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9b58a241((void*)player, (void*)title.Handle);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new CustomForm((nint)handle);
+    }
 
     public static CustomForm Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm arg0)
     {

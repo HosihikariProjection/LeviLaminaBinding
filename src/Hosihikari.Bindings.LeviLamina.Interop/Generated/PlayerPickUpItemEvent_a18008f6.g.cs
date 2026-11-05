@@ -38,9 +38,16 @@ public sealed unsafe partial class PlayerPickUpItemEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static PlayerPickUpItemEvent Create(nint player, nint itemActor, nint orgCount, nint favoredSlot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static PlayerPickUpItemEvent Create(nint player, nint itemActor, nint orgCount, nint favoredSlot)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_15b0298b((void*)player, (void*)itemActor, (void*)orgCount, (void*)favoredSlot);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new PlayerPickUpItemEvent((nint)handle);
+    }
 
     public void deserialize(nint arg0)
     {

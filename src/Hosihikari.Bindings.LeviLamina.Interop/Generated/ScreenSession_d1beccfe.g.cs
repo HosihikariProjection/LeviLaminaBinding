@@ -49,17 +49,80 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         return new ScreenSession((nint)handle);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static ScreenSession Create(nint player, nint screenId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static ScreenSession Create(nint player, string screenId)
+    {
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
+        fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_c6d32a52((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1);
+            if (handle == null)
+            {
+                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static ScreenSession Create(nint player, nint screenId, nint arg2) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+            return new ScreenSession((nint)handle);
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
-    public static ScreenSession Create(nint player, nint screenId, uint instanceId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
+    public static ScreenSession Create(nint player, string screenId, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.NoInstanceIdTag arg2)
+    {
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
+        fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_05c5bcf4((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)arg2.Handle);
+            if (handle == null)
+            {
+                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            }
+
+            return new ScreenSession((nint)handle);
+        }
+    }
+
+    public static ScreenSession Create(nint player, string screenId, uint instanceId)
+    {
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
+        fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_bc5536be((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, instanceId);
+            if (handle == null)
+            {
+                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            }
+
+            return new ScreenSession((nint)handle);
+        }
+    }
 
     public static ScreenSession Create_dd7804f0(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ScreenSession arg0)
     {
