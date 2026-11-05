@@ -4864,6 +4864,8 @@ struct HosihikariBindingTableV1 {
     void* (*hs_function_146d1261)(void);
     std::uint64_t (*hs_function_35c7eaa5)(void*);
     std::uint32_t (*hs_function_7f154c74)(void*, bool*);
+    std::int32_t (*hs_function_4b04f53a)(void*, void*, void*, std::int32_t, bool);
+    std::int32_t (*hs_function_3042d0e0)(void*, void*, void*, std::int32_t, std::int32_t, bool);
     bool (*hs_function_870b5cb2)(void*, std::int32_t, bool, bool);
     void (*hs_function_ffa5fb50)(void*, std::uint64_t, void*, void*, void*);
     bool (*hs_function_66cdf26a)(void);

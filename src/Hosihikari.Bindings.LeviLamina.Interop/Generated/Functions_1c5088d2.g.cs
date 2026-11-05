@@ -70,4 +70,48 @@ public static unsafe partial class Functions
             return NativeMethods.TablePtr->C0.hs_function_1e09626f(__hs_stringData0, (nuint)__hs_stringByteCount0, shouldAnnounce) != 0;
         }
     }
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint forwardError(nint err) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeErrorCodeError_a0a07406(nint ec) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeErrorCodeError_eb03ea69(nint ec) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeError_2e28feea(nint args) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeError_bd2b8aec(nint args) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeError_dd494cf3(nint args) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeExceptionError(nint exc) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeStringError(nint str) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static nint makeSuccessed() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: consteval functions cannot be called at runtime.", false)]
+    public static ulong operator___h(nint x, ulong len) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: consteval functions cannot be called at runtime.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: the native name is not a valid C++ qualified name.", false)]
+    public static nint operator___tick(ulong val) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the native name is not a valid C++ qualified name.");
 }

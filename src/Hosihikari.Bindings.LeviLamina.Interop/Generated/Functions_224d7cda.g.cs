@@ -172,4 +172,8 @@ public static unsafe partial class Functions
             }
         }
     }
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::span<std::byte>' is not a known bindable declaration.", false)]
+    public static nint getImageRange(nint name) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::span<std::byte>' is not a known bindable declaration.");
 }

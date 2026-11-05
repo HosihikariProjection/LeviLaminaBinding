@@ -57,6 +57,10 @@ if (Test-Path $DataTarget) {
     Remove-Item $DataTarget -Recurse -Force
 }
 
+# The C# host can reuse a previously compiled assembly next to the plugin sources;
+# drop it so this run compiles the main.cs copied above.
+Remove-Item (Join-Path $ServerRoot "plugins\shim_smoke.dll") -Force -ErrorAction SilentlyContinue
+
 Set-Content -Path (Join-Path $ServerRoot "eula.txt") -Value "eula=true"
 $LogDirectory = Join-Path $RepoRoot "artifacts"
 New-Item -ItemType Directory -Force -Path $LogDirectory | Out-Null

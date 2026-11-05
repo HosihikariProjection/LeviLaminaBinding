@@ -4862,6 +4862,8 @@ public static unsafe class NativeMethods
         public delegate* unmanaged[Cdecl]<void*> hs_function_146d1261;
         public delegate* unmanaged[Cdecl]<void*, ulong> hs_function_35c7eaa5;
         public delegate* unmanaged[Cdecl]<void*, bool*, uint> hs_function_7f154c74;
+        public delegate* unmanaged[Cdecl]<void*, void*, void*, int, bool, int> hs_function_4b04f53a;
+        public delegate* unmanaged[Cdecl]<void*, void*, void*, int, int, bool, int> hs_function_3042d0e0;
         public delegate* unmanaged[Cdecl]<void*, int, bool, bool, byte> hs_function_870b5cb2;
         public delegate* unmanaged[Cdecl]<void*, ulong, void*, void*, void*, void> hs_function_ffa5fb50;
         public delegate* unmanaged[Cdecl]<byte> hs_function_66cdf26a;

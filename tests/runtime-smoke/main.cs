@@ -43,6 +43,9 @@ public sealed class ShimSmokePlugin : IPlugin
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void PacketHandlerInvoke(nint userData, nint netId, nint callback, nint packet);
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate bool HookValue();
+
     private static readonly CallbackInvoke Callback = OnCallback;
     private static readonly CallbackRelease Release = OnRelease;
     private static readonly ModCallbackInvoke ModCallback = OnModCallback;
@@ -50,6 +53,8 @@ public sealed class ShimSmokePlugin : IPlugin
     private static readonly ListenerInvoke ListenerCallback = OnListenerEvent;
     private static readonly ListenerRelease ListenerReleaseCallback = OnListenerRelease;
     private static readonly PacketHandlerInvoke PacketHandlerCallback = OnPacket;
+    private static readonly HookValue HookDetourDelegate = OnHookDetour;
+    private static bool _hookDetourValue;
     private static string? _logText;
     private static string? _listenerMessage;
     private static bool _listenerReleased;
@@ -75,6 +80,8 @@ public sealed class ShimSmokePlugin : IPlugin
     private static void OnPacket(nint userData, nint netId, nint callback, nint packet)
     {
     }
+
+    private static bool OnHookDetour() => _hookDetourValue;
     private static int _callbackCount;
     private static bool _callbackReleased;
 
@@ -199,6 +206,37 @@ public sealed class ShimSmokePlugin : IPlugin
 
             var intParser = Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
             log.AppendLine($"member_function_pointer.parseFn={(intParser != 0 ? "ok" : "failed")}");
+
+            var hookOk = false;
+            if (NativeLibrary.TryLoad("LeviLamina.dll", out var llModule)
+                && NativeLibrary.TryGetExport(llModule, "?shouldHookSuspendThreads@memory@ll@@YA_NXZ", out var hookTarget))
+            {
+                var baselineSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                _hookDetourValue = !baselineSuspend;
+                var detour = Marshal.GetFunctionPointerForDelegate(HookDetourDelegate);
+                var originalSlot = Marshal.AllocHGlobal(IntPtr.Size);
+                Marshal.WriteIntPtr(originalSlot, IntPtr.Zero);
+                Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.hook(
+                    hookTarget,
+                    detour,
+                    originalSlot,
+                    (int)Hosihikari.Bindings.LeviLamina.Interop.ll.memory.HookPriority.Normal,
+                    false);
+                var detouredSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var original = Marshal.ReadIntPtr(originalSlot);
+                var originalSuspend = original != IntPtr.Zero
+                    && Marshal.GetDelegateForFunctionPointer<HookValue>(original)();
+                var unhooked = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.unhook(hookTarget, detour, false);
+                var restoredSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                Marshal.FreeHGlobal(originalSlot);
+                hookOk = original != IntPtr.Zero
+                    && detouredSuspend == !baselineSuspend
+                    && originalSuspend == baselineSuspend
+                    && unhooked
+                    && restoredSuspend == baselineSuspend;
+            }
+
+            log.AppendLine($"memory.hook={(hookOk ? "ok" : "failed")}");
 
             var modRegistry = ModManagerRegistry.getInstance();
             using (var mod = modRegistry.getMod("hosihikari"))

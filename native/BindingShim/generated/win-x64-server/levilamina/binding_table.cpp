@@ -75296,6 +75296,36 @@ catch (...)
     return 0;
 }
 
+static std::int32_t hs_function_4b04f53a(void* target, void* detour, void* originalFunc, std::int32_t priority, bool suspendThreads) try
+{
+    return static_cast<std::int32_t>(ll::memory::hook(static_cast<void*>(target), static_cast<void*>(detour), static_cast<void **>(originalFunc), static_cast<ll::memory::HookPriority>(priority), static_cast<bool>(suspendThreads)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static std::int32_t hs_function_3042d0e0(void* target, void* detour, void* originalFunc, std::int32_t priority, std::int32_t options, bool suspendThreads) try
+{
+    return static_cast<std::int32_t>(ll::memory::hookEx(static_cast<void*>(target), static_cast<void*>(detour), static_cast<void **>(originalFunc), static_cast<ll::memory::HookPriority>(priority), static_cast<ll::memory::RegisterSaveOptions>(options), static_cast<bool>(suspendThreads)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
 static bool hs_function_870b5cb2(void* target, std::int32_t options, bool replace, bool suspendThreads) try
 {
     return static_cast<bool>(ll::memory::hookOptions(static_cast<void*>(target), static_cast<ll::memory::RegisterSaveOptions>(options), static_cast<bool>(replace), static_cast<bool>(suspendThreads)));
@@ -88137,6 +88167,8 @@ const HosihikariBindingTableV1 kTable{
     &hs_function_146d1261,
     &hs_function_35c7eaa5,
     &hs_function_7f154c74,
+    &hs_function_4b04f53a,
+    &hs_function_3042d0e0,
     &hs_function_870b5cb2,
     &hs_function_ffa5fb50,
     &hs_function_66cdf26a,

@@ -23,6 +23,16 @@ public static unsafe partial class Functions
         return __hs_hasValue ? __hs_value : (uint?)null;
     }
 
+    public static int hook(nint target, nint detour, nint originalFunc, int priority, bool suspendThreads)
+    {
+        return NativeMethods.TablePtr->C0.hs_function_4b04f53a((void*)target, (void*)detour, (void*)originalFunc, priority, suspendThreads);
+    }
+
+    public static int hookEx(nint target, nint detour, nint originalFunc, int priority, int options, bool suspendThreads)
+    {
+        return NativeMethods.TablePtr->C0.hs_function_3042d0e0((void*)target, (void*)detour, (void*)originalFunc, priority, options, suspendThreads);
+    }
+
     public static bool hookOptions(nint target, int options, bool replace, bool suspendThreads)
     {
         return NativeMethods.TablePtr->C0.hs_function_870b5cb2((void*)target, options, replace, suspendThreads) != 0;

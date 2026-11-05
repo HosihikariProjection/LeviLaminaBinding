@@ -24,4 +24,8 @@ public static unsafe partial class Functions
         }
         return __hs_result;
     }
+
+    [global::System.Obsolete("BindingShim cannot project this member: vector return type 'std::filesystem::path' is not supported.", false)]
+    public static nint getFilePathFromFontName(nint name, nint index, nint weight, nint stretch, nint style) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: vector return type 'std::filesystem::path' is not supported.");
 }

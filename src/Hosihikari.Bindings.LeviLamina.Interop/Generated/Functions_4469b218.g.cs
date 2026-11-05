@@ -15,4 +15,16 @@ public static unsafe partial class Functions
     {
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->C0.hs_function_d65bfad9(skip, maxDepth));
     }
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::exception_ptr' is not a known bindable declaration.", false)]
+    public static nint createExceptionPtr(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::exception_ptr' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::system_error' is not a known bindable declaration.", false)]
+    public static nint getLastSystemError() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::system_error' is not a known bindable declaration.");
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::exception_ptr' is not a known bindable declaration.", false)]
+    public static nint makeExceptionString(nint ePtr) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::exception_ptr' is not a known bindable declaration.");
 }
