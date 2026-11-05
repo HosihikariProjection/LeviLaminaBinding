@@ -38,13 +38,13 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__ItemStackNetIdV
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_ Create_cca138c2(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__24ULL__ItemStackNetIdVariant_ Create_92f5cca4(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
     public nint data
     {

@@ -46,9 +46,16 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
     public static Observable_ll__ui__UIRawMessage_ Create_a2d09c48(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static Observable_ll__ui__UIRawMessage_ Create_e7f8498b(nint initial) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static Observable_ll__ui__UIRawMessage_ Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_e7f8498b((void*)initial.Handle);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new Observable_ll__ui__UIRawMessage_((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage getData()
     {

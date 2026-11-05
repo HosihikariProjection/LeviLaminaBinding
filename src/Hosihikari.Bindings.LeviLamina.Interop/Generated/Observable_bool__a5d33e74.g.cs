@@ -38,9 +38,16 @@ public sealed unsafe partial class Observable_bool_ : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static Observable_bool_ Create(bool initial) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static Observable_bool_ Create(bool initial)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c29772f9(initial);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new Observable_bool_((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
     public static Observable_bool_ Create_5c5dad5c(nint arg0) =>

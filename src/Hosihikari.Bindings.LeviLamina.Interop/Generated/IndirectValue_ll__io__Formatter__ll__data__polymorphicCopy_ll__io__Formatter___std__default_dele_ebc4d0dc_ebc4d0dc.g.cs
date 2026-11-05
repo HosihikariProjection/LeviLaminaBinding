@@ -38,25 +38,25 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has an abstract template argument.", false)]
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has an abstract template argument.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Create_272e1817(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Create_f483647e(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has an abstract template argument.", false)]
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Create_c1d10424(nint ptr) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has an abstract template argument.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has an abstract template argument.", false)]
     public static IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc Create_847cb61d(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has an abstract template argument.");
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? get_b17c0bfb()
     {

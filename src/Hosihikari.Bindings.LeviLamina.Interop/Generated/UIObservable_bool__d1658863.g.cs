@@ -38,9 +38,16 @@ public sealed unsafe partial class UIObservable_bool_ : global::System.IDisposab
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static UIObservable_bool_ Create(bool initial, nint options) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static UIObservable_bool_ Create(bool initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_51d18487(initial, (void*)options.Handle);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new UIObservable_bool_((nint)handle);
+    }
 
     public bool isClientWritable()
     {

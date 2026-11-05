@@ -46,9 +46,30 @@ public sealed unsafe partial class Observable_std__basic_string_char__ : global:
     public static Observable_std__basic_string_char__ Create_d9a2fa31(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static Observable_std__basic_string_char__ Create_42eb507b(nint initial) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static Observable_std__basic_string_char__ Create(string initial)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(initial);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(initial, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_42eb507b(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (handle == null)
+            {
+                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            }
+
+            return new Observable_std__basic_string_char__((nint)handle);
+        }
+    }
 
     public string getData()
     {

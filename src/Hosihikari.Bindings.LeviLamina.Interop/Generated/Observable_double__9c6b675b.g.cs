@@ -42,9 +42,16 @@ public sealed unsafe partial class Observable_double_ : global::System.IDisposab
     public static Observable_double_ Create_d9747415(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static Observable_double_ Create(double initial) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static Observable_double_ Create(double initial)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_dfd706e0(initial);
+        if (handle == null)
+        {
+            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+        }
+
+        return new Observable_double_((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
     public static Observable_double_ Create_934cef8c(nint arg0) =>

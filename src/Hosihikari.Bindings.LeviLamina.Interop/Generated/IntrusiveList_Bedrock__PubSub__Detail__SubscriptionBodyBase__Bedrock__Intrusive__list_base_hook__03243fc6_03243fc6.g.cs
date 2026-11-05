@@ -42,9 +42,9 @@ public sealed unsafe partial class IntrusiveList_Bedrock__PubSub__Detail__Subscr
     public static IntrusiveList_Bedrock__PubSub__Detail__SubscriptionBodyBase__Bedrock__Intrusive__list_base_hook__03243fc6 Create() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
     public static IntrusiveList_Bedrock__PubSub__Detail__SubscriptionBodyBase__Bedrock__Intrusive__list_base_hook__03243fc6 Create(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
     public nint back_a5667e5f()
     {

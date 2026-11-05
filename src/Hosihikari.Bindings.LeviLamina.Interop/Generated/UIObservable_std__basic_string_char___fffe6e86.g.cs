@@ -38,9 +38,30 @@ public sealed unsafe partial class UIObservable_std__basic_string_char__ : globa
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
-    public static UIObservable_std__basic_string_char__ Create(nint initial, nint options) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+    public static UIObservable_std__basic_string_char__ Create(string initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(initial);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(initial, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_4e6bae49(__hs_stringData0, (nuint)__hs_stringByteCount0, (void*)options.Handle);
+            if (handle == null)
+            {
+                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            }
+
+            return new UIObservable_std__basic_string_char__((nint)handle);
+        }
+    }
 
     public bool isClientWritable()
     {

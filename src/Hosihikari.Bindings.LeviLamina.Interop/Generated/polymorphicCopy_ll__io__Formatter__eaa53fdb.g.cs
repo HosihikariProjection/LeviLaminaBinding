@@ -51,9 +51,9 @@ public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::
         return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has an abstract template argument.", false)]
     public static polymorphicCopy_ll__io__Formatter_ Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has an abstract template argument.");
 
     public void Dispose()
     {
