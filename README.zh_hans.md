@@ -35,7 +35,7 @@ powershell -File scripts/regenerate.ps1 -IrDirectory ..\Binding.Generator\artifa
 
 ## 运行时 smoke
 
-`scripts/run-runtime-smoke.ps1` 构建 shim 与 Interop，把 C# 测试插件安装到本地 BDS + LeviLamina 服务器，并校验结果文件。需要 Windows x64、BDS 1.26.60.6、LeviLamina v26.60.0、Hosihikari 载体与 `hosihikari-csharp`：
+`scripts/run-runtime-smoke.ps1` 构建 shim 与 Interop，把 C# 测试插件安装到本地 BDS + LeviLamina 服务器，并校验结果文件。需要 Windows x64、BDS 1.26.60.6、LeviLamina v26.60.2、Hosihikari 载体与 `hosihikari-csharp`：
 
 ```shell
 powershell -File scripts/run-runtime-smoke.ps1 -ServerRoot C:\path\to\bedrock-server
@@ -53,7 +53,7 @@ powershell -File scripts/run-runtime-smoke.ps1 -ServerRoot C:\path\to\bedrock-se
 dotnet build Hosihikari.Bindings.LeviLamina.slnx -c Release
 ```
 
-包版本跟随上游版本 + 绑定修订（`26.60.0-r0`）。该面的平台是 Windows x64。
+包版本跟随上游版本 + 绑定修订（`26.60.2-r0`）。该面的平台是 Windows x64。
 
 ## 相关仓库
 
