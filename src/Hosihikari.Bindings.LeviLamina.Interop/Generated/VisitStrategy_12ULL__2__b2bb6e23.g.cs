@@ -22,6 +22,8 @@ public sealed partial class VisitStrategy_12ULL__2_
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

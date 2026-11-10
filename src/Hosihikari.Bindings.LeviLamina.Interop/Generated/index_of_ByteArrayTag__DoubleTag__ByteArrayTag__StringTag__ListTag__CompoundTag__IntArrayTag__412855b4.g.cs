@@ -22,6 +22,8 @@ public sealed partial class index_of_ByteArrayTag__DoubleTag__ByteArrayTag__Stri
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

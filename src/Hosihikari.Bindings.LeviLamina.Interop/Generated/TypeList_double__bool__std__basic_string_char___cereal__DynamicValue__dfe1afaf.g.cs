@@ -21,6 +21,8 @@ public sealed unsafe partial class TypeList_double__bool__std__basic_string_char
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

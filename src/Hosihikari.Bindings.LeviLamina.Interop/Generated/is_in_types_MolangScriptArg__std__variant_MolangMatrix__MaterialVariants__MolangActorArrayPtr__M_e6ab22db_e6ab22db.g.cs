@@ -22,6 +22,8 @@ public sealed partial class is_in_types_MolangScriptArg__std__variant_MolangMatr
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

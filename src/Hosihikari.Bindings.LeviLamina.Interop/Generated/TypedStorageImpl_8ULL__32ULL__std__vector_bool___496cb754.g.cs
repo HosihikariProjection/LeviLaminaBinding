@@ -21,6 +21,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__vector_boo
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

@@ -21,6 +21,8 @@ public sealed unsafe partial class ParamTraits_CommandPositionFloat_ : global::S
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

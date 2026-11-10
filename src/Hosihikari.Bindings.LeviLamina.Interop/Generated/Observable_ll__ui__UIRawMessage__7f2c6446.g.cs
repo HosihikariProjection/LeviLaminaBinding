@@ -21,6 +21,8 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

@@ -22,6 +22,8 @@ public sealed partial class TypedStorageType_8ULL__24ULL__std__vector_ContainerO
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

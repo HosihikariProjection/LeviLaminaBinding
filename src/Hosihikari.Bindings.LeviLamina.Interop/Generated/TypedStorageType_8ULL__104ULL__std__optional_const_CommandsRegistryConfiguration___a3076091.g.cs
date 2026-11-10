@@ -22,6 +22,8 @@ public sealed partial class TypedStorageType_8ULL__104ULL__std__optional_const_C
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

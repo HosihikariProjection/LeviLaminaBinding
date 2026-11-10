@@ -22,6 +22,8 @@ public sealed partial class _unnamed_union_at_src_ll_api_memory_Memory_h_29_5_
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

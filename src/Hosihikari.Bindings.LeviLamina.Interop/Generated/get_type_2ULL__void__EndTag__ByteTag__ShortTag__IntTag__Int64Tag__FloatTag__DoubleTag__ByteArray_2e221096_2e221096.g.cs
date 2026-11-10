@@ -22,6 +22,8 @@ public sealed partial class get_type_2ULL__void__EndTag__ByteTag__ShortTag__IntT
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

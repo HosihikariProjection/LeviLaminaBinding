@@ -176,6 +176,7 @@
 #include "mc/deps/game_refs/OwnerPtr.h"
 #include "mc/deps/game_refs/WeakRef.h"
 #include "mc/platform/UUID.h"
+#include "mc/platform/brstd/bitset.h"
 #include "mc/server/commands/CommandFlag.h"
 #include "mc/server/commands/CommandOutput.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
@@ -384,6 +385,27 @@ inline std::vector<std::basic_string_view<char>> hs_make_string_view_vector(Hosi
     result.reserve(count);
     for (std::size_t i = 0; i < count; ++i) { result.emplace_back(data[i].data, data[i].size); }
     return result;
+}
+
+template <class T>
+void hs_release_game_ref_handle(void* holder)
+{
+    delete static_cast<T*>(holder);
+}
+
+template <class T>
+HosihikariSharedHandle hs_make_game_ref_handle(T const& value)
+{
+    if (!static_cast<bool>(value)) { return HosihikariSharedHandle{nullptr, nullptr, nullptr}; }
+    auto* holder = new T(value);
+    return HosihikariSharedHandle{holder, const_cast<void*>(static_cast<void const*>(&*holder)), &hs_release_game_ref_handle<T>};
+}
+
+template <class T>
+T const& hs_game_ref_from_handle(HosihikariSharedHandle handle)
+{
+    if (handle.holder == nullptr) { throw std::invalid_argument("empty game reference handle"); }
+    return *static_cast<T const*>(handle.holder);
 }
 
 static void hs_destroy_48e92a90(void* hs_self) try
@@ -973,7 +995,7 @@ catch (...)
 
 static void* hs_method_24ce3688(void* hs_self, void* arg0, std::int32_t arg1) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error*>(hs_self)->log(*static_cast<CommandOutput*>(arg0), static_cast<CommandOutputMessageType>(arg1))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error const*>(hs_self)->log(*static_cast<CommandOutput*>(arg0), static_cast<CommandOutputMessageType>(arg1))));
 }
 catch (std::exception const& hs_error)
 {
@@ -988,7 +1010,7 @@ catch (...)
 
 static void* hs_method_ecc40f03(void* hs_self, void* arg0, const char* locale_data, std::size_t locale_size, std::int32_t arg2) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error*>(hs_self)->log(*static_cast<CommandOutput*>(arg0), std::basic_string_view<char>(locale_data, locale_size), static_cast<CommandOutputMessageType>(arg2))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error const*>(hs_self)->log(*static_cast<CommandOutput*>(arg0), std::basic_string_view<char>(locale_data, locale_size), static_cast<CommandOutputMessageType>(arg2))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1024,7 +1046,7 @@ struct hs_cb_closure_hs_method_4962dd8b_cb0
 
 static void* hs_method_4962dd8b(void* hs_self, void* out_invoke, void* out_userData, void* out_release, const char* locale_data, std::size_t locale_size) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error*>(hs_self)->log(brstd::function_ref<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_4962dd8b_cb0{std::make_shared<hs_cb_state_hs_method_4962dd8b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_4962dd8b_cb0>(out_invoke), out_userData, reinterpret_cast<hs_cb_release_hs_method_4962dd8b_cb0>(out_release))}), std::basic_string_view<char>(locale_data, locale_size))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error const*>(hs_self)->log(brstd::function_ref<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_4962dd8b_cb0{std::make_shared<hs_cb_state_hs_method_4962dd8b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_4962dd8b_cb0>(out_invoke), out_userData, reinterpret_cast<hs_cb_release_hs_method_4962dd8b_cb0>(out_release))}), std::basic_string_view<char>(locale_data, locale_size))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1039,7 +1061,7 @@ catch (...)
 
 static void* hs_method_e159e652(void* hs_self, void* arg0, std::int32_t arg1) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error*>(hs_self)->log(*static_cast<ll::io::Logger*>(arg0), static_cast<ll::io::LogLevel>(arg1))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error const*>(hs_self)->log(*static_cast<ll::io::Logger*>(arg0), static_cast<ll::io::LogLevel>(arg1))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1054,7 +1076,7 @@ catch (...)
 
 static void* hs_method_909c5e3f(void* hs_self, void* arg0, const char* locale_data, std::size_t locale_size, std::int32_t arg2) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error*>(hs_self)->log(*static_cast<ll::io::Logger*>(arg0), std::basic_string_view<char>(locale_data, locale_size), static_cast<ll::io::LogLevel>(arg2))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Error const*>(hs_self)->log(*static_cast<ll::io::Logger*>(arg0), std::basic_string_view<char>(locale_data, locale_size), static_cast<ll::io::LogLevel>(arg2))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1069,7 +1091,7 @@ catch (...)
 
 static HosihikariStringView hs_method_efe26085(void* hs_self) try
 {
-    auto result = static_cast<ll::Error*>(hs_self)->message();
+    auto result = static_cast<ll::Error const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1086,7 +1108,7 @@ catch (...)
 
 static HosihikariStringView hs_method_0a714fe5(void* hs_self, const char* locale_data, std::size_t locale_size) try
 {
-    auto result = static_cast<ll::Error*>(hs_self)->message(std::basic_string_view<char>(locale_data, locale_size));
+    auto result = static_cast<ll::Error const*>(hs_self)->message(std::basic_string_view<char>(locale_data, locale_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1103,7 +1125,7 @@ catch (...)
 
 static bool hs_method_d1d2bd04(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::Error*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::Error const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -1178,7 +1200,7 @@ catch (...)
 
 static HosihikariStringView hs_method_826b1ca5(void* hs_self, const char* arg0_data, std::size_t arg0_size) try
 {
-    auto result = static_cast<ll::ErrorCodeError*>(hs_self)->message(std::basic_string_view<char>(arg0_data, arg0_size));
+    auto result = static_cast<ll::ErrorCodeError const*>(hs_self)->message(std::basic_string_view<char>(arg0_data, arg0_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1270,7 +1292,7 @@ catch (...)
 
 static HosihikariStringView hs_method_7806dc81(void* hs_self) try
 {
-    auto result = static_cast<ll::ErrorInfoBase*>(hs_self)->message();
+    auto result = static_cast<ll::ErrorInfoBase const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1317,7 +1339,7 @@ catch (...)
 
 static void* hs_method_a190feaf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<128ULL>*>(hs_self)->c_str()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<128ULL> const*>(hs_self)->c_str()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1347,7 +1369,7 @@ catch (...)
 
 static void* hs_method_3b134d02(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<128ULL>*>(hs_self)->data()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<128ULL> const*>(hs_self)->data()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1362,7 +1384,7 @@ catch (...)
 
 static HosihikariStringView hs_method_846315d0(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<128ULL>*>(hs_self)->operator std::basic_string_view<char>();
+    auto result = static_cast<ll::FixedString<128ULL> const*>(hs_self)->operator std::basic_string_view<char>();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1394,7 +1416,7 @@ catch (...)
 
 static void* hs_method_21321994(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<128ULL>*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<128ULL> const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1409,7 +1431,7 @@ catch (...)
 
 static std::uint64_t hs_method_da95eb0a(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::FixedString<128ULL>*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::FixedString<128ULL> const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -1424,7 +1446,7 @@ catch (...)
 
 static HosihikariStringView hs_method_82c79943(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<128ULL>*>(hs_self)->str();
+    auto result = static_cast<ll::FixedString<128ULL> const*>(hs_self)->str();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1441,7 +1463,7 @@ catch (...)
 
 static HosihikariStringView hs_method_6cfc8b82(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<128ULL>*>(hs_self)->sv();
+    auto result = static_cast<ll::FixedString<128ULL> const*>(hs_self)->sv();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1488,7 +1510,7 @@ catch (...)
 
 static void* hs_method_e5655d2c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<256ULL>*>(hs_self)->c_str()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<256ULL> const*>(hs_self)->c_str()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1518,7 +1540,7 @@ catch (...)
 
 static void* hs_method_724cd97b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<256ULL>*>(hs_self)->data()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<256ULL> const*>(hs_self)->data()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1533,7 +1555,7 @@ catch (...)
 
 static HosihikariStringView hs_method_d913bf76(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<256ULL>*>(hs_self)->operator std::basic_string_view<char>();
+    auto result = static_cast<ll::FixedString<256ULL> const*>(hs_self)->operator std::basic_string_view<char>();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1565,7 +1587,7 @@ catch (...)
 
 static void* hs_method_f89336ae(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<256ULL>*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<256ULL> const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1580,7 +1602,7 @@ catch (...)
 
 static std::uint64_t hs_method_b01e6034(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::FixedString<256ULL>*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::FixedString<256ULL> const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -1595,7 +1617,7 @@ catch (...)
 
 static HosihikariStringView hs_method_6f0b63ad(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<256ULL>*>(hs_self)->str();
+    auto result = static_cast<ll::FixedString<256ULL> const*>(hs_self)->str();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1612,7 +1634,7 @@ catch (...)
 
 static HosihikariStringView hs_method_78fae0a2(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<256ULL>*>(hs_self)->sv();
+    auto result = static_cast<ll::FixedString<256ULL> const*>(hs_self)->sv();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1659,7 +1681,7 @@ catch (...)
 
 static void* hs_method_269ebb5f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<260ULL>*>(hs_self)->c_str()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<260ULL> const*>(hs_self)->c_str()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1689,7 +1711,7 @@ catch (...)
 
 static void* hs_method_f7da68ea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<260ULL>*>(hs_self)->data()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::FixedString<260ULL> const*>(hs_self)->data()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1704,7 +1726,7 @@ catch (...)
 
 static HosihikariStringView hs_method_d137e359(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<260ULL>*>(hs_self)->operator std::basic_string_view<char>();
+    auto result = static_cast<ll::FixedString<260ULL> const*>(hs_self)->operator std::basic_string_view<char>();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1736,7 +1758,7 @@ catch (...)
 
 static void* hs_method_5d120a35(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<260ULL>*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::FixedString<260ULL> const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -1751,7 +1773,7 @@ catch (...)
 
 static std::uint64_t hs_method_7ad0e313(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::FixedString<260ULL>*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::FixedString<260ULL> const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -1766,7 +1788,7 @@ catch (...)
 
 static HosihikariStringView hs_method_b7021eeb(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<260ULL>*>(hs_self)->str();
+    auto result = static_cast<ll::FixedString<260ULL> const*>(hs_self)->str();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1783,7 +1805,7 @@ catch (...)
 
 static HosihikariStringView hs_method_72c9956d(void* hs_self) try
 {
-    auto result = static_cast<ll::FixedString<260ULL>*>(hs_self)->sv();
+    auto result = static_cast<ll::FixedString<260ULL> const*>(hs_self)->sv();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -1815,7 +1837,7 @@ catch (...)
 
 static std::int32_t hs_method_77937482(void* hs_self) try
 {
-    return static_cast<std::int32_t>(static_cast<ll::SourceLocation*>(hs_self)->column());
+    return static_cast<std::int32_t>(static_cast<ll::SourceLocation const*>(hs_self)->column());
 }
 catch (std::exception const& hs_error)
 {
@@ -1830,7 +1852,7 @@ catch (...)
 
 static void* hs_method_673db6c0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation*>(hs_self)->file()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation const*>(hs_self)->file()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1845,7 +1867,7 @@ catch (...)
 
 static void* hs_method_26ba98aa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation*>(hs_self)->funcsig()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation const*>(hs_self)->funcsig()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1860,7 +1882,7 @@ catch (...)
 
 static void* hs_method_968c3612(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation*>(hs_self)->function()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::SourceLocation const*>(hs_self)->function()));
 }
 catch (std::exception const& hs_error)
 {
@@ -1875,7 +1897,7 @@ catch (...)
 
 static std::int32_t hs_method_ced6fd68(void* hs_self) try
 {
-    return static_cast<std::int32_t>(static_cast<ll::SourceLocation*>(hs_self)->line());
+    return static_cast<std::int32_t>(static_cast<ll::SourceLocation const*>(hs_self)->line());
 }
 catch (std::exception const& hs_error)
 {
@@ -1995,7 +2017,7 @@ catch (...)
 
 static HosihikariStringView hs_method_58298df9(void* hs_self) try
 {
-    auto result = static_cast<ll::SourceLocation*>(hs_self)->toString();
+    auto result = static_cast<ll::SourceLocation const*>(hs_self)->toString();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -2042,7 +2064,7 @@ catch (...)
 
 static bool hs_method_98d6483c(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::Stacktrace*>(hs_self)->empty());
+    return static_cast<bool>(static_cast<ll::Stacktrace const*>(hs_self)->empty());
 }
 catch (std::exception const& hs_error)
 {
@@ -2057,7 +2079,7 @@ catch (...)
 
 static std::uint64_t hs_method_e66468aa(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::Stacktrace*>(hs_self)->getHash());
+    return static_cast<std::uint64_t>(static_cast<ll::Stacktrace const*>(hs_self)->getHash());
 }
 catch (std::exception const& hs_error)
 {
@@ -2072,7 +2094,7 @@ catch (...)
 
 static void* hs_method_ca44197a(void* hs_self, std::uint64_t index) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Stacktrace*>(hs_self)->operator[](static_cast<std::uint64_t>(index))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::Stacktrace const*>(hs_self)->operator[](static_cast<std::uint64_t>(index))));
 }
 catch (std::exception const& hs_error)
 {
@@ -2087,7 +2109,7 @@ catch (...)
 
 static std::uint64_t hs_method_87be660e(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::Stacktrace*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::Stacktrace const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -2132,7 +2154,7 @@ catch (...)
 
 static void* hs_method_6b2e4f6d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::StacktraceEntry*>(hs_self)->native_handle()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::StacktraceEntry const*>(hs_self)->native_handle()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2192,7 +2214,7 @@ catch (...)
 
 static HosihikariStringView hs_method_6fe8b378(void* hs_self, const char* arg0_data, std::size_t arg0_size) try
 {
-    auto result = static_cast<ll::StringError*>(hs_self)->message(std::basic_string_view<char>(arg0_data, arg0_size));
+    auto result = static_cast<ll::StringError const*>(hs_self)->message(std::basic_string_view<char>(arg0_data, arg0_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -2271,7 +2293,7 @@ catch (...)
 
 static void* hs_method_d860bdd7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2287,7 +2309,7 @@ catch (...)
 
 static void* hs_method_ff333552(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2317,7 +2339,7 @@ catch (...)
 
 static void* hs_method_db58623d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)->operator const Bedrock::EnumSet<BlockClientPredictionOverrides, 7> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)->operator const Bedrock::EnumSet<BlockClientPredictionOverrides, 7> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2363,7 +2385,7 @@ catch (...)
 
 static void* hs_method_ec8fb7ca(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2379,7 +2401,7 @@ catch (...)
 
 static void* hs_method_c2af99f3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2409,7 +2431,7 @@ catch (...)
 
 static void* hs_method_bd1b5798(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2470,7 +2492,7 @@ catch (...)
 
 static void* hs_method_ccd1caad(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2486,7 +2508,7 @@ catch (...)
 
 static void* hs_method_8a1fe624(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2516,7 +2538,7 @@ catch (...)
 
 static void* hs_method_cf45ca18(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)->operator const Brightness &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)->operator const Brightness &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2562,7 +2584,7 @@ catch (...)
 
 static void* hs_method_0558afa3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2578,7 +2600,7 @@ catch (...)
 
 static void* hs_method_034f40cc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2608,7 +2630,7 @@ catch (...)
 
 static void* hs_method_ce180ed6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2669,7 +2691,7 @@ catch (...)
 
 static void* hs_method_c19404b1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2685,7 +2707,7 @@ catch (...)
 
 static void* hs_method_09a8fe42(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2715,7 +2737,7 @@ catch (...)
 
 static void* hs_method_824a0bfc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)->operator const CommandMessageParams &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)->operator const CommandMessageParams &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2761,7 +2783,7 @@ catch (...)
 
 static void* hs_method_95a0b88f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2777,7 +2799,7 @@ catch (...)
 
 static void* hs_method_61c524ff(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2807,7 +2829,7 @@ catch (...)
 
 static void* hs_method_40cc6723(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2868,7 +2890,7 @@ catch (...)
 
 static void* hs_method_236ad985(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2884,7 +2906,7 @@ catch (...)
 
 static void* hs_method_6f48addc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2914,7 +2936,7 @@ catch (...)
 
 static void* hs_method_4ec39645(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)->operator const ServerGraphicsSettings &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)->operator const ServerGraphicsSettings &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -2960,7 +2982,7 @@ catch (...)
 
 static void* hs_method_c2cc83ca(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -2976,7 +2998,7 @@ catch (...)
 
 static void* hs_method_765f5514(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3006,7 +3028,7 @@ catch (...)
 
 static void* hs_method_0a4866d7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, ServerGraphicsSettings> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3067,7 +3089,7 @@ catch (...)
 
 static void* hs_method_ab61a985(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3083,7 +3105,7 @@ catch (...)
 
 static void* hs_method_5acd822c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3113,7 +3135,7 @@ catch (...)
 
 static void* hs_method_351f9825(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)->operator const SharedTypes::v1_26_0::BlockedDirections &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)->operator const SharedTypes::v1_26_0::BlockedDirections &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3159,7 +3181,7 @@ catch (...)
 
 static void* hs_method_e7835bd1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3175,7 +3197,7 @@ catch (...)
 
 static void* hs_method_f432e11b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3205,7 +3227,7 @@ catch (...)
 
 static void* hs_method_01741467(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3265,7 +3287,7 @@ catch (...)
 
 static void* hs_method_c2131d47(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3281,7 +3303,7 @@ catch (...)
 
 static void* hs_method_93d7e67b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3327,7 +3349,7 @@ catch (...)
 
 static void* hs_method_ce7ec8ea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)->operator const mce::MaterialPtr &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)->operator const mce::MaterialPtr &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3357,7 +3379,7 @@ catch (...)
 
 static void* hs_method_6611759e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3373,7 +3395,7 @@ catch (...)
 
 static void* hs_method_8723d7db(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3419,7 +3441,7 @@ catch (...)
 
 static void* hs_method_b06de103(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, mce::MaterialPtr> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3479,7 +3501,7 @@ catch (...)
 
 static void* hs_method_1f916e77(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3495,7 +3517,7 @@ catch (...)
 
 static void* hs_method_a30eb4e9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3541,7 +3563,7 @@ catch (...)
 
 static void* hs_method_735771fe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)->operator const std::atomic<bool> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)->operator const std::atomic<bool> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3571,7 +3593,7 @@ catch (...)
 
 static void* hs_method_70bb0fc6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3587,7 +3609,7 @@ catch (...)
 
 static void* hs_method_bda1d150(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3633,7 +3655,7 @@ catch (...)
 
 static void* hs_method_e263d91e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3709,7 +3731,7 @@ catch (...)
 
 static void* hs_method_8737f5bf(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3725,7 +3747,7 @@ catch (...)
 
 static void* hs_method_557c093e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3755,7 +3777,7 @@ catch (...)
 
 static void* hs_method_b17bbd29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)->operator const BrightnessPair &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)->operator const BrightnessPair &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3801,7 +3823,7 @@ catch (...)
 
 static void* hs_method_4c37abcd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3817,7 +3839,7 @@ catch (...)
 
 static void* hs_method_e8400401(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3847,7 +3869,7 @@ catch (...)
 
 static void* hs_method_eede2e6c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3908,7 +3930,7 @@ catch (...)
 
 static void* hs_method_ae39ed9c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -3924,7 +3946,7 @@ catch (...)
 
 static void* hs_method_b2f56816(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -3954,7 +3976,7 @@ catch (...)
 
 static void* hs_method_9858124f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)->operator const Material &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)->operator const Material &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4000,7 +4022,7 @@ catch (...)
 
 static void* hs_method_5767ff51(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4016,7 +4038,7 @@ catch (...)
 
 static void* hs_method_0d8b0820(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4046,7 +4068,7 @@ catch (...)
 
 static void* hs_method_ad42dcd9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4076,7 +4098,7 @@ catch (...)
 
 static void* hs_method_5afa7015(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4092,7 +4114,7 @@ catch (...)
 
 static void* hs_method_1ebb7d31(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4138,7 +4160,7 @@ catch (...)
 
 static void* hs_method_d85411a7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)->operator const std::optional<CommandPermissionLevel> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)->operator const std::optional<CommandPermissionLevel> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4168,7 +4190,7 @@ catch (...)
 
 static void* hs_method_226f0c3d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4184,7 +4206,7 @@ catch (...)
 
 static void* hs_method_99b6812d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4230,7 +4252,7 @@ catch (...)
 
 static void* hs_method_20ac216b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4275,7 +4297,7 @@ catch (...)
 
 static void* hs_method_15a211e1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4291,7 +4313,7 @@ catch (...)
 
 static void* hs_method_e08f0f36(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4337,7 +4359,7 @@ catch (...)
 
 static void* hs_method_2fc76247(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)->operator const std::optional<HandSlot> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)->operator const std::optional<HandSlot> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4367,7 +4389,7 @@ catch (...)
 
 static void* hs_method_1fdb5ccf(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4383,7 +4405,7 @@ catch (...)
 
 static void* hs_method_08bd89c1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4429,7 +4451,7 @@ catch (...)
 
 static void* hs_method_9643e97d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<HandSlot>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4474,7 +4496,7 @@ catch (...)
 
 static void* hs_method_7063a68f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4490,7 +4512,7 @@ catch (...)
 
 static void* hs_method_2dbf8b9f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4536,7 +4558,7 @@ catch (...)
 
 static void* hs_method_fd1438d5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)->operator const std::optional<bool> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)->operator const std::optional<bool> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4566,7 +4588,7 @@ catch (...)
 
 static void* hs_method_4f284a6b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4582,7 +4604,7 @@ catch (...)
 
 static void* hs_method_d4ad4c33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4628,7 +4650,7 @@ catch (...)
 
 static void* hs_method_a347d21a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4673,7 +4695,7 @@ catch (...)
 
 static void* hs_method_bbf8119e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4689,7 +4711,7 @@ catch (...)
 
 static void* hs_method_6517082e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4735,7 +4757,7 @@ catch (...)
 
 static void* hs_method_aa7ff934(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)->operator const std::optional<AgentCapabilities> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)->operator const std::optional<AgentCapabilities> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4765,7 +4787,7 @@ catch (...)
 
 static void* hs_method_53530dcc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4781,7 +4803,7 @@ catch (...)
 
 static void* hs_method_cb3dff8a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4827,7 +4849,7 @@ catch (...)
 
 static void* hs_method_226d9711(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 3ULL, std::optional<AgentCapabilities>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4903,7 +4925,7 @@ catch (...)
 
 static void* hs_method_e628fa6a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -4919,7 +4941,7 @@ catch (...)
 
 static void* hs_method_4a81ee1e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4949,7 +4971,7 @@ catch (...)
 
 static void* hs_method_4fe28e93(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)->operator const SharedTypes::v1_26_0::DetectionRule &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)->operator const SharedTypes::v1_26_0::DetectionRule &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -4995,7 +5017,7 @@ catch (...)
 
 static void* hs_method_2b92cc3c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5011,7 +5033,7 @@ catch (...)
 
 static void* hs_method_6f9767f9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5041,7 +5063,7 @@ catch (...)
 
 static void* hs_method_bacfac08(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5117,7 +5139,7 @@ catch (...)
 
 static void* hs_method_bf0d103d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5133,7 +5155,7 @@ catch (...)
 
 static void* hs_method_c4788da1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5163,7 +5185,7 @@ catch (...)
 
 static void* hs_method_47094f7b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)->operator const MolangLoopBreak &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)->operator const MolangLoopBreak &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5209,7 +5231,7 @@ catch (...)
 
 static void* hs_method_032efe73(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5225,7 +5247,7 @@ catch (...)
 
 static void* hs_method_2b61f504(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5255,7 +5277,7 @@ catch (...)
 
 static void* hs_method_55aea1fd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5331,7 +5353,7 @@ catch (...)
 
 static void* hs_method_095a58cd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5347,7 +5369,7 @@ catch (...)
 
 static void* hs_method_ef032f3e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5377,7 +5399,7 @@ catch (...)
 
 static void* hs_method_35c5764d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->operator const MolangLoopContinue &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)->operator const MolangLoopContinue &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5423,7 +5445,7 @@ catch (...)
 
 static void* hs_method_4386c42d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5439,7 +5461,7 @@ catch (...)
 
 static void* hs_method_2d24a809(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5469,7 +5491,7 @@ catch (...)
 
 static void* hs_method_4c297392(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5530,7 +5552,7 @@ catch (...)
 
 static void* hs_method_eed02f1b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5546,7 +5568,7 @@ catch (...)
 
 static void* hs_method_ee39a0ed(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5576,7 +5598,7 @@ catch (...)
 
 static void* hs_method_e7fe4256(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator const Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)->operator const Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5622,7 +5644,7 @@ catch (...)
 
 static void* hs_method_c4777e8f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5638,7 +5660,7 @@ catch (...)
 
 static void* hs_method_7657c4a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5668,7 +5690,7 @@ catch (...)
 
 static void* hs_method_3b542369(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5729,7 +5751,7 @@ catch (...)
 
 static void* hs_method_656a0d6d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5745,7 +5767,7 @@ catch (...)
 
 static void* hs_method_87d2ee40(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5775,7 +5797,7 @@ catch (...)
 
 static void* hs_method_43d716d3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)->operator const CommandFlag &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)->operator const CommandFlag &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5821,7 +5843,7 @@ catch (...)
 
 static void* hs_method_810ad943(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5837,7 +5859,7 @@ catch (...)
 
 static void* hs_method_0d569cc4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5867,7 +5889,7 @@ catch (...)
 
 static void* hs_method_27b49df6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5928,7 +5950,7 @@ catch (...)
 
 static void* hs_method_2f4579dc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -5944,7 +5966,7 @@ catch (...)
 
 static void* hs_method_81ca8b3a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -5974,7 +5996,7 @@ catch (...)
 
 static void* hs_method_29ff4f5b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)->operator const NewBlockID &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)->operator const NewBlockID &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6020,7 +6042,7 @@ catch (...)
 
 static void* hs_method_89eddf6e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6036,7 +6058,7 @@ catch (...)
 
 static void* hs_method_567b1c42(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6066,7 +6088,7 @@ catch (...)
 
 static void* hs_method_4b4aa595(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6127,7 +6149,7 @@ catch (...)
 
 static void* hs_method_b246e2ed(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6143,7 +6165,7 @@ catch (...)
 
 static void* hs_method_06d03e29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6173,7 +6195,7 @@ catch (...)
 
 static void* hs_method_d194d534(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)->operator const VoxelShapes::RegistryHandle &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)->operator const VoxelShapes::RegistryHandle &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6219,7 +6241,7 @@ catch (...)
 
 static void* hs_method_e53d6769(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6235,7 +6257,7 @@ catch (...)
 
 static void* hs_method_38ed37c3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6265,7 +6287,7 @@ catch (...)
 
 static void* hs_method_7d471dd8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6326,7 +6348,7 @@ catch (...)
 
 static void* hs_method_fa074116(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6342,7 +6364,7 @@ catch (...)
 
 static void* hs_method_10ea2fb2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6372,7 +6394,7 @@ catch (...)
 
 static void* hs_method_ea86c0ec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)->operator const BlockPos &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)->operator const BlockPos &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6418,7 +6440,7 @@ catch (...)
 
 static void* hs_method_e55c47d0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6434,7 +6456,7 @@ catch (...)
 
 static void* hs_method_30ddcfb8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6464,7 +6486,7 @@ catch (...)
 
 static void* hs_method_8f7f6252(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6525,7 +6547,7 @@ catch (...)
 
 static void* hs_method_8cd2c0d2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6541,7 +6563,7 @@ catch (...)
 
 static void* hs_method_0540f17a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6571,7 +6593,7 @@ catch (...)
 
 static void* hs_method_b2e93bf1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)->operator const ClockSpriteCalculator &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)->operator const ClockSpriteCalculator &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6617,7 +6639,7 @@ catch (...)
 
 static void* hs_method_b765ccfb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6633,7 +6655,7 @@ catch (...)
 
 static void* hs_method_b2fd02b0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6663,7 +6685,7 @@ catch (...)
 
 static void* hs_method_b6c732d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6724,7 +6746,7 @@ catch (...)
 
 static void* hs_method_bcdc0efc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6740,7 +6762,7 @@ catch (...)
 
 static void* hs_method_2bab29fb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6770,7 +6792,7 @@ catch (...)
 
 static void* hs_method_c25ff4c6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)->operator const FurnaceOptions &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)->operator const FurnaceOptions &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6816,7 +6838,7 @@ catch (...)
 
 static void* hs_method_c6015ae3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6832,7 +6854,7 @@ catch (...)
 
 static void* hs_method_d1fe4092(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6862,7 +6884,7 @@ catch (...)
 
 static void* hs_method_608a8b33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, FurnaceOptions> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6938,7 +6960,7 @@ catch (...)
 
 static void* hs_method_1e6cd977(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -6954,7 +6976,7 @@ catch (...)
 
 static void* hs_method_f2da1cd9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -6984,7 +7006,7 @@ catch (...)
 
 static void* hs_method_0ce8b6aa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)->operator const Vec3 &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)->operator const Vec3 &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7030,7 +7052,7 @@ catch (...)
 
 static void* hs_method_ba923d84(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7046,7 +7068,7 @@ catch (...)
 
 static void* hs_method_48ff48db(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7076,7 +7098,7 @@ catch (...)
 
 static void* hs_method_3de1cf91(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7106,7 +7128,7 @@ catch (...)
 
 static void* hs_method_9b63ec0b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7122,7 +7144,7 @@ catch (...)
 
 static void* hs_method_0ba4e2d9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7168,7 +7190,7 @@ catch (...)
 
 static void* hs_method_45543b37(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->operator const mce::Color &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)->operator const mce::Color &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7198,7 +7220,7 @@ catch (...)
 
 static void* hs_method_bc070025(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7214,7 +7236,7 @@ catch (...)
 
 static void* hs_method_7020d04a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7260,7 +7282,7 @@ catch (...)
 
 static void* hs_method_834989ea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7305,7 +7327,7 @@ catch (...)
 
 static void* hs_method_b00f9c9b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7321,7 +7343,7 @@ catch (...)
 
 static void* hs_method_e5f84dc0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7367,7 +7389,7 @@ catch (...)
 
 static void* hs_method_e98d92ec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)->operator const std::optional<Vec3> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)->operator const std::optional<Vec3> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7397,7 +7419,7 @@ catch (...)
 
 static void* hs_method_2562efb1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7413,7 +7435,7 @@ catch (...)
 
 static void* hs_method_1a8036a0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7459,7 +7481,7 @@ catch (...)
 
 static void* hs_method_22097a48(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 16ULL, std::optional<Vec3>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7535,7 +7557,7 @@ catch (...)
 
 static void* hs_method_253bdfc3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7551,7 +7573,7 @@ catch (...)
 
 static void* hs_method_95cc38bd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7581,7 +7603,7 @@ catch (...)
 
 static void* hs_method_0fe45663(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)->operator const ConnectionDefinition &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)->operator const ConnectionDefinition &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7627,7 +7649,7 @@ catch (...)
 
 static void* hs_method_bdb7d0d7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7643,7 +7665,7 @@ catch (...)
 
 static void* hs_method_16ef9635(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7673,7 +7695,7 @@ catch (...)
 
 static void* hs_method_d7261d7c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7734,7 +7756,7 @@ catch (...)
 
 static void* hs_method_03530b7f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7750,7 +7772,7 @@ catch (...)
 
 static void* hs_method_e97688ff(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7780,7 +7802,7 @@ catch (...)
 
 static void* hs_method_eb8584da(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)->operator const InventoryOptions &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)->operator const InventoryOptions &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7826,7 +7848,7 @@ catch (...)
 
 static void* hs_method_b2c4f0eb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7842,7 +7864,7 @@ catch (...)
 
 static void* hs_method_853f39c1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7872,7 +7894,7 @@ catch (...)
 
 static void* hs_method_ccf3db73(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7902,7 +7924,7 @@ catch (...)
 
 static void* hs_method_066a0e8d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -7918,7 +7940,7 @@ catch (...)
 
 static void* hs_method_d490a93b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7964,7 +7986,7 @@ catch (...)
 
 static void* hs_method_b7b84c0a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)->operator const std::optional<MERSUniformData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)->operator const std::optional<MERSUniformData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -7994,7 +8016,7 @@ catch (...)
 
 static void* hs_method_b38245d3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8010,7 +8032,7 @@ catch (...)
 
 static void* hs_method_fe91acec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8056,7 +8078,7 @@ catch (...)
 
 static void* hs_method_d158152d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8132,7 +8154,7 @@ catch (...)
 
 static void* hs_method_1bc7f6f0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8148,7 +8170,7 @@ catch (...)
 
 static void* hs_method_9be7ca88(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8178,7 +8200,7 @@ catch (...)
 
 static void* hs_method_6029745c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)->operator const AABB &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)->operator const AABB &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8224,7 +8246,7 @@ catch (...)
 
 static void* hs_method_0fb6b17c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8240,7 +8262,7 @@ catch (...)
 
 static void* hs_method_f49d6b6c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8270,7 +8292,7 @@ catch (...)
 
 static void* hs_method_428eb2eb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8331,7 +8353,7 @@ catch (...)
 
 static void* hs_method_222897f9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8347,7 +8369,7 @@ catch (...)
 
 static void* hs_method_258fb540(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8377,7 +8399,7 @@ catch (...)
 
 static void* hs_method_e67eafc1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)->operator const Player::PlayerSpawnPoint &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)->operator const Player::PlayerSpawnPoint &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8423,7 +8445,7 @@ catch (...)
 
 static void* hs_method_9903fa4e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8439,7 +8461,7 @@ catch (...)
 
 static void* hs_method_3f450394(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8469,7 +8491,7 @@ catch (...)
 
 static void* hs_method_490edd9a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8530,7 +8552,7 @@ catch (...)
 
 static void* hs_method_b0bc0efe(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8546,7 +8568,7 @@ catch (...)
 
 static void* hs_method_d65c6419(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8576,7 +8598,7 @@ catch (...)
 
 static void* hs_method_afc1c0e4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)->operator const ActorVersion &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)->operator const ActorVersion &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8622,7 +8644,7 @@ catch (...)
 
 static void* hs_method_fc558349(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8638,7 +8660,7 @@ catch (...)
 
 static void* hs_method_bd6e3ff7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8668,7 +8690,7 @@ catch (...)
 
 static void* hs_method_12a902e5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8744,7 +8766,7 @@ catch (...)
 
 static void* hs_method_1d81e17c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8760,7 +8782,7 @@ catch (...)
 
 static void* hs_method_17b6fd99(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8790,7 +8812,7 @@ catch (...)
 
 static void* hs_method_2ed39b1a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)->operator const CommandRegistry::Symbol &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)->operator const CommandRegistry::Symbol &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8836,7 +8858,7 @@ catch (...)
 
 static void* hs_method_71151a36(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8852,7 +8874,7 @@ catch (...)
 
 static void* hs_method_72e7888c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8882,7 +8904,7 @@ catch (...)
 
 static void* hs_method_5bdfbe8d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8943,7 +8965,7 @@ catch (...)
 
 static void* hs_method_04ad0684(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -8959,7 +8981,7 @@ catch (...)
 
 static void* hs_method_6cb63eaf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -8989,7 +9011,7 @@ catch (...)
 
 static void* hs_method_541c0591(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)->operator const DimensionType &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)->operator const DimensionType &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9035,7 +9057,7 @@ catch (...)
 
 static void* hs_method_1e51b674(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9051,7 +9073,7 @@ catch (...)
 
 static void* hs_method_45c17232(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9081,7 +9103,7 @@ catch (...)
 
 static void* hs_method_e47ae7b5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9142,7 +9164,7 @@ catch (...)
 
 static void* hs_method_6355c269(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9158,7 +9180,7 @@ catch (...)
 
 static void* hs_method_a547dcd1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9188,7 +9210,7 @@ catch (...)
 
 static void* hs_method_2519fbb0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)->operator const EducationEditionOfferValue &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)->operator const EducationEditionOfferValue &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9234,7 +9256,7 @@ catch (...)
 
 static void* hs_method_5e3ade5a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9250,7 +9272,7 @@ catch (...)
 
 static void* hs_method_cfb07ee6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9280,7 +9302,7 @@ catch (...)
 
 static void* hs_method_7f05df34(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9310,7 +9332,7 @@ catch (...)
 
 static void* hs_method_ecec115d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9326,7 +9348,7 @@ catch (...)
 
 static void* hs_method_541c5715(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9372,7 +9394,7 @@ catch (...)
 
 static void* hs_method_073cfb0f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->operator const std::atomic<ServerInstance::InstanceState> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)->operator const std::atomic<ServerInstance::InstanceState> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9402,7 +9424,7 @@ catch (...)
 
 static void* hs_method_ad479067(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9418,7 +9440,7 @@ catch (...)
 
 static void* hs_method_59be952e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9464,7 +9486,7 @@ catch (...)
 
 static void* hs_method_5be7e3c6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9509,7 +9531,7 @@ catch (...)
 
 static void* hs_method_5803d93f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9525,7 +9547,7 @@ catch (...)
 
 static void* hs_method_36c3b069(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9571,7 +9593,7 @@ catch (...)
 
 static void* hs_method_c8420dec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)->operator const std::atomic<int> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)->operator const std::atomic<int> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9601,7 +9623,7 @@ catch (...)
 
 static void* hs_method_63c94af6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9617,7 +9639,7 @@ catch (...)
 
 static void* hs_method_187ede13(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9663,7 +9685,7 @@ catch (...)
 
 static void* hs_method_3f4bd1d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9708,7 +9730,7 @@ catch (...)
 
 static void* hs_method_e7d9e7a9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9724,7 +9746,7 @@ catch (...)
 
 static void* hs_method_1bb04bad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9770,7 +9792,7 @@ catch (...)
 
 static void* hs_method_42654f2c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->operator const std::thread::id &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)->operator const std::thread::id &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9800,7 +9822,7 @@ catch (...)
 
 static void* hs_method_ee0252ca(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9816,7 +9838,7 @@ catch (...)
 
 static void* hs_method_25d741be(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9862,7 +9884,7 @@ catch (...)
 
 static void* hs_method_a58fc2cb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9907,7 +9929,7 @@ catch (...)
 
 static void* hs_method_5c12d7c9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -9923,7 +9945,7 @@ catch (...)
 
 static void* hs_method_faf83094(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9969,7 +9991,7 @@ catch (...)
 
 static void* hs_method_bb0f7ad8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)->operator const std::array<HudVisibility, 13> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)->operator const std::array<HudVisibility, 13> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -9999,7 +10021,7 @@ catch (...)
 
 static void* hs_method_6acfdb74(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10015,7 +10037,7 @@ catch (...)
 
 static void* hs_method_0928f4db(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10061,7 +10083,7 @@ catch (...)
 
 static void* hs_method_ae6f498d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10137,7 +10159,7 @@ catch (...)
 
 static void* hs_method_40d4558d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10153,7 +10175,7 @@ catch (...)
 
 static void* hs_method_7d3e74db(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10183,7 +10205,7 @@ catch (...)
 
 static void* hs_method_556c8775(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)->operator const Player::CachedSpawnData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)->operator const Player::CachedSpawnData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10229,7 +10251,7 @@ catch (...)
 
 static void* hs_method_dead573f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10245,7 +10267,7 @@ catch (...)
 
 static void* hs_method_4516d473(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10275,7 +10297,7 @@ catch (...)
 
 static void* hs_method_62df9ea6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10305,7 +10327,7 @@ catch (...)
 
 static void* hs_method_d856b6d4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10321,7 +10343,7 @@ catch (...)
 
 static void* hs_method_f1a91a05(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10367,7 +10389,7 @@ catch (...)
 
 static void* hs_method_8b94a775(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)->operator const std::optional<glm::mat<4, 4, float> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)->operator const std::optional<glm::mat<4, 4, float> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10397,7 +10419,7 @@ catch (...)
 
 static void* hs_method_982a1859(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10413,7 +10435,7 @@ catch (...)
 
 static void* hs_method_43190d71(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10459,7 +10481,7 @@ catch (...)
 
 static void* hs_method_edc33e19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 68ULL, std::optional<glm::mat<4, 4, float>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10535,7 +10557,7 @@ catch (...)
 
 static void* hs_method_e71d2abd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10551,7 +10573,7 @@ catch (...)
 
 static void* hs_method_ad2f983e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10581,7 +10603,7 @@ catch (...)
 
 static void* hs_method_91691108(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)->operator const CachedComponentData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)->operator const CachedComponentData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10627,7 +10649,7 @@ catch (...)
 
 static void* hs_method_0eac9ece(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10643,7 +10665,7 @@ catch (...)
 
 static void* hs_method_116f7b3e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10673,7 +10695,7 @@ catch (...)
 
 static void* hs_method_b032207c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10734,7 +10756,7 @@ catch (...)
 
 static void* hs_method_f3681cd7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10750,7 +10772,7 @@ catch (...)
 
 static void* hs_method_cf84b1d2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10780,7 +10802,7 @@ catch (...)
 
 static void* hs_method_f38a1277(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)->operator const CommandVersion &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)->operator const CommandVersion &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10826,7 +10848,7 @@ catch (...)
 
 static void* hs_method_2545cfd5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10842,7 +10864,7 @@ catch (...)
 
 static void* hs_method_3bc5064d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10872,7 +10894,7 @@ catch (...)
 
 static void* hs_method_35a7ee14(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10933,7 +10955,7 @@ catch (...)
 
 static void* hs_method_9526d850(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -10949,7 +10971,7 @@ catch (...)
 
 static void* hs_method_b4182191(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -10979,7 +11001,7 @@ catch (...)
 
 static void* hs_method_429df2ba(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)->operator const IntRange &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)->operator const IntRange &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11025,7 +11047,7 @@ catch (...)
 
 static void* hs_method_28230475(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11041,7 +11063,7 @@ catch (...)
 
 static void* hs_method_2a8dbf2d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11071,7 +11093,7 @@ catch (...)
 
 static void* hs_method_1ff18816(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11147,7 +11169,7 @@ catch (...)
 
 static void* hs_method_4691a59a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11163,7 +11185,7 @@ catch (...)
 
 static void* hs_method_e99c0e6c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11193,7 +11215,7 @@ catch (...)
 
 static void* hs_method_64cc98f3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)->operator const MolangVariableSettings &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)->operator const MolangVariableSettings &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11239,7 +11261,7 @@ catch (...)
 
 static void* hs_method_ce394fdb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11255,7 +11277,7 @@ catch (...)
 
 static void* hs_method_f5ac0a5b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11285,7 +11307,7 @@ catch (...)
 
 static void* hs_method_422625a2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11361,7 +11383,7 @@ catch (...)
 
 static void* hs_method_9a8942ba(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11377,7 +11399,7 @@ catch (...)
 
 static void* hs_method_e62d3a15(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11407,7 +11429,7 @@ catch (...)
 
 static void* hs_method_a42e15db(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)->operator const PlayerInventorySlotData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)->operator const PlayerInventorySlotData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11453,7 +11475,7 @@ catch (...)
 
 static void* hs_method_80eb2666(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11469,7 +11491,7 @@ catch (...)
 
 static void* hs_method_2a3f75ed(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11499,7 +11521,7 @@ catch (...)
 
 static void* hs_method_3f83a047(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11560,7 +11582,7 @@ catch (...)
 
 static void* hs_method_2b24bd9d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11576,7 +11598,7 @@ catch (...)
 
 static void* hs_method_2efa5630(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11606,7 +11628,7 @@ catch (...)
 
 static void* hs_method_4e6d32cd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)->operator const Vec2 &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)->operator const Vec2 &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11652,7 +11674,7 @@ catch (...)
 
 static void* hs_method_bc471b84(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11668,7 +11690,7 @@ catch (...)
 
 static void* hs_method_69f2cbe7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11698,7 +11720,7 @@ catch (...)
 
 static void* hs_method_2ea1fbdc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11728,7 +11750,7 @@ catch (...)
 
 static void* hs_method_f1e13386(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11744,7 +11766,7 @@ catch (...)
 
 static void* hs_method_93a820ca(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11790,7 +11812,7 @@ catch (...)
 
 static void* hs_method_bc73022e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)->operator const std::optional<PlayerSpawnFallbackType> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)->operator const std::optional<PlayerSpawnFallbackType> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11820,7 +11842,7 @@ catch (...)
 
 static void* hs_method_74c06246(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11836,7 +11858,7 @@ catch (...)
 
 static void* hs_method_6a8e7fbf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11882,7 +11904,7 @@ catch (...)
 
 static void* hs_method_4f29b20c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<PlayerSpawnFallbackType>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11927,7 +11949,7 @@ catch (...)
 
 static void* hs_method_4906202f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -11943,7 +11965,7 @@ catch (...)
 
 static void* hs_method_112be5a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -11989,7 +12011,7 @@ catch (...)
 
 static void* hs_method_d8bf4e74(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)->operator const std::optional<SharedTypes::Legacy::LevelSoundEvent> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)->operator const std::optional<SharedTypes::Legacy::LevelSoundEvent> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12019,7 +12041,7 @@ catch (...)
 
 static void* hs_method_1b2f78f7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12035,7 +12057,7 @@ catch (...)
 
 static void* hs_method_000263ed(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12081,7 +12103,7 @@ catch (...)
 
 static void* hs_method_cd6dd4a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12126,7 +12148,7 @@ catch (...)
 
 static void* hs_method_06bffaa0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12142,7 +12164,7 @@ catch (...)
 
 static void* hs_method_ee2e56a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12188,7 +12210,7 @@ catch (...)
 
 static void* hs_method_60b227b8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)->operator const std::optional<int> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)->operator const std::optional<int> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12218,7 +12240,7 @@ catch (...)
 
 static void* hs_method_b93cdd68(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12234,7 +12256,7 @@ catch (...)
 
 static void* hs_method_ca8fcd70(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12280,7 +12302,7 @@ catch (...)
 
 static void* hs_method_2a80dcff(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<int>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12325,7 +12347,7 @@ catch (...)
 
 static void* hs_method_28fce32f(void* hs_self) try
 {
-    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)).get()));
+    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)).get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12340,7 +12362,7 @@ catch (...)
 
 static void* hs_method_11379302(void* hs_self) try
 {
-    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->get()));
+    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12385,7 +12407,7 @@ catch (...)
 
 static void* hs_method_84a14f39(void* hs_self) try
 {
-    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->operator const std::variant<cereal::NullType, bool, int, float> &()));
+    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)->operator const std::variant<cereal::NullType, bool, int, float> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12415,7 +12437,7 @@ catch (...)
 
 static void* hs_method_e91b443d(void* hs_self) try
 {
-    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)).operator*()));
+    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(std::move(*static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)).operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12430,7 +12452,7 @@ catch (...)
 
 static void* hs_method_81b5c517(void* hs_self) try
 {
-    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->operator*()));
+    return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12475,7 +12497,7 @@ catch (...)
 
 static void* hs_method_c09508d5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12520,7 +12542,7 @@ catch (...)
 
 static void* hs_method_07cd5e6f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12536,7 +12558,7 @@ catch (...)
 
 static void* hs_method_674bf5be(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12582,7 +12604,7 @@ catch (...)
 
 static void* hs_method_c3916c15(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)->operator const std::optional<const CommandsRegistryConfiguration> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)->operator const std::optional<const CommandsRegistryConfiguration> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12612,7 +12634,7 @@ catch (...)
 
 static void* hs_method_c041c3d5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12628,7 +12650,7 @@ catch (...)
 
 static void* hs_method_cfd04b94(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12674,7 +12696,7 @@ catch (...)
 
 static void* hs_method_b6a2cff6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 104ULL, std::optional<const CommandsRegistryConfiguration>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12750,7 +12772,7 @@ catch (...)
 
 static void* hs_method_cfd82a99(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12766,7 +12788,7 @@ catch (...)
 
 static void* hs_method_ae52d6a6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12796,7 +12818,7 @@ catch (...)
 
 static void* hs_method_9462792e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)->operator const InventoryMenu &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)->operator const InventoryMenu &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12842,7 +12864,7 @@ catch (...)
 
 static void* hs_method_8822c4dc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12858,7 +12880,7 @@ catch (...)
 
 static void* hs_method_c58c217c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12888,7 +12910,7 @@ catch (...)
 
 static void* hs_method_a3dda307(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12949,7 +12971,7 @@ catch (...)
 
 static void* hs_method_a33e5c32(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -12965,7 +12987,7 @@ catch (...)
 
 static void* hs_method_91dc0c84(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -12995,7 +13017,7 @@ catch (...)
 
 static void* hs_method_0643e70e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13041,7 +13063,7 @@ catch (...)
 
 static void* hs_method_be06fa21(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13057,7 +13079,7 @@ catch (...)
 
 static void* hs_method_5da64402(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13087,7 +13109,7 @@ catch (...)
 
 static void* hs_method_ce09451f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13148,7 +13170,7 @@ catch (...)
 
 static void* hs_method_4ae12d84(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13164,7 +13186,7 @@ catch (...)
 
 static void* hs_method_9bd73237(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13194,7 +13216,7 @@ catch (...)
 
 static void* hs_method_5990b0a4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)->operator const ItemInstance &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)->operator const ItemInstance &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13240,7 +13262,7 @@ catch (...)
 
 static void* hs_method_2674cac2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13256,7 +13278,7 @@ catch (...)
 
 static void* hs_method_aefce0af(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13286,7 +13308,7 @@ catch (...)
 
 static void* hs_method_9ccb2bdc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13347,7 +13369,7 @@ catch (...)
 
 static void* hs_method_cb183bbd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13363,7 +13385,7 @@ catch (...)
 
 static void* hs_method_2bcc8b8d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13393,7 +13415,7 @@ catch (...)
 
 static void* hs_method_2634cd52(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)->operator const LevelSettings &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)->operator const LevelSettings &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13439,7 +13461,7 @@ catch (...)
 
 static void* hs_method_ddaee8a5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13455,7 +13477,7 @@ catch (...)
 
 static void* hs_method_11fe1e2a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13485,7 +13507,7 @@ catch (...)
 
 static void* hs_method_b8d4d6b9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 1344ULL, LevelSettings> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13546,7 +13568,7 @@ catch (...)
 
 static void* hs_method_edfcd37c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13562,7 +13584,7 @@ catch (...)
 
 static void* hs_method_8e2fb4a4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13592,7 +13614,7 @@ catch (...)
 
 static void* hs_method_31f6ea4b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)->operator const ItemGroup &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)->operator const ItemGroup &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13638,7 +13660,7 @@ catch (...)
 
 static void* hs_method_291691f9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13654,7 +13676,7 @@ catch (...)
 
 static void* hs_method_ec2e0e1f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13684,7 +13706,7 @@ catch (...)
 
 static void* hs_method_e3efdcce(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13714,7 +13736,7 @@ catch (...)
 
 static void* hs_method_112de692(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13730,7 +13752,7 @@ catch (...)
 
 static void* hs_method_39d09df9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13776,7 +13798,7 @@ catch (...)
 
 static void* hs_method_f7db278f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)->operator const std::optional<WebToken> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)->operator const std::optional<WebToken> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13806,7 +13828,7 @@ catch (...)
 
 static void* hs_method_a21a91e7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13822,7 +13844,7 @@ catch (...)
 
 static void* hs_method_82a76255(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13868,7 +13890,7 @@ catch (...)
 
 static void* hs_method_7b1603a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 136ULL, std::optional<WebToken>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13944,7 +13966,7 @@ catch (...)
 
 static void* hs_method_1ca65bfb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -13960,7 +13982,7 @@ catch (...)
 
 static void* hs_method_09cbf1bc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -13990,7 +14012,7 @@ catch (...)
 
 static void* hs_method_8a92eb03(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)->operator const ItemStack &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)->operator const ItemStack &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14036,7 +14058,7 @@ catch (...)
 
 static void* hs_method_2f96df3d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14052,7 +14074,7 @@ catch (...)
 
 static void* hs_method_23f68d34(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14082,7 +14104,7 @@ catch (...)
 
 static void* hs_method_5d8b3a6d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14143,7 +14165,7 @@ catch (...)
 
 static void* hs_method_aa33230b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14159,7 +14181,7 @@ catch (...)
 
 static void* hs_method_aed8363a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14189,7 +14211,7 @@ catch (...)
 
 static void* hs_method_e935d26c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)->operator const BlockType::NameInfo &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)->operator const BlockType::NameInfo &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14235,7 +14257,7 @@ catch (...)
 
 static void* hs_method_da17c339(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14251,7 +14273,7 @@ catch (...)
 
 static void* hs_method_813b06d6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14281,7 +14303,7 @@ catch (...)
 
 static void* hs_method_63d32493(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14342,7 +14364,7 @@ catch (...)
 
 static void* hs_method_627e6553(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14358,7 +14380,7 @@ catch (...)
 
 static void* hs_method_a0832581(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14388,7 +14410,7 @@ catch (...)
 
 static void* hs_method_af38bfef(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)->operator const PlayerItemInUse &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)->operator const PlayerItemInUse &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14434,7 +14456,7 @@ catch (...)
 
 static void* hs_method_6ca4095b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14450,7 +14472,7 @@ catch (...)
 
 static void* hs_method_8d2b1a97(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14480,7 +14502,7 @@ catch (...)
 
 static void* hs_method_df49b41f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14541,7 +14563,7 @@ catch (...)
 
 static void* hs_method_169a1cf5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14557,7 +14579,7 @@ catch (...)
 
 static void* hs_method_bd527cf2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14587,7 +14609,7 @@ catch (...)
 
 static void* hs_method_5d2b4465(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)->operator const ActorDefinitionPtr &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)->operator const ActorDefinitionPtr &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14633,7 +14655,7 @@ catch (...)
 
 static void* hs_method_6a74ecbd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14649,7 +14671,7 @@ catch (...)
 
 static void* hs_method_dbf3ea50(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14679,7 +14701,7 @@ catch (...)
 
 static void* hs_method_a52c2b1a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ActorDefinitionPtr> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14755,7 +14777,7 @@ catch (...)
 
 static void* hs_method_f304442f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14771,7 +14793,7 @@ catch (...)
 
 static void* hs_method_91526f91(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14801,7 +14823,7 @@ catch (...)
 
 static void* hs_method_23063e18(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)->operator const Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)->operator const Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14847,7 +14869,7 @@ catch (...)
 
 static void* hs_method_91edea87(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14863,7 +14885,7 @@ catch (...)
 
 static void* hs_method_b86962d1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14893,7 +14915,7 @@ catch (...)
 
 static void* hs_method_e4f173d6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -14954,7 +14976,7 @@ catch (...)
 
 static void* hs_method_c7af8bbd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -14970,7 +14992,7 @@ catch (...)
 
 static void* hs_method_5b7d85e7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15000,7 +15022,7 @@ catch (...)
 
 static void* hs_method_1df5eae1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)->operator const Bedrock::PubSub::Subscription &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)->operator const Bedrock::PubSub::Subscription &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15046,7 +15068,7 @@ catch (...)
 
 static void* hs_method_c58b4e98(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15062,7 +15084,7 @@ catch (...)
 
 static void* hs_method_5df1792d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15092,7 +15114,7 @@ catch (...)
 
 static void* hs_method_de9ac1c7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15153,7 +15175,7 @@ catch (...)
 
 static void* hs_method_430349c5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15169,7 +15191,7 @@ catch (...)
 
 static void* hs_method_5337f699(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15199,7 +15221,7 @@ catch (...)
 
 static void* hs_method_22a4972d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<ActorEventBroadcaster> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<ActorEventBroadcaster> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15245,7 +15267,7 @@ catch (...)
 
 static void* hs_method_ea2b2358(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15261,7 +15283,7 @@ catch (...)
 
 static void* hs_method_7e84c50e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15291,7 +15313,7 @@ catch (...)
 
 static void* hs_method_877b7c57(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15352,7 +15374,7 @@ catch (...)
 
 static void* hs_method_e18d9679(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15368,7 +15390,7 @@ catch (...)
 
 static void* hs_method_4b7bd122(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15398,7 +15420,7 @@ catch (...)
 
 static void* hs_method_30cd6d51(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LoadingScreenIdManager> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LoadingScreenIdManager> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15444,7 +15466,7 @@ catch (...)
 
 static void* hs_method_dd66ab5d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15460,7 +15482,7 @@ catch (...)
 
 static void* hs_method_0c367f68(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15490,7 +15512,7 @@ catch (...)
 
 static void* hs_method_81d09a09(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15551,7 +15573,7 @@ catch (...)
 
 static void* hs_method_5fb9901c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15567,7 +15589,7 @@ catch (...)
 
 static void* hs_method_23280643(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15597,7 +15619,7 @@ catch (...)
 
 static void* hs_method_d95d6b65(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15643,7 +15665,7 @@ catch (...)
 
 static void* hs_method_4d91a64c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15659,7 +15681,7 @@ catch (...)
 
 static void* hs_method_e2a58f46(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15689,7 +15711,7 @@ catch (...)
 
 static void* hs_method_460d1549(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15750,7 +15772,7 @@ catch (...)
 
 static void* hs_method_3987f062(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15766,7 +15788,7 @@ catch (...)
 
 static void* hs_method_cd52cb50(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15796,7 +15818,7 @@ catch (...)
 
 static void* hs_method_87d78bfa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationReceiver> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationReceiver> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15842,7 +15864,7 @@ catch (...)
 
 static void* hs_method_5ea4b7bc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15858,7 +15880,7 @@ catch (...)
 
 static void* hs_method_a6303241(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15888,7 +15910,7 @@ catch (...)
 
 static void* hs_method_106b73ad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15949,7 +15971,7 @@ catch (...)
 
 static void* hs_method_19544e71(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -15965,7 +15987,7 @@ catch (...)
 
 static void* hs_method_73850157(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -15995,7 +16017,7 @@ catch (...)
 
 static void* hs_method_98aaf999(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationSender> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)->operator const Bedrock::UniqueOwnerPointer<PlayerLocationSender> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16041,7 +16063,7 @@ catch (...)
 
 static void* hs_method_d140bca2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16057,7 +16079,7 @@ catch (...)
 
 static void* hs_method_d90ebf88(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16087,7 +16109,7 @@ catch (...)
 
 static void* hs_method_d1e86bd8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16148,7 +16170,7 @@ catch (...)
 
 static void* hs_method_d84faea2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16164,7 +16186,7 @@ catch (...)
 
 static void* hs_method_ee58bf96(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16194,7 +16216,7 @@ catch (...)
 
 static void* hs_method_a6d386f6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->operator const CallbackToken &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)->operator const CallbackToken &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16240,7 +16262,7 @@ catch (...)
 
 static void* hs_method_67e1513c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16256,7 +16278,7 @@ catch (...)
 
 static void* hs_method_a791a4d6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16286,7 +16308,7 @@ catch (...)
 
 static void* hs_method_d8e6bec5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16347,7 +16369,7 @@ catch (...)
 
 static void* hs_method_d0734c73(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16363,7 +16385,7 @@ catch (...)
 
 static void* hs_method_3daa7003(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16393,7 +16415,7 @@ catch (...)
 
 static void* hs_method_585926ef(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)->operator const CommandLexer::Token &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)->operator const CommandLexer::Token &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16439,7 +16461,7 @@ catch (...)
 
 static void* hs_method_fffee0eb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16455,7 +16477,7 @@ catch (...)
 
 static void* hs_method_3cda6e68(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16485,7 +16507,7 @@ catch (...)
 
 static void* hs_method_dd43d0fa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16546,7 +16568,7 @@ catch (...)
 
 static void* hs_method_f5d2ddb2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16562,7 +16584,7 @@ catch (...)
 
 static void* hs_method_8a775ab3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16592,7 +16614,7 @@ catch (...)
 
 static void* hs_method_099f6c01(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)->operator const ItemRegistryRef &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)->operator const ItemRegistryRef &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16638,7 +16660,7 @@ catch (...)
 
 static void* hs_method_6d041db7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16654,7 +16676,7 @@ catch (...)
 
 static void* hs_method_741e81d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16684,7 +16706,7 @@ catch (...)
 
 static void* hs_method_828cf741(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16760,7 +16782,7 @@ catch (...)
 
 static void* hs_method_dfb8ac98(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16776,7 +16798,7 @@ catch (...)
 
 static void* hs_method_c929c60a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16806,7 +16828,7 @@ catch (...)
 
 static void* hs_method_1208499a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)->operator const Json::Value &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)->operator const Json::Value &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16852,7 +16874,7 @@ catch (...)
 
 static void* hs_method_2e3f3f93(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16868,7 +16890,7 @@ catch (...)
 
 static void* hs_method_8b0a143c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16898,7 +16920,7 @@ catch (...)
 
 static void* hs_method_28f9826f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -16959,7 +16981,7 @@ catch (...)
 
 static void* hs_method_77025a9e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -16975,7 +16997,7 @@ catch (...)
 
 static void* hs_method_f8ca8a69(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17005,7 +17027,7 @@ catch (...)
 
 static void* hs_method_1a66d530(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator const OwnerPtr<BlockSource> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)->operator const OwnerPtr<BlockSource> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17051,7 +17073,7 @@ catch (...)
 
 static void* hs_method_96cdc337(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17067,7 +17089,7 @@ catch (...)
 
 static void* hs_method_34ad796b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17097,7 +17119,7 @@ catch (...)
 
 static void* hs_method_3a987da3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17158,7 +17180,7 @@ catch (...)
 
 static void* hs_method_fc5d06fb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17174,7 +17196,7 @@ catch (...)
 
 static void* hs_method_c9143618(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17204,7 +17226,7 @@ catch (...)
 
 static void* hs_method_ef93c092(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator const OwnerPtr<LevelChunkSaveManager> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)->operator const OwnerPtr<LevelChunkSaveManager> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17250,7 +17272,7 @@ catch (...)
 
 static void* hs_method_08075775(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17266,7 +17288,7 @@ catch (...)
 
 static void* hs_method_31a41222(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17296,7 +17318,7 @@ catch (...)
 
 static void* hs_method_e7ea51ff(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17357,7 +17379,7 @@ catch (...)
 
 static void* hs_method_10d0f1ec(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17373,7 +17395,7 @@ catch (...)
 
 static void* hs_method_ac8a4039(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17403,7 +17425,7 @@ catch (...)
 
 static void* hs_method_37dbe591(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator const OwnerPtr<PauseManager> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)->operator const OwnerPtr<PauseManager> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17449,7 +17471,7 @@ catch (...)
 
 static void* hs_method_cfa045f6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17465,7 +17487,7 @@ catch (...)
 
 static void* hs_method_85bddf16(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17495,7 +17517,7 @@ catch (...)
 
 static void* hs_method_357a8829(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17556,7 +17578,7 @@ catch (...)
 
 static void* hs_method_0a238b45(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17572,7 +17594,7 @@ catch (...)
 
 static void* hs_method_0832a41f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17602,7 +17624,7 @@ catch (...)
 
 static void* hs_method_6edb68d3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->operator const ServerLocatorBar::GroupStrongHandle &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)->operator const ServerLocatorBar::GroupStrongHandle &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17648,7 +17670,7 @@ catch (...)
 
 static void* hs_method_13a7f210(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17664,7 +17686,7 @@ catch (...)
 
 static void* hs_method_034e59fc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17694,7 +17716,7 @@ catch (...)
 
 static void* hs_method_4b1388fa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17755,7 +17777,7 @@ catch (...)
 
 static void* hs_method_02e8e431(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17771,7 +17793,7 @@ catch (...)
 
 static void* hs_method_1e381d48(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17801,7 +17823,7 @@ catch (...)
 
 static void* hs_method_2ffb7df4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator const WeakRef<Dimension> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)->operator const WeakRef<Dimension> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17847,7 +17869,7 @@ catch (...)
 
 static void* hs_method_6519f673(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17863,7 +17885,7 @@ catch (...)
 
 static void* hs_method_efcfa7a7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17893,7 +17915,7 @@ catch (...)
 
 static void* hs_method_f2f9cb0c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -17954,7 +17976,7 @@ catch (...)
 
 static void* hs_method_ef8e337a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -17970,7 +17992,7 @@ catch (...)
 
 static void* hs_method_d170d3d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18000,7 +18022,7 @@ catch (...)
 
 static void* hs_method_1e6aa502(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator const WeakRef<IContainerRegistryAccess> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)->operator const WeakRef<IContainerRegistryAccess> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18046,7 +18068,7 @@ catch (...)
 
 static void* hs_method_2208b50a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18062,7 +18084,7 @@ catch (...)
 
 static void* hs_method_b1c46f15(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18092,7 +18114,7 @@ catch (...)
 
 static void* hs_method_29b57f19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18122,7 +18144,7 @@ catch (...)
 
 static void* hs_method_88499c61(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18138,7 +18160,7 @@ catch (...)
 
 static void* hs_method_424b30d4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18184,7 +18206,7 @@ catch (...)
 
 static void* hs_method_feb21d8b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->operator const gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)->operator const gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18214,7 +18236,7 @@ catch (...)
 
 static void* hs_method_27a32329(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18230,7 +18252,7 @@ catch (...)
 
 static void* hs_method_07991eed(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18276,7 +18298,7 @@ catch (...)
 
 static void* hs_method_e57ee63c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18321,7 +18343,7 @@ catch (...)
 
 static void* hs_method_c6751ac1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18337,7 +18359,7 @@ catch (...)
 
 static void* hs_method_63a6c23c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18383,7 +18405,7 @@ catch (...)
 
 static void* hs_method_729d9a90(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)->operator const gsl::not_null<OwnerPtr<ContainerRegistry> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)->operator const gsl::not_null<OwnerPtr<ContainerRegistry> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18413,7 +18435,7 @@ catch (...)
 
 static void* hs_method_069031a0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18429,7 +18451,7 @@ catch (...)
 
 static void* hs_method_ccb7fa53(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18475,7 +18497,7 @@ catch (...)
 
 static void* hs_method_a8d87b6d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18535,7 +18557,7 @@ catch (...)
 
 static void* hs_method_07419bcd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18551,7 +18573,7 @@ catch (...)
 
 static void* hs_method_91c6737a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18597,7 +18619,7 @@ catch (...)
 
 static void* hs_method_6e48a2ae(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)->operator const mce::UUID &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)->operator const mce::UUID &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18627,7 +18649,7 @@ catch (...)
 
 static void* hs_method_662e9685(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18643,7 +18665,7 @@ catch (...)
 
 static void* hs_method_a9b74a19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18689,7 +18711,7 @@ catch (...)
 
 static void* hs_method_86228093(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18734,7 +18756,7 @@ catch (...)
 
 static void* hs_method_f98fda24(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18750,7 +18772,7 @@ catch (...)
 
 static void* hs_method_e91b506f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18796,7 +18818,7 @@ catch (...)
 
 static void* hs_method_19774709(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->operator const std::map<HashedString, GameRule> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)->operator const std::map<HashedString, GameRule> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18826,7 +18848,7 @@ catch (...)
 
 static void* hs_method_8d3d07c5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18842,7 +18864,7 @@ catch (...)
 
 static void* hs_method_c685829c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18888,7 +18910,7 @@ catch (...)
 
 static void* hs_method_58054968(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18933,7 +18955,7 @@ catch (...)
 
 static void* hs_method_43476df2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -18949,7 +18971,7 @@ catch (...)
 
 static void* hs_method_7747bf6a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -18995,7 +19017,7 @@ catch (...)
 
 static void* hs_method_34e07b93(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)->operator const std::map<std::basic_string<char>, int> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)->operator const std::map<std::basic_string<char>, int> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19025,7 +19047,7 @@ catch (...)
 
 static void* hs_method_749270c6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19041,7 +19063,7 @@ catch (...)
 
 static void* hs_method_32edb322(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19087,7 +19109,7 @@ catch (...)
 
 static void* hs_method_a941afdd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19132,7 +19154,7 @@ catch (...)
 
 static void* hs_method_06098a40(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19148,7 +19170,7 @@ catch (...)
 
 static void* hs_method_c316b6da(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19194,7 +19216,7 @@ catch (...)
 
 static void* hs_method_61fc4e3f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->operator const std::map<std::uint64_t, BlockStateInstance> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)->operator const std::map<std::uint64_t, BlockStateInstance> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19224,7 +19246,7 @@ catch (...)
 
 static void* hs_method_ae0f758b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19240,7 +19262,7 @@ catch (...)
 
 static void* hs_method_0f5fd0d6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19286,7 +19308,7 @@ catch (...)
 
 static void* hs_method_7d48e1d2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19331,7 +19353,7 @@ catch (...)
 
 static void* hs_method_906b294b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19347,7 +19369,7 @@ catch (...)
 
 static void* hs_method_2f58f512(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19393,7 +19415,7 @@ catch (...)
 
 static void* hs_method_a2765320(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)->operator const std::set<CommandRegistry::Symbol> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)->operator const std::set<CommandRegistry::Symbol> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19423,7 +19445,7 @@ catch (...)
 
 static void* hs_method_6a156b4b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19439,7 +19461,7 @@ catch (...)
 
 static void* hs_method_c328312f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19485,7 +19507,7 @@ catch (...)
 
 static void* hs_method_35c0ba00(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19530,7 +19552,7 @@ catch (...)
 
 static void* hs_method_49d86ba3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19546,7 +19568,7 @@ catch (...)
 
 static void* hs_method_b4a3e9f4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19592,7 +19614,7 @@ catch (...)
 
 static void* hs_method_040f5b9d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->operator const std::thread &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)->operator const std::thread &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19622,7 +19644,7 @@ catch (...)
 
 static void* hs_method_3229cd4b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19638,7 +19660,7 @@ catch (...)
 
 static void* hs_method_82341972(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19684,7 +19706,7 @@ catch (...)
 
 static void* hs_method_8b11b4ae(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19760,7 +19782,7 @@ catch (...)
 
 static void* hs_method_149d200d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19776,7 +19798,7 @@ catch (...)
 
 static void* hs_method_a3bc5d1c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19806,7 +19828,7 @@ catch (...)
 
 static void* hs_method_102f287a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)->operator const NetworkIdentifier &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)->operator const NetworkIdentifier &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19852,7 +19874,7 @@ catch (...)
 
 static void* hs_method_1dbd9110(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19868,7 +19890,7 @@ catch (...)
 
 static void* hs_method_42c0f223(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19898,7 +19920,7 @@ catch (...)
 
 static void* hs_method_bc94c402(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 176ULL, NetworkIdentifier> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19928,7 +19950,7 @@ catch (...)
 
 static void* hs_method_03fba2ec(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -19944,7 +19966,7 @@ catch (...)
 
 static void* hs_method_485ec607(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -19990,7 +20012,7 @@ catch (...)
 
 static void* hs_method_1843cdb4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)->operator const std::optional<CloudSaveLevelInfo> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)->operator const std::optional<CloudSaveLevelInfo> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20020,7 +20042,7 @@ catch (...)
 
 static void* hs_method_6ced8cee(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20036,7 +20058,7 @@ catch (...)
 
 static void* hs_method_0b4a4527(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20082,7 +20104,7 @@ catch (...)
 
 static void* hs_method_6a3abb6a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20158,7 +20180,7 @@ catch (...)
 
 static void* hs_method_92d93815(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20174,7 +20196,7 @@ catch (...)
 
 static void* hs_method_688c6257(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20204,7 +20226,7 @@ catch (...)
 
 static void* hs_method_d1bda096(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)->operator const GameRules &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)->operator const GameRules &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20250,7 +20272,7 @@ catch (...)
 
 static void* hs_method_4f6007b5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20266,7 +20288,7 @@ catch (...)
 
 static void* hs_method_607c6113(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20296,7 +20318,7 @@ catch (...)
 
 static void* hs_method_48d08c33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 192ULL, GameRules> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20357,7 +20379,7 @@ catch (...)
 
 static void* hs_method_d5583c60(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20373,7 +20395,7 @@ catch (...)
 
 static void* hs_method_27d56969(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20403,7 +20425,7 @@ catch (...)
 
 static void* hs_method_d6a8c17f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)->operator const ActorTerrainInterlockData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)->operator const ActorTerrainInterlockData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20449,7 +20471,7 @@ catch (...)
 
 static void* hs_method_750d87bb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20465,7 +20487,7 @@ catch (...)
 
 static void* hs_method_b519485c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20495,7 +20517,7 @@ catch (...)
 
 static void* hs_method_95b04516(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20556,7 +20578,7 @@ catch (...)
 
 static void* hs_method_c68b5294(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20572,7 +20594,7 @@ catch (...)
 
 static void* hs_method_b8fafbd3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20602,7 +20624,7 @@ catch (...)
 
 static void* hs_method_88260ce5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<CDNConfig> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)->operator const Bedrock::NonOwnerPointer<CDNConfig> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20648,7 +20670,7 @@ catch (...)
 
 static void* hs_method_6ac91152(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20664,7 +20686,7 @@ catch (...)
 
 static void* hs_method_727fc502(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20694,7 +20716,7 @@ catch (...)
 
 static void* hs_method_c8e48322(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20755,7 +20777,7 @@ catch (...)
 
 static void* hs_method_dcd2b640(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20771,7 +20793,7 @@ catch (...)
 
 static void* hs_method_da9d0923(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20801,7 +20823,7 @@ catch (...)
 
 static void* hs_method_1421fa01(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<IPacketObserver> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)->operator const Bedrock::NonOwnerPointer<IPacketObserver> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20847,7 +20869,7 @@ catch (...)
 
 static void* hs_method_2b0aa2b2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20863,7 +20885,7 @@ catch (...)
 
 static void* hs_method_690cdb33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20893,7 +20915,7 @@ catch (...)
 
 static void* hs_method_bebb8b44(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -20954,7 +20976,7 @@ catch (...)
 
 static void* hs_method_7ebe26e3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -20970,7 +20992,7 @@ catch (...)
 
 static void* hs_method_e4f6bec4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21000,7 +21022,7 @@ catch (...)
 
 static void* hs_method_c8120d29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<LinkedAssetValidator> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)->operator const Bedrock::NonOwnerPointer<LinkedAssetValidator> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21046,7 +21068,7 @@ catch (...)
 
 static void* hs_method_05bd9898(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21062,7 +21084,7 @@ catch (...)
 
 static void* hs_method_24407513(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21092,7 +21114,7 @@ catch (...)
 
 static void* hs_method_a5b30bcc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21153,7 +21175,7 @@ catch (...)
 
 static void* hs_method_88c37cfe(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21169,7 +21191,7 @@ catch (...)
 
 static void* hs_method_d2736717(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21199,7 +21221,7 @@ catch (...)
 
 static void* hs_method_8c5a1b3b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<NetEventCallback> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)->operator const Bedrock::NonOwnerPointer<NetEventCallback> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21245,7 +21267,7 @@ catch (...)
 
 static void* hs_method_d90025d7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21261,7 +21283,7 @@ catch (...)
 
 static void* hs_method_754287b4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21291,7 +21313,7 @@ catch (...)
 
 static void* hs_method_fbbd92a0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21352,7 +21374,7 @@ catch (...)
 
 static void* hs_method_a908edd7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21368,7 +21390,7 @@ catch (...)
 
 static void* hs_method_5d0bd8d9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21398,7 +21420,7 @@ catch (...)
 
 static void* hs_method_a1f289a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator const Bedrock::NonOwnerPointer<ServerTextSettings> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)->operator const Bedrock::NonOwnerPointer<ServerTextSettings> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21444,7 +21466,7 @@ catch (...)
 
 static void* hs_method_3b955a45(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21460,7 +21482,7 @@ catch (...)
 
 static void* hs_method_13ecb7e8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21490,7 +21512,7 @@ catch (...)
 
 static void* hs_method_f48662ad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21566,7 +21588,7 @@ catch (...)
 
 static void* hs_method_a2593a0c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21582,7 +21604,7 @@ catch (...)
 
 static void* hs_method_96c6349e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21612,7 +21634,7 @@ catch (...)
 
 static void* hs_method_1eb07a66(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)->operator const BlockState::StateListNode &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)->operator const BlockState::StateListNode &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21658,7 +21680,7 @@ catch (...)
 
 static void* hs_method_1a6850d0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21674,7 +21696,7 @@ catch (...)
 
 static void* hs_method_9c518ffe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21704,7 +21726,7 @@ catch (...)
 
 static void* hs_method_1223c495(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21765,7 +21787,7 @@ catch (...)
 
 static void* hs_method_e1451dc8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21781,7 +21803,7 @@ catch (...)
 
 static void* hs_method_61ed1179(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21811,7 +21833,7 @@ catch (...)
 
 static void* hs_method_56c11b54(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)->operator const BuiltInActorComponents &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)->operator const BuiltInActorComponents &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21857,7 +21879,7 @@ catch (...)
 
 static void* hs_method_ce7c34c0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21873,7 +21895,7 @@ catch (...)
 
 static void* hs_method_1251d150(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21903,7 +21925,7 @@ catch (...)
 
 static void* hs_method_97f92d17(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -21964,7 +21986,7 @@ catch (...)
 
 static void* hs_method_4d6ac9c0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -21980,7 +22002,7 @@ catch (...)
 
 static void* hs_method_7de685d5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22010,7 +22032,7 @@ catch (...)
 
 static void* hs_method_73373a64(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)->operator const CompoundTag &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)->operator const CompoundTag &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22056,7 +22078,7 @@ catch (...)
 
 static void* hs_method_f4cbfb98(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22072,7 +22094,7 @@ catch (...)
 
 static void* hs_method_c5b74d65(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22102,7 +22124,7 @@ catch (...)
 
 static void* hs_method_6ae2f63d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22163,7 +22185,7 @@ catch (...)
 
 static void* hs_method_3d2e6e73(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22179,7 +22201,7 @@ catch (...)
 
 static void* hs_method_f3f577b1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22209,7 +22231,7 @@ catch (...)
 
 static void* hs_method_115cbdf6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)->operator const EntityContext &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)->operator const EntityContext &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22255,7 +22277,7 @@ catch (...)
 
 static void* hs_method_5370ccb4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22271,7 +22293,7 @@ catch (...)
 
 static void* hs_method_d1b0ea91(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22301,7 +22323,7 @@ catch (...)
 
 static void* hs_method_74afb8bc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22362,7 +22384,7 @@ catch (...)
 
 static void* hs_method_b3b2093d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22378,7 +22400,7 @@ catch (...)
 
 static void* hs_method_813437cc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22408,7 +22430,7 @@ catch (...)
 
 static void* hs_method_839925f6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)->operator const ItemStackNetIdVariant &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)->operator const ItemStackNetIdVariant &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22454,7 +22476,7 @@ catch (...)
 
 static void* hs_method_860b5e1a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22470,7 +22492,7 @@ catch (...)
 
 static void* hs_method_d02dec0b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22500,7 +22522,7 @@ catch (...)
 
 static void* hs_method_ddccae14(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22561,7 +22583,7 @@ catch (...)
 
 static void* hs_method_86b66dd2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22577,7 +22599,7 @@ catch (...)
 
 static void* hs_method_7799cbe8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22607,7 +22629,7 @@ catch (...)
 
 static void* hs_method_a7e61e25(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)->operator const PermissionsHandler &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)->operator const PermissionsHandler &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22653,7 +22675,7 @@ catch (...)
 
 static void* hs_method_15179ee5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22669,7 +22691,7 @@ catch (...)
 
 static void* hs_method_078cc815(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22699,7 +22721,7 @@ catch (...)
 
 static void* hs_method_0b9808d1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22760,7 +22782,7 @@ catch (...)
 
 static void* hs_method_c007a9b7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22776,7 +22798,7 @@ catch (...)
 
 static void* hs_method_07f305c5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22806,7 +22828,7 @@ catch (...)
 
 static void* hs_method_294a4f66(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)->operator const SemVersion &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)->operator const SemVersion &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22852,7 +22874,7 @@ catch (...)
 
 static void* hs_method_7a15ea34(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22868,7 +22890,7 @@ catch (...)
 
 static void* hs_method_64fb63ba(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22898,7 +22920,7 @@ catch (...)
 
 static void* hs_method_777d3821(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -22959,7 +22981,7 @@ catch (...)
 
 static void* hs_method_4d7fba78(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -22975,7 +22997,7 @@ catch (...)
 
 static void* hs_method_8c6dff47(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23005,7 +23027,7 @@ catch (...)
 
 static void* hs_method_d769c162(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)->operator const ServerLocatorBar &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)->operator const ServerLocatorBar &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23051,7 +23073,7 @@ catch (...)
 
 static void* hs_method_a7d678aa(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23067,7 +23089,7 @@ catch (...)
 
 static void* hs_method_1f01b9c2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23097,7 +23119,7 @@ catch (...)
 
 static void* hs_method_f5626ea6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23158,7 +23180,7 @@ catch (...)
 
 static void* hs_method_c8fdb1ff(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23174,7 +23196,7 @@ catch (...)
 
 static void* hs_method_c33c736a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23204,7 +23226,7 @@ catch (...)
 
 static void* hs_method_48d1b3e8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->operator const VanillaWaypointManager &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)->operator const VanillaWaypointManager &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23250,7 +23272,7 @@ catch (...)
 
 static void* hs_method_2344c41f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23266,7 +23288,7 @@ catch (...)
 
 static void* hs_method_248f911d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23296,7 +23318,7 @@ catch (...)
 
 static void* hs_method_f6d0c948(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23357,7 +23379,7 @@ catch (...)
 
 static void* hs_method_8fa7ef70(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23373,7 +23395,7 @@ catch (...)
 
 static void* hs_method_95016471(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23403,7 +23425,7 @@ catch (...)
 
 static void* hs_method_765caa72(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator const WeakRef<EntityContext> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)->operator const WeakRef<EntityContext> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23449,7 +23471,7 @@ catch (...)
 
 static void* hs_method_8a48aa85(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23465,7 +23487,7 @@ catch (...)
 
 static void* hs_method_1f1e6a67(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23495,7 +23517,7 @@ catch (...)
 
 static void* hs_method_fcfa3776(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23556,7 +23578,7 @@ catch (...)
 
 static void* hs_method_481860bf(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23572,7 +23594,7 @@ catch (...)
 
 static void* hs_method_b5a58011(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23602,7 +23624,7 @@ catch (...)
 
 static void* hs_method_dfe23214(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator const brstd::flat_set<Bedrock::typeid_t<void> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)->operator const brstd::flat_set<Bedrock::typeid_t<void> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23648,7 +23670,7 @@ catch (...)
 
 static void* hs_method_4258513b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23664,7 +23686,7 @@ catch (...)
 
 static void* hs_method_a51d53e8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23694,7 +23716,7 @@ catch (...)
 
 static void* hs_method_2f4da82e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23724,7 +23746,7 @@ catch (...)
 
 static void* hs_method_4035b2fa(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23740,7 +23762,7 @@ catch (...)
 
 static void* hs_method_836cf0b4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23786,7 +23808,7 @@ catch (...)
 
 static void* hs_method_b4e567a4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->operator const gsl::not_null<Bedrock::NonOwnerPointer<LevelData> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)->operator const gsl::not_null<Bedrock::NonOwnerPointer<LevelData> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23816,7 +23838,7 @@ catch (...)
 
 static void* hs_method_fafd4e75(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23832,7 +23854,7 @@ catch (...)
 
 static void* hs_method_86b7709f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23878,7 +23900,7 @@ catch (...)
 
 static void* hs_method_dc99a04e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23923,7 +23945,7 @@ catch (...)
 
 static void* hs_method_2df7ee42(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -23939,7 +23961,7 @@ catch (...)
 
 static void* hs_method_2cfa49d6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -23985,7 +24007,7 @@ catch (...)
 
 static void* hs_method_8dc1c26d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)->operator const gsl::not_null<Bedrock::NonOwnerPointer<PacketSender> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)->operator const gsl::not_null<Bedrock::NonOwnerPointer<PacketSender> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24015,7 +24037,7 @@ catch (...)
 
 static void* hs_method_ce583429(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24031,7 +24053,7 @@ catch (...)
 
 static void* hs_method_bcd76e3a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24077,7 +24099,7 @@ catch (...)
 
 static void* hs_method_671d7fd1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24137,7 +24159,7 @@ catch (...)
 
 static void* hs_method_35ef664b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24153,7 +24175,7 @@ catch (...)
 
 static void* hs_method_1f529948(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24199,7 +24221,7 @@ catch (...)
 
 static void* hs_method_8f95d542(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)->operator const std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)->operator const std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24229,7 +24251,7 @@ catch (...)
 
 static void* hs_method_9a87a04b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24245,7 +24267,7 @@ catch (...)
 
 static void* hs_method_3edb5473(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24291,7 +24313,7 @@ catch (...)
 
 static void* hs_method_e89b4b36(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24336,7 +24358,7 @@ catch (...)
 
 static void* hs_method_9a799c28(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24352,7 +24374,7 @@ catch (...)
 
 static void* hs_method_93caa398(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24398,7 +24420,7 @@ catch (...)
 
 static void* hs_method_eba1b50b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)->operator const std::vector<AABB> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)->operator const std::vector<AABB> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24428,7 +24450,7 @@ catch (...)
 
 static void* hs_method_f25c5e58(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24444,7 +24466,7 @@ catch (...)
 
 static void* hs_method_6df4d1d3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24490,7 +24512,7 @@ catch (...)
 
 static void* hs_method_de125ec8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24565,7 +24587,7 @@ catch (...)
 
 static void* hs_method_86593cc4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24581,7 +24603,7 @@ catch (...)
 
 static void* hs_method_ab78fccf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24627,7 +24649,7 @@ catch (...)
 
 static void* hs_method_9a80e438(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)->operator const std::vector<Actor *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)->operator const std::vector<Actor *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24657,7 +24679,7 @@ catch (...)
 
 static void* hs_method_0d662f22(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24673,7 +24695,7 @@ catch (...)
 
 static void* hs_method_7e9dec8a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24719,7 +24741,7 @@ catch (...)
 
 static void* hs_method_5c38ab27(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<Actor *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24809,7 +24831,7 @@ catch (...)
 
 static void* hs_method_14b58db5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24825,7 +24847,7 @@ catch (...)
 
 static void* hs_method_f446a557(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24871,7 +24893,7 @@ catch (...)
 
 static void* hs_method_51aaa770(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)->operator const std::vector<ActorUniqueID> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)->operator const std::vector<ActorUniqueID> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24901,7 +24923,7 @@ catch (...)
 
 static void* hs_method_5a25192e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -24917,7 +24939,7 @@ catch (...)
 
 static void* hs_method_e464578e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -24963,7 +24985,7 @@ catch (...)
 
 static void* hs_method_90309291(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ActorUniqueID>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25023,7 +25045,7 @@ catch (...)
 
 static void* hs_method_d4a0d6a7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25039,7 +25061,7 @@ catch (...)
 
 static void* hs_method_956ce440(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25085,7 +25107,7 @@ catch (...)
 
 static void* hs_method_11d1fc69(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25115,7 +25137,7 @@ catch (...)
 
 static void* hs_method_9aaa621c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25131,7 +25153,7 @@ catch (...)
 
 static void* hs_method_b58ad37a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25177,7 +25199,7 @@ catch (...)
 
 static void* hs_method_702ac0f7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25222,7 +25244,7 @@ catch (...)
 
 static void* hs_method_e5995983(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25238,7 +25260,7 @@ catch (...)
 
 static void* hs_method_fabcf03b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25284,7 +25306,7 @@ catch (...)
 
 static void* hs_method_f7bb11b6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25314,7 +25336,7 @@ catch (...)
 
 static void* hs_method_737a3237(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25330,7 +25352,7 @@ catch (...)
 
 static void* hs_method_3fa3c78b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25376,7 +25398,7 @@ catch (...)
 
 static void* hs_method_276b3920(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25421,7 +25443,7 @@ catch (...)
 
 static void* hs_method_d719741a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25437,7 +25459,7 @@ catch (...)
 
 static void* hs_method_83df4491(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25483,7 +25505,7 @@ catch (...)
 
 static void* hs_method_ea74d2e6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::CommandData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::CommandData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25513,7 +25535,7 @@ catch (...)
 
 static void* hs_method_083826e6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25529,7 +25551,7 @@ catch (...)
 
 static void* hs_method_67de55a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25575,7 +25597,7 @@ catch (...)
 
 static void* hs_method_761563e9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::CommandData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25620,7 +25642,7 @@ catch (...)
 
 static void* hs_method_379ed806(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25636,7 +25658,7 @@ catch (...)
 
 static void* hs_method_18e1c09d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25682,7 +25704,7 @@ catch (...)
 
 static void* hs_method_b4e3c930(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ConstrainedValueData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ConstrainedValueData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25712,7 +25734,7 @@ catch (...)
 
 static void* hs_method_6a648fb9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25728,7 +25750,7 @@ catch (...)
 
 static void* hs_method_2d57033b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25774,7 +25796,7 @@ catch (...)
 
 static void* hs_method_418224f2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25819,7 +25841,7 @@ catch (...)
 
 static void* hs_method_8d493f27(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25835,7 +25857,7 @@ catch (...)
 
 static void* hs_method_a0005172(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25881,7 +25903,7 @@ catch (...)
 
 static void* hs_method_be39d30a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::EnumData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::EnumData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25911,7 +25933,7 @@ catch (...)
 
 static void* hs_method_0788c9f2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -25927,7 +25949,7 @@ catch (...)
 
 static void* hs_method_3bdadc3c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -25973,7 +25995,7 @@ catch (...)
 
 static void* hs_method_491b6b9e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::EnumData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26018,7 +26040,7 @@ catch (...)
 
 static void* hs_method_284d10b7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26034,7 +26056,7 @@ catch (...)
 
 static void* hs_method_bb3c02d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26080,7 +26102,7 @@ catch (...)
 
 static void* hs_method_5f1b2c0a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::OverloadData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::OverloadData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26110,7 +26132,7 @@ catch (...)
 
 static void* hs_method_332fa7e4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26126,7 +26148,7 @@ catch (...)
 
 static void* hs_method_4bcc660b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26172,7 +26194,7 @@ catch (...)
 
 static void* hs_method_fbb78680(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26217,7 +26239,7 @@ catch (...)
 
 static void* hs_method_e42838af(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26233,7 +26255,7 @@ catch (...)
 
 static void* hs_method_523b9000(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26279,7 +26301,7 @@ catch (...)
 
 static void* hs_method_17f22ef0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ParamData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::ParamData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26309,7 +26331,7 @@ catch (...)
 
 static void* hs_method_6fe4d22d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26325,7 +26347,7 @@ catch (...)
 
 static void* hs_method_69eca022(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26371,7 +26393,7 @@ catch (...)
 
 static void* hs_method_f08a7e1c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ParamData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26416,7 +26438,7 @@ catch (...)
 
 static void* hs_method_697c99aa(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26432,7 +26454,7 @@ catch (...)
 
 static void* hs_method_3eeefdd3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26478,7 +26500,7 @@ catch (...)
 
 static void* hs_method_5fef176e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::SoftEnumData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)->operator const std::vector<AvailableCommandsPacketPayload::SoftEnumData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26508,7 +26530,7 @@ catch (...)
 
 static void* hs_method_828ad3f8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26524,7 +26546,7 @@ catch (...)
 
 static void* hs_method_f0af5c7f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26570,7 +26592,7 @@ catch (...)
 
 static void* hs_method_1e07c625(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26615,7 +26637,7 @@ catch (...)
 
 static void* hs_method_350170c3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26631,7 +26653,7 @@ catch (...)
 
 static void* hs_method_fbc8a189(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26677,7 +26699,7 @@ catch (...)
 
 static void* hs_method_b36d6cd9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)->operator const std::vector<BiomeIdType> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)->operator const std::vector<BiomeIdType> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26707,7 +26729,7 @@ catch (...)
 
 static void* hs_method_ce78ab28(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26723,7 +26745,7 @@ catch (...)
 
 static void* hs_method_ffdefc6c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26769,7 +26791,7 @@ catch (...)
 
 static void* hs_method_76d2e961(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BiomeIdType>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26814,7 +26836,7 @@ catch (...)
 
 static void* hs_method_fc06d14f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26830,7 +26852,7 @@ catch (...)
 
 static void* hs_method_10e907eb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26876,7 +26898,7 @@ catch (...)
 
 static void* hs_method_1b0b96c8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)->operator const std::vector<BlockActor *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)->operator const std::vector<BlockActor *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26906,7 +26928,7 @@ catch (...)
 
 static void* hs_method_d199439b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -26922,7 +26944,7 @@ catch (...)
 
 static void* hs_method_5b618d92(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -26968,7 +26990,7 @@ catch (...)
 
 static void* hs_method_b4b2925f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27013,7 +27035,7 @@ catch (...)
 
 static void* hs_method_05e6af9a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27029,7 +27051,7 @@ catch (...)
 
 static void* hs_method_574d85d5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27075,7 +27097,7 @@ catch (...)
 
 static void* hs_method_e1cd819a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)->operator const std::vector<BlockDataFetchResult<Block> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)->operator const std::vector<BlockDataFetchResult<Block> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27105,7 +27127,7 @@ catch (...)
 
 static void* hs_method_7e7dd207(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27121,7 +27143,7 @@ catch (...)
 
 static void* hs_method_b524cf0f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27167,7 +27189,7 @@ catch (...)
 
 static void* hs_method_b1b9d62a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockDataFetchResult<Block>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27212,7 +27234,7 @@ catch (...)
 
 static void* hs_method_03a4dc08(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27228,7 +27250,7 @@ catch (...)
 
 static void* hs_method_c8a0445b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27274,7 +27296,7 @@ catch (...)
 
 static void* hs_method_56976929(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)->operator const std::vector<BlockSourceListener *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)->operator const std::vector<BlockSourceListener *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27304,7 +27326,7 @@ catch (...)
 
 static void* hs_method_e9252580(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27320,7 +27342,7 @@ catch (...)
 
 static void* hs_method_ee5442e3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27366,7 +27388,7 @@ catch (...)
 
 static void* hs_method_33f3b606(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockSourceListener *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27426,7 +27448,7 @@ catch (...)
 
 static void* hs_method_65dc84cc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27442,7 +27464,7 @@ catch (...)
 
 static void* hs_method_af0393d7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27488,7 +27510,7 @@ catch (...)
 
 static void* hs_method_d85d42b3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)->operator const std::vector<BlockType::RemovedStateCollection::SplitBlock> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)->operator const std::vector<BlockType::RemovedStateCollection::SplitBlock> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27518,7 +27540,7 @@ catch (...)
 
 static void* hs_method_2552327a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27534,7 +27556,7 @@ catch (...)
 
 static void* hs_method_23d046bd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27580,7 +27602,7 @@ catch (...)
 
 static void* hs_method_9672ab5c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27625,7 +27647,7 @@ catch (...)
 
 static void* hs_method_fabcab28(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27641,7 +27663,7 @@ catch (...)
 
 static void* hs_method_15594652(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27687,7 +27709,7 @@ catch (...)
 
 static void* hs_method_64bca0c6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)->operator const std::vector<CommandMessage::MessageComponent> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)->operator const std::vector<CommandMessage::MessageComponent> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27717,7 +27739,7 @@ catch (...)
 
 static void* hs_method_d315a13b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27733,7 +27755,7 @@ catch (...)
 
 static void* hs_method_cdd2f7ac(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27779,7 +27801,7 @@ catch (...)
 
 static void* hs_method_5fa15cb8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27824,7 +27846,7 @@ catch (...)
 
 static void* hs_method_e0cfdebb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27840,7 +27862,7 @@ catch (...)
 
 static void* hs_method_38c52bfb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27886,7 +27908,7 @@ catch (...)
 
 static void* hs_method_413d9dcf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)->operator const std::vector<CommandRegistry::Symbol> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)->operator const std::vector<CommandRegistry::Symbol> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27916,7 +27938,7 @@ catch (...)
 
 static void* hs_method_7207726e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -27932,7 +27954,7 @@ catch (...)
 
 static void* hs_method_8e6736f4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -27978,7 +28000,7 @@ catch (...)
 
 static void* hs_method_9c1d841a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandRegistry::Symbol>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28023,7 +28045,7 @@ catch (...)
 
 static void* hs_method_bd34ac4f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28039,7 +28061,7 @@ catch (...)
 
 static void* hs_method_dea5b719(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28085,7 +28107,7 @@ catch (...)
 
 static void* hs_method_170e6e19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)->operator const std::vector<ContainerOwner::OwnedContainer> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)->operator const std::vector<ContainerOwner::OwnedContainer> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28115,7 +28137,7 @@ catch (...)
 
 static void* hs_method_c17a41c5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28131,7 +28153,7 @@ catch (...)
 
 static void* hs_method_689ed796(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28177,7 +28199,7 @@ catch (...)
 
 static void* hs_method_b9236776(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28222,7 +28244,7 @@ catch (...)
 
 static void* hs_method_e2ebcdfd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28238,7 +28260,7 @@ catch (...)
 
 static void* hs_method_ce4ea8b2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28284,7 +28306,7 @@ catch (...)
 
 static void* hs_method_415db105(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)->operator const std::vector<GameRule> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)->operator const std::vector<GameRule> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28314,7 +28336,7 @@ catch (...)
 
 static void* hs_method_3fd3207b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28330,7 +28352,7 @@ catch (...)
 
 static void* hs_method_4b4fe6dc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28376,7 +28398,7 @@ catch (...)
 
 static void* hs_method_62bd0aea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<GameRule>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28421,7 +28443,7 @@ catch (...)
 
 static void* hs_method_cfa43da5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28437,7 +28459,7 @@ catch (...)
 
 static void* hs_method_e43fa39c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28483,7 +28505,7 @@ catch (...)
 
 static void* hs_method_b320387f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)->operator const std::vector<HashedString> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)->operator const std::vector<HashedString> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28513,7 +28535,7 @@ catch (...)
 
 static void* hs_method_f5de2724(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28529,7 +28551,7 @@ catch (...)
 
 static void* hs_method_99d91601(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28575,7 +28597,7 @@ catch (...)
 
 static void* hs_method_181d2cad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28620,7 +28642,7 @@ catch (...)
 
 static void* hs_method_b3b010f3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28636,7 +28658,7 @@ catch (...)
 
 static void* hs_method_688b4ed4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28682,7 +28704,7 @@ catch (...)
 
 static void* hs_method_f0e94a15(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)->operator const std::vector<InventoryAction> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)->operator const std::vector<InventoryAction> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28712,7 +28734,7 @@ catch (...)
 
 static void* hs_method_97ddbd48(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28728,7 +28750,7 @@ catch (...)
 
 static void* hs_method_f3d7dda2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28774,7 +28796,7 @@ catch (...)
 
 static void* hs_method_dce1a84e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<InventoryAction>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28819,7 +28841,7 @@ catch (...)
 
 static void* hs_method_fd18c12e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28835,7 +28857,7 @@ catch (...)
 
 static void* hs_method_413384dd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28881,7 +28903,7 @@ catch (...)
 
 static void* hs_method_e925af2b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)->operator const std::vector<ItemInstance> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)->operator const std::vector<ItemInstance> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28911,7 +28933,7 @@ catch (...)
 
 static void* hs_method_79cc95ce(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -28927,7 +28949,7 @@ catch (...)
 
 static void* hs_method_e424feca(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -28973,7 +28995,7 @@ catch (...)
 
 static void* hs_method_32f487ba(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29018,7 +29040,7 @@ catch (...)
 
 static void* hs_method_5d3c5450(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29034,7 +29056,7 @@ catch (...)
 
 static void* hs_method_f1f3e857(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29080,7 +29102,7 @@ catch (...)
 
 static void* hs_method_9204817b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)->operator const std::vector<ItemStack> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)->operator const std::vector<ItemStack> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29110,7 +29132,7 @@ catch (...)
 
 static void* hs_method_81a9403d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29126,7 +29148,7 @@ catch (...)
 
 static void* hs_method_d8db7c5d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29172,7 +29194,7 @@ catch (...)
 
 static void* hs_method_3248a122(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemStack>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29217,7 +29239,7 @@ catch (...)
 
 static void* hs_method_5433d277(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29233,7 +29255,7 @@ catch (...)
 
 static void* hs_method_9c71f824(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29279,7 +29301,7 @@ catch (...)
 
 static void* hs_method_b5f9a106(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)->operator const std::vector<LevelListener *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)->operator const std::vector<LevelListener *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29309,7 +29331,7 @@ catch (...)
 
 static void* hs_method_90d9cc76(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29325,7 +29347,7 @@ catch (...)
 
 static void* hs_method_ac96a35a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29371,7 +29393,7 @@ catch (...)
 
 static void* hs_method_424054ea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29446,7 +29468,7 @@ catch (...)
 
 static void* hs_method_1ac14ca2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29462,7 +29484,7 @@ catch (...)
 
 static void* hs_method_db78d5a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29508,7 +29530,7 @@ catch (...)
 
 static void* hs_method_dd60cea7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)->operator const std::vector<MolangMemberVariable> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)->operator const std::vector<MolangMemberVariable> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29538,7 +29560,7 @@ catch (...)
 
 static void* hs_method_50ee4cc2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29554,7 +29576,7 @@ catch (...)
 
 static void* hs_method_b355ba66(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29600,7 +29622,7 @@ catch (...)
 
 static void* hs_method_c95f6007(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<MolangMemberVariable>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29660,7 +29682,7 @@ catch (...)
 
 static void* hs_method_c56c48a9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29676,7 +29698,7 @@ catch (...)
 
 static void* hs_method_aa1f42f5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29722,7 +29744,7 @@ catch (...)
 
 static void* hs_method_4a7af5c8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)->operator const std::vector<PackInstanceId> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)->operator const std::vector<PackInstanceId> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29752,7 +29774,7 @@ catch (...)
 
 static void* hs_method_b3741cc1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29768,7 +29790,7 @@ catch (...)
 
 static void* hs_method_c781806b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29814,7 +29836,7 @@ catch (...)
 
 static void* hs_method_78084cf4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PackInstanceId>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29859,7 +29881,7 @@ catch (...)
 
 static void* hs_method_585483b8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29875,7 +29897,7 @@ catch (...)
 
 static void* hs_method_a8d8bf42(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29921,7 +29943,7 @@ catch (...)
 
 static void* hs_method_553ed592(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)->operator const std::vector<PlayerListener *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)->operator const std::vector<PlayerListener *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -29951,7 +29973,7 @@ catch (...)
 
 static void* hs_method_87d06b61(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -29967,7 +29989,7 @@ catch (...)
 
 static void* hs_method_3fa2eb0f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30013,7 +30035,7 @@ catch (...)
 
 static void* hs_method_f39db33a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30058,7 +30080,7 @@ catch (...)
 
 static void* hs_method_467c8f41(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30074,7 +30096,7 @@ catch (...)
 
 static void* hs_method_7bbfb07a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30120,7 +30142,7 @@ catch (...)
 
 static void* hs_method_e44b9afe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)->operator const std::vector<mce::UUID> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)->operator const std::vector<mce::UUID> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30150,7 +30172,7 @@ catch (...)
 
 static void* hs_method_81175ad6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30166,7 +30188,7 @@ catch (...)
 
 static void* hs_method_47170b25(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30212,7 +30234,7 @@ catch (...)
 
 static void* hs_method_1dbe2373(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<mce::UUID>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30272,7 +30294,7 @@ catch (...)
 
 static void* hs_method_bcc348d3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30288,7 +30310,7 @@ catch (...)
 
 static void* hs_method_c47951f7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30334,7 +30356,7 @@ catch (...)
 
 static void* hs_method_b3a71c7b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)->operator const std::vector<short> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)->operator const std::vector<short> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30364,7 +30386,7 @@ catch (...)
 
 static void* hs_method_f5bbfb63(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30380,7 +30402,7 @@ catch (...)
 
 static void* hs_method_ab824f9a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30426,7 +30448,7 @@ catch (...)
 
 static void* hs_method_774e0757(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30486,7 +30508,7 @@ catch (...)
 
 static void* hs_method_4e5513aa(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30502,7 +30524,7 @@ catch (...)
 
 static void* hs_method_1b05ce3c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30548,7 +30570,7 @@ catch (...)
 
 static void* hs_method_feac99d5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)->operator const std::vector<std::basic_string<char> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)->operator const std::vector<std::basic_string<char> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30578,7 +30600,7 @@ catch (...)
 
 static void* hs_method_36e6d7ac(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30594,7 +30616,7 @@ catch (...)
 
 static void* hs_method_78c07beb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30640,7 +30662,7 @@ catch (...)
 
 static void* hs_method_c3abeb76(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::basic_string<char>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30685,7 +30707,7 @@ catch (...)
 
 static void* hs_method_77587278(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30701,7 +30723,7 @@ catch (...)
 
 static void* hs_method_e263a34d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30747,7 +30769,7 @@ catch (...)
 
 static void* hs_method_673f68a7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)->operator const std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff> > > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)->operator const std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff> > > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30777,7 +30799,7 @@ catch (...)
 
 static void* hs_method_a738a87c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30793,7 +30815,7 @@ catch (...)
 
 static void* hs_method_730da0a9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30839,7 +30861,7 @@ catch (...)
 
 static void* hs_method_b1eeb0ac(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30884,7 +30906,7 @@ catch (...)
 
 static void* hs_method_f9de482a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30900,7 +30922,7 @@ catch (...)
 
 static void* hs_method_626f1a19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30946,7 +30968,7 @@ catch (...)
 
 static void* hs_method_9345b444(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)->operator const std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier> > > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)->operator const std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier> > > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -30976,7 +30998,7 @@ catch (...)
 
 static void* hs_method_1624f7a9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -30992,7 +31014,7 @@ catch (...)
 
 static void* hs_method_1485d364(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31038,7 +31060,7 @@ catch (...)
 
 static void* hs_method_e9e15d65(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31083,7 +31105,7 @@ catch (...)
 
 static void* hs_method_46eef98e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31099,7 +31121,7 @@ catch (...)
 
 static void* hs_method_d946e944(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31145,7 +31167,7 @@ catch (...)
 
 static void* hs_method_84324159(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)->operator const std::vector<std::shared_ptr<BlockType::AlteredStateCollection> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)->operator const std::vector<std::shared_ptr<BlockType::AlteredStateCollection> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31175,7 +31197,7 @@ catch (...)
 
 static void* hs_method_2e965cc1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31191,7 +31213,7 @@ catch (...)
 
 static void* hs_method_a2d4e2dc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31237,7 +31259,7 @@ catch (...)
 
 static void* hs_method_08b52ee8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31282,7 +31304,7 @@ catch (...)
 
 static void* hs_method_8fe304c3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31298,7 +31320,7 @@ catch (...)
 
 static void* hs_method_1d9c439e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31344,7 +31366,7 @@ catch (...)
 
 static void* hs_method_33dc6545(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)->operator const std::vector<std::shared_ptr<ServerWaypointGroup> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)->operator const std::vector<std::shared_ptr<ServerWaypointGroup> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31374,7 +31396,7 @@ catch (...)
 
 static void* hs_method_b7f07e67(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31390,7 +31412,7 @@ catch (...)
 
 static void* hs_method_0493b435(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31436,7 +31458,7 @@ catch (...)
 
 static void* hs_method_1707bff2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<ServerWaypointGroup>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31481,7 +31503,7 @@ catch (...)
 
 static void* hs_method_09d2c4e1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31497,7 +31519,7 @@ catch (...)
 
 static void* hs_method_1e2e3de9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31543,7 +31565,7 @@ catch (...)
 
 static void* hs_method_139cf644(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)->operator const std::vector<std::unique_ptr<Block> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)->operator const std::vector<std::unique_ptr<Block> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31573,7 +31595,7 @@ catch (...)
 
 static void* hs_method_4196de4c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31589,7 +31611,7 @@ catch (...)
 
 static void* hs_method_5df06c55(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31635,7 +31657,7 @@ catch (...)
 
 static void* hs_method_886964a4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31680,7 +31702,7 @@ catch (...)
 
 static void* hs_method_4690e487(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31696,7 +31718,7 @@ catch (...)
 
 static void* hs_method_8391c6b1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31742,7 +31764,7 @@ catch (...)
 
 static void* hs_method_3583ad5a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)->operator const std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)->operator const std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31772,7 +31794,7 @@ catch (...)
 
 static void* hs_method_95e72e0d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31788,7 +31810,7 @@ catch (...)
 
 static void* hs_method_88d4eeb2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31834,7 +31856,7 @@ catch (...)
 
 static void* hs_method_1fa57622(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31879,7 +31901,7 @@ catch (...)
 
 static void* hs_method_60aff261(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31895,7 +31917,7 @@ catch (...)
 
 static void* hs_method_b1a7a5f3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31941,7 +31963,7 @@ catch (...)
 
 static void* hs_method_19743c61(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)->operator const std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)->operator const std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -31971,7 +31993,7 @@ catch (...)
 
 static void* hs_method_bfacb825(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -31987,7 +32009,7 @@ catch (...)
 
 static void* hs_method_5df80eb6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32033,7 +32055,7 @@ catch (...)
 
 static void* hs_method_40bc1d68(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32078,7 +32100,7 @@ catch (...)
 
 static void* hs_method_7e05b261(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32094,7 +32116,7 @@ catch (...)
 
 static void* hs_method_71f8bcc8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32140,7 +32162,7 @@ catch (...)
 
 static void* hs_method_cb54e812(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)->operator const std::vector<std::unique_ptr<DeferredCommandBase> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)->operator const std::vector<std::unique_ptr<DeferredCommandBase> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32170,7 +32192,7 @@ catch (...)
 
 static void* hs_method_1f41620f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32186,7 +32208,7 @@ catch (...)
 
 static void* hs_method_9cc39e3d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32232,7 +32254,7 @@ catch (...)
 
 static void* hs_method_303d81f4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<DeferredCommandBase>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32292,7 +32314,7 @@ catch (...)
 
 static void* hs_method_2eabf9d8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32308,7 +32330,7 @@ catch (...)
 
 static void* hs_method_856ba676(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32354,7 +32376,7 @@ catch (...)
 
 static void* hs_method_421a84fc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)->operator const std::vector<std::unique_ptr<MolangVariable> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)->operator const std::vector<std::unique_ptr<MolangVariable> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32384,7 +32406,7 @@ catch (...)
 
 static void* hs_method_59afa0ed(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32400,7 +32422,7 @@ catch (...)
 
 static void* hs_method_819b278d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32446,7 +32468,7 @@ catch (...)
 
 static void* hs_method_354ff47f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32506,7 +32528,7 @@ catch (...)
 
 static void* hs_method_a5857fd8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32522,7 +32544,7 @@ catch (...)
 
 static void* hs_method_8de9c882(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32568,7 +32590,7 @@ catch (...)
 
 static void* hs_method_7e05025b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)->operator const std::vector<unsigned char> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)->operator const std::vector<unsigned char> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32598,7 +32620,7 @@ catch (...)
 
 static void* hs_method_8748bb7f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32614,7 +32636,7 @@ catch (...)
 
 static void* hs_method_cb617b5f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32660,7 +32682,7 @@ catch (...)
 
 static void* hs_method_fb5e1d83(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32705,7 +32727,7 @@ catch (...)
 
 static void* hs_method_cee8bd71(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32721,7 +32743,7 @@ catch (...)
 
 static void* hs_method_23ed747f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32767,7 +32789,7 @@ catch (...)
 
 static void* hs_method_1688e924(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->operator const std::vector<unsigned int> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)->operator const std::vector<unsigned int> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32797,7 +32819,7 @@ catch (...)
 
 static void* hs_method_cd639a5b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32813,7 +32835,7 @@ catch (...)
 
 static void* hs_method_0828303b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32859,7 +32881,7 @@ catch (...)
 
 static void* hs_method_64f26669(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32904,7 +32926,7 @@ catch (...)
 
 static void* hs_method_82325949(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -32920,7 +32942,7 @@ catch (...)
 
 static void* hs_method_b0684ffc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32966,7 +32988,7 @@ catch (...)
 
 static void* hs_method_87f562be(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)->operator const std::vector<unsigned short> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)->operator const std::vector<unsigned short> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -32996,7 +33018,7 @@ catch (...)
 
 static void* hs_method_3c91e44d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33012,7 +33034,7 @@ catch (...)
 
 static void* hs_method_9651bdcf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33058,7 +33080,7 @@ catch (...)
 
 static void* hs_method_e240fb2f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33103,7 +33125,7 @@ catch (...)
 
 static void* hs_method_6c063faf(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33119,7 +33141,7 @@ catch (...)
 
 static void* hs_method_89e2925a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33165,7 +33187,7 @@ catch (...)
 
 static void* hs_method_fe573e29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)->operator const std::optional<EducationLevelSettings> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)->operator const std::optional<EducationLevelSettings> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33195,7 +33217,7 @@ catch (...)
 
 static void* hs_method_b00f779c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33211,7 +33233,7 @@ catch (...)
 
 static void* hs_method_879b7a57(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33257,7 +33279,7 @@ catch (...)
 
 static void* hs_method_88597aca(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33333,7 +33355,7 @@ catch (...)
 
 static void* hs_method_4dca38fb(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33349,7 +33371,7 @@ catch (...)
 
 static void* hs_method_9e030fec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33379,7 +33401,7 @@ catch (...)
 
 static void* hs_method_b1470545(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)->operator const BaseGameVersion &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)->operator const BaseGameVersion &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33425,7 +33447,7 @@ catch (...)
 
 static void* hs_method_c0bb65e7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33441,7 +33463,7 @@ catch (...)
 
 static void* hs_method_0ce9535a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33471,7 +33493,7 @@ catch (...)
 
 static void* hs_method_65fef167(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BaseGameVersion> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33532,7 +33554,7 @@ catch (...)
 
 static void* hs_method_ed94a08f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33548,7 +33570,7 @@ catch (...)
 
 static void* hs_method_41b08a63(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33578,7 +33600,7 @@ catch (...)
 
 static void* hs_method_14ec2eda(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)->operator const BlockEvents::BlockEventManager &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)->operator const BlockEvents::BlockEventManager &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33624,7 +33646,7 @@ catch (...)
 
 static void* hs_method_e5e9a7e6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33640,7 +33662,7 @@ catch (...)
 
 static void* hs_method_41239c80(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33670,7 +33692,7 @@ catch (...)
 
 static void* hs_method_35b7e53b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33731,7 +33753,7 @@ catch (...)
 
 static void* hs_method_018f0fd5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33747,7 +33769,7 @@ catch (...)
 
 static void* hs_method_653b74ad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33777,7 +33799,7 @@ catch (...)
 
 static void* hs_method_bd7d4ad7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)->operator const BuiltInMobComponents &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)->operator const BuiltInMobComponents &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33823,7 +33845,7 @@ catch (...)
 
 static void* hs_method_e0b2b1f1(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33839,7 +33861,7 @@ catch (...)
 
 static void* hs_method_14065e31(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33869,7 +33891,7 @@ catch (...)
 
 static void* hs_method_3dbe4903(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33930,7 +33952,7 @@ catch (...)
 
 static void* hs_method_22912ad3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -33946,7 +33968,7 @@ catch (...)
 
 static void* hs_method_c607e90e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -33976,7 +33998,7 @@ catch (...)
 
 static void* hs_method_5ffd73da(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)->operator const CommandRegistry::LexicalToken &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)->operator const CommandRegistry::LexicalToken &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34022,7 +34044,7 @@ catch (...)
 
 static void* hs_method_ada72625(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34038,7 +34060,7 @@ catch (...)
 
 static void* hs_method_fd58ad49(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34068,7 +34090,7 @@ catch (...)
 
 static void* hs_method_cde52fbc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34129,7 +34151,7 @@ catch (...)
 
 static void* hs_method_62772e61(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34145,7 +34167,7 @@ catch (...)
 
 static void* hs_method_50948d55(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34175,7 +34197,7 @@ catch (...)
 
 static void* hs_method_62a9278c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)->operator const CompassSpriteCalculator &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)->operator const CompassSpriteCalculator &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34221,7 +34243,7 @@ catch (...)
 
 static void* hs_method_5b4dde96(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34237,7 +34259,7 @@ catch (...)
 
 static void* hs_method_33944f46(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34267,7 +34289,7 @@ catch (...)
 
 static void* hs_method_1837328f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34328,7 +34350,7 @@ catch (...)
 
 static void* hs_method_ab341c3f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34344,7 +34366,7 @@ catch (...)
 
 static void* hs_method_4ea30958(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34374,7 +34396,7 @@ catch (...)
 
 static void* hs_method_b99bc0e0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator const OwnerPtr<EntityContext> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)->operator const OwnerPtr<EntityContext> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34420,7 +34442,7 @@ catch (...)
 
 static void* hs_method_00c5fd5a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34436,7 +34458,7 @@ catch (...)
 
 static void* hs_method_5359c3c2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34466,7 +34488,7 @@ catch (...)
 
 static void* hs_method_d5a0f8a5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34527,7 +34549,7 @@ catch (...)
 
 static void* hs_method_c0542bb7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34543,7 +34565,7 @@ catch (...)
 
 static void* hs_method_52d4922a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34573,7 +34595,7 @@ catch (...)
 
 static void* hs_method_b292f5a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)->operator const PuvLoadData::LoadResultWithTiming &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)->operator const PuvLoadData::LoadResultWithTiming &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34619,7 +34641,7 @@ catch (...)
 
 static void* hs_method_ff53f343(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34635,7 +34657,7 @@ catch (...)
 
 static void* hs_method_6a32b851(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34665,7 +34687,7 @@ catch (...)
 
 static void* hs_method_c7ad5442(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, PuvLoadData::LoadResultWithTiming> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34726,7 +34748,7 @@ catch (...)
 
 static void* hs_method_659066ea(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34742,7 +34764,7 @@ catch (...)
 
 static void* hs_method_79ce46f8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34772,7 +34794,7 @@ catch (...)
 
 static void* hs_method_207cf419(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)->operator const RawGameServerToken &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)->operator const RawGameServerToken &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34818,7 +34840,7 @@ catch (...)
 
 static void* hs_method_414ad23b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -34834,7 +34856,7 @@ catch (...)
 
 static void* hs_method_40105f7a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34864,7 +34886,7 @@ catch (...)
 
 static void* hs_method_fd92363e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -34909,7 +34931,7 @@ catch (...)
 
 static HosihikariStringView hs_method_750577a9(void* hs_self) try
 {
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)).get();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)).get();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -34926,7 +34948,7 @@ catch (...)
 
 static HosihikariStringView hs_method_101e9c9a(void* hs_self) try
 {
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)->get();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)->get();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -34977,7 +34999,7 @@ catch (...)
 
 static HosihikariStringView hs_method_8e77d7e1(void* hs_self) try
 {
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)->operator const std::basic_string<char> &();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)->operator const std::basic_string<char> &();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -35011,7 +35033,7 @@ catch (...)
 
 static HosihikariStringView hs_method_42ae5cf2(void* hs_self) try
 {
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)).operator*();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)).operator*();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -35028,7 +35050,7 @@ catch (...)
 
 static HosihikariStringView hs_method_05bd26fc(void* hs_self) try
 {
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)->operator*();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)->operator*();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -35079,7 +35101,7 @@ catch (...)
 
 static void* hs_method_8edfad34(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35124,7 +35146,7 @@ catch (...)
 
 static void* hs_method_ba80e46f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35140,7 +35162,7 @@ catch (...)
 
 static void* hs_method_09f4bacb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35186,7 +35208,7 @@ catch (...)
 
 static void* hs_method_0c1d8971(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)->operator const std::optional<std::vector<WorldSaveAndExitPackTelemetryData> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)->operator const std::optional<std::vector<WorldSaveAndExitPackTelemetryData> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35216,7 +35238,7 @@ catch (...)
 
 static void* hs_method_5ccd3501(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35232,7 +35254,7 @@ catch (...)
 
 static void* hs_method_3a684836(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35278,7 +35300,7 @@ catch (...)
 
 static void* hs_method_005b8dca(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35323,7 +35345,7 @@ catch (...)
 
 static void* hs_method_a83aee9a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35339,7 +35361,7 @@ catch (...)
 
 static void* hs_method_97ccc35d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35385,7 +35407,7 @@ catch (...)
 
 static void* hs_method_70645d5b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)->operator const std::vector<bool> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)->operator const std::vector<bool> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35415,7 +35437,7 @@ catch (...)
 
 static void* hs_method_5591b553(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35431,7 +35453,7 @@ catch (...)
 
 static void* hs_method_d833185b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35477,7 +35499,7 @@ catch (...)
 
 static void* hs_method_7f079658(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35553,7 +35575,7 @@ catch (...)
 
 static void* hs_method_86715369(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35569,7 +35591,7 @@ catch (...)
 
 static void* hs_method_dc1da1bf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35599,7 +35621,7 @@ catch (...)
 
 static void* hs_method_25146b34(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)->operator const PlayerAuthenticationInfo &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)->operator const PlayerAuthenticationInfo &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35645,7 +35667,7 @@ catch (...)
 
 static void* hs_method_fc32563d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35661,7 +35683,7 @@ catch (...)
 
 static void* hs_method_a8522993(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35691,7 +35713,7 @@ catch (...)
 
 static void* hs_method_ff3b2aa1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35752,7 +35774,7 @@ catch (...)
 
 static void* hs_method_9d743b0a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35768,7 +35790,7 @@ catch (...)
 
 static void* hs_method_b33ac025(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35798,7 +35820,7 @@ catch (...)
 
 static void* hs_method_48c0d52a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)->operator const EducationLocalLevelSettings &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)->operator const EducationLocalLevelSettings &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35844,7 +35866,7 @@ catch (...)
 
 static void* hs_method_ec6f2084(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35860,7 +35882,7 @@ catch (...)
 
 static void* hs_method_33d3b64f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35890,7 +35912,7 @@ catch (...)
 
 static void* hs_method_4b05015b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35920,7 +35942,7 @@ catch (...)
 
 static void* hs_method_bb29200f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -35936,7 +35958,7 @@ catch (...)
 
 static void* hs_method_958cbd7d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -35982,7 +36004,7 @@ catch (...)
 
 static void* hs_method_4d3e167f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->operator const std::deque<BlockPos> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)->operator const std::deque<BlockPos> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36012,7 +36034,7 @@ catch (...)
 
 static void* hs_method_167d9d1e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36028,7 +36050,7 @@ catch (...)
 
 static void* hs_method_202faa4e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36074,7 +36096,7 @@ catch (...)
 
 static void* hs_method_7b28e794(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36119,7 +36141,7 @@ catch (...)
 
 static void* hs_method_373fde03(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36135,7 +36157,7 @@ catch (...)
 
 static void* hs_method_6e4842a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36181,7 +36203,7 @@ catch (...)
 
 static void* hs_method_4dca5cad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)->operator const std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)->operator const std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36211,7 +36233,7 @@ catch (...)
 
 static void* hs_method_ea81d82c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36227,7 +36249,7 @@ catch (...)
 
 static void* hs_method_be2f7696(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36273,7 +36295,7 @@ catch (...)
 
 static void* hs_method_b4d8d9b1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36318,7 +36340,7 @@ catch (...)
 
 static void* hs_method_46b941a5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36334,7 +36356,7 @@ catch (...)
 
 static void* hs_method_82381e8b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36380,7 +36402,7 @@ catch (...)
 
 static void* hs_method_32cfb2a6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)->operator const std::optional<std::basic_string<char> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)->operator const std::optional<std::basic_string<char> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36410,7 +36432,7 @@ catch (...)
 
 static void* hs_method_73ad4130(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36426,7 +36448,7 @@ catch (...)
 
 static void* hs_method_b1257e51(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36472,7 +36494,7 @@ catch (...)
 
 static void* hs_method_4d42b658(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36548,7 +36570,7 @@ catch (...)
 
 static void* hs_method_33dd7fd2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36564,7 +36586,7 @@ catch (...)
 
 static void* hs_method_f400526a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36594,7 +36616,7 @@ catch (...)
 
 static void* hs_method_7906f018(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)->operator const PlayerUIContainer &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)->operator const PlayerUIContainer &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36640,7 +36662,7 @@ catch (...)
 
 static void* hs_method_7d2f59ff(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36656,7 +36678,7 @@ catch (...)
 
 static void* hs_method_dc736468(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36686,7 +36708,7 @@ catch (...)
 
 static void* hs_method_87fcec49(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 440ULL, PlayerUIContainer> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36747,7 +36769,7 @@ catch (...)
 
 static void* hs_method_2fbc2cfd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36763,7 +36785,7 @@ catch (...)
 
 static void* hs_method_b49ce9d0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36793,7 +36815,7 @@ catch (...)
 
 static void* hs_method_0c403fc3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)->operator const Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36839,7 +36861,7 @@ catch (...)
 
 static void* hs_method_2eabb248(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36855,7 +36877,7 @@ catch (...)
 
 static void* hs_method_23d65f0b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36885,7 +36907,7 @@ catch (...)
 
 static void* hs_method_e978a6ab(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -36976,7 +36998,7 @@ catch (...)
 
 static void* hs_method_a5234a8d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -36992,7 +37014,7 @@ catch (...)
 
 static void* hs_method_7b5b031b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37022,7 +37044,7 @@ catch (...)
 
 static void* hs_method_0178afc0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)->operator const HashedString &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)->operator const HashedString &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37068,7 +37090,7 @@ catch (...)
 
 static void* hs_method_6417b6a8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37084,7 +37106,7 @@ catch (...)
 
 static void* hs_method_36ed12e8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37114,7 +37136,7 @@ catch (...)
 
 static void* hs_method_67c7f61e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, HashedString> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37190,7 +37212,7 @@ catch (...)
 
 static void* hs_method_1c0b0dfd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37206,7 +37228,7 @@ catch (...)
 
 static void* hs_method_28c96346(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37236,7 +37258,7 @@ catch (...)
 
 static void* hs_method_f6bff893(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)->operator const InventoryTransactionManager &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)->operator const InventoryTransactionManager &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37282,7 +37304,7 @@ catch (...)
 
 static void* hs_method_27502983(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37298,7 +37320,7 @@ catch (...)
 
 static void* hs_method_224d5639(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37328,7 +37350,7 @@ catch (...)
 
 static void* hs_method_7db6f037(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, InventoryTransactionManager> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37389,7 +37411,7 @@ catch (...)
 
 static void* hs_method_d903b5b9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37405,7 +37427,7 @@ catch (...)
 
 static void* hs_method_1b705195(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37435,7 +37457,7 @@ catch (...)
 
 static void* hs_method_3bf8a884(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)->operator const PackIdVersion &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)->operator const PackIdVersion &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37481,7 +37503,7 @@ catch (...)
 
 static void* hs_method_81b5e0e5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37497,7 +37519,7 @@ catch (...)
 
 static void* hs_method_ef085e97(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37527,7 +37549,7 @@ catch (...)
 
 static void* hs_method_7ed47ee6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37588,7 +37610,7 @@ catch (...)
 
 static void* hs_method_b774b6d2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37604,7 +37626,7 @@ catch (...)
 
 static void* hs_method_6298f412(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37634,7 +37656,7 @@ catch (...)
 
 static void* hs_method_c37ec24c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)->operator const SpawnSettings &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)->operator const SpawnSettings &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37680,7 +37702,7 @@ catch (...)
 
 static void* hs_method_b2d3e3ce(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37696,7 +37718,7 @@ catch (...)
 
 static void* hs_method_9e15076c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37726,7 +37748,7 @@ catch (...)
 
 static void* hs_method_42d6f7ed(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37787,7 +37809,7 @@ catch (...)
 
 static void* hs_method_1fb4157f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37803,7 +37825,7 @@ catch (...)
 
 static void* hs_method_a2fad078(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37833,7 +37855,7 @@ catch (...)
 
 static void* hs_method_3f491516(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)->operator const SynchedActorDataEntityWrapper &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)->operator const SynchedActorDataEntityWrapper &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37879,7 +37901,7 @@ catch (...)
 
 static void* hs_method_8728bdb5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -37895,7 +37917,7 @@ catch (...)
 
 static void* hs_method_9fa251f6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37925,7 +37947,7 @@ catch (...)
 
 static void* hs_method_ab636dba(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -37986,7 +38008,7 @@ catch (...)
 
 static void* hs_method_8afc4205(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38002,7 +38024,7 @@ catch (...)
 
 static void* hs_method_be397af6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38032,7 +38054,7 @@ catch (...)
 
 static void* hs_method_05f52fef(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)->operator const brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)->operator const brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38078,7 +38100,7 @@ catch (...)
 
 static void* hs_method_e43f4f79(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38094,7 +38116,7 @@ catch (...)
 
 static void* hs_method_1c49c7ee(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38124,7 +38146,7 @@ catch (...)
 
 static void* hs_method_57dfddae(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38185,7 +38207,7 @@ catch (...)
 
 static void* hs_method_ddcb09dd(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38201,7 +38223,7 @@ catch (...)
 
 static void* hs_method_09de42fd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38231,7 +38253,7 @@ catch (...)
 
 static void* hs_method_2f8efc95(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator const brstd::flat_map<BoneCacheKey, Matrix> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)->operator const brstd::flat_map<BoneCacheKey, Matrix> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38277,7 +38299,7 @@ catch (...)
 
 static void* hs_method_0fc5b7e6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38293,7 +38315,7 @@ catch (...)
 
 static void* hs_method_3b927dc1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38323,7 +38345,7 @@ catch (...)
 
 static void* hs_method_3c941c31(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38353,7 +38375,7 @@ catch (...)
 
 static void* hs_method_1a05e8e2(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38369,7 +38391,7 @@ catch (...)
 
 static void* hs_method_589e2c29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38415,7 +38437,7 @@ catch (...)
 
 static void* hs_method_943fd33d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)->operator const std::optional<PlayerPartyInfo> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)->operator const std::optional<PlayerPartyInfo> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38445,7 +38467,7 @@ catch (...)
 
 static void* hs_method_ae4f56a6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38461,7 +38483,7 @@ catch (...)
 
 static void* hs_method_feacb8d4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38507,7 +38529,7 @@ catch (...)
 
 static void* hs_method_72e58746(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, std::optional<PlayerPartyInfo>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38583,7 +38605,7 @@ catch (...)
 
 static void* hs_method_1ef0ea0e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38599,7 +38621,7 @@ catch (...)
 
 static void* hs_method_e385139c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38629,7 +38651,7 @@ catch (...)
 
 static void* hs_method_a0b9c5ec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)->operator const MolangVariableMap &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)->operator const MolangVariableMap &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38675,7 +38697,7 @@ catch (...)
 
 static void* hs_method_e05a976e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38691,7 +38713,7 @@ catch (...)
 
 static void* hs_method_70bca9e9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38721,7 +38743,7 @@ catch (...)
 
 static void* hs_method_bd7965e3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38782,7 +38804,7 @@ catch (...)
 
 static void* hs_method_4ecc1ae7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38798,7 +38820,7 @@ catch (...)
 
 static void* hs_method_fb9b763f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38828,7 +38850,7 @@ catch (...)
 
 static void* hs_method_ffeaf134(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)->operator const Stopwatch &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)->operator const Stopwatch &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38874,7 +38896,7 @@ catch (...)
 
 static void* hs_method_01c90ff5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38890,7 +38912,7 @@ catch (...)
 
 static void* hs_method_533c88a7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38920,7 +38942,7 @@ catch (...)
 
 static void* hs_method_10153007(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 56ULL, Stopwatch> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -38981,7 +39003,7 @@ catch (...)
 
 static void* hs_method_a0322ac9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -38997,7 +39019,7 @@ catch (...)
 
 static void* hs_method_391b8991(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39027,7 +39049,7 @@ catch (...)
 
 static void* hs_method_11c494e4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)->operator const EduSharedUriResource &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)->operator const EduSharedUriResource &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39073,7 +39095,7 @@ catch (...)
 
 static void* hs_method_0cef7839(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39089,7 +39111,7 @@ catch (...)
 
 static void* hs_method_3d95799f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39119,7 +39141,7 @@ catch (...)
 
 static void* hs_method_a3879cf2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39180,7 +39202,7 @@ catch (...)
 
 static void* hs_method_4cd4cd8c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39196,7 +39218,7 @@ catch (...)
 
 static void* hs_method_3678f6df(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39226,7 +39248,7 @@ catch (...)
 
 static void* hs_method_ba192507(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator const Factory<BaseLightTextureImageBuilder, Level &, Scheduler &> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)->operator const Factory<BaseLightTextureImageBuilder, Level &, Scheduler &> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39272,7 +39294,7 @@ catch (...)
 
 static void* hs_method_ec69e925(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39288,7 +39310,7 @@ catch (...)
 
 static void* hs_method_ecb03ae5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39318,7 +39340,7 @@ catch (...)
 
 static void* hs_method_e86d2098(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39379,7 +39401,7 @@ catch (...)
 
 static void* hs_method_154ba358(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39395,7 +39417,7 @@ catch (...)
 
 static void* hs_method_a91a1bd8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39425,7 +39447,7 @@ catch (...)
 
 static void* hs_method_ac27066e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator const brstd::move_only_function<bool () const> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)->operator const brstd::move_only_function<bool () const> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39471,7 +39493,7 @@ catch (...)
 
 static void* hs_method_be89101a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39487,7 +39509,7 @@ catch (...)
 
 static void* hs_method_fafff8ff(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39517,7 +39539,7 @@ catch (...)
 
 static void* hs_method_fd68f388(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39578,7 +39600,7 @@ catch (...)
 
 static void* hs_method_9cdea5da(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39594,7 +39616,7 @@ catch (...)
 
 static void* hs_method_7f5fb007(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39624,7 +39646,7 @@ catch (...)
 
 static void* hs_method_b1524168(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator const brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)->operator const brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39670,7 +39692,7 @@ catch (...)
 
 static void* hs_method_05d11780(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39686,7 +39708,7 @@ catch (...)
 
 static void* hs_method_a4b7bf10(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39716,7 +39738,7 @@ catch (...)
 
 static void* hs_method_d143a3f4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39777,7 +39799,7 @@ catch (...)
 
 static void* hs_method_d1e9ad34(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39793,7 +39815,7 @@ catch (...)
 
 static void* hs_method_f51b341b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39823,7 +39845,7 @@ catch (...)
 
 static void* hs_method_6a9b91af(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator const brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel> >, br::worldgen::StructureSetRegistry &) const> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)->operator const brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel> >, br::worldgen::StructureSetRegistry &) const> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39869,7 +39891,7 @@ catch (...)
 
 static void* hs_method_24b22c9a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39885,7 +39907,7 @@ catch (...)
 
 static void* hs_method_7c2db32d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39915,7 +39937,7 @@ catch (...)
 
 static void* hs_method_e3166499(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -39945,7 +39967,7 @@ catch (...)
 
 static void* hs_method_1f987356(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -39961,7 +39983,7 @@ catch (...)
 
 static void* hs_method_ed21c1f0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40007,7 +40029,7 @@ catch (...)
 
 static void* hs_method_30f4ca31(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)->operator const std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)->operator const std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40037,7 +40059,7 @@ catch (...)
 
 static void* hs_method_c8a957f0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40053,7 +40075,7 @@ catch (...)
 
 static void* hs_method_10e2b937(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40099,7 +40121,7 @@ catch (...)
 
 static void* hs_method_efb71005(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40144,7 +40166,7 @@ catch (...)
 
 static void* hs_method_21315804(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40160,7 +40182,7 @@ catch (...)
 
 static void* hs_method_c1919c1f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40206,7 +40228,7 @@ catch (...)
 
 static void* hs_method_e4ed3992(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->operator const std::function<bool ()> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)->operator const std::function<bool ()> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40236,7 +40258,7 @@ catch (...)
 
 static void* hs_method_a5d4bdc8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40252,7 +40274,7 @@ catch (...)
 
 static void* hs_method_8f6c438f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40298,7 +40320,7 @@ catch (...)
 
 static void* hs_method_2fc1586e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40343,7 +40365,7 @@ catch (...)
 
 static void* hs_method_e7f71d82(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40359,7 +40381,7 @@ catch (...)
 
 static void* hs_method_36f94065(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40405,7 +40427,7 @@ catch (...)
 
 static void* hs_method_2f6a1692(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)->operator const std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)->operator const std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40435,7 +40457,7 @@ catch (...)
 
 static void* hs_method_73ade1c4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40451,7 +40473,7 @@ catch (...)
 
 static void* hs_method_e6475b80(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40497,7 +40519,7 @@ catch (...)
 
 static void* hs_method_1cb08adc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40542,7 +40564,7 @@ catch (...)
 
 static void* hs_method_06cea72d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40558,7 +40580,7 @@ catch (...)
 
 static void* hs_method_3fe5264c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40604,7 +40626,7 @@ catch (...)
 
 static void* hs_method_64a72187(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->operator const std::function<const Block *(const BlockType &, int, int)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)->operator const std::function<const Block *(const BlockType &, int, int)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40634,7 +40656,7 @@ catch (...)
 
 static void* hs_method_8112a290(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40650,7 +40672,7 @@ catch (...)
 
 static void* hs_method_db5019a5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40696,7 +40718,7 @@ catch (...)
 
 static void* hs_method_bc832aee(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40741,7 +40763,7 @@ catch (...)
 
 static void* hs_method_b3c57f76(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40757,7 +40779,7 @@ catch (...)
 
 static void* hs_method_8ad2cc34(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40803,7 +40825,7 @@ catch (...)
 
 static void* hs_method_71de60be(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)->operator const std::function<std::optional<int> (const BlockType &, int)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)->operator const std::function<std::optional<int> (const BlockType &, int)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40833,7 +40855,7 @@ catch (...)
 
 static void* hs_method_47827b10(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40849,7 +40871,7 @@ catch (...)
 
 static void* hs_method_e520f4cc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40895,7 +40917,7 @@ catch (...)
 
 static void* hs_method_637d3339(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::optional<int> (const BlockType &, int)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -40940,7 +40962,7 @@ catch (...)
 
 static void* hs_method_8601f01e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -40956,7 +40978,7 @@ catch (...)
 
 static void* hs_method_ba8df4ac(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41002,7 +41024,7 @@ catch (...)
 
 static void* hs_method_36ba2b33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->operator const std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)->operator const std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41032,7 +41054,7 @@ catch (...)
 
 static void* hs_method_63bc193d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41048,7 +41070,7 @@ catch (...)
 
 static void* hs_method_579396ce(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41094,7 +41116,7 @@ catch (...)
 
 static void* hs_method_b7c22684(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41139,7 +41161,7 @@ catch (...)
 
 static void* hs_method_b31fd8ce(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41155,7 +41177,7 @@ catch (...)
 
 static void* hs_method_de883968(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41201,7 +41223,7 @@ catch (...)
 
 static void* hs_method_9508d589(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)->operator const std::function<void (Connection::DisconnectFailReason, const char *)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)->operator const std::function<void (Connection::DisconnectFailReason, const char *)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41231,7 +41253,7 @@ catch (...)
 
 static void* hs_method_f3e3820e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41247,7 +41269,7 @@ catch (...)
 
 static void* hs_method_a97f6dd3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41293,7 +41315,7 @@ catch (...)
 
 static void* hs_method_910f8177(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41338,7 +41360,7 @@ catch (...)
 
 static void* hs_method_0841fd8b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41354,7 +41376,7 @@ catch (...)
 
 static void* hs_method_7258a9d0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41400,7 +41422,7 @@ catch (...)
 
 static void* hs_method_0206e862(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->operator const std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)->operator const std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41430,7 +41452,7 @@ catch (...)
 
 static void* hs_method_21005f87(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41446,7 +41468,7 @@ catch (...)
 
 static void* hs_method_b2d86d36(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41492,7 +41514,7 @@ catch (...)
 
 static void* hs_method_e2f0aaef(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41537,7 +41559,7 @@ catch (...)
 
 static void* hs_method_c912e3ba(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41553,7 +41575,7 @@ catch (...)
 
 static void* hs_method_db4e62b3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41599,7 +41621,7 @@ catch (...)
 
 static void* hs_method_34ce750b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)->operator const std::function<void (MobEffect::FactorCalculationData &, EffectDuration)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)->operator const std::function<void (MobEffect::FactorCalculationData &, EffectDuration)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41629,7 +41651,7 @@ catch (...)
 
 static void* hs_method_09d1cda7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41645,7 +41667,7 @@ catch (...)
 
 static void* hs_method_8cf9b50c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41691,7 +41713,7 @@ catch (...)
 
 static void* hs_method_afdf64bb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41736,7 +41758,7 @@ catch (...)
 
 static void* hs_method_5241cb55(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41752,7 +41774,7 @@ catch (...)
 
 static void* hs_method_702eae66(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41798,7 +41820,7 @@ catch (...)
 
 static void* hs_method_19fd9e9f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->operator const std::function<void (ServerPlayer &)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)->operator const std::function<void (ServerPlayer &)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41828,7 +41850,7 @@ catch (...)
 
 static void* hs_method_e682430b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41844,7 +41866,7 @@ catch (...)
 
 static void* hs_method_41c08772(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41890,7 +41912,7 @@ catch (...)
 
 static void* hs_method_216137f1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41935,7 +41957,7 @@ catch (...)
 
 static void* hs_method_6e66d1e0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -41951,7 +41973,7 @@ catch (...)
 
 static void* hs_method_76bf7d47(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -41997,7 +42019,7 @@ catch (...)
 
 static void* hs_method_f17ee4ee(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)->operator const std::function<void (const char *)> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)->operator const std::function<void (const char *)> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42027,7 +42049,7 @@ catch (...)
 
 static void* hs_method_3f0dd692(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42043,7 +42065,7 @@ catch (...)
 
 static void* hs_method_631a19f3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42089,7 +42111,7 @@ catch (...)
 
 static void* hs_method_f178fe79(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42134,7 +42156,7 @@ catch (...)
 
 static void* hs_method_a18a6dd3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42150,7 +42172,7 @@ catch (...)
 
 static void* hs_method_308be356(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42196,7 +42218,7 @@ catch (...)
 
 static void* hs_method_ce7e5d42(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->operator const std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)->operator const std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42226,7 +42248,7 @@ catch (...)
 
 static void* hs_method_13628b28(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42242,7 +42264,7 @@ catch (...)
 
 static void* hs_method_ea30168f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42288,7 +42310,7 @@ catch (...)
 
 static void* hs_method_8bfbcd29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42333,7 +42355,7 @@ catch (...)
 
 static void* hs_method_f48f46e8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42349,7 +42371,7 @@ catch (...)
 
 static void* hs_method_f2a6da26(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42395,7 +42417,7 @@ catch (...)
 
 static void* hs_method_62846b80(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)->operator const std::unordered_map<HashedString, std::unique_ptr<Command> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)->operator const std::unordered_map<HashedString, std::unique_ptr<Command> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42425,7 +42447,7 @@ catch (...)
 
 static void* hs_method_c67786f7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42441,7 +42463,7 @@ catch (...)
 
 static void* hs_method_00932236(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42487,7 +42509,7 @@ catch (...)
 
 static void* hs_method_67e5c962(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::unique_ptr<Command>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42532,7 +42554,7 @@ catch (...)
 
 static void* hs_method_8175da8e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42548,7 +42570,7 @@ catch (...)
 
 static void* hs_method_b631b3fc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42594,7 +42616,7 @@ catch (...)
 
 static void* hs_method_d066d631(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->operator const std::unordered_map<HashedString, std::uint64_t> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)->operator const std::unordered_map<HashedString, std::uint64_t> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42624,7 +42646,7 @@ catch (...)
 
 static void* hs_method_0b58475e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -42640,7 +42662,7 @@ catch (...)
 
 static void* hs_method_f11a88df(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42686,7 +42708,7 @@ catch (...)
 
 static void* hs_method_f3984f41(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -42733,7 +42755,7 @@ static HosihikariArrayView hs_method_12465134(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)).get();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)).get();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -42765,7 +42787,7 @@ static HosihikariArrayView hs_method_1e919a1c(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)->get();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)->get();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -42861,7 +42883,7 @@ static HosihikariArrayView hs_method_a39888ac(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, CommandPermissionLevel> &();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, CommandPermissionLevel> &();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -42925,7 +42947,7 @@ static HosihikariArrayView hs_method_a972834b(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)).operator*();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)).operator*();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -42957,7 +42979,7 @@ static HosihikariArrayView hs_method_54a76fd4(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)->operator*();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)->operator*();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43051,7 +43073,7 @@ catch (...)
 
 static void* hs_method_ccf33e78(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43096,7 +43118,7 @@ catch (...)
 
 static void* hs_method_7f7e4ab3(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43112,7 +43134,7 @@ catch (...)
 
 static void* hs_method_491777ee(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43158,7 +43180,7 @@ catch (...)
 
 static void* hs_method_293e7ab6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43188,7 +43210,7 @@ catch (...)
 
 static void* hs_method_63e1b2dc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43204,7 +43226,7 @@ catch (...)
 
 static void* hs_method_e8699b24(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43250,7 +43272,7 @@ catch (...)
 
 static void* hs_method_f9c5dc87(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43297,7 +43319,7 @@ static HosihikariArrayView hs_method_2e4d78d7(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)).get();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)).get();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43329,7 +43351,7 @@ static HosihikariArrayView hs_method_d1af69ce(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)->get();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)->get();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43425,7 +43447,7 @@ static HosihikariArrayView hs_method_6aa1f254(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, unsigned int> &();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)->operator const std::unordered_map<std::basic_string<char>, unsigned int> &();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43489,7 +43511,7 @@ static HosihikariArrayView hs_method_854746f1(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)).operator*();
+    auto result = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)).operator*();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43521,7 +43543,7 @@ static HosihikariArrayView hs_method_4af8b8b8(void* hs_self) try
 {
     thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
     thread_local std::vector<std::string> hs_mapStrings;
-    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)->operator*();
+    auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)->operator*();
     hs_mapEntries.clear();
     hs_mapEntries.reserve(result.size());
     hs_mapStrings.clear();
@@ -43615,7 +43637,7 @@ catch (...)
 
 static void* hs_method_da3cef0b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43660,7 +43682,7 @@ catch (...)
 
 static void* hs_method_8ecf6c52(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43676,7 +43698,7 @@ catch (...)
 
 static void* hs_method_bfdf73e2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43722,7 +43744,7 @@ catch (...)
 
 static void* hs_method_baa17fe2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->operator const std::unordered_set<BlockSource *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)->operator const std::unordered_set<BlockSource *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43752,7 +43774,7 @@ catch (...)
 
 static void* hs_method_272c6b7b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43768,7 +43790,7 @@ catch (...)
 
 static void* hs_method_b9c435ca(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43814,7 +43836,7 @@ catch (...)
 
 static void* hs_method_85180231(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43859,7 +43881,7 @@ catch (...)
 
 static void* hs_method_fb99ad7a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43875,7 +43897,7 @@ catch (...)
 
 static void* hs_method_6148a214(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43921,7 +43943,7 @@ catch (...)
 
 static void* hs_method_9d538561(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)->operator const std::unordered_set<ChunkPos> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)->operator const std::unordered_set<ChunkPos> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -43951,7 +43973,7 @@ catch (...)
 
 static void* hs_method_882f0dfe(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -43967,7 +43989,7 @@ catch (...)
 
 static void* hs_method_e023ef0b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44013,7 +44035,7 @@ catch (...)
 
 static void* hs_method_bacb51a3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44089,7 +44111,7 @@ catch (...)
 
 static void* hs_method_c9e71aa9(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44105,7 +44127,7 @@ catch (...)
 
 static void* hs_method_713d1bdd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44135,7 +44157,7 @@ catch (...)
 
 static void* hs_method_e9d529a0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator const Core::Cache<unsigned short, const Block *, const Block *> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)->operator const Core::Cache<unsigned short, const Block *, const Block *> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44181,7 +44203,7 @@ catch (...)
 
 static void* hs_method_ccac2b1c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44197,7 +44219,7 @@ catch (...)
 
 static void* hs_method_e5a9d7a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44227,7 +44249,7 @@ catch (...)
 
 static void* hs_method_5114bc3f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44288,7 +44310,7 @@ catch (...)
 
 static void* hs_method_ba847ffa(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44304,7 +44326,7 @@ catch (...)
 
 static void* hs_method_d15bf661(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44334,7 +44356,7 @@ catch (...)
 
 static void* hs_method_fba0ec69(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)->operator const ExperimentStorage &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)->operator const ExperimentStorage &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44380,7 +44402,7 @@ catch (...)
 
 static void* hs_method_a905a697(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44396,7 +44418,7 @@ catch (...)
 
 static void* hs_method_f2c94803(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44426,7 +44448,7 @@ catch (...)
 
 static void* hs_method_b97c32e4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, ExperimentStorage> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44487,7 +44509,7 @@ catch (...)
 
 static void* hs_method_0a206f0b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44503,7 +44525,7 @@ catch (...)
 
 static void* hs_method_d9745744(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44533,7 +44555,7 @@ catch (...)
 
 static void* hs_method_0d0e540d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)->operator const Experiments &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)->operator const Experiments &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44579,7 +44601,7 @@ catch (...)
 
 static void* hs_method_5d7781a4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44595,7 +44617,7 @@ catch (...)
 
 static void* hs_method_70ffd5a4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44625,7 +44647,7 @@ catch (...)
 
 static void* hs_method_553b06d4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44655,7 +44677,7 @@ catch (...)
 
 static void* hs_method_59156a5a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44671,7 +44693,7 @@ catch (...)
 
 static void* hs_method_1ff74a5b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44717,7 +44739,7 @@ catch (...)
 
 static void* hs_method_9519606d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)->operator const std::condition_variable &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)->operator const std::condition_variable &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44747,7 +44769,7 @@ catch (...)
 
 static void* hs_method_2a7f56e5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44763,7 +44785,7 @@ catch (...)
 
 static void* hs_method_2ce984a1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44809,7 +44831,7 @@ catch (...)
 
 static void* hs_method_11e19798(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44854,7 +44876,7 @@ catch (...)
 
 static void* hs_method_a04d08a5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44870,7 +44892,7 @@ catch (...)
 
 static void* hs_method_7cdb548f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44916,7 +44938,7 @@ catch (...)
 
 static void* hs_method_bf623a2b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)->operator const std::optional<ExternalLinkSettings> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)->operator const std::optional<ExternalLinkSettings> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -44946,7 +44968,7 @@ catch (...)
 
 static void* hs_method_63d99a46(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -44962,7 +44984,7 @@ catch (...)
 
 static void* hs_method_63578a5e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45008,7 +45030,7 @@ catch (...)
 
 static void* hs_method_31909c6c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45084,7 +45106,7 @@ catch (...)
 
 static void* hs_method_7951ec95(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45100,7 +45122,7 @@ catch (...)
 
 static void* hs_method_14fc9acb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45130,7 +45152,7 @@ catch (...)
 
 static void* hs_method_7cd95853(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)->operator const VariantParameterList &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)->operator const VariantParameterList &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45176,7 +45198,7 @@ catch (...)
 
 static void* hs_method_6c638466(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45192,7 +45214,7 @@ catch (...)
 
 static void* hs_method_7a855d63(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45222,7 +45244,7 @@ catch (...)
 
 static void* hs_method_df830ad6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45267,7 +45289,7 @@ catch (...)
 
 static void* hs_method_e60a47b6(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45283,7 +45305,7 @@ catch (...)
 
 static void* hs_method_d7b166d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45329,7 +45351,7 @@ catch (...)
 
 static void* hs_method_4708ab1d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->operator const std::mutex &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)->operator const std::mutex &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45359,7 +45381,7 @@ catch (...)
 
 static void* hs_method_701ee16a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45375,7 +45397,7 @@ catch (...)
 
 static void* hs_method_0ce89f8e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45421,7 +45443,7 @@ catch (...)
 
 static void* hs_method_f7a6c33d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45527,7 +45549,7 @@ catch (...)
 
 static void* hs_method_fb157900(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45543,7 +45565,7 @@ catch (...)
 
 static void* hs_method_811c82fe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45573,7 +45595,7 @@ catch (...)
 
 static void* hs_method_43c1a8da(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)->operator const MolangScriptArg &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)->operator const MolangScriptArg &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45619,7 +45641,7 @@ catch (...)
 
 static void* hs_method_d6f754e7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45635,7 +45657,7 @@ catch (...)
 
 static void* hs_method_2c4c6145(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45665,7 +45687,7 @@ catch (...)
 
 static void* hs_method_8165fe30(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 88ULL, MolangScriptArg> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45741,7 +45763,7 @@ catch (...)
 
 static void* hs_method_9aa1f013(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45757,7 +45779,7 @@ catch (...)
 
 static void* hs_method_f392b5a8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45787,7 +45809,7 @@ catch (...)
 
 static void* hs_method_7acc83b2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)->operator const ActorUniqueID &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)->operator const ActorUniqueID &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45833,7 +45855,7 @@ catch (...)
 
 static void* hs_method_f6e5564f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45849,7 +45871,7 @@ catch (...)
 
 static void* hs_method_eab099e1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45879,7 +45901,7 @@ catch (...)
 
 static void* hs_method_b4c66906(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45940,7 +45962,7 @@ catch (...)
 
 static void* hs_method_ec6c7e71(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -45956,7 +45978,7 @@ catch (...)
 
 static void* hs_method_fdb698d8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -45986,7 +46008,7 @@ catch (...)
 
 static void* hs_method_95335068(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator const Bedrock::PackedPointer::Packed<const char, 1, 0> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)->operator const Bedrock::PackedPointer::Packed<const char, 1, 0> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46032,7 +46054,7 @@ catch (...)
 
 static void* hs_method_a25f1987(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46048,7 +46070,7 @@ catch (...)
 
 static void* hs_method_88da666e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46078,7 +46100,7 @@ catch (...)
 
 static void* hs_method_74783e29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46139,7 +46161,7 @@ catch (...)
 
 static void* hs_method_b0b1e55c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46155,7 +46177,7 @@ catch (...)
 
 static void* hs_method_c0fcef77(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46185,7 +46207,7 @@ catch (...)
 
 static void* hs_method_5c2a6ac0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->operator const ChunkPos &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)->operator const ChunkPos &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46231,7 +46253,7 @@ catch (...)
 
 static void* hs_method_6c7c173e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46247,7 +46269,7 @@ catch (...)
 
 static void* hs_method_582ebec9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46277,7 +46299,7 @@ catch (...)
 
 static void* hs_method_dfcf024c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46338,7 +46360,7 @@ catch (...)
 
 static void* hs_method_714bd8fe(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46354,7 +46376,7 @@ catch (...)
 
 static void* hs_method_52b59242(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46384,7 +46406,7 @@ catch (...)
 
 static void* hs_method_454bd234(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)->operator const LevelSeed64 &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)->operator const LevelSeed64 &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46430,7 +46452,7 @@ catch (...)
 
 static void* hs_method_460e38df(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46446,7 +46468,7 @@ catch (...)
 
 static void* hs_method_7d390580(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46476,7 +46498,7 @@ catch (...)
 
 static void* hs_method_1e65305a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46537,7 +46559,7 @@ catch (...)
 
 static void* hs_method_7954fbfe(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46553,7 +46575,7 @@ catch (...)
 
 static void* hs_method_375eb344(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46583,7 +46605,7 @@ catch (...)
 
 static void* hs_method_92f2edfa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)->operator const MinecraftAccountPermissions &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)->operator const MinecraftAccountPermissions &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46629,7 +46651,7 @@ catch (...)
 
 static void* hs_method_7e74844b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46645,7 +46667,7 @@ catch (...)
 
 static void* hs_method_a8eaf57b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46675,7 +46697,7 @@ catch (...)
 
 static void* hs_method_e58afb41(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, MinecraftAccountPermissions> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46736,7 +46758,7 @@ catch (...)
 
 static void* hs_method_39a3b04f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46752,7 +46774,7 @@ catch (...)
 
 static void* hs_method_48d1c180(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46782,7 +46804,7 @@ catch (...)
 
 static void* hs_method_d4615ba4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator const ServiceRegistrationToken<DebuggerDiagnostics> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)->operator const ServiceRegistrationToken<DebuggerDiagnostics> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46828,7 +46850,7 @@ catch (...)
 
 static void* hs_method_145563a7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46844,7 +46866,7 @@ catch (...)
 
 static void* hs_method_5b0afbbf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46874,7 +46896,7 @@ catch (...)
 
 static void* hs_method_219d0932(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46935,7 +46957,7 @@ catch (...)
 
 static void* hs_method_5589aec8(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -46951,7 +46973,7 @@ catch (...)
 
 static void* hs_method_fb4c6e05(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -46981,7 +47003,7 @@ catch (...)
 
 static void* hs_method_3ce02175(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator const ServiceRegistrationToken<ServerInstance> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)->operator const ServiceRegistrationToken<ServerInstance> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47027,7 +47049,7 @@ catch (...)
 
 static void* hs_method_2cda9fda(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47043,7 +47065,7 @@ catch (...)
 
 static void* hs_method_01fa6cb1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47073,7 +47095,7 @@ catch (...)
 
 static void* hs_method_ed523a6e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47134,7 +47156,7 @@ catch (...)
 
 static void* hs_method_53d755b4(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47150,7 +47172,7 @@ catch (...)
 
 static void* hs_method_22e8e041(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47180,7 +47202,7 @@ catch (...)
 
 static void* hs_method_3d6ed3de(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator const ServiceRegistrationToken<ServerPerformanceData> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)->operator const ServiceRegistrationToken<ServerPerformanceData> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47226,7 +47248,7 @@ catch (...)
 
 static void* hs_method_c586258b(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47242,7 +47264,7 @@ catch (...)
 
 static void* hs_method_e2306f44(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47272,7 +47294,7 @@ catch (...)
 
 static void* hs_method_13277350(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47333,7 +47355,7 @@ catch (...)
 
 static void* hs_method_cf3c7a5c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47349,7 +47371,7 @@ catch (...)
 
 static void* hs_method_ccb54c91(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47379,7 +47401,7 @@ catch (...)
 
 static void* hs_method_a388a4fe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)->operator const Tick &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)->operator const Tick &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47425,7 +47447,7 @@ catch (...)
 
 static void* hs_method_b390bb6e(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47441,7 +47463,7 @@ catch (...)
 
 static void* hs_method_0809dce8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47471,7 +47493,7 @@ catch (...)
 
 static void* hs_method_18cc93ce(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47532,7 +47554,7 @@ catch (...)
 
 static void* hs_method_ca0c1e5f(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47548,7 +47570,7 @@ catch (...)
 
 static void* hs_method_6635bec0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47578,7 +47600,7 @@ catch (...)
 
 static void* hs_method_fa492e91(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)->operator const WeakPtr<Item> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)->operator const WeakPtr<Item> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47624,7 +47646,7 @@ catch (...)
 
 static void* hs_method_e7dd50be(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47640,7 +47662,7 @@ catch (...)
 
 static void* hs_method_2b454743(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47670,7 +47692,7 @@ catch (...)
 
 static void* hs_method_ae363dfe(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47745,7 +47767,7 @@ catch (...)
 
 static void* hs_method_7f081835(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47761,7 +47783,7 @@ catch (...)
 
 static void* hs_method_7c3e8df2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47807,7 +47829,7 @@ catch (...)
 
 static void* hs_method_fbc65ca3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)->operator const std::atomic<std::uint64_t> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)->operator const std::atomic<std::uint64_t> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47837,7 +47859,7 @@ catch (...)
 
 static void* hs_method_296db819(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -47853,7 +47875,7 @@ catch (...)
 
 static void* hs_method_6ff1ea60(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47899,7 +47921,7 @@ catch (...)
 
 static void* hs_method_8a4e2366(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -47944,7 +47966,7 @@ catch (...)
 
 static std::int64_t hs_method_760834e8(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)).get()).count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)).get()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -47959,7 +47981,7 @@ catch (...)
 
 static std::int64_t hs_method_9053b63c(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)->get()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)->get()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48004,7 +48026,7 @@ catch (...)
 
 static std::int64_t hs_method_86101aad(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)->operator const std::chrono::duration<std::int64_t, std::ratio<1, 1000000> > &()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)->operator const std::chrono::duration<std::int64_t, std::ratio<1, 1000000> > &()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48034,7 +48056,7 @@ catch (...)
 
 static std::int64_t hs_method_42e8fd36(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)).operator*()).count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)).operator*()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48049,7 +48071,7 @@ catch (...)
 
 static std::int64_t hs_method_b0da5bc1(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)->operator*()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)->operator*()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48094,7 +48116,7 @@ catch (...)
 
 static void* hs_method_e690b31f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48139,7 +48161,7 @@ catch (...)
 
 static std::int64_t hs_method_7d57d85c(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)).get()).count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)).get()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48154,7 +48176,7 @@ catch (...)
 
 static std::int64_t hs_method_4b280060(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)->get()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)->get()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48199,7 +48221,7 @@ catch (...)
 
 static std::int64_t hs_method_b7a157d4(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)->operator const std::chrono::duration<std::int64_t, std::ratio<1, 1000> > &()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)->operator const std::chrono::duration<std::int64_t, std::ratio<1, 1000> > &()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48229,7 +48251,7 @@ catch (...)
 
 static std::int64_t hs_method_d0fb13c9(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)).operator*()).count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)).operator*()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48244,7 +48266,7 @@ catch (...)
 
 static std::int64_t hs_method_f3232d15(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)->operator*()).count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)->operator*()).count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48289,7 +48311,7 @@ catch (...)
 
 static void* hs_method_3cbc5da1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48334,7 +48356,7 @@ catch (...)
 
 static std::int64_t hs_method_16593b83(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)).get()).time_since_epoch().count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)).get()).time_since_epoch().count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48349,7 +48371,7 @@ catch (...)
 
 static std::int64_t hs_method_4f64a053(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)->get()).time_since_epoch().count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)->get()).time_since_epoch().count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48394,7 +48416,7 @@ catch (...)
 
 static std::int64_t hs_method_c1074f13(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)->operator const std::chrono::time_point<std::chrono::steady_clock> &()).time_since_epoch().count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)->operator const std::chrono::time_point<std::chrono::steady_clock> &()).time_since_epoch().count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48424,7 +48446,7 @@ catch (...)
 
 static std::int64_t hs_method_b64c409e(void* hs_self) try
 {
-    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)).operator*()).time_since_epoch().count());
+    return static_cast<std::int64_t>((std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)).operator*()).time_since_epoch().count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48439,7 +48461,7 @@ catch (...)
 
 static std::int64_t hs_method_6a5e0aeb(void* hs_self) try
 {
-    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)->operator*()).time_since_epoch().count());
+    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)->operator*()).time_since_epoch().count());
 }
 catch (std::exception const& hs_error)
 {
@@ -48484,7 +48506,7 @@ catch (...)
 
 static void* hs_method_607dd204(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48544,7 +48566,7 @@ catch (...)
 
 static void* hs_method_23fb694d(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -48560,7 +48582,7 @@ catch (...)
 
 static void* hs_method_888a995c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48606,7 +48628,7 @@ catch (...)
 
 static void* hs_method_6006fecc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)->operator const std::reference_wrapper<BlockType> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)->operator const std::reference_wrapper<BlockType> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48636,7 +48658,7 @@ catch (...)
 
 static void* hs_method_c277075c(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -48652,7 +48674,7 @@ catch (...)
 
 static void* hs_method_8f88afde(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48698,7 +48720,7 @@ catch (...)
 
 static void* hs_method_8c738270(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48758,7 +48780,7 @@ catch (...)
 
 static void* hs_method_95ab8bfc(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -48774,7 +48796,7 @@ catch (...)
 
 static void* hs_method_9a7ce37e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48820,7 +48842,7 @@ catch (...)
 
 static void* hs_method_4da8ca81(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)->operator const std::reference_wrapper<const BlockState> &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)->operator const std::reference_wrapper<const BlockState> &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48850,7 +48872,7 @@ catch (...)
 
 static void* hs_method_f0c1bced(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -48866,7 +48888,7 @@ catch (...)
 
 static void* hs_method_0ca9c6f6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48912,7 +48934,7 @@ catch (...)
 
 static void* hs_method_0ae0abcc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -48988,7 +49010,7 @@ catch (...)
 
 static void* hs_method_1d0b6b23(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49004,7 +49026,7 @@ catch (...)
 
 static void* hs_method_b02f01f8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49034,7 +49056,7 @@ catch (...)
 
 static void* hs_method_3caa5916(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)->operator const BlockComponentDirectData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)->operator const BlockComponentDirectData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49080,7 +49102,7 @@ catch (...)
 
 static void* hs_method_e862d216(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49096,7 +49118,7 @@ catch (...)
 
 static void* hs_method_d7168f49(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49126,7 +49148,7 @@ catch (...)
 
 static void* hs_method_57075786(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49187,7 +49209,7 @@ catch (...)
 
 static void* hs_method_2b78d824(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49203,7 +49225,7 @@ catch (...)
 
 static void* hs_method_15ab5e33(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49233,7 +49255,7 @@ catch (...)
 
 static void* hs_method_9123cecf(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)->operator const BlockComponentStorage &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)->operator const BlockComponentStorage &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49279,7 +49301,7 @@ catch (...)
 
 static void* hs_method_0994146a(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49295,7 +49317,7 @@ catch (...)
 
 static void* hs_method_41001238(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49325,7 +49347,7 @@ catch (...)
 
 static void* hs_method_7470fec6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentStorage> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49386,7 +49408,7 @@ catch (...)
 
 static void* hs_method_4cd878ac(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49402,7 +49424,7 @@ catch (...)
 
 static void* hs_method_c6b4f25e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49432,7 +49454,7 @@ catch (...)
 
 static void* hs_method_941f807f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)->operator const MobEffect::FactorCalculationData &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)->operator const MobEffect::FactorCalculationData &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49478,7 +49500,7 @@ catch (...)
 
 static void* hs_method_6ff403c7(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49494,7 +49516,7 @@ catch (...)
 
 static void* hs_method_04046b73(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49524,7 +49546,7 @@ catch (...)
 
 static void* hs_method_50363979(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49585,7 +49607,7 @@ catch (...)
 
 static void* hs_method_a3097879(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49601,7 +49623,7 @@ catch (...)
 
 static void* hs_method_c848e73e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49631,7 +49653,7 @@ catch (...)
 
 static void* hs_method_382b44e5(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)->operator const NetEaseBlockComponentStorage &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)->operator const NetEaseBlockComponentStorage &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49677,7 +49699,7 @@ catch (...)
 
 static void* hs_method_5ea764de(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -49693,7 +49715,7 @@ catch (...)
 
 static void* hs_method_7533bfeb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -49723,7 +49745,7 @@ catch (...)
 
 static void* hs_method_5e1145a7(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50389,7 +50411,7 @@ static HosihikariArrayView hs_method_51a27a86(void* hs_self) try
 {
     thread_local std::vector<std::string> hs_arrayStrings;
     thread_local std::vector<HosihikariStringView> hs_arrayViews;
-    auto result = static_cast<ll::command::CommandHandle*>(hs_self)->alias();
+    auto result = static_cast<ll::command::CommandHandle const*>(hs_self)->alias();
     hs_arrayStrings.clear();
     hs_arrayViews.clear();
     hs_arrayStrings.reserve(result.size());
@@ -50687,7 +50709,7 @@ catch (...)
 
 static void* hs_method_28074207(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->as_ptr()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->as_ptr()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50717,7 +50739,7 @@ catch (...)
 
 static void* hs_method_fa66ebb5(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)).get();
+    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)).get();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -50733,7 +50755,7 @@ catch (...)
 
 static void* hs_method_53bcfcec(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50779,7 +50801,7 @@ catch (...)
 
 static bool hs_method_3a6096cb(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->has_value());
+    return static_cast<bool>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->has_value());
 }
 catch (std::exception const& hs_error)
 {
@@ -50794,7 +50816,7 @@ catch (...)
 
 static bool hs_method_52e4aef6(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -50809,7 +50831,7 @@ catch (...)
 
 static void* hs_method_d1d9cc7a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > &()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > &()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50824,7 +50846,7 @@ catch (...)
 
 static void* hs_method_aa31d1ce(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)).operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > &&();
+    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)).operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > &&();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -50840,7 +50862,7 @@ catch (...)
 
 static void* hs_method_cc0bb3a2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > *()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->operator const std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor> > *()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50901,7 +50923,7 @@ catch (...)
 
 static void* hs_method_677fec02(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -50917,7 +50939,7 @@ catch (...)
 
 static void* hs_method_90feb77c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50963,7 +50985,7 @@ catch (...)
 
 static void* hs_method_a063d875(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -50993,7 +51015,7 @@ catch (...)
 
 static void* hs_method_1790e014(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)).value();
+    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)).value();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -51009,7 +51031,7 @@ catch (...)
 
 static void* hs_method_64dc8fdd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->value()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->value()));
 }
 catch (std::exception const& hs_error)
 {
@@ -51055,7 +51077,7 @@ catch (...)
 
 static void* hs_method_d03747b0(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)).value_or_default();
+    auto&& hs_reference = std::move(*static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)).value_or_default();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -51071,7 +51093,7 @@ catch (...)
 
 static void* hs_method_588e929d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>>*>(hs_self)->value_or_default()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::Optional<std::variant<int, bool, float, DimensionType, std::basic_string<char>, ll::command::RuntimeEnum, ll::command::RuntimeSoftEnum, CommandSelector<Actor>, CommandSelector<Player>, CommandPosition, CommandPositionFloat, CommandRawText, CommandMessage, Json::Value, CommandItem, CommandBlockName, std::vector<BlockStateCommandParam>, const MobEffect *, const ActorDefinitionIdentifier *, std::unique_ptr<Command>, RelativeFloat, CommandIntegerRange, CommandFilePath, CommandWildcardInt, WildcardCommandSelector<Actor>>> const*>(hs_self)->value_or_default()));
 }
 catch (std::exception const& hs_error)
 {
@@ -51192,7 +51214,7 @@ catch (...)
 
 static bool hs_method_e18196dc(void* hs_self, std::uint64_t kind) try
 {
-    return static_cast<bool>(static_cast<ll::command::ParamStorageType*>(hs_self)->hold(static_cast<std::uint64_t>(kind)));
+    return static_cast<bool>(static_cast<ll::command::ParamStorageType const*>(hs_self)->hold(static_cast<std::uint64_t>(kind)));
 }
 catch (std::exception const& hs_error)
 {
@@ -51207,7 +51229,7 @@ catch (...)
 
 static std::uint64_t hs_method_95601f24(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::command::ParamStorageType*>(hs_self)->index());
+    return static_cast<std::uint64_t>(static_cast<ll::command::ParamStorageType const*>(hs_self)->index());
 }
 catch (std::exception const& hs_error)
 {
@@ -55770,7 +55792,7 @@ catch (...)
 
 static void* hs_method_23aef0d5(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::RuntimeCommand*>(hs_self)->operator[](std::basic_string_view<char>(name_data, name_size))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::RuntimeCommand const*>(hs_self)->operator[](std::basic_string_view<char>(name_data, name_size))));
 }
 catch (std::exception const& hs_error)
 {
@@ -55785,7 +55807,7 @@ catch (...)
 
 static void* hs_method_da2608f1(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::RuntimeCommand*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::RuntimeCommand const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -56180,7 +56202,7 @@ catch (...)
 
 static void hs_method_4739b571(void* hs_self, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::compress_utils::Compressor*>(hs_self)->status();
+    auto hs_expected = static_cast<ll::compress_utils::Compressor const*>(hs_self)->status();
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -56297,7 +56319,7 @@ catch (...)
 
 static void hs_method_24264ce8(void* hs_self, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::compress_utils::Decompressor*>(hs_self)->status();
+    auto hs_expected = static_cast<ll::compress_utils::Decompressor const*>(hs_self)->status();
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -56674,7 +56696,7 @@ catch (...)
 
 static bool hs_method_1b7c3580(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::coro::CoroPromiseBase::FinalAwaiter*>(hs_self)->await_ready());
+    return static_cast<bool>(static_cast<ll::coro::CoroPromiseBase::FinalAwaiter const*>(hs_self)->await_ready());
 }
 catch (std::exception const& hs_error)
 {
@@ -56764,7 +56786,7 @@ catch (...)
 
 static HosihikariStringView hs_method_df718830(void* hs_self) try
 {
-    auto result = static_cast<ll::coro::Executor*>(hs_self)->getName();
+    auto result = static_cast<ll::coro::Executor const*>(hs_self)->getName();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -56796,7 +56818,7 @@ catch (...)
 
 static bool hs_method_7f13234a(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::coro::ForwardAwaiter<const ll::coro::Executor &>*>(hs_self)->await_ready());
+    return static_cast<bool>(static_cast<ll::coro::ForwardAwaiter<const ll::coro::Executor &> const*>(hs_self)->await_ready());
 }
 catch (std::exception const& hs_error)
 {
@@ -56856,7 +56878,7 @@ catch (...)
 
 static bool hs_method_c501b34d(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::coro::SleepAwaiter*>(hs_self)->await_ready());
+    return static_cast<bool>(static_cast<ll::coro::SleepAwaiter const*>(hs_self)->await_ready());
 }
 catch (std::exception const& hs_error)
 {
@@ -56871,7 +56893,7 @@ catch (...)
 
 static void hs_method_5d69255a(void* hs_self) try
 {
-    static_cast<ll::coro::SleepAwaiter*>(hs_self)->await_resume();
+    static_cast<ll::coro::SleepAwaiter const*>(hs_self)->await_resume();
 }
 catch (std::exception const& hs_error)
 {
@@ -57036,7 +57058,7 @@ catch (...)
 
 static bool hs_method_3670d610(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::coro::YieldAwaiter*>(hs_self)->await_ready());
+    return static_cast<bool>(static_cast<ll::coro::YieldAwaiter const*>(hs_self)->await_ready());
 }
 catch (std::exception const& hs_error)
 {
@@ -57051,7 +57073,7 @@ catch (...)
 
 static void hs_method_f51b1f66(void* hs_self) try
 {
-    static_cast<ll::coro::YieldAwaiter*>(hs_self)->await_resume();
+    static_cast<ll::coro::YieldAwaiter const*>(hs_self)->await_resume();
 }
 catch (std::exception const& hs_error)
 {
@@ -57156,7 +57178,7 @@ catch (...)
 
 static bool hs_method_0a5e165e(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::AnyFunction*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::data::AnyFunction const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -57356,7 +57378,7 @@ catch (...)
 
 static void* hs_method_b17c0bfb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->get()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->get()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57386,7 +57408,7 @@ catch (...)
 
 static void* hs_method_b13b0094(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->getCopyCtor()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->getCopyCtor()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57416,7 +57438,7 @@ catch (...)
 
 static void* hs_method_4b749aae(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->getDeleter()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->getDeleter()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57446,7 +57468,7 @@ catch (...)
 
 static bool hs_method_8b9de394(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -57461,7 +57483,7 @@ catch (...)
 
 static void* hs_method_ad17d380(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)).operator*();
+    auto&& hs_reference = std::move(*static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)).operator*();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -57477,7 +57499,7 @@ catch (...)
 
 static void* hs_method_db594926(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->operator*()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->operator*()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57523,7 +57545,7 @@ catch (...)
 
 static void* hs_method_c50ef6b2(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->operator->()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>> const*>(hs_self)->operator->()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57613,7 +57635,7 @@ catch (...)
 
 static void* hs_method_e165119c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>*>(hs_self)->back()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>> const*>(hs_self)->back()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57643,7 +57665,7 @@ catch (...)
 
 static bool hs_method_1eba4255(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>*>(hs_self)->empty());
+    return static_cast<bool>(static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>> const*>(hs_self)->empty());
 }
 catch (std::exception const& hs_error)
 {
@@ -57673,7 +57695,7 @@ catch (...)
 
 static void* hs_method_02497977(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>*>(hs_self)->front()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>> const*>(hs_self)->front()));
 }
 catch (std::exception const& hs_error)
 {
@@ -57763,7 +57785,7 @@ catch (...)
 
 static std::uint64_t hs_method_0a7703c3(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>> const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -57823,7 +57845,7 @@ catch (...)
 
 static bool hs_method_25273151(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::IntrusiveListNode<Bedrock::PubSub::Detail::SubscriptionBodyBase>*>(hs_self)->is_linked());
+    return static_cast<bool>(static_cast<ll::data::IntrusiveListNode<Bedrock::PubSub::Detail::SubscriptionBodyBase> const*>(hs_self)->is_linked());
 }
 catch (std::exception const& hs_error)
 {
@@ -58183,7 +58205,7 @@ catch (...)
 
 static bool hs_method_5c7dbf54(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::KeyValueDB*>(hs_self)->empty());
+    return static_cast<bool>(static_cast<ll::data::KeyValueDB const*>(hs_self)->empty());
 }
 catch (std::exception const& hs_error)
 {
@@ -58198,7 +58220,7 @@ catch (...)
 
 static HosihikariStringView hs_method_137780a7(void* hs_self, const char* key_data, std::size_t key_size, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::data::KeyValueDB*>(hs_self)->get(std::basic_string_view<char>(key_data, key_size));
+    auto result = static_cast<ll::data::KeyValueDB const*>(hs_self)->get(std::basic_string_view<char>(key_data, key_size));
     *hs_hasValue = result.has_value();
     g_stringResult.assign(result ? result->data() : "", result ? result->size() : 0);
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
@@ -58218,7 +58240,7 @@ catch (...)
 
 static bool hs_method_48d48e3e(void* hs_self, const char* key_data, std::size_t key_size) try
 {
-    return static_cast<bool>(static_cast<ll::data::KeyValueDB*>(hs_self)->has(std::basic_string_view<char>(key_data, key_size)));
+    return static_cast<bool>(static_cast<ll::data::KeyValueDB const*>(hs_self)->has(std::basic_string_view<char>(key_data, key_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -58398,7 +58420,7 @@ catch (...)
 
 static bool hs_method_e37c0f25(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::Observable<bool>*>(hs_self)->getData());
+    return static_cast<bool>(static_cast<ll::data::Observable<bool> const*>(hs_self)->getData());
 }
 catch (std::exception const& hs_error)
 {
@@ -58508,7 +58530,7 @@ catch (...)
 
 static double hs_method_d53bfa12(void* hs_self) try
 {
-    return static_cast<double>(static_cast<ll::data::Observable<double>*>(hs_self)->getData());
+    return static_cast<double>(static_cast<ll::data::Observable<double> const*>(hs_self)->getData());
 }
 catch (std::exception const& hs_error)
 {
@@ -58618,7 +58640,7 @@ catch (...)
 
 static void* hs_method_114db1ad(void* hs_self) try
 {
-    return static_cast<void*>(new ll::ui::UIRawMessage(static_cast<ll::data::Observable<ll::ui::UIRawMessage>*>(hs_self)->getData()));
+    return static_cast<void*>(new ll::ui::UIRawMessage(static_cast<ll::data::Observable<ll::ui::UIRawMessage> const*>(hs_self)->getData()));
 }
 catch (std::exception const& hs_error)
 {
@@ -58728,7 +58750,7 @@ catch (...)
 
 static HosihikariStringView hs_method_529b2a55(void* hs_self) try
 {
-    auto result = static_cast<ll::data::Observable<std::basic_string<char>>*>(hs_self)->getData();
+    auto result = static_cast<ll::data::Observable<std::basic_string<char>> const*>(hs_self)->getData();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -58901,7 +58923,7 @@ catch (...)
 
 static std::int8_t hs_method_c2f8d78b(void* hs_self, void* other) try
 {
-    return static_cast<std::int8_t>((static_cast<ll::data::PreRelease*>(hs_self)->operator<=>(*static_cast<const ll::data::PreRelease*>(other))) < 0 ? -1 : ((static_cast<ll::data::PreRelease*>(hs_self)->operator<=>(*static_cast<const ll::data::PreRelease*>(other))) > 0 ? 1 : 0));
+    return static_cast<std::int8_t>((static_cast<ll::data::PreRelease const*>(hs_self)->operator<=>(*static_cast<const ll::data::PreRelease*>(other))) < 0 ? -1 : ((static_cast<ll::data::PreRelease const*>(hs_self)->operator<=>(*static_cast<const ll::data::PreRelease*>(other))) > 0 ? 1 : 0));
 }
 catch (std::exception const& hs_error)
 {
@@ -58916,7 +58938,7 @@ catch (...)
 
 static bool hs_method_f147eaaf(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::data::PreRelease*>(hs_self)->operator==(*static_cast<const ll::data::PreRelease*>(other)));
+    return static_cast<bool>(static_cast<ll::data::PreRelease const*>(hs_self)->operator==(*static_cast<const ll::data::PreRelease*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -58931,7 +58953,7 @@ catch (...)
 
 static HosihikariStringView hs_method_74e53f16(void* hs_self) try
 {
-    auto result = static_cast<ll::data::PreRelease*>(hs_self)->to_string();
+    auto result = static_cast<ll::data::PreRelease const*>(hs_self)->to_string();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -58963,7 +58985,7 @@ catch (...)
 
 static std::uint32_t hs_method_d27622f1(void* hs_self) try
 {
-    return static_cast<std::uint32_t>(static_cast<ll::data::SmallVectorHeader*>(hs_self)->capacity());
+    return static_cast<std::uint32_t>(static_cast<ll::data::SmallVectorHeader const*>(hs_self)->capacity());
 }
 catch (std::exception const& hs_error)
 {
@@ -58978,7 +59000,7 @@ catch (...)
 
 static bool hs_method_437c6ecc(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::SmallVectorHeader*>(hs_self)->empty());
+    return static_cast<bool>(static_cast<ll::data::SmallVectorHeader const*>(hs_self)->empty());
 }
 catch (std::exception const& hs_error)
 {
@@ -59008,7 +59030,7 @@ catch (...)
 
 static std::uint32_t hs_method_deb8c8c5(void* hs_self) try
 {
-    return static_cast<std::uint32_t>(static_cast<ll::data::SmallVectorHeader*>(hs_self)->size());
+    return static_cast<std::uint32_t>(static_cast<ll::data::SmallVectorHeader const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -59023,7 +59045,7 @@ catch (...)
 
 static void* hs_method_9d4d6093(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::TightPair<ll::data::polymorphicCopy<ll::io::Formatter>, std::unique_ptr<ll::io::Formatter>, false>*>(hs_self)->first()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::TightPair<ll::data::polymorphicCopy<ll::io::Formatter>, std::unique_ptr<ll::io::Formatter>, false> const*>(hs_self)->first()));
 }
 catch (std::exception const& hs_error)
 {
@@ -59053,7 +59075,7 @@ catch (...)
 
 static void* hs_method_73c45094(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::TightPair<ll::data::polymorphicCopy<ll::io::Formatter>, std::unique_ptr<ll::io::Formatter>, false>*>(hs_self)->second()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::TightPair<ll::data::polymorphicCopy<ll::io::Formatter>, std::unique_ptr<ll::io::Formatter>, false> const*>(hs_self)->second()));
 }
 catch (std::exception const& hs_error)
 {
@@ -59263,7 +59285,7 @@ catch (...)
 
 static bool hs_method_fe3f8be8(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::data::Version*>(hs_self)->isIdenticalTo(*static_cast<const ll::data::Version*>(other)));
+    return static_cast<bool>(static_cast<ll::data::Version const*>(hs_self)->isIdenticalTo(*static_cast<const ll::data::Version*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -59338,7 +59360,7 @@ catch (...)
 
 static std::int8_t hs_method_83e3e871(void* hs_self, void* other) try
 {
-    return static_cast<std::int8_t>((static_cast<ll::data::Version*>(hs_self)->operator<=>(*static_cast<const ll::data::Version*>(other))) < 0 ? -1 : ((static_cast<ll::data::Version*>(hs_self)->operator<=>(*static_cast<const ll::data::Version*>(other))) > 0 ? 1 : 0));
+    return static_cast<std::int8_t>((static_cast<ll::data::Version const*>(hs_self)->operator<=>(*static_cast<const ll::data::Version*>(other))) < 0 ? -1 : ((static_cast<ll::data::Version const*>(hs_self)->operator<=>(*static_cast<const ll::data::Version*>(other))) > 0 ? 1 : 0));
 }
 catch (std::exception const& hs_error)
 {
@@ -59353,7 +59375,7 @@ catch (...)
 
 static bool hs_method_30379641(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::data::Version*>(hs_self)->operator==(*static_cast<const ll::data::Version*>(other)));
+    return static_cast<bool>(static_cast<ll::data::Version const*>(hs_self)->operator==(*static_cast<const ll::data::Version*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -59413,7 +59435,7 @@ catch (...)
 
 static HosihikariStringView hs_method_a5ffd8f7(void* hs_self) try
 {
-    auto result = static_cast<ll::data::Version*>(hs_self)->to_string();
+    auto result = static_cast<ll::data::Version const*>(hs_self)->to_string();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -59490,7 +59512,7 @@ catch (...)
 
 static void* hs_method_14510e0e(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::VersionRequirement*>(hs_self)->comparatorSets()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::VersionRequirement const*>(hs_self)->comparatorSets()));
 }
 catch (std::exception const& hs_error)
 {
@@ -59550,7 +59572,7 @@ catch (...)
 
 static bool hs_method_d5f9a824(void* hs_self, void* version) try
 {
-    return static_cast<bool>(static_cast<ll::data::VersionRequirement*>(hs_self)->matches(*static_cast<const ll::data::Version*>(version)));
+    return static_cast<bool>(static_cast<ll::data::VersionRequirement const*>(hs_self)->matches(*static_cast<const ll::data::Version*>(version)));
 }
 catch (std::exception const& hs_error)
 {
@@ -59565,7 +59587,7 @@ catch (...)
 
 static bool hs_method_5b07e282(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::data::VersionRequirement*>(hs_self)->operator==(*static_cast<const ll::data::VersionRequirement*>(other)));
+    return static_cast<bool>(static_cast<ll::data::VersionRequirement const*>(hs_self)->operator==(*static_cast<const ll::data::VersionRequirement*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -59580,7 +59602,7 @@ catch (...)
 
 static HosihikariStringView hs_method_613e7516(void* hs_self) try
 {
-    auto result = static_cast<ll::data::VersionRequirement*>(hs_self)->to_string();
+    auto result = static_cast<ll::data::VersionRequirement const*>(hs_self)->to_string();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -59657,7 +59679,7 @@ catch (...)
 
 static bool hs_method_d66a06ee(void* hs_self, void* arg0) try
 {
-    return static_cast<bool>(static_cast<ll::data::VersionRequirement::Comparator*>(hs_self)->operator==(*static_cast<const ll::data::VersionRequirement::Comparator*>(arg0)));
+    return static_cast<bool>(static_cast<ll::data::VersionRequirement::Comparator const*>(hs_self)->operator==(*static_cast<const ll::data::VersionRequirement::Comparator*>(arg0)));
 }
 catch (std::exception const& hs_error)
 {
@@ -59792,7 +59814,7 @@ catch (...)
 
 static bool hs_method_797e9c0f(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::data::detail::from_chars_result*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::data::detail::from_chars_result const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -59807,7 +59829,7 @@ catch (...)
 
 static void hs_method_5a9788e1(void* hs_self) try
 {
-    static_cast<ll::data::detail::from_chars_result*>(hs_self)->value();
+    static_cast<ll::data::detail::from_chars_result const*>(hs_self)->value();
 }
 catch (std::exception const& hs_error)
 {
@@ -59927,7 +59949,7 @@ catch (...)
 
 static void* hs_method_65dd2c26(void* hs_self, void* t) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::polymorphicCopy<ll::io::Formatter>*>(hs_self)->operator()(*static_cast<const ll::io::Formatter*>(t))));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::data::polymorphicCopy<ll::io::Formatter> const*>(hs_self)->operator()(*static_cast<const ll::io::Formatter*>(t))));
 }
 catch (std::exception const& hs_error)
 {
@@ -60602,7 +60624,7 @@ catch (...)
 
 static void* hs_method_53789cfc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorEvent*>(hs_self)->self()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorEvent const*>(hs_self)->self()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60617,7 +60639,7 @@ catch (...)
 
 static void hs_method_f72bfd89(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ActorEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ActorEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -60707,7 +60729,7 @@ catch (...)
 
 static void* hs_method_004dd660(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorHurtEvent*>(hs_self)->damage()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorHurtEvent const*>(hs_self)->damage()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60737,7 +60759,7 @@ catch (...)
 
 static void hs_method_01d9dc64(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ActorHurtEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ActorHurtEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -60752,7 +60774,7 @@ catch (...)
 
 static void* hs_method_ad20e91a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorHurtEvent*>(hs_self)->source()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ActorHurtEvent const*>(hs_self)->source()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60827,7 +60849,7 @@ catch (...)
 
 static void* hs_method_a7c076d9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent*>(hs_self)->layer()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent const*>(hs_self)->layer()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60842,7 +60864,7 @@ catch (...)
 
 static void* hs_method_65b397e1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent*>(hs_self)->newBlock()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent const*>(hs_self)->newBlock()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60857,7 +60879,7 @@ catch (...)
 
 static void* hs_method_ae68cfcd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent*>(hs_self)->pos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent const*>(hs_self)->pos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60872,7 +60894,7 @@ catch (...)
 
 static void* hs_method_06e4a59d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent*>(hs_self)->previousBlock()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::BlockChangedEvent const*>(hs_self)->previousBlock()));
 }
 catch (std::exception const& hs_error)
 {
@@ -60887,7 +60909,7 @@ catch (...)
 
 static void hs_method_c90dfa2a(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::BlockChangedEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::BlockChangedEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -61007,7 +61029,7 @@ catch (...)
 
 static void hs_method_02b577d7(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::ActorEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::ActorEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -61127,7 +61149,7 @@ catch (...)
 
 static void hs_method_1611ed2a(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::Event>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::Event> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -61262,7 +61284,7 @@ catch (...)
 
 static void hs_method_88b8e791(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::ExecuteCommandEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::ExecuteCommandEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -61472,7 +61494,7 @@ catch (...)
 
 static void hs_method_6bd89194(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::PlayerEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::PlayerEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -61682,7 +61704,7 @@ catch (...)
 
 static void hs_method_b4dca3ee(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::PlayerLeftClickEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::PlayerLeftClickEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -61892,7 +61914,7 @@ catch (...)
 
 static void hs_method_95e6cbf1(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::PlayerPlaceBlockEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::PlayerPlaceBlockEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -62102,7 +62124,7 @@ catch (...)
 
 static void hs_method_5b8ab5b6(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::PlayerRightClickEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::PlayerRightClickEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -62357,7 +62379,7 @@ catch (...)
 
 static void hs_method_3fa61113(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::ServerPlayerEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::ServerPlayerEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -62507,7 +62529,7 @@ catch (...)
 
 static void hs_method_ec1316ff(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::SpawnMobEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::SpawnMobEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -62642,7 +62664,7 @@ catch (...)
 
 static void hs_method_87b5f7df(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::Cancellable<ll::event::WorldEvent>*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::Cancellable<ll::event::WorldEvent> const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -62702,7 +62724,7 @@ catch (...)
 
 static void* hs_method_4d71a0ac(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::CommandRegisterEvent*>(hs_self)->commandRegistry()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::CommandRegisterEvent const*>(hs_self)->commandRegistry()));
 }
 catch (std::exception const& hs_error)
 {
@@ -62717,7 +62739,7 @@ catch (...)
 
 static void hs_method_448b143b(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::CommandRegisterEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::CommandRegisterEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -62782,7 +62804,7 @@ catch (...)
 
 static bool hs_method_69101db0(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::event::ConsoleOutputtedEvent*>(hs_self)->isCancelled());
+    return static_cast<bool>(static_cast<ll::event::ConsoleOutputtedEvent const*>(hs_self)->isCancelled());
 }
 catch (std::exception const& hs_error)
 {
@@ -62797,7 +62819,7 @@ catch (...)
 
 static HosihikariStringView hs_method_43c99ad4(void* hs_self) try
 {
-    auto result = static_cast<ll::event::ConsoleOutputtedEvent*>(hs_self)->message();
+    auto result = static_cast<ll::event::ConsoleOutputtedEvent const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -62814,7 +62836,7 @@ catch (...)
 
 static void hs_method_477f2865(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ConsoleOutputtedEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ConsoleOutputtedEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -62889,7 +62911,7 @@ catch (...)
 
 static HosihikariStringView hs_method_f7c38fd3(void* hs_self) try
 {
-    auto result = static_cast<ll::event::ConsoleOutputtingEvent*>(hs_self)->message();
+    auto result = static_cast<ll::event::ConsoleOutputtingEvent const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -62906,7 +62928,7 @@ catch (...)
 
 static void hs_method_39551779(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ConsoleOutputtingEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ConsoleOutputtingEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -64056,7 +64078,7 @@ catch (...)
 
 static void* hs_method_c4d191a1(void* hs_self) try
 {
-    return static_cast<void*>(new ll::event::EventId(static_cast<ll::event::Event*>(hs_self)->getId()));
+    return static_cast<void*>(new ll::event::EventId(static_cast<ll::event::Event const*>(hs_self)->getId()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64071,7 +64093,7 @@ catch (...)
 
 static void hs_method_415cf2dd(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::Event*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::Event const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -64116,7 +64138,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_38785725(void* hs_self, std::uint64_t id) try
 {
-    return hs_make_shared_handle(static_cast<ll::event::EventBus*>(hs_self)->getListener(static_cast<std::uint64_t>(id)));
+    return hs_make_shared_handle(static_cast<ll::event::EventBus const*>(hs_self)->getListener(static_cast<std::uint64_t>(id)));
 }
 catch (std::exception const& hs_error)
 {
@@ -64146,7 +64168,7 @@ catch (...)
 
 static bool hs_method_8d9cf8af(void* hs_self, void* eventId) try
 {
-    return static_cast<bool>(static_cast<ll::event::EventBus*>(hs_self)->hasEvent(*static_cast<const ll::event::EventIdView*>(eventId)));
+    return static_cast<bool>(static_cast<ll::event::EventBus const*>(hs_self)->hasEvent(*static_cast<const ll::event::EventIdView*>(eventId)));
 }
 catch (std::exception const& hs_error)
 {
@@ -64161,7 +64183,7 @@ catch (...)
 
 static bool hs_method_8d24ae3c(void* hs_self, HosihikariSharedHandle listener) try
 {
-    return static_cast<bool>(static_cast<ll::event::EventBus*>(hs_self)->hasListener(hs_shared_from_handle<ll::event::ListenerBase>(listener)));
+    return static_cast<bool>(static_cast<ll::event::EventBus const*>(hs_self)->hasListener(hs_shared_from_handle<ll::event::ListenerBase>(listener)));
 }
 catch (std::exception const& hs_error)
 {
@@ -64176,7 +64198,7 @@ catch (...)
 
 static bool hs_method_cf9e8ec4(void* hs_self, std::uint64_t id) try
 {
-    return static_cast<bool>(static_cast<ll::event::EventBus*>(hs_self)->hasListener(static_cast<std::uint64_t>(id)));
+    return static_cast<bool>(static_cast<ll::event::EventBus const*>(hs_self)->hasListener(static_cast<std::uint64_t>(id)));
 }
 catch (std::exception const& hs_error)
 {
@@ -64191,7 +64213,7 @@ catch (...)
 
 static bool hs_method_f0c217a0(void* hs_self, std::uint64_t arg0, void* arg1) try
 {
-    return static_cast<bool>(static_cast<ll::event::EventBus*>(hs_self)->hasListener(static_cast<std::uint64_t>(arg0), *static_cast<const ll::event::EventIdView*>(arg1)));
+    return static_cast<bool>(static_cast<ll::event::EventBus const*>(hs_self)->hasListener(static_cast<std::uint64_t>(arg0), *static_cast<const ll::event::EventIdView*>(arg1)));
 }
 catch (std::exception const& hs_error)
 {
@@ -64483,7 +64505,7 @@ catch (...)
 
 static void* hs_method_3bf2e906(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent*>(hs_self)->commandContext()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent const*>(hs_self)->commandContext()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64498,7 +64520,7 @@ catch (...)
 
 static void* hs_method_12ff330c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent*>(hs_self)->minecraftCommands()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent const*>(hs_self)->minecraftCommands()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64513,7 +64535,7 @@ catch (...)
 
 static void hs_method_68caa5c1(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ExecuteCommandEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ExecuteCommandEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -64528,7 +64550,7 @@ catch (...)
 
 static void* hs_method_8fc39706(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent*>(hs_self)->suppressOutput()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecuteCommandEvent const*>(hs_self)->suppressOutput()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64603,7 +64625,7 @@ catch (...)
 
 static void* hs_method_24a23c6b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutedCommandEvent*>(hs_self)->result()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutedCommandEvent const*>(hs_self)->result()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64618,7 +64640,7 @@ catch (...)
 
 static void hs_method_5f2616f2(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ExecutedCommandEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ExecutedCommandEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -64708,7 +64730,7 @@ catch (...)
 
 static void* hs_method_88790774(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutingCommandEvent*>(hs_self)->commandContext()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutingCommandEvent const*>(hs_self)->commandContext()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64738,7 +64760,7 @@ catch (...)
 
 static void* hs_method_25fe1a29(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutingCommandEvent*>(hs_self)->suppressOutput()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ExecutingCommandEvent const*>(hs_self)->suppressOutput()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64828,7 +64850,7 @@ catch (...)
 
 static void* hs_method_298a3c45(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::FireSpreadEvent*>(hs_self)->pos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::FireSpreadEvent const*>(hs_self)->pos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64843,7 +64865,7 @@ catch (...)
 
 static void hs_method_15ee8151(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::FireSpreadEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::FireSpreadEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -64888,7 +64910,7 @@ catch (...)
 
 static void* hs_method_fb7b62c0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::LevelEvent*>(hs_self)->level()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::LevelEvent const*>(hs_self)->level()));
 }
 catch (std::exception const& hs_error)
 {
@@ -64903,7 +64925,7 @@ catch (...)
 
 static void hs_method_5670062e(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::LevelEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::LevelEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -65000,7 +65022,7 @@ catch (...)
 
 static std::uint64_t hs_method_2959d3b1(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::event::ListenerBase*>(hs_self)->getId());
+    return static_cast<std::uint64_t>(static_cast<ll::event::ListenerBase const*>(hs_self)->getId());
 }
 catch (std::exception const& hs_error)
 {
@@ -65015,7 +65037,7 @@ catch (...)
 
 static std::int32_t hs_method_57d3c253(void* hs_self) try
 {
-    return static_cast<std::int32_t>(static_cast<ll::event::ListenerBase*>(hs_self)->getPriority());
+    return static_cast<std::int32_t>(static_cast<ll::event::ListenerBase const*>(hs_self)->getPriority());
 }
 catch (std::exception const& hs_error)
 {
@@ -65045,7 +65067,7 @@ catch (...)
 
 static std::int8_t hs_method_a890d0d7(void* hs_self, void* other) try
 {
-    return static_cast<std::int8_t>((static_cast<ll::event::ListenerBase*>(hs_self)->operator<=>(*static_cast<const ll::event::ListenerBase*>(other))) < 0 ? -1 : ((static_cast<ll::event::ListenerBase*>(hs_self)->operator<=>(*static_cast<const ll::event::ListenerBase*>(other))) > 0 ? 1 : 0));
+    return static_cast<std::int8_t>((static_cast<ll::event::ListenerBase const*>(hs_self)->operator<=>(*static_cast<const ll::event::ListenerBase*>(other))) < 0 ? -1 : ((static_cast<ll::event::ListenerBase const*>(hs_self)->operator<=>(*static_cast<const ll::event::ListenerBase*>(other))) > 0 ? 1 : 0));
 }
 catch (std::exception const& hs_error)
 {
@@ -65060,7 +65082,7 @@ catch (...)
 
 static bool hs_method_34bb69f6(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::event::ListenerBase*>(hs_self)->operator==(*static_cast<const ll::event::ListenerBase*>(other)));
+    return static_cast<bool>(static_cast<ll::event::ListenerBase const*>(hs_self)->operator==(*static_cast<const ll::event::ListenerBase*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -65150,7 +65172,7 @@ catch (...)
 
 static void hs_method_8639c6b6(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::MobDieEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::MobDieEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -65165,7 +65187,7 @@ catch (...)
 
 static void* hs_method_0ce4260f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::MobDieEvent*>(hs_self)->source()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::MobDieEvent const*>(hs_self)->source()));
 }
 catch (std::exception const& hs_error)
 {
@@ -65735,7 +65757,7 @@ catch (...)
 
 static void* hs_method_aea176be(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::MobEvent*>(hs_self)->self()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::MobEvent const*>(hs_self)->self()));
 }
 catch (std::exception const& hs_error)
 {
@@ -65750,7 +65772,7 @@ catch (...)
 
 static void hs_method_d8021936(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::MobEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::MobEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -65915,7 +65937,7 @@ catch (...)
 
 static void* hs_method_e5c66566(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAddExperienceEvent*>(hs_self)->experience()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAddExperienceEvent const*>(hs_self)->experience()));
 }
 catch (std::exception const& hs_error)
 {
@@ -65930,7 +65952,7 @@ catch (...)
 
 static void hs_method_ca4eab35(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerAddExperienceEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerAddExperienceEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66080,7 +66102,7 @@ catch (...)
 
 static void* hs_method_90fbaaf0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAttackEvent*>(hs_self)->cause()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAttackEvent const*>(hs_self)->cause()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66095,7 +66117,7 @@ catch (...)
 
 static void hs_method_418f8a6a(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerAttackEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerAttackEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66110,7 +66132,7 @@ catch (...)
 
 static void* hs_method_4cdc3704(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAttackEvent*>(hs_self)->target()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerAttackEvent const*>(hs_self)->target()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66245,7 +66267,7 @@ catch (...)
 
 static void* hs_method_cfd26973(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerChangePermEvent*>(hs_self)->newPerm()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerChangePermEvent const*>(hs_self)->newPerm()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66260,7 +66282,7 @@ catch (...)
 
 static void hs_method_214f7cb8(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerChangePermEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerChangePermEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66395,7 +66417,7 @@ catch (...)
 
 static HosihikariStringView hs_method_9af5756a(void* hs_self) try
 {
-    auto result = static_cast<ll::event::PlayerChatEvent*>(hs_self)->message();
+    auto result = static_cast<ll::event::PlayerChatEvent const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -66412,7 +66434,7 @@ catch (...)
 
 static void hs_method_a9de3e73(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerChatEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerChatEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66637,7 +66659,7 @@ catch (...)
 
 static void* hs_method_bc4029aa(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerConnectEvent*>(hs_self)->connectionRequest()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerConnectEvent const*>(hs_self)->connectionRequest()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66652,7 +66674,7 @@ catch (...)
 
 static void* hs_method_eb72a114(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerConnectEvent*>(hs_self)->networkIdentifier()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerConnectEvent const*>(hs_self)->networkIdentifier()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66667,7 +66689,7 @@ catch (...)
 
 static void hs_method_492bc371(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerConnectEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerConnectEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66817,7 +66839,7 @@ catch (...)
 
 static void* hs_method_2868ebd6(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerDestroyBlockEvent*>(hs_self)->pos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerDestroyBlockEvent const*>(hs_self)->pos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -66832,7 +66854,7 @@ catch (...)
 
 static void hs_method_e60b8967(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerDestroyBlockEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerDestroyBlockEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66937,7 +66959,7 @@ catch (...)
 
 static void hs_method_87387cf1(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerDieEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerDieEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -66952,7 +66974,7 @@ catch (...)
 
 static void* hs_method_32fdf504(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerDieEvent*>(hs_self)->source()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerDieEvent const*>(hs_self)->source()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67612,7 +67634,7 @@ catch (...)
 
 static void* hs_method_a649bec1(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerEvent*>(hs_self)->self()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerEvent const*>(hs_self)->self()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67627,7 +67649,7 @@ catch (...)
 
 static void hs_method_183a591f(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -67777,7 +67799,7 @@ catch (...)
 
 static void* hs_method_f4b13300(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->block();
+    auto result = static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->block();
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -67796,7 +67818,7 @@ catch (...)
 
 static void* hs_method_006a3ef8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->blockPos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->blockPos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67811,7 +67833,7 @@ catch (...)
 
 static void* hs_method_3ab96ca0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->clickPos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->clickPos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67826,7 +67848,7 @@ catch (...)
 
 static void* hs_method_74e90d19(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->face()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->face()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67841,7 +67863,7 @@ catch (...)
 
 static void* hs_method_9ef832dd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->item()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->item()));
 }
 catch (std::exception const& hs_error)
 {
@@ -67856,7 +67878,7 @@ catch (...)
 
 static void hs_method_367f4062(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerInteractBlockEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerInteractBlockEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -68111,7 +68133,7 @@ catch (...)
 
 static void hs_method_86485622(void* hs_self, void* nbt) try
 {
-    static_cast<ll::event::PlayerJumpEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
+    static_cast<ll::event::PlayerJumpEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(nbt));
 }
 catch (std::exception const& hs_error)
 {
@@ -68366,7 +68388,7 @@ catch (...)
 
 static void* hs_method_0e63e30b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent*>(hs_self)->favoredSlot()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent const*>(hs_self)->favoredSlot()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68381,7 +68403,7 @@ catch (...)
 
 static void* hs_method_ecadd0cc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent*>(hs_self)->itemActor()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent const*>(hs_self)->itemActor()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68396,7 +68418,7 @@ catch (...)
 
 static void* hs_method_3ea5079b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent*>(hs_self)->orgCount()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPickUpItemEvent const*>(hs_self)->orgCount()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68411,7 +68433,7 @@ catch (...)
 
 static void hs_method_6926f186(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerPickUpItemEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerPickUpItemEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -68561,7 +68583,7 @@ catch (...)
 
 static void* hs_method_1903f7b8(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlaceBlockEvent*>(hs_self)->pos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlaceBlockEvent const*>(hs_self)->pos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68576,7 +68598,7 @@ catch (...)
 
 static void hs_method_35eb3764(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerPlaceBlockEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerPlaceBlockEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -68726,7 +68748,7 @@ catch (...)
 
 static void* hs_method_5242666d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlacedBlockEvent*>(hs_self)->placedBlock()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlacedBlockEvent const*>(hs_self)->placedBlock()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68741,7 +68763,7 @@ catch (...)
 
 static void hs_method_a7470134(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerPlacedBlockEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerPlacedBlockEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -68906,7 +68928,7 @@ catch (...)
 
 static void* hs_method_bf07202d(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlacingBlockEvent*>(hs_self)->face()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerPlacingBlockEvent const*>(hs_self)->face()));
 }
 catch (std::exception const& hs_error)
 {
@@ -68921,7 +68943,7 @@ catch (...)
 
 static void hs_method_4f669ef3(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerPlacingBlockEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerPlacingBlockEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70061,7 +70083,7 @@ catch (...)
 
 static void* hs_method_556b2cea(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerUseItemEvent*>(hs_self)->item()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::PlayerUseItemEvent const*>(hs_self)->item()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70076,7 +70098,7 @@ catch (...)
 
 static void hs_method_1f30d8aa(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::PlayerUseItemEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::PlayerUseItemEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70151,7 +70173,7 @@ catch (...)
 
 static bool hs_method_b38fe1da(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::event::ServerCommandRegisterEvent*>(hs_self)->isClientHostedServer());
+    return static_cast<bool>(static_cast<ll::event::ServerCommandRegisterEvent const*>(hs_self)->isClientHostedServer());
 }
 catch (std::exception const& hs_error)
 {
@@ -70166,7 +70188,7 @@ catch (...)
 
 static void hs_method_82dc3b60(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ServerCommandRegisterEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ServerCommandRegisterEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70301,7 +70323,7 @@ catch (...)
 
 static void* hs_method_da3af522(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerPlayerEvent*>(hs_self)->self()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerPlayerEvent const*>(hs_self)->self()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70361,7 +70383,7 @@ catch (...)
 
 static void hs_method_176ebdfe(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ServerStartedEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ServerStartedEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70376,7 +70398,7 @@ catch (...)
 
 static void* hs_method_5382f603(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerStartedEvent*>(hs_self)->server()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerStartedEvent const*>(hs_self)->server()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70436,7 +70458,7 @@ catch (...)
 
 static void hs_method_c366a36e(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::ServerStoppingEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::ServerStoppingEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70451,7 +70473,7 @@ catch (...)
 
 static void* hs_method_78145d83(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerStoppingEvent*>(hs_self)->server()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServerStoppingEvent const*>(hs_self)->server()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70481,7 +70503,7 @@ catch (...)
 
 static void* hs_method_1a6732fc(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServiceEvent*>(hs_self)->service()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::ServiceEvent const*>(hs_self)->service()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70661,7 +70683,7 @@ catch (...)
 
 static void* hs_method_63164f43(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent*>(hs_self)->fromSpawner()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent const*>(hs_self)->fromSpawner()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70676,7 +70698,7 @@ catch (...)
 
 static void* hs_method_63a422c4(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent*>(hs_self)->identifier()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent const*>(hs_self)->identifier()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70691,7 +70713,7 @@ catch (...)
 
 static void* hs_method_de73fc86(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent*>(hs_self)->naturalSpawn()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent const*>(hs_self)->naturalSpawn()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70706,7 +70728,7 @@ catch (...)
 
 static void* hs_method_a5de4999(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent*>(hs_self)->pos()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent const*>(hs_self)->pos()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70721,7 +70743,7 @@ catch (...)
 
 static void hs_method_33b65dc1(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::SpawnMobEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::SpawnMobEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70736,7 +70758,7 @@ catch (...)
 
 static void* hs_method_3884abba(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::event::SpawnMobEvent*>(hs_self)->spawner();
+    auto result = static_cast<ll::event::SpawnMobEvent const*>(hs_self)->spawner();
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -70755,7 +70777,7 @@ catch (...)
 
 static void* hs_method_9c1955f3(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent*>(hs_self)->surface()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawnMobEvent const*>(hs_self)->surface()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70845,7 +70867,7 @@ catch (...)
 
 static void* hs_method_e638bb16(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::event::SpawnedMobEvent*>(hs_self)->mob();
+    auto result = static_cast<ll::event::SpawnedMobEvent const*>(hs_self)->mob();
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -70864,7 +70886,7 @@ catch (...)
 
 static void hs_method_40474363(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::SpawnedMobEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::SpawnedMobEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -70984,7 +71006,7 @@ catch (...)
 
 static void* hs_method_05181445(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent*>(hs_self)->fromSpawner()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent const*>(hs_self)->fromSpawner()));
 }
 catch (std::exception const& hs_error)
 {
@@ -70999,7 +71021,7 @@ catch (...)
 
 static void* hs_method_0b4d2f4a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent*>(hs_self)->naturalSpawn()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent const*>(hs_self)->naturalSpawn()));
 }
 catch (std::exception const& hs_error)
 {
@@ -71014,7 +71036,7 @@ catch (...)
 
 static void* hs_method_1fa3d3ad(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent*>(hs_self)->surface()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::SpawningMobEvent const*>(hs_self)->surface()));
 }
 catch (std::exception const& hs_error)
 {
@@ -71149,7 +71171,7 @@ catch (...)
 
 static void* hs_method_b2ad2a9c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::WorldEvent*>(hs_self)->blockSource()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::event::WorldEvent const*>(hs_self)->blockSource()));
 }
 catch (std::exception const& hs_error)
 {
@@ -71164,7 +71186,7 @@ catch (...)
 
 static void hs_method_07d58633(void* hs_self, void* arg0) try
 {
-    static_cast<ll::event::WorldEvent*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
+    static_cast<ll::event::WorldEvent const*>(hs_self)->serialize(*static_cast<CompoundTag*>(arg0));
 }
 catch (std::exception const& hs_error)
 {
@@ -71505,7 +71527,7 @@ catch (...)
 
 static HosihikariStringView hs_method_afafee03(void* hs_self) try
 {
-    auto result = static_cast<ll::form::CustomForm*>(hs_self)->getFormData();
+    auto result = static_cast<ll::form::CustomForm const*>(hs_self)->getFormData();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -72382,7 +72404,7 @@ catch (...)
 
 static std::uint64_t hs_method_6e4f0b75(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::hash_utils::HashCombiner*>(hs_self)->hash());
+    return static_cast<std::uint64_t>(static_cast<ll::hash_utils::HashCombiner const*>(hs_self)->hash());
 }
 catch (std::exception const& hs_error)
 {
@@ -72397,7 +72419,7 @@ catch (...)
 
 static std::uint64_t hs_method_cf8e6889(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::hash_utils::HashCombiner*>(hs_self)->operator std::uint64_t());
+    return static_cast<std::uint64_t>(static_cast<ll::hash_utils::HashCombiner const*>(hs_self)->operator std::uint64_t());
 }
 catch (std::exception const& hs_error)
 {
@@ -72442,7 +72464,7 @@ catch (...)
 
 static std::int8_t hs_method_96fec99d(void* hs_self, void* other) try
 {
-    return static_cast<std::int8_t>((static_cast<ll::hash_utils::HashedIdBase*>(hs_self)->operator<=>(*static_cast<const ll::hash_utils::HashedIdBase*>(other))) < 0 ? -1 : ((static_cast<ll::hash_utils::HashedIdBase*>(hs_self)->operator<=>(*static_cast<const ll::hash_utils::HashedIdBase*>(other))) > 0 ? 1 : 0));
+    return static_cast<std::int8_t>((static_cast<ll::hash_utils::HashedIdBase const*>(hs_self)->operator<=>(*static_cast<const ll::hash_utils::HashedIdBase*>(other))) < 0 ? -1 : ((static_cast<ll::hash_utils::HashedIdBase const*>(hs_self)->operator<=>(*static_cast<const ll::hash_utils::HashedIdBase*>(other))) > 0 ? 1 : 0));
 }
 catch (std::exception const& hs_error)
 {
@@ -72457,7 +72479,7 @@ catch (...)
 
 static bool hs_method_a350e776(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::hash_utils::HashedIdBase*>(hs_self)->operator==(*static_cast<const ll::hash_utils::HashedIdBase*>(other)));
+    return static_cast<bool>(static_cast<ll::hash_utils::HashedIdBase const*>(hs_self)->operator==(*static_cast<const ll::hash_utils::HashedIdBase*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -72562,7 +72584,7 @@ catch (...)
 
 static HosihikariStringView hs_method_bbfaa302(void* hs_self, const char* key_data, std::size_t key_size, const char* localeCode_data, std::size_t localeCode_size) try
 {
-    auto result = static_cast<ll::i18n::I18n*>(hs_self)->get(std::basic_string_view<char>(key_data, key_size), std::basic_string_view<char>(localeCode_data, localeCode_size));
+    auto result = static_cast<ll::i18n::I18n const*>(hs_self)->get(std::basic_string_view<char>(key_data, key_size), std::basic_string_view<char>(localeCode_data, localeCode_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -72648,7 +72670,7 @@ catch (...)
 
 static void* hs_method_a21015d0(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::i18n::I18nStringError*>(hs_self)->args()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::i18n::I18nStringError const*>(hs_self)->args()));
 }
 catch (std::exception const& hs_error)
 {
@@ -72663,7 +72685,7 @@ catch (...)
 
 static HosihikariStringView hs_method_2381c8e7(void* hs_self) try
 {
-    auto result = static_cast<ll::i18n::I18nStringError*>(hs_self)->key();
+    auto result = static_cast<ll::i18n::I18nStringError const*>(hs_self)->key();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -72680,7 +72702,7 @@ catch (...)
 
 static HosihikariStringView hs_method_db5287ce(void* hs_self) try
 {
-    auto result = static_cast<ll::i18n::I18nStringError*>(hs_self)->message();
+    auto result = static_cast<ll::i18n::I18nStringError const*>(hs_self)->message();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -72697,7 +72719,7 @@ catch (...)
 
 static HosihikariStringView hs_method_b2b92e35(void* hs_self, const char* localeCode_data, std::size_t localeCode_size) try
 {
-    auto result = static_cast<ll::i18n::I18nStringError*>(hs_self)->message(std::basic_string_view<char>(localeCode_data, localeCode_size));
+    auto result = static_cast<ll::i18n::I18nStringError const*>(hs_self)->message(std::basic_string_view<char>(localeCode_data, localeCode_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -73371,7 +73393,7 @@ catch (...)
 
 static void hs_method_6bd3404d(void* hs_self) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->clearSinks();
+    static_cast<ll::io::Logger const*>(hs_self)->clearSinks();
 }
 catch (std::exception const& hs_error)
 {
@@ -73386,7 +73408,7 @@ catch (...)
 
 static void hs_method_1460e901(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->debug(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->debug(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73401,7 +73423,7 @@ catch (...)
 
 static void hs_method_970e1856(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->error(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->error(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73416,7 +73438,7 @@ catch (...)
 
 static void hs_method_4b5a9d04(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->fatal(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->fatal(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73431,7 +73453,7 @@ catch (...)
 
 static void hs_method_48c2de3c(void* hs_self) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->flush();
+    static_cast<ll::io::Logger const*>(hs_self)->flush();
 }
 catch (std::exception const& hs_error)
 {
@@ -73446,7 +73468,7 @@ catch (...)
 
 static std::int32_t hs_method_fc6ffbb3(void* hs_self) try
 {
-    return static_cast<std::int32_t>(static_cast<ll::io::Logger*>(hs_self)->getLevel());
+    return static_cast<std::int32_t>(static_cast<ll::io::Logger const*>(hs_self)->getLevel());
 }
 catch (std::exception const& hs_error)
 {
@@ -73461,7 +73483,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_1ed01cde(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::io::Logger*>(hs_self)->getSink(std::basic_string_view<char>(name_data, name_size)));
+    return hs_make_shared_handle(static_cast<ll::io::Logger const*>(hs_self)->getSink(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -73476,7 +73498,7 @@ catch (...)
 
 static HosihikariStringView hs_method_1a48a16c(void* hs_self) try
 {
-    auto result = static_cast<ll::io::Logger*>(hs_self)->getTitle();
+    auto result = static_cast<ll::io::Logger const*>(hs_self)->getTitle();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -73493,7 +73515,7 @@ catch (...)
 
 static void hs_method_d664da2b(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->info(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->info(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73508,7 +73530,7 @@ catch (...)
 
 static void hs_method_c1d191b1(void* hs_self, std::int32_t level, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->log(static_cast<ll::io::LogLevel>(level), std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->log(static_cast<ll::io::LogLevel>(level), std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73523,7 +73545,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_aaa9b394(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::io::Logger*>(hs_self)->removeSink(std::basic_string_view<char>(name_data, name_size)));
+    return hs_make_shared_handle(static_cast<ll::io::Logger const*>(hs_self)->removeSink(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -73568,7 +73590,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_d134f062(void* hs_self, const char* name_data, std::size_t name_size, HosihikariSharedHandle sink) try
 {
-    return hs_make_shared_handle(static_cast<ll::io::Logger*>(hs_self)->setSink(std::basic_string_view<char>(name_data, name_size), hs_shared_from_handle<ll::io::SinkBase>(sink)));
+    return hs_make_shared_handle(static_cast<ll::io::Logger const*>(hs_self)->setSink(std::basic_string_view<char>(name_data, name_size), hs_shared_from_handle<ll::io::SinkBase>(sink)));
 }
 catch (std::exception const& hs_error)
 {
@@ -73583,7 +73605,7 @@ catch (...)
 
 static bool hs_method_464ced3e(void* hs_self, std::int32_t level) try
 {
-    return static_cast<bool>(static_cast<ll::io::Logger*>(hs_self)->shouldLog(static_cast<ll::io::LogLevel>(level)));
+    return static_cast<bool>(static_cast<ll::io::Logger const*>(hs_self)->shouldLog(static_cast<ll::io::LogLevel>(level)));
 }
 catch (std::exception const& hs_error)
 {
@@ -73598,7 +73620,7 @@ catch (...)
 
 static void hs_method_594aa3db(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->trace(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->trace(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -73613,7 +73635,7 @@ catch (...)
 
 static void hs_method_f53cdadb(void* hs_self, const char* msg_data, std::size_t msg_size) try
 {
-    static_cast<ll::io::Logger*>(hs_self)->warn(std::basic_string<char>(msg_data, msg_size));
+    static_cast<ll::io::Logger const*>(hs_self)->warn(std::basic_string<char>(msg_data, msg_size));
 }
 catch (std::exception const& hs_error)
 {
@@ -74593,7 +74615,7 @@ catch (...)
 
 static void* hs_method_35b2a35f(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::DualMapping*>(hs_self)->executable()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::DualMapping const*>(hs_self)->executable()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74623,7 +74645,7 @@ catch (...)
 
 static std::uint64_t hs_method_731d79ad(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::DualMapping*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::DualMapping const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -74638,7 +74660,7 @@ catch (...)
 
 static void* hs_method_d56c2648(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::DualMapping*>(hs_self)->writable()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::DualMapping const*>(hs_self)->writable()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74683,7 +74705,7 @@ catch (...)
 
 static void* hs_method_af6295cb(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature*>(hs_self)->back()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature const*>(hs_self)->back()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74698,7 +74720,7 @@ catch (...)
 
 static void* hs_method_2f83b432(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature*>(hs_self)->front()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature const*>(hs_self)->front()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74713,7 +74735,7 @@ catch (...)
 
 static bool hs_method_fc945bb7(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::memory::Signature*>(hs_self)->operator==(*static_cast<const ll::memory::Signature*>(other)));
+    return static_cast<bool>(static_cast<ll::memory::Signature const*>(hs_self)->operator==(*static_cast<const ll::memory::Signature*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -74728,7 +74750,7 @@ catch (...)
 
 static void* hs_method_24a2fcc0(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::Signature const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -74758,7 +74780,7 @@ catch (...)
 
 static std::uint64_t hs_method_a98ed6d1(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::Signature*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::Signature const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -74773,7 +74795,7 @@ catch (...)
 
 static void* hs_method_4f9fc09f(void* hs_self) try
 {
-    return static_cast<void*>(new ll::memory::SignatureView(static_cast<ll::memory::Signature*>(hs_self)->view()));
+    return static_cast<void*>(new ll::memory::SignatureView(static_cast<ll::memory::Signature const*>(hs_self)->view()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74848,7 +74870,7 @@ catch (...)
 
 static std::uint64_t hs_method_4a91da7f(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::SignatureElement*>(hs_self)->hash());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::SignatureElement const*>(hs_self)->hash());
 }
 catch (std::exception const& hs_error)
 {
@@ -74863,7 +74885,7 @@ catch (...)
 
 static bool hs_method_985014ba(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::memory::SignatureElement*>(hs_self)->isWildcard());
+    return static_cast<bool>(static_cast<ll::memory::SignatureElement const*>(hs_self)->isWildcard());
 }
 catch (std::exception const& hs_error)
 {
@@ -74878,7 +74900,7 @@ catch (...)
 
 static bool hs_method_2319360a(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::memory::SignatureElement*>(hs_self)->operator==(*static_cast<const ll::memory::SignatureElement*>(other)));
+    return static_cast<bool>(static_cast<ll::memory::SignatureElement const*>(hs_self)->operator==(*static_cast<const ll::memory::SignatureElement*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -74893,7 +74915,7 @@ catch (...)
 
 static bool hs_method_1b15f4fa(void* hs_self, std::uint8_t other) try
 {
-    return static_cast<bool>(static_cast<ll::memory::SignatureElement*>(hs_self)->operator==(static_cast<unsigned char>(other)));
+    return static_cast<bool>(static_cast<ll::memory::SignatureElement const*>(hs_self)->operator==(static_cast<unsigned char>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -74983,7 +75005,7 @@ catch (...)
 
 static void* hs_method_d327beba(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView*>(hs_self)->back()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView const*>(hs_self)->back()));
 }
 catch (std::exception const& hs_error)
 {
@@ -74998,7 +75020,7 @@ catch (...)
 
 static void* hs_method_4297646a(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView*>(hs_self)->front()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView const*>(hs_self)->front()));
 }
 catch (std::exception const& hs_error)
 {
@@ -75043,7 +75065,7 @@ catch (...)
 
 static bool hs_method_ec4b5d84(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::memory::SignatureView*>(hs_self)->operator==(*static_cast<const ll::memory::SignatureView*>(other)));
+    return static_cast<bool>(static_cast<ll::memory::SignatureView const*>(hs_self)->operator==(*static_cast<const ll::memory::SignatureView*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -75058,7 +75080,7 @@ catch (...)
 
 static void* hs_method_e95df1cf(void* hs_self, std::uint64_t idx) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::memory::SignatureView const*>(hs_self)->operator[](static_cast<std::uint64_t>(idx))));
 }
 catch (std::exception const& hs_error)
 {
@@ -75073,7 +75095,7 @@ catch (...)
 
 static void* hs_method_1c4014f3(void* hs_self, bool disableErrorOutput) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::SignatureView*>(hs_self)->resolve(static_cast<bool>(disableErrorOutput))));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::SignatureView const*>(hs_self)->resolve(static_cast<bool>(disableErrorOutput))));
 }
 catch (std::exception const& hs_error)
 {
@@ -75088,7 +75110,7 @@ catch (...)
 
 static std::uint64_t hs_method_909ee01a(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::SignatureView*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::SignatureView const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -75103,7 +75125,7 @@ catch (...)
 
 static HosihikariStringView hs_method_0efb275c(void* hs_self, bool alignWildcard, bool upperCase) try
 {
-    auto result = static_cast<ll::memory::SignatureView*>(hs_self)->toString(static_cast<bool>(alignWildcard), static_cast<bool>(upperCase));
+    auto result = static_cast<ll::memory::SignatureView const*>(hs_self)->toString(static_cast<bool>(alignWildcard), static_cast<bool>(upperCase));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75150,7 +75172,7 @@ catch (...)
 
 static std::uint64_t hs_method_810802d7(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::Symbol*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::Symbol const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -75165,7 +75187,7 @@ catch (...)
 
 static void* hs_method_a40ae36f(void* hs_self) try
 {
-    return static_cast<void*>(new ll::memory::SymbolView(static_cast<ll::memory::Symbol*>(hs_self)->view()));
+    return static_cast<void*>(new ll::memory::SymbolView(static_cast<ll::memory::Symbol const*>(hs_self)->view()));
 }
 catch (std::exception const& hs_error)
 {
@@ -75245,7 +75267,7 @@ catch (...)
 
 static HosihikariStringView hs_method_cd9dc5fe(void* hs_self) try
 {
-    auto result = static_cast<ll::memory::SymbolView*>(hs_self)->raw();
+    auto result = static_cast<ll::memory::SymbolView const*>(hs_self)->raw();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75262,7 +75284,7 @@ catch (...)
 
 static void* hs_method_5cd95024(void* hs_self, bool disableErrorOutput) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::SymbolView*>(hs_self)->resolve(static_cast<bool>(disableErrorOutput))));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::memory::SymbolView const*>(hs_self)->resolve(static_cast<bool>(disableErrorOutput))));
 }
 catch (std::exception const& hs_error)
 {
@@ -75277,7 +75299,7 @@ catch (...)
 
 static std::uint64_t hs_method_d6d4f0ef(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::memory::SymbolView*>(hs_self)->size());
+    return static_cast<std::uint64_t>(static_cast<ll::memory::SymbolView const*>(hs_self)->size());
 }
 catch (std::exception const& hs_error)
 {
@@ -75292,7 +75314,7 @@ catch (...)
 
 static HosihikariStringView hs_method_011f4e88(void* hs_self) try
 {
-    auto result = static_cast<ll::memory::SymbolView*>(hs_self)->toString();
+    auto result = static_cast<ll::memory::SymbolView const*>(hs_self)->toString();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75634,7 +75656,7 @@ catch (...)
 
 static bool hs_method_bdbf76a1(void* hs_self, void* other) try
 {
-    return static_cast<bool>(static_cast<ll::mod::Dependency*>(hs_self)->operator==(*static_cast<const ll::mod::Dependency*>(other)));
+    return static_cast<bool>(static_cast<ll::mod::Dependency const*>(hs_self)->operator==(*static_cast<const ll::mod::Dependency*>(other)));
 }
 catch (std::exception const& hs_error)
 {
@@ -75907,7 +75929,7 @@ catch (...)
 
 static HosihikariStringView hs_method_675e8045(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getBehaviorDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getBehaviorDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75924,7 +75946,7 @@ catch (...)
 
 static HosihikariStringView hs_method_079d3c6d(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getConfigDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getConfigDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75941,7 +75963,7 @@ catch (...)
 
 static HosihikariStringView hs_method_e928da17(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getDataDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getDataDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75958,7 +75980,7 @@ catch (...)
 
 static HosihikariStringView hs_method_9d82ff37(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getLangDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getLangDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -75975,7 +75997,7 @@ catch (...)
 
 static void* hs_method_c2f8203b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::mod::Mod*>(hs_self)->getLogger()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::mod::Mod const*>(hs_self)->getLogger()));
 }
 catch (std::exception const& hs_error)
 {
@@ -75990,7 +76012,7 @@ catch (...)
 
 static void* hs_method_9df4802c(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::mod::Mod*>(hs_self)->getManifest()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::mod::Mod const*>(hs_self)->getManifest()));
 }
 catch (std::exception const& hs_error)
 {
@@ -76005,7 +76027,7 @@ catch (...)
 
 static HosihikariStringView hs_method_830f9da6(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getModDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getModDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76022,7 +76044,7 @@ catch (...)
 
 static HosihikariStringView hs_method_5ebbdfc4(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getName();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getName();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76039,7 +76061,7 @@ catch (...)
 
 static HosihikariStringView hs_method_e5585fcd(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getResourceDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getResourceDir();
     g_stringResult.assign(result.string());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76056,7 +76078,7 @@ catch (...)
 
 static std::int32_t hs_method_e5a11d67(void* hs_self) try
 {
-    return static_cast<std::int32_t>(static_cast<ll::mod::Mod*>(hs_self)->getState());
+    return static_cast<std::int32_t>(static_cast<ll::mod::Mod const*>(hs_self)->getState());
 }
 catch (std::exception const& hs_error)
 {
@@ -76071,7 +76093,7 @@ catch (...)
 
 static HosihikariStringView hs_method_b1ac2eef(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getType();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getType();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76088,7 +76110,7 @@ catch (...)
 
 static HosihikariStringView hs_method_02a38612(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getWorldConfigDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getWorldConfigDir();
     *hs_hasValue = result.has_value();
     g_stringResult.assign(result ? result->string() : "");
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
@@ -76108,7 +76130,7 @@ catch (...)
 
 static HosihikariStringView hs_method_8eded801(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::mod::Mod*>(hs_self)->getWorldDataDir();
+    auto result = static_cast<ll::mod::Mod const*>(hs_self)->getWorldDataDir();
     *hs_hasValue = result.has_value();
     g_stringResult.assign(result ? result->string() : "");
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
@@ -76128,7 +76150,7 @@ catch (...)
 
 static bool hs_method_53251ec7(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::mod::Mod*>(hs_self)->isDisabled());
+    return static_cast<bool>(static_cast<ll::mod::Mod const*>(hs_self)->isDisabled());
 }
 catch (std::exception const& hs_error)
 {
@@ -76143,7 +76165,7 @@ catch (...)
 
 static bool hs_method_d05c78a2(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::mod::Mod*>(hs_self)->isEnabled());
+    return static_cast<bool>(static_cast<ll::mod::Mod const*>(hs_self)->isEnabled());
 }
 catch (std::exception const& hs_error)
 {
@@ -76298,7 +76320,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_72114394(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::mod::ModManager*>(hs_self)->getMod(std::basic_string_view<char>(name_data, name_size)));
+    return hs_make_shared_handle(static_cast<ll::mod::ModManager const*>(hs_self)->getMod(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76313,7 +76335,7 @@ catch (...)
 
 static std::uint64_t hs_method_2e586d9c(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManager*>(hs_self)->getModCount());
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManager const*>(hs_self)->getModCount());
 }
 catch (std::exception const& hs_error)
 {
@@ -76328,7 +76350,7 @@ catch (...)
 
 static HosihikariStringView hs_method_ee4df28c(void* hs_self) try
 {
-    auto result = static_cast<ll::mod::ModManager*>(hs_self)->getType();
+    auto result = static_cast<ll::mod::ModManager const*>(hs_self)->getType();
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76345,7 +76367,7 @@ catch (...)
 
 static bool hs_method_f65db5e6(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return static_cast<bool>(static_cast<ll::mod::ModManager*>(hs_self)->hasMod(std::basic_string_view<char>(name_data, name_size)));
+    return static_cast<bool>(static_cast<ll::mod::ModManager const*>(hs_self)->hasMod(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76615,7 +76637,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_7ee89750(void* hs_self, const char* type_data, std::size_t type_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->getManager(std::basic_string_view<char>(type_data, type_size)));
+    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->getManager(std::basic_string_view<char>(type_data, type_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76630,7 +76652,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_985f5308(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->getManagerForMod(std::basic_string_view<char>(name_data, name_size)));
+    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->getManagerForMod(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76645,7 +76667,7 @@ catch (...)
 
 static HosihikariSharedHandle hs_method_89d1efb9(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->getMod(std::basic_string_view<char>(name_data, name_size)));
+    return hs_make_shared_handle(static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->getMod(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76660,7 +76682,7 @@ catch (...)
 
 static HosihikariStringView hs_method_f60f18e7(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    auto result = static_cast<ll::mod::ModManagerRegistry*>(hs_self)->getModType(std::basic_string_view<char>(name_data, name_size));
+    auto result = static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->getModType(std::basic_string_view<char>(name_data, name_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -76677,7 +76699,7 @@ catch (...)
 
 static bool hs_method_e0f37ca6(void* hs_self, const char* type_data, std::size_t type_size) try
 {
-    return static_cast<bool>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->hasManager(std::basic_string_view<char>(type_data, type_size)));
+    return static_cast<bool>(static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->hasManager(std::basic_string_view<char>(type_data, type_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76692,7 +76714,7 @@ catch (...)
 
 static bool hs_method_baf347a9(void* hs_self, const char* name_data, std::size_t name_size) try
 {
-    return static_cast<bool>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->hasMod(std::basic_string_view<char>(name_data, name_size)));
+    return static_cast<bool>(static_cast<ll::mod::ModManagerRegistry const*>(hs_self)->hasMod(std::basic_string_view<char>(name_data, name_size)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76752,7 +76774,7 @@ catch (...)
 
 static void* hs_method_b9381af9(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::mod::NativeMod*>(hs_self)->getHandle()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::mod::NativeMod const*>(hs_self)->getHandle()));
 }
 catch (std::exception const& hs_error)
 {
@@ -76882,7 +76904,7 @@ catch (...)
 
 static bool hs_method_73f4a348(void* hs_self, void* identifier) try
 {
-    return static_cast<bool>(static_cast<ll::network::Packet*>(hs_self)->canSendTo(*static_cast<const NetworkIdentifier*>(identifier)));
+    return static_cast<bool>(static_cast<ll::network::Packet const*>(hs_self)->canSendTo(*static_cast<const NetworkIdentifier*>(identifier)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76897,7 +76919,7 @@ catch (...)
 
 static bool hs_method_9975f4b5(void* hs_self, void* player) try
 {
-    return static_cast<bool>(static_cast<ll::network::Packet*>(hs_self)->canSendTo(*static_cast<const Player*>(player)));
+    return static_cast<bool>(static_cast<ll::network::Packet const*>(hs_self)->canSendTo(*static_cast<const Player*>(player)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76942,7 +76964,7 @@ catch (...)
 
 static bool hs_method_c10e1099(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::network::Packet*>(hs_self)->canSendToServer());
+    return static_cast<bool>(static_cast<ll::network::Packet const*>(hs_self)->canSendToServer());
 }
 catch (std::exception const& hs_error)
 {
@@ -76972,7 +76994,7 @@ catch (...)
 
 static std::uint64_t hs_method_6e93c7b6(void* hs_self) try
 {
-    return static_cast<std::uint64_t>(static_cast<ll::network::Packet*>(hs_self)->getRuntimeId());
+    return static_cast<std::uint64_t>(static_cast<ll::network::Packet const*>(hs_self)->getRuntimeId());
 }
 catch (std::exception const& hs_error)
 {
@@ -77107,7 +77129,7 @@ catch (...)
 
 static void hs_method_5741a673(void* hs_self, void* actor, void* except, bool except_hasValue) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendTo(*static_cast<const Actor*>(actor), (except_hasValue ? optional_ref<Player>{static_cast<Player*>(except)} : optional_ref<Player>{}));
+    static_cast<ll::network::Packet const*>(hs_self)->sendTo(*static_cast<const Actor*>(actor), (except_hasValue ? optional_ref<Player>{static_cast<Player*>(except)} : optional_ref<Player>{}));
 }
 catch (std::exception const& hs_error)
 {
@@ -77122,7 +77144,7 @@ catch (...)
 
 static void hs_method_3d1e2b3c(void* hs_self, void* pos, void* dimId, void* except, bool except_hasValue) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendTo(*static_cast<const BlockPos*>(pos), *static_cast<const DimensionType*>(dimId), (except_hasValue ? optional_ref<Player>{static_cast<Player*>(except)} : optional_ref<Player>{}));
+    static_cast<ll::network::Packet const*>(hs_self)->sendTo(*static_cast<const BlockPos*>(pos), *static_cast<const DimensionType*>(dimId), (except_hasValue ? optional_ref<Player>{static_cast<Player*>(except)} : optional_ref<Player>{}));
 }
 catch (std::exception const& hs_error)
 {
@@ -77137,7 +77159,7 @@ catch (...)
 
 static void hs_method_acfa9263(void* hs_self, void* player) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendTo(*static_cast<const Player*>(player));
+    static_cast<ll::network::Packet const*>(hs_self)->sendTo(*static_cast<const Player*>(player));
 }
 catch (std::exception const& hs_error)
 {
@@ -77152,7 +77174,7 @@ catch (...)
 
 static void hs_method_4031e9e8(void* hs_self, void* identifier, std::uint8_t clientId) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendToClient(*static_cast<const NetworkIdentifier*>(identifier), static_cast<SubClientId>(clientId));
+    static_cast<ll::network::Packet const*>(hs_self)->sendToClient(*static_cast<const NetworkIdentifier*>(identifier), static_cast<SubClientId>(clientId));
 }
 catch (std::exception const& hs_error)
 {
@@ -77167,7 +77189,7 @@ catch (...)
 
 static void hs_method_b59de195(void* hs_self, void* identifierWithSubId) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendToClient(*static_cast<const NetworkIdentifierWithSubId*>(identifierWithSubId));
+    static_cast<ll::network::Packet const*>(hs_self)->sendToClient(*static_cast<const NetworkIdentifierWithSubId*>(identifierWithSubId));
 }
 catch (std::exception const& hs_error)
 {
@@ -77182,7 +77204,7 @@ catch (...)
 
 static void hs_method_7de8df0e(void* hs_self) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendToClients();
+    static_cast<ll::network::Packet const*>(hs_self)->sendToClients();
 }
 catch (std::exception const& hs_error)
 {
@@ -77197,7 +77219,7 @@ catch (...)
 
 static void hs_method_67f84eaf(void* hs_self, void* exceptId, std::uint8_t exceptSubid) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendToClients(*static_cast<const NetworkIdentifier*>(exceptId), static_cast<SubClientId>(exceptSubid));
+    static_cast<ll::network::Packet const*>(hs_self)->sendToClients(*static_cast<const NetworkIdentifier*>(exceptId), static_cast<SubClientId>(exceptSubid));
 }
 catch (std::exception const& hs_error)
 {
@@ -77212,7 +77234,7 @@ catch (...)
 
 static void hs_method_67229f07(void* hs_self) try
 {
-    static_cast<ll::network::Packet*>(hs_self)->sendToServer();
+    static_cast<ll::network::Packet const*>(hs_self)->sendToServer();
 }
 catch (std::exception const& hs_error)
 {
@@ -77244,7 +77266,7 @@ catch (...)
 static HosihikariArrayView hs_method_118ceb1d(void* hs_self, std::uint8_t side) try
 {
     thread_local std::vector<std::uint64_t> hs_arrayResult;
-    auto result = static_cast<ll::network::PacketRegistrar*>(hs_self)->getHandledPackets(static_cast<ll::network::PacketSide>(side));
+    auto result = static_cast<ll::network::PacketRegistrar const*>(hs_self)->getHandledPackets(static_cast<ll::network::PacketSide>(side));
     hs_arrayResult.clear();
     hs_arrayResult.reserve(result.size());
     for (auto const& item : result) { hs_arrayResult.push_back(static_cast<std::uint64_t>(item)); }
@@ -77517,7 +77539,7 @@ catch (...)
 
 static HosihikariStringView hs_method_2a1ca71f(void* hs_self, const char* locale_data, std::size_t locale_size) try
 {
-    auto result = static_cast<ll::service::GetServiceError*>(hs_self)->message(std::basic_string_view<char>(locale_data, locale_size));
+    auto result = static_cast<ll::service::GetServiceError const*>(hs_self)->message(std::basic_string_view<char>(locale_data, locale_size));
     g_stringResult.assign(result.data(), result.size());
     return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
 }
@@ -77579,7 +77601,7 @@ catch (...)
 
 static void* hs_method_f4b9630e(void* hs_self, const char* arg0_data, std::size_t arg0_size, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::service::PlayerInfo*>(hs_self)->fromName(std::basic_string_view<char>(arg0_data, arg0_size));
+    auto result = static_cast<ll::service::PlayerInfo const*>(hs_self)->fromName(std::basic_string_view<char>(arg0_data, arg0_size));
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -77598,7 +77620,7 @@ catch (...)
 
 static void* hs_method_f4045e5b(void* hs_self, void* arg0, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::service::PlayerInfo*>(hs_self)->fromUuid(*static_cast<const mce::UUID*>(arg0));
+    auto result = static_cast<ll::service::PlayerInfo const*>(hs_self)->fromUuid(*static_cast<const mce::UUID*>(arg0));
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -77617,7 +77639,7 @@ catch (...)
 
 static void* hs_method_bfbc3d9c(void* hs_self, const char* arg0_data, std::size_t arg0_size, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::service::PlayerInfo*>(hs_self)->fromXuid(std::basic_string_view<char>(arg0_data, arg0_size));
+    auto result = static_cast<ll::service::PlayerInfo const*>(hs_self)->fromXuid(std::basic_string_view<char>(arg0_data, arg0_size));
     *hs_hasValue = static_cast<bool>(result);
     return result ? const_cast<void*>(static_cast<void const*>(&*result)) : nullptr;
 }
@@ -78917,7 +78939,7 @@ catch (...)
 
 static void* hs_method_68fc63cd(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<ll::sys_utils::DynamicLibrary*>(hs_self)->handle()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<ll::sys_utils::DynamicLibrary const*>(hs_self)->handle()));
 }
 catch (std::exception const& hs_error)
 {
@@ -79284,7 +79306,7 @@ struct hs_cb_closure_hs_method_c9037fb1_cb0
 
 static void hs_method_c9037fb1(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release) try
 {
-    static_cast<ll::thread::InplaceExecutor*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_c9037fb1_cb0{std::make_shared<hs_cb_state_hs_method_c9037fb1_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_c9037fb1_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_c9037fb1_cb0>(arg0_release))}));
+    static_cast<ll::thread::InplaceExecutor const*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_c9037fb1_cb0{std::make_shared<hs_cb_state_hs_method_c9037fb1_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_c9037fb1_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_c9037fb1_cb0>(arg0_release))}));
 }
 catch (std::exception const& hs_error)
 {
@@ -79319,7 +79341,7 @@ struct hs_cb_closure_hs_method_1a384bf7_cb0
 
 static HosihikariSharedHandle hs_method_1a384bf7(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release, std::int64_t arg1) try
 {
-    return hs_make_shared_handle(static_cast<ll::thread::InplaceExecutor*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_1a384bf7_cb0{std::make_shared<hs_cb_state_hs_method_1a384bf7_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_1a384bf7_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_1a384bf7_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
+    return hs_make_shared_handle(static_cast<ll::thread::InplaceExecutor const*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_1a384bf7_cb0{std::make_shared<hs_cb_state_hs_method_1a384bf7_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_1a384bf7_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_1a384bf7_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
 }
 catch (std::exception const& hs_error)
 {
@@ -79474,7 +79496,7 @@ struct hs_cb_closure_hs_method_c1ea340a_cb0
 
 static void hs_method_c1ea340a(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release) try
 {
-    static_cast<ll::thread::ServerThreadExecutor*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_c1ea340a_cb0{std::make_shared<hs_cb_state_hs_method_c1ea340a_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_c1ea340a_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_c1ea340a_cb0>(arg0_release))}));
+    static_cast<ll::thread::ServerThreadExecutor const*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_c1ea340a_cb0{std::make_shared<hs_cb_state_hs_method_c1ea340a_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_c1ea340a_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_c1ea340a_cb0>(arg0_release))}));
 }
 catch (std::exception const& hs_error)
 {
@@ -79509,7 +79531,7 @@ struct hs_cb_closure_hs_method_9f080ef6_cb0
 
 static HosihikariSharedHandle hs_method_9f080ef6(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release, std::int64_t arg1) try
 {
-    return hs_make_shared_handle(static_cast<ll::thread::ServerThreadExecutor*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_9f080ef6_cb0{std::make_shared<hs_cb_state_hs_method_9f080ef6_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_9f080ef6_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_9f080ef6_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
+    return hs_make_shared_handle(static_cast<ll::thread::ServerThreadExecutor const*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_9f080ef6_cb0{std::make_shared<hs_cb_state_hs_method_9f080ef6_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_9f080ef6_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_9f080ef6_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
 }
 catch (std::exception const& hs_error)
 {
@@ -79671,7 +79693,7 @@ struct hs_cb_closure_hs_method_80f90ada_cb0
 
 static void hs_method_80f90ada(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release) try
 {
-    static_cast<ll::thread::ThreadPoolExecutor*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_80f90ada_cb0{std::make_shared<hs_cb_state_hs_method_80f90ada_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_80f90ada_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_80f90ada_cb0>(arg0_release))}));
+    static_cast<ll::thread::ThreadPoolExecutor const*>(hs_self)->execute(std::function<void ()>(hs_cb_closure_hs_method_80f90ada_cb0{std::make_shared<hs_cb_state_hs_method_80f90ada_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_80f90ada_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_80f90ada_cb0>(arg0_release))}));
 }
 catch (std::exception const& hs_error)
 {
@@ -79706,7 +79728,7 @@ struct hs_cb_closure_hs_method_6d537db8_cb0
 
 static HosihikariSharedHandle hs_method_6d537db8(void* hs_self, void* arg0_invoke, void* arg0_userData, void* arg0_release, std::int64_t arg1) try
 {
-    return hs_make_shared_handle(static_cast<ll::thread::ThreadPoolExecutor*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_6d537db8_cb0{std::make_shared<hs_cb_state_hs_method_6d537db8_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_6d537db8_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_6d537db8_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
+    return hs_make_shared_handle(static_cast<ll::thread::ThreadPoolExecutor const*>(hs_self)->executeAfter(std::function<void ()>(hs_cb_closure_hs_method_6d537db8_cb0{std::make_shared<hs_cb_state_hs_method_6d537db8_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_6d537db8_cb0>(arg0_invoke), arg0_userData, reinterpret_cast<hs_cb_release_hs_method_6d537db8_cb0>(arg0_release))}), std::chrono::duration<std::int64_t, std::ratio<1, 1000000000>>(arg1)));
 }
 catch (std::exception const& hs_error)
 {
@@ -80500,7 +80522,7 @@ catch (...)
 
 static bool hs_method_fe218c64(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::CustomForm*>(hs_self)->isShowing());
+    return static_cast<bool>(static_cast<ll::ui::CustomForm const*>(hs_self)->isShowing());
 }
 catch (std::exception const& hs_error)
 {
@@ -80943,7 +80965,7 @@ catch (...)
 
 static bool hs_method_b11cad00(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::MessageBox*>(hs_self)->isShowing());
+    return static_cast<bool>(static_cast<ll::ui::MessageBox const*>(hs_self)->isShowing());
 }
 catch (std::exception const& hs_error)
 {
@@ -81392,7 +81414,7 @@ catch (...)
 
 static void hs_method_b66fd527(void* hs_self, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::Property*>(hs_self)->erase();
+    auto hs_expected = static_cast<ll::ui::Property const*>(hs_self)->erase();
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81416,7 +81438,7 @@ catch (...)
 
 static bool hs_method_525dca87(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::Property*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::ui::Property const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -81461,7 +81483,7 @@ catch (...)
 
 static void hs_method_47592751(void* hs_self, void* value, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::Property*>(hs_self)->set(*static_cast<const cereal::DynamicValue*>(value));
+    auto hs_expected = static_cast<ll::ui::Property const*>(hs_self)->set(*static_cast<const cereal::DynamicValue*>(value));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81485,7 +81507,7 @@ catch (...)
 
 static void hs_method_d9c1fc42(void* hs_self, const char* json_data, std::size_t json_size, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::Property*>(hs_self)->setJson(std::basic_string<char>(json_data, json_size));
+    auto hs_expected = static_cast<ll::ui::Property const*>(hs_self)->setJson(std::basic_string<char>(json_data, json_size));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81614,7 +81636,7 @@ catch (...)
 
 static void* hs_method_b6ad6e1d(void* hs_self, const char* datastore_data, std::size_t datastore_size, const char* property_data, std::size_t property_size, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::ScreenSession*>(hs_self)->borrowProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size));
+    auto hs_expected = static_cast<ll::ui::ScreenSession const*>(hs_self)->borrowProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81639,7 +81661,7 @@ catch (...)
 
 static void hs_method_ec081c48(void* hs_self, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::ScreenSession*>(hs_self)->close();
+    auto hs_expected = static_cast<ll::ui::ScreenSession const*>(hs_self)->close();
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81663,7 +81685,7 @@ catch (...)
 
 static void* hs_method_8d590c2a(void* hs_self, const char* datastore_data, std::size_t datastore_size, const char* property_data, std::size_t property_size, void* value, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::ScreenSession*>(hs_self)->createProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size), *static_cast<const cereal::DynamicValue*>(value));
+    auto hs_expected = static_cast<ll::ui::ScreenSession const*>(hs_self)->createProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size), *static_cast<const cereal::DynamicValue*>(value));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81688,7 +81710,7 @@ catch (...)
 
 static void* hs_method_d9361dd5(void* hs_self, const char* datastore_data, std::size_t datastore_size, const char* property_data, std::size_t property_size, const char* json_data, std::size_t json_size, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::ScreenSession*>(hs_self)->createProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size), std::basic_string<char>(json_data, json_size));
+    auto hs_expected = static_cast<ll::ui::ScreenSession const*>(hs_self)->createProperty(std::basic_string<char>(datastore_data, datastore_size), std::basic_string<char>(property_data, property_size), std::basic_string<char>(json_data, json_size));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -81713,7 +81735,7 @@ catch (...)
 
 static std::uint32_t hs_method_9e1806c3(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::ui::ScreenSession*>(hs_self)->getFormId();
+    auto result = static_cast<ll::ui::ScreenSession const*>(hs_self)->getFormId();
     *hs_hasValue = result.has_value();
     return result ? static_cast<std::uint32_t>(*result) : std::uint32_t{};
 }
@@ -81732,7 +81754,7 @@ catch (...)
 
 static std::uint32_t hs_method_45ce26ba(void* hs_self, bool* hs_hasValue) try
 {
-    auto result = static_cast<ll::ui::ScreenSession*>(hs_self)->getInstanceId();
+    auto result = static_cast<ll::ui::ScreenSession const*>(hs_self)->getInstanceId();
     *hs_hasValue = result.has_value();
     return result ? static_cast<std::uint32_t>(*result) : std::uint32_t{};
 }
@@ -81751,7 +81773,7 @@ catch (...)
 
 static std::uint8_t hs_method_5a28bc2c(void* hs_self) try
 {
-    return static_cast<std::uint8_t>(static_cast<ll::ui::ScreenSession*>(hs_self)->getState());
+    return static_cast<std::uint8_t>(static_cast<ll::ui::ScreenSession const*>(hs_self)->getState());
 }
 catch (std::exception const& hs_error)
 {
@@ -81766,7 +81788,7 @@ catch (...)
 
 static bool hs_method_6bbf78c7(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::ScreenSession*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::ui::ScreenSession const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -81831,7 +81853,7 @@ struct hs_cb_closure_hs_method_bc4ff820_cb0
 
 static void hs_method_bc4ff820(void* hs_self, void* callback_invoke, void* callback_userData, void* callback_release, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::ScreenSession*>(hs_self)->show(brstd::move_only_function<void (nonstd::expected_lite::expected<DataDrivenScreenClosedReason, ll::Error>)>(hs_cb_closure_hs_method_bc4ff820_cb0{std::make_shared<hs_cb_state_hs_method_bc4ff820_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_bc4ff820_cb0>(callback_invoke), callback_userData, reinterpret_cast<hs_cb_release_hs_method_bc4ff820_cb0>(callback_release))}));
+    auto hs_expected = static_cast<ll::ui::ScreenSession const*>(hs_self)->show(brstd::move_only_function<void (nonstd::expected_lite::expected<DataDrivenScreenClosedReason, ll::Error>)>(hs_cb_closure_hs_method_bc4ff820_cb0{std::make_shared<hs_cb_state_hs_method_bc4ff820_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_bc4ff820_cb0>(callback_invoke), callback_userData, reinterpret_cast<hs_cb_release_hs_method_bc4ff820_cb0>(callback_release))}));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -82005,7 +82027,7 @@ catch (...)
 
 static bool hs_method_6c2d01a6(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::Subscription*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::ui::Subscription const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -82245,7 +82267,7 @@ catch (...)
 
 static bool hs_method_62e115c7(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::UIObservable<bool>*>(hs_self)->isClientWritable());
+    return static_cast<bool>(static_cast<ll::ui::UIObservable<bool> const*>(hs_self)->isClientWritable());
 }
 catch (std::exception const& hs_error)
 {
@@ -82305,7 +82327,7 @@ catch (...)
 
 static bool hs_method_9dad79b5(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::UIObservable<double>*>(hs_self)->isClientWritable());
+    return static_cast<bool>(static_cast<ll::ui::UIObservable<double> const*>(hs_self)->isClientWritable());
 }
 catch (std::exception const& hs_error)
 {
@@ -82365,7 +82387,7 @@ catch (...)
 
 static bool hs_method_b0335033(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::UIObservable<ll::ui::UIRawMessage>*>(hs_self)->isClientWritable());
+    return static_cast<bool>(static_cast<ll::ui::UIObservable<ll::ui::UIRawMessage> const*>(hs_self)->isClientWritable());
 }
 catch (std::exception const& hs_error)
 {
@@ -82425,7 +82447,7 @@ catch (...)
 
 static bool hs_method_b9c200aa(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::UIObservable<std::basic_string<char>>*>(hs_self)->isClientWritable());
+    return static_cast<bool>(static_cast<ll::ui::UIObservable<std::basic_string<char>> const*>(hs_self)->isClientWritable());
 }
 catch (std::exception const& hs_error)
 {
@@ -82530,7 +82552,7 @@ catch (...)
 
 static bool hs_method_42613d84(void* hs_self, void* arg0) try
 {
-    return static_cast<bool>(static_cast<ll::ui::UIRawMessage*>(hs_self)->operator==(*static_cast<const ll::ui::UIRawMessage*>(arg0)));
+    return static_cast<bool>(static_cast<ll::ui::UIRawMessage const*>(hs_self)->operator==(*static_cast<const ll::ui::UIRawMessage*>(arg0)));
 }
 catch (std::exception const& hs_error)
 {
@@ -82695,7 +82717,7 @@ catch (...)
 
 static bool hs_method_9cf859b8(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::detail::BindingHandle*>(hs_self)->isClientWritable());
+    return static_cast<bool>(static_cast<ll::ui::detail::BindingHandle const*>(hs_self)->isClientWritable());
 }
 catch (std::exception const& hs_error)
 {
@@ -82710,7 +82732,7 @@ catch (...)
 
 static bool hs_method_76b2ba1c(void* hs_self) try
 {
-    return static_cast<bool>(static_cast<ll::ui::detail::BindingHandle*>(hs_self)->operator bool());
+    return static_cast<bool>(static_cast<ll::ui::detail::BindingHandle const*>(hs_self)->operator bool());
 }
 catch (std::exception const& hs_error)
 {
@@ -82755,7 +82777,7 @@ catch (...)
 
 static void hs_method_59fc34b4(void* hs_self, bool writable, bool* hs_hasValue) try
 {
-    auto hs_expected = static_cast<ll::ui::detail::BindingHandle*>(hs_self)->setClientWritable(static_cast<bool>(writable));
+    auto hs_expected = static_cast<ll::ui::detail::BindingHandle const*>(hs_self)->setClientWritable(static_cast<bool>(writable));
     if (!hs_expected)
     {
         setLastError(hs_expected.error().message().c_str());
@@ -82914,7 +82936,7 @@ catch (...)
 
 static void* hs_method_5a2a67ef(void* hs_self) try
 {
-    auto&& hs_reference = std::move(*static_cast<nonstd::expected_lite::bad_expected_access<ll::Error>*>(hs_self)).error();
+    auto&& hs_reference = std::move(*static_cast<nonstd::expected_lite::bad_expected_access<ll::Error> const*>(hs_self)).error();
     return const_cast<void*>(static_cast<void const*>(&hs_reference));
 }
 catch (std::exception const& hs_error)
@@ -82930,7 +82952,7 @@ catch (...)
 
 static void* hs_method_cd83de93(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(&static_cast<nonstd::expected_lite::bad_expected_access<ll::Error>*>(hs_self)->error()));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<nonstd::expected_lite::bad_expected_access<ll::Error> const*>(hs_self)->error()));
 }
 catch (std::exception const& hs_error)
 {
@@ -82976,7 +82998,7 @@ catch (...)
 
 static void* hs_method_3782fb1b(void* hs_self) try
 {
-    return const_cast<void*>(static_cast<void const*>(static_cast<nonstd::expected_lite::bad_expected_access<ll::Error>*>(hs_self)->what()));
+    return const_cast<void*>(static_cast<void const*>(static_cast<nonstd::expected_lite::bad_expected_access<ll::Error> const*>(hs_self)->what()));
 }
 catch (std::exception const& hs_error)
 {

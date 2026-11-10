@@ -21,6 +21,8 @@ public sealed unsafe partial class IntrusiveListNode_Bedrock__PubSub__Detail__Su
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

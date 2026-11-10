@@ -21,6 +21,8 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

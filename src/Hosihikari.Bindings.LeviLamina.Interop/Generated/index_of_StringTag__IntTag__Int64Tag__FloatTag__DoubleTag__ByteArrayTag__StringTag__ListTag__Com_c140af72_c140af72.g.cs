@@ -22,6 +22,8 @@ public sealed partial class index_of_StringTag__IntTag__Int64Tag__FloatTag__Doub
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

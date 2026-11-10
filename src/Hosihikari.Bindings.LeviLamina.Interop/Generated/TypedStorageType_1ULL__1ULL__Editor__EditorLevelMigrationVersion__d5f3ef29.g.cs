@@ -22,6 +22,8 @@ public sealed partial class TypedStorageType_1ULL__1ULL__Editor__EditorLevelMigr
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)

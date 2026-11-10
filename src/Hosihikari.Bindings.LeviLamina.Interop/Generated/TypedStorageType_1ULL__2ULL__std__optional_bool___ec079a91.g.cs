@@ -22,6 +22,8 @@ public sealed partial class TypedStorageType_1ULL__2ULL__std__optional_bool__
 
     public nint Handle => __hosihikari_shim_handle;
 
+    internal bool OwnsHandle => _ownsHandle;
+
     internal nint ReleaseHandle()
     {
         if (__hosihikari_shim_handle == 0)
