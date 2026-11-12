@@ -45,8 +45,14 @@ public sealed unsafe partial class ServiceEvent
         return (nint)NativeMethods.TablePtr->C0.hs_method_1a6732fc((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_69f77e8f((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_69f77e8f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 }

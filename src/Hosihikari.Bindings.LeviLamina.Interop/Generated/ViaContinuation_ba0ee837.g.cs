@@ -40,12 +40,13 @@ public sealed unsafe partial class ViaContinuation : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ViaContinuation Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation other)
+    public static ViaContinuation? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_15b2ea8e((void*)other.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ViaContinuation((nint)handle);

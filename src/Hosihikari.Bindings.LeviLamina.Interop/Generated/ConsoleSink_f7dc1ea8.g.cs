@@ -40,12 +40,13 @@ public sealed unsafe partial class ConsoleSink : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ConsoleSink Create()
+    public static ConsoleSink? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_dc14334a();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ConsoleSink((nint)handle);
@@ -61,14 +62,26 @@ public sealed unsafe partial class ConsoleSink : global::System.IDisposable
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink AsSink()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink? AsSink()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)NativeMethods.TablePtr->C0.hs_cast_7072bbdb((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_7072bbdb((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase AsSinkBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase? AsSinkBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)NativeMethods.TablePtr->C0.hs_cast_8db21214((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_8db21214((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

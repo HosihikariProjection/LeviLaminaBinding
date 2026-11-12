@@ -40,12 +40,13 @@ public sealed unsafe partial class HashCombiner : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static HashCombiner Create(ulong seed)
+    public static HashCombiner? Create(ulong seed)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_43ed43fc(seed);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new HashCombiner((nint)handle);

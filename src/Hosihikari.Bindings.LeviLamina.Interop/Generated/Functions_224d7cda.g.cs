@@ -70,9 +70,15 @@ public static unsafe partial class Functions
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs getLocalTime()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs? getLocalTime()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs((nint)NativeMethods.TablePtr->C0.hs_function_3c69b9e0());
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_3c69b9e0();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs((nint)__hs_handle);
     }
 
     public static string getModuleFileName(nint handle, nint process)
@@ -105,9 +111,15 @@ public static unsafe partial class Functions
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getSystemVersion()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version? getSystemVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_6b3caf2e());
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_6b3caf2e();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle);
     }
 
     public static bool isStdoutSupportAnsi()

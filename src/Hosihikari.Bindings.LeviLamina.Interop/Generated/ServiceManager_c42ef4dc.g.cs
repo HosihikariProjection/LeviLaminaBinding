@@ -40,9 +40,15 @@ public sealed unsafe partial class ServiceManager
         return __hs_handle;
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager((nint)NativeMethods.TablePtr->C0.hs_method_240c2935(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_240c2935();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceManager((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.Abi.SharedHandle? getService(global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceIdView id)
@@ -71,7 +77,12 @@ public sealed unsafe partial class ServiceManager
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
             var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8164fb4d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
-            return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult((nint)__hs_handle) : null;
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                if (!__hs_hasValue) { return null; }
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult((nint)__hs_handle);
         }
     }
 

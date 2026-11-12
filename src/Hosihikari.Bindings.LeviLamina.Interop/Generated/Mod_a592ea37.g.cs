@@ -40,12 +40,13 @@ public sealed unsafe partial class Mod : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Mod Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest manifest)
+    public static Mod? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest manifest)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_31ccf128((void*)manifest.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Mod((nint)handle);
@@ -75,14 +76,26 @@ public sealed unsafe partial class Mod : global::System.IDisposable
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger getLogger()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger? getLogger()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger((nint)NativeMethods.TablePtr->C0.hs_method_c2f8203b((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c2f8203b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest getManifest()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest? getManifest()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest((nint)NativeMethods.TablePtr->C0.hs_method_9df4802c((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9df4802c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest((nint)__hs_handle, false);
     }
 
     public string getModDir()

@@ -65,8 +65,14 @@ public sealed unsafe partial class NativeMod
     public void Destroy() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has no accessible destructor.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod AsMod()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod? AsMod()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod((nint)NativeMethods.TablePtr->C0.hs_cast_05efd4a9((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_05efd4a9((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Mod((nint)__hs_handle, false);
     }
 }

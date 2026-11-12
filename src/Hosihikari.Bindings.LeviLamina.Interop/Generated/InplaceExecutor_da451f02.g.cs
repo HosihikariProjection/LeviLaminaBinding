@@ -40,7 +40,7 @@ public sealed unsafe partial class InplaceExecutor : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static InplaceExecutor Create(string name)
+    public static InplaceExecutor? Create(string name)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,7 +58,8 @@ public sealed unsafe partial class InplaceExecutor : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_f5688f29(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new InplaceExecutor((nint)handle);
@@ -76,15 +77,27 @@ public sealed unsafe partial class InplaceExecutor : global::System.IDisposable
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor getDefault()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor? getDefault()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor((nint)NativeMethods.TablePtr->C0.hs_method_34e67db4(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_34e67db4();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.InplaceExecutor((nint)__hs_handle, false);
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor AsExecutor()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? AsExecutor()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)NativeMethods.TablePtr->C0.hs_cast_4cf4d54e((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_4cf4d54e((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)__hs_handle, false);
     }
 
     public void Dispose()

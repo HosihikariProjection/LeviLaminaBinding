@@ -40,18 +40,19 @@ public sealed unsafe partial class PreRelease : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PreRelease Create()
+    public static PreRelease? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_debc5a46();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new PreRelease((nint)handle);
     }
 
-    public static PreRelease Create(string str)
+    public static PreRelease? Create(string str)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -69,19 +70,26 @@ public sealed unsafe partial class PreRelease : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_2b187506(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new PreRelease((nint)handle);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result from_chars(nint first, nint last)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result? from_chars(nint first, nint last)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)NativeMethods.TablePtr->C0.hs_method_0076eee9((void*)__hosihikari_shim_handle, (void*)first, (void*)last));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0076eee9((void*)__hosihikari_shim_handle, (void*)first, (void*)last);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.PreRelease from_string(string str)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.PreRelease? from_string(string str)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -96,11 +104,17 @@ public sealed unsafe partial class PreRelease : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.PreRelease((nint)NativeMethods.TablePtr->C0.hs_method_ba0a8712((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ba0a8712((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.PreRelease((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result from_string_noexcept(string str)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result? from_string_noexcept(string str)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -115,7 +129,13 @@ public sealed unsafe partial class PreRelease : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)NativeMethods.TablePtr->C0.hs_method_e3bb50d1((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e3bb50d1((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)__hs_handle);
         }
     }
 

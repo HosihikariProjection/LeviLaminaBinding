@@ -40,12 +40,13 @@ public sealed unsafe partial class I18n : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static I18n Create()
+    public static I18n? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_de425995();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new I18n((nint)handle);

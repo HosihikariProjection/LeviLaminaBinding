@@ -44,14 +44,26 @@ public sealed unsafe partial class ServiceUnregisterEvent : global::System.IDisp
     public static ServiceUnregisterEvent Create(nint service) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the constructor is not exported by the carrier.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_2493bd80((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_2493bd80((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServiceEvent AsServiceEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServiceEvent? AsServiceEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServiceEvent((nint)NativeMethods.TablePtr->C0.hs_cast_988319e5((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_988319e5((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ServiceEvent((nint)__hs_handle, false);
     }
 
     public void Dispose()

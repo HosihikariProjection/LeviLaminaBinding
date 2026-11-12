@@ -40,18 +40,19 @@ public sealed unsafe partial class DynamicLibrary : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static DynamicLibrary Create()
+    public static DynamicLibrary? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_7e09ec7a();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DynamicLibrary((nint)handle);
     }
 
-    public static DynamicLibrary Create(string path)
+    public static DynamicLibrary? Create(string path)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(path);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -69,19 +70,21 @@ public sealed unsafe partial class DynamicLibrary : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_0f3f9b13(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new DynamicLibrary((nint)handle);
         }
     }
 
-    public static DynamicLibrary Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary arg0)
+    public static DynamicLibrary? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_7553eb45((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DynamicLibrary((nint)handle);
@@ -105,9 +108,15 @@ public sealed unsafe partial class DynamicLibrary : global::System.IDisposable
     public nint load(nint path) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: optional return type 'std::system_error' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary((nint)NativeMethods.TablePtr->C0.hs_method_4652ffa7((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4652ffa7((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.sys_utils.DynamicLibrary((nint)__hs_handle, false);
     }
 
 

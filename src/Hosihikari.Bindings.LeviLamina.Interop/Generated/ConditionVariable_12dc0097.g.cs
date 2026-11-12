@@ -40,12 +40,13 @@ public sealed unsafe partial class ConditionVariable : global::System.IDisposabl
         return __hs_handle;
     }
 
-    public static ConditionVariable Create()
+    public static ConditionVariable? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_0f936f92();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ConditionVariable((nint)handle);

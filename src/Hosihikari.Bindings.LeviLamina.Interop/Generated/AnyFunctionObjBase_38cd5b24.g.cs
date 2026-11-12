@@ -60,8 +60,14 @@ public sealed unsafe partial class AnyFunctionObjBase
     public void tidy() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase AsAnyObjBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase? AsAnyObjBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase((nint)NativeMethods.TablePtr->C0.hs_cast_63d25aae((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_63d25aae((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyObjBase((nint)__hs_handle, false);
     }
 }

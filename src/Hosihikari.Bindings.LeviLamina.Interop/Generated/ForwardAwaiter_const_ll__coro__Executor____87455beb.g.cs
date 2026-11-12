@@ -49,9 +49,15 @@ public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : 
         return NativeMethods.TablePtr->C0.hs_method_7f13234a((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor await_resume()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? await_resume()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)NativeMethods.TablePtr->C0.hs_method_e3c5d3b6((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e3c5d3b6((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::coroutine_handle<void>' is not a known bindable declaration.", false)]

@@ -48,7 +48,7 @@ public sealed unsafe partial class Observable_std__basic_string_char__ : global:
     public static Observable_std__basic_string_char__ Create_d9a2fa31(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    public static Observable_std__basic_string_char__ Create(string initial)
+    public static Observable_std__basic_string_char__? Create(string initial)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(initial);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -66,7 +66,8 @@ public sealed unsafe partial class Observable_std__basic_string_char__ : global:
             var handle = NativeMethods.TablePtr->C0.hs_create_42eb507b(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new Observable_std__basic_string_char__((nint)handle);

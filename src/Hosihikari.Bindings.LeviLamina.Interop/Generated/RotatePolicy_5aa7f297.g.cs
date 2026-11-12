@@ -40,23 +40,25 @@ public sealed unsafe partial class RotatePolicy : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static RotatePolicy Create()
+    public static RotatePolicy? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_440f50b9();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new RotatePolicy((nint)handle);
     }
 
-    public static RotatePolicy Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig config)
+    public static RotatePolicy? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig config)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_23531b04((void*)config.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new RotatePolicy((nint)handle);
@@ -68,9 +70,15 @@ public sealed unsafe partial class RotatePolicy : global::System.IDisposable
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy disabled()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy? disabled()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy((nint)NativeMethods.TablePtr->C0.hs_method_2e63ad40());
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2e63ad40();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: field type 'std::function<std::basic_string<char> (const ll::io::ArchiveNameInfo &)>' is not supported.", false)]
@@ -80,9 +88,15 @@ public sealed unsafe partial class RotatePolicy : global::System.IDisposable
         set => throw new global::System.NotSupportedException("BindingShim cannot project this member: field type 'std::function<std::basic_string<char> (const ll::io::ArchiveNameInfo &)>' is not supported.");
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig AsRotateConfig()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig? AsRotateConfig()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig((nint)NativeMethods.TablePtr->C0.hs_cast_70e2b88d((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_70e2b88d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig((nint)__hs_handle, false);
     }
 
     public void Dispose()

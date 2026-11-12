@@ -40,12 +40,13 @@ public sealed unsafe partial class Decompressor : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Decompressor Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor arg0)
+    public static Decompressor? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c9715dd9((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Decompressor((nint)handle);
@@ -62,9 +63,15 @@ public sealed unsafe partial class Decompressor : global::System.IDisposable
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor((nint)NativeMethods.TablePtr->C0.hs_method_08af3d98((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_08af3d98((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor((nint)__hs_handle, false);
     }
 
     public void status()

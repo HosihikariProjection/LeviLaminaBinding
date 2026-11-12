@@ -40,7 +40,7 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PatternFormatter Create(string pattern, bool colored, byte bracketed)
+    public static PatternFormatter? Create(string pattern, bool colored, byte bracketed)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(pattern);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,7 +58,8 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_103fbc3e(__hs_stringData0, (nuint)__hs_stringByteCount0, colored, bracketed);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new PatternFormatter((nint)handle);
@@ -96,9 +97,15 @@ public sealed unsafe partial class PatternFormatter : global::System.IDisposable
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter AsFormatter()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? AsFormatter()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)NativeMethods.TablePtr->C0.hs_cast_0836b530((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_0836b530((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false);
     }
 
     public void Dispose()

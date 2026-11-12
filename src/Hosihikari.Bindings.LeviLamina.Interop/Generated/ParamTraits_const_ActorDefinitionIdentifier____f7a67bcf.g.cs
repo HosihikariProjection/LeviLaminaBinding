@@ -40,8 +40,14 @@ public sealed unsafe partial class ParamTraits_const_ActorDefinitionIdentifier__
         return __hs_handle;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_const_ActorDefinitionIdentifier___ AsParamTraitsBase_const_ActorDefinitionIdentifier___()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_const_ActorDefinitionIdentifier___? AsParamTraitsBase_const_ActorDefinitionIdentifier___()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_const_ActorDefinitionIdentifier___((nint)NativeMethods.TablePtr->C0.hs_cast_d07bb610((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_d07bb610((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_const_ActorDefinitionIdentifier___((nint)__hs_handle, false);
     }
 }

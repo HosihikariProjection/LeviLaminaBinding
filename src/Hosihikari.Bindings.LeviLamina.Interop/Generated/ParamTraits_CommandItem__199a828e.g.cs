@@ -45,9 +45,15 @@ public sealed unsafe partial class ParamTraits_CommandItem_ : global::System.IDi
         return NativeMethods.TablePtr->C0.hs_method_34deb965();
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandItem_ AsParamTraitsBase_CommandItem_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandItem_? AsParamTraitsBase_CommandItem_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandItem_((nint)NativeMethods.TablePtr->C0.hs_cast_5efc6f15((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_5efc6f15((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_CommandItem_((nint)__hs_handle, false);
     }
 
     public void Dispose()

@@ -40,14 +40,26 @@ public sealed unsafe partial class ObservableNumber : global::System.IDisposable
         return __hs_handle;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_ AsObservable_double_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_? AsObservable_double_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_((nint)NativeMethods.TablePtr->C0.hs_cast_a528497d((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_a528497d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_double_((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_double_ AsUIObservable_double_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_double_? AsUIObservable_double_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_double_((nint)NativeMethods.TablePtr->C0.hs_cast_621446c4((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_621446c4((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_double_((nint)__hs_handle, false);
     }
 
     public void Dispose()

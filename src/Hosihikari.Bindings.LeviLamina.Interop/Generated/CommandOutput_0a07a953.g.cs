@@ -40,34 +40,37 @@ public sealed unsafe partial class CommandOutput : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CommandOutput Create()
+    public static CommandOutput? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_35a72701();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CommandOutput((nint)handle);
     }
 
-    public static CommandOutput Create(int type)
+    public static CommandOutput? Create(int type)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_470d908a(type);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CommandOutput((nint)handle);
     }
 
-    public static CommandOutput Create(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput rhs)
+    public static CommandOutput? Create(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput rhs)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_cabc8719((void*)rhs.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CommandOutput((nint)handle);

@@ -40,12 +40,13 @@ public sealed unsafe partial class UIObservable_bool_ : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static UIObservable_bool_ Create(bool initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
+    public static UIObservable_bool_? Create(bool initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_51d18487(initial, (void*)options.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UIObservable_bool_((nint)handle);
@@ -56,9 +57,15 @@ public sealed unsafe partial class UIObservable_bool_ : global::System.IDisposab
         return NativeMethods.TablePtr->C0.hs_method_62e115c7((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_ AsObservable_bool_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_? AsObservable_bool_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_((nint)NativeMethods.TablePtr->C0.hs_cast_e10f6758((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_e10f6758((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_bool_((nint)__hs_handle, false);
     }
 
     public void Dispose()

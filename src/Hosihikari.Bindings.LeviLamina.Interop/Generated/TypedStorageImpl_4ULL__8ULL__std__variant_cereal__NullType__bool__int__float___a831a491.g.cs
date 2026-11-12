@@ -53,54 +53,114 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__8ULL__std__variant_cer
         get => (nint)NativeMethods.TablePtr->C0.hs_get_100b81a6((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 get_28fce32f()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? get_28fce32f()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_28fce32f((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_28fce32f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 get_11379302()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? get_11379302()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_11379302((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_11379302((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 get_9c39fcb6()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? get_9c39fcb6()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_9c39fcb6((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9c39fcb6((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 get_554caba2()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? get_554caba2()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_554caba2((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_554caba2((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_const_std__variant_cereal__NullType__bool__int__float___()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_const_std__variant_cereal__NullType__bool__int__float___()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_84a14f39((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_84a14f39((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_std__variant_cereal__NullType__bool__int__float___()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_std__variant_cereal__NullType__bool__int__float___()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_b472a38b((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b472a38b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_multiply_e91b443d()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_multiply_e91b443d()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_e91b443d((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e91b443d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_multiply_81b5c517()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_multiply_81b5c517()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_81b5c517((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_81b5c517((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_multiply_55e09b1f()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_multiply_55e09b1f()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_55e09b1f((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_55e09b1f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093 operator_multiply_8cc58f97()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093? operator_multiply_8cc58f97()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)NativeMethods.TablePtr->C0.hs_method_8cc58f97((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8cc58f97((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
     public nint operator_operator___c09508d5()

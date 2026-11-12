@@ -40,25 +40,38 @@ public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CoroPromiseBase Create()
+    public static CoroPromiseBase? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_506910ad();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CoroPromiseBase((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___ await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CurrentExecutor arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___? await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CurrentExecutor arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___((nint)NativeMethods.TablePtr->C0.hs_method_4df3425c((void*)__hosihikari_shim_handle, (void*)arg0.Handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4df3425c((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___((nint)__hs_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Yield arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter? await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Yield arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter((nint)NativeMethods.TablePtr->C0.hs_method_a18a91ba((void*)__hosihikari_shim_handle, (void*)arg0.Handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a18a91ba((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter((nint)__hs_handle);
     }
 
     public nint exec
@@ -66,9 +79,15 @@ public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
         get => (nint)NativeMethods.TablePtr->C0.hs_get_bd666446((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested.FinalAwaiter final_suspend()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested.FinalAwaiter? final_suspend()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested.FinalAwaiter((nint)NativeMethods.TablePtr->C0.hs_method_c25fec32((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c25fec32((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested.FinalAwaiter((nint)__hs_handle);
     }
 
     public nint handle

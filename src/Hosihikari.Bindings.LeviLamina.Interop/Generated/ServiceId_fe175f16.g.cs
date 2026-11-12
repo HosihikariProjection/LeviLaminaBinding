@@ -40,18 +40,19 @@ public sealed unsafe partial class ServiceId : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ServiceId Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceIdView id)
+    public static ServiceId? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.ServiceIdView id)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_f13a2e02((void*)id.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ServiceId((nint)handle);
     }
 
-    public static ServiceId Create(string id, ulong ver)
+    public static ServiceId? Create(string id, ulong ver)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(id);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -69,7 +70,8 @@ public sealed unsafe partial class ServiceId : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_3c710243(__hs_stringData0, (nuint)__hs_stringByteCount0, ver);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new ServiceId((nint)handle);
@@ -91,9 +93,15 @@ public sealed unsafe partial class ServiceId : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_5ccc339f((void*)__hosihikari_shim_handle, value);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase AsHashedIdBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase? AsHashedIdBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)NativeMethods.TablePtr->C0.hs_cast_dece6e96((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_dece6e96((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

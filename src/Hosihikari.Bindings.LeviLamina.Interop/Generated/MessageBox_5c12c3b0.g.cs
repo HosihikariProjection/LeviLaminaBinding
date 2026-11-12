@@ -40,41 +40,61 @@ public sealed unsafe partial class MessageBox : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static MessageBox Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 title)
+    public static MessageBox? Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 title)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_4d9dff1c((void*)player, (void*)title.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new MessageBox((nint)handle);
     }
 
-    public static MessageBox Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox arg0)
+    public static MessageBox? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_9733af91((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new MessageBox((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox body(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 value)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox? body(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 value)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)NativeMethods.TablePtr->C0.hs_method_44cf2213((void*)__hosihikari_shim_handle, (void*)value.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_44cf2213((void*)__hosihikari_shim_handle, (void*)value.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox button1(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34? tooltip)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox? button1(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34? tooltip)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)NativeMethods.TablePtr->C0.hs_method_4e575dd6((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)(tooltip?.Handle ?? 0), tooltip is not null), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4e575dd6((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)(tooltip?.Handle ?? 0), tooltip is not null);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox button2(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34? tooltip)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox? button2(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34? tooltip)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)NativeMethods.TablePtr->C0.hs_method_6167cdee((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)(tooltip?.Handle ?? 0), tooltip is not null), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_6167cdee((void*)__hosihikari_shim_handle, (void*)label.Handle, (void*)(tooltip?.Handle ?? 0), tooltip is not null);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)__hs_handle, false);
     }
 
     public void close()
@@ -89,9 +109,15 @@ public sealed unsafe partial class MessageBox : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_b11cad00((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)NativeMethods.TablePtr->C0.hs_method_60fc2cb1((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_60fc2cb1((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.MessageBox((nint)__hs_handle, false);
     }
 
     public void show(nint callbackInvoke, nint callbackUserData, nint callbackRelease)

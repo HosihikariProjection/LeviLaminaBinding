@@ -40,7 +40,7 @@ public sealed unsafe partial class UUID : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static UUID Create_3b1e3c64(string uuidStr)
+    public static UUID? Create_3b1e3c64(string uuidStr)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(uuidStr);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,14 +58,15 @@ public sealed unsafe partial class UUID : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_3b1e3c64(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new UUID((nint)handle);
         }
     }
 
-    public static UUID Create_0c015fa2(string uuidStr)
+    public static UUID? Create_0c015fa2(string uuidStr)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(uuidStr);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -83,19 +84,21 @@ public sealed unsafe partial class UUID : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_0c015fa2(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new UUID((nint)handle);
         }
     }
 
-    public static UUID Create(ulong a, ulong b)
+    public static UUID? Create(ulong a, ulong b)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_d4a48108(a, b);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UUID((nint)handle);

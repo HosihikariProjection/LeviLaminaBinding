@@ -40,23 +40,25 @@ public sealed unsafe partial class DimensionType : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static DimensionType Create()
+    public static DimensionType? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_6e024283();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DimensionType((nint)handle);
     }
 
-    public static DimensionType Create(int value)
+    public static DimensionType? Create(int value)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_d0dad7f7(value);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DimensionType((nint)handle);

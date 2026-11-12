@@ -332,14 +332,16 @@ public sealed class ShimSmokePlugin : IPlugin
                 log.AppendLine("expected.error=caught");
             }
 
-            try
+            // A factory now reports failure by returning null rather than throwing, so the
+            // assertion is on the absence of an object, not on an exception.
+            using var invalid = LlVersion.Create("not-a-version");
+            if (invalid is null)
             {
-                using var invalid = LlVersion.Create("not-a-version");
-                log.AppendLine("invalid=unexpected-success");
+                log.AppendLine($"invalid=null:{NativeMethods.LastError}");
             }
-            catch (InvalidOperationException exception)
+            else
             {
-                log.AppendLine($"invalid=caught:{exception.Message}");
+                log.AppendLine("invalid=unexpected-success");
             }
 
             log.AppendLine("result=OK");

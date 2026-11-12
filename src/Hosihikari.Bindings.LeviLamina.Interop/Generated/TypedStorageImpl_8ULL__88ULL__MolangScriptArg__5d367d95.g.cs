@@ -40,12 +40,13 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__88ULL__MolangScriptArg
         return __hs_handle;
     }
 
-    public static TypedStorageImpl_8ULL__88ULL__MolangScriptArg_ Create_3a4c9c26(nint other)
+    public static TypedStorageImpl_8ULL__88ULL__MolangScriptArg_? Create_3a4c9c26(nint other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_3a4c9c26((void*)other);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new TypedStorageImpl_8ULL__88ULL__MolangScriptArg_((nint)handle);

@@ -40,18 +40,19 @@ public sealed unsafe partial class EventId : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static EventId Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventIdView id)
+    public static EventId? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventIdView id)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_593bf945((void*)id.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new EventId((nint)handle);
     }
 
-    public static EventId Create(string id)
+    public static EventId? Create(string id)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(id);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -69,7 +70,8 @@ public sealed unsafe partial class EventId : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_b9dc51e8(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new EventId((nint)handle);
@@ -85,9 +87,15 @@ public sealed unsafe partial class EventId : global::System.IDisposable
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase AsHashedIdBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase? AsHashedIdBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)NativeMethods.TablePtr->C0.hs_cast_c761cd03((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_c761cd03((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

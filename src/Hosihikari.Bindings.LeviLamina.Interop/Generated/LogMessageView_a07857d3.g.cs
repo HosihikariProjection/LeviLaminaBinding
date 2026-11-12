@@ -40,7 +40,7 @@ public sealed unsafe partial class LogMessageView : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static LogMessageView Create(string msg, string tit, int lvl, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs tm)
+    public static LogMessageView? Create(string msg, string tit, int lvl, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs tm)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(msg);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -71,7 +71,8 @@ public sealed unsafe partial class LogMessageView : global::System.IDisposable
                 var handle = NativeMethods.TablePtr->C0.hs_create_d7798e45(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, lvl, (void*)tm.Handle);
                 if (handle == null)
                 {
-                    throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                    NativeMethods.GetLastError();
+                    return null;
                 }
 
                 return new LogMessageView((nint)handle);

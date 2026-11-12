@@ -40,12 +40,13 @@ public sealed unsafe partial class GetServiceError : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static GetServiceError Create(sbyte code, ulong version)
+    public static GetServiceError? Create(sbyte code, ulong version)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_afbe474d(code, version);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new GetServiceError((nint)handle);
@@ -83,9 +84,15 @@ public sealed unsafe partial class GetServiceError : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_58b2d13b((void*)__hosihikari_shim_handle, value);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase AsErrorInfoBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase? AsErrorInfoBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)NativeMethods.TablePtr->C0.hs_cast_ef040730((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_ef040730((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

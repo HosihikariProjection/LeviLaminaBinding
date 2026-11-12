@@ -40,12 +40,13 @@ public sealed unsafe partial class FireSpreadEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static FireSpreadEvent Create(nint blockSource, nint pos)
+    public static FireSpreadEvent? Create(nint blockSource, nint pos)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_d0b03a42((void*)blockSource, (void*)pos);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new FireSpreadEvent((nint)handle);
@@ -61,19 +62,37 @@ public sealed unsafe partial class FireSpreadEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_15ee8151((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__WorldEvent_ AsCancellable_ll__event__WorldEvent_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__WorldEvent_? AsCancellable_ll__event__WorldEvent_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__WorldEvent_((nint)NativeMethods.TablePtr->C0.hs_cast_54498cca((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_54498cca((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__WorldEvent_((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_7ec5842c((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_7ec5842c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.WorldEvent AsWorldEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.WorldEvent? AsWorldEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.WorldEvent((nint)NativeMethods.TablePtr->C0.hs_cast_92444f99((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_92444f99((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.WorldEvent((nint)__hs_handle, false);
     }
 
     public void Dispose()

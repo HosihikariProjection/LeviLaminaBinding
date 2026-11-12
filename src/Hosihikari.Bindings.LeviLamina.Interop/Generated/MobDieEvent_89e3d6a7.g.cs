@@ -40,12 +40,13 @@ public sealed unsafe partial class MobDieEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static MobDieEvent Create(nint mob, nint source)
+    public static MobDieEvent? Create(nint mob, nint source)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_cf30b76c((void*)mob, (void*)source);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new MobDieEvent((nint)handle);
@@ -61,19 +62,37 @@ public sealed unsafe partial class MobDieEvent : global::System.IDisposable
         return (nint)NativeMethods.TablePtr->C0.hs_method_0ce4260f((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent AsActorEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent((nint)NativeMethods.TablePtr->C0.hs_cast_73e10e9d((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_73e10e9d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_aa0c959f((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_aa0c959f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent AsMobEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent? AsMobEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent((nint)NativeMethods.TablePtr->C0.hs_cast_02ef09b1((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_02ef09b1((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MobEvent((nint)__hs_handle, false);
     }
 
     public void Dispose()

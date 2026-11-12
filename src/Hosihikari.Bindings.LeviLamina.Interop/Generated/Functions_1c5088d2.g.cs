@@ -6,9 +6,15 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
 public static unsafe partial class Functions
 {
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getGameVersion()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version? getGameVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_47446163());
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_47446163();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle);
     }
 
     public static int getGamingStatus()
@@ -16,9 +22,15 @@ public static unsafe partial class Functions
         return NativeMethods.TablePtr->C0.hs_function_59ba700a();
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version getLoaderVersion()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version? getLoaderVersion()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)NativeMethods.TablePtr->C0.hs_function_0ed67308());
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_0ed67308();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle);
     }
 
     public static int getNetworkProtocolVersion()

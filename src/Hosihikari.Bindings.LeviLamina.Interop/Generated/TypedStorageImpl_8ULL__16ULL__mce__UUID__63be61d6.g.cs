@@ -58,9 +58,15 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__16ULL__mce__UUID_ : gl
         return (nint)NativeMethods.TablePtr->C0.hs_method_07419bcd((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID get_91c6737a()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? get_91c6737a()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_91c6737a((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_91c6737a((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     public nint get_3b30a53e()
@@ -68,19 +74,37 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__16ULL__mce__UUID_ : gl
         return (nint)NativeMethods.TablePtr->C0.hs_method_3b30a53e((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID get_e9f36420()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? get_e9f36420()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_e9f36420((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e9f36420((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID operator_const_mce__UUID__()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_const_mce__UUID__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_6e48a2ae((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_6e48a2ae((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID operator_mce__UUID__()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_mce__UUID__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_e9c87851((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e9c87851((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     public nint operator_multiply_662e9685()
@@ -88,9 +112,15 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__16ULL__mce__UUID_ : gl
         return (nint)NativeMethods.TablePtr->C0.hs_method_662e9685((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID operator_multiply_a9b74a19()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_multiply_a9b74a19()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_a9b74a19((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a9b74a19((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     public nint operator_multiply_ce586b30()
@@ -98,21 +128,37 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__16ULL__mce__UUID_ : gl
         return (nint)NativeMethods.TablePtr->C0.hs_method_ce586b30((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID operator_multiply_e7e6f3ed()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_multiply_e7e6f3ed()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)NativeMethods.TablePtr->C0.hs_method_e7e6f3ed((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e7e6f3ed((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_operator___86228093()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_86228093((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID? operator_operator___743291d2()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_743291d2((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.mce.UUID((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]

@@ -48,20 +48,27 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
     public static Observable_ll__ui__UIRawMessage_ Create_a2d09c48(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    public static Observable_ll__ui__UIRawMessage_ Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial)
+    public static Observable_ll__ui__UIRawMessage_? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_e7f8498b((void*)initial.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Observable_ll__ui__UIRawMessage_((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage getData()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? getData()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_114db1ad((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_114db1ad((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]

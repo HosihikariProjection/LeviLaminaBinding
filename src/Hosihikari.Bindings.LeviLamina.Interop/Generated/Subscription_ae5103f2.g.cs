@@ -40,23 +40,25 @@ public sealed unsafe partial class Subscription : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Subscription Create()
+    public static Subscription? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_013ecf39();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Subscription((nint)handle);
     }
 
-    public static Subscription Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription arg0)
+    public static Subscription? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c6d34139((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Subscription((nint)handle);
@@ -67,9 +69,15 @@ public sealed unsafe partial class Subscription : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_6c2d01a6((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription((nint)NativeMethods.TablePtr->C0.hs_method_cad2aae4((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_cad2aae4((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription((nint)__hs_handle, false);
     }
 
     public void reset()

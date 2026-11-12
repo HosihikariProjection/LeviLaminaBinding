@@ -43,13 +43,23 @@ public sealed unsafe partial class IntrusiveListNode_Bedrock__PubSub__Detail__Su
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_? get_next(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8b71b623((void*)node.Handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_((nint)__hs_handle, false);
     }
 
     public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_? get_prev(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_bee7e5b6((void*)node.Handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_((nint)__hs_handle, false);
     }
 
     public bool is_linked()

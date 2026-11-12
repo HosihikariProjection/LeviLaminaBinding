@@ -40,7 +40,7 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static KeyValueDB Create(string path)
+    public static KeyValueDB? Create(string path)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(path);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,14 +58,15 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_95636f1d(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new KeyValueDB((nint)handle);
         }
     }
 
-    public static KeyValueDB Create(string path, bool createIfMiss, bool fixIfError, int bloomFilterBit)
+    public static KeyValueDB? Create(string path, bool createIfMiss, bool fixIfError, int bloomFilterBit)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(path);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -83,19 +84,21 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_bb79597a(__hs_stringData0, (nuint)__hs_stringByteCount0, createIfMiss, fixIfError, bloomFilterBit);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new KeyValueDB((nint)handle);
         }
     }
 
-    public static KeyValueDB Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
+    public static KeyValueDB? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_fadc003b((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new KeyValueDB((nint)handle);
@@ -169,9 +172,15 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
     public nint iter() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::coro::Generator<std::pair<std::basic_string_view<char>, std::basic_string_view<char>>>' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB((nint)NativeMethods.TablePtr->C0.hs_method_7a898d09((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7a898d09((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB((nint)__hs_handle, false);
     }
 
     public bool set(string key, string val)

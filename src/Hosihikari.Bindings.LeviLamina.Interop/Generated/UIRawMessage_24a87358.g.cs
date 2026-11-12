@@ -40,47 +40,62 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static UIRawMessage Create()
+    public static UIRawMessage? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_ac42d1ce();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UIRawMessage((nint)handle);
     }
 
-    public static UIRawMessage Create_3a8703de(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    public static UIRawMessage? Create_3a8703de(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_3a8703de((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UIRawMessage((nint)handle);
     }
 
-    public static UIRawMessage Create_9b6f9516(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    public static UIRawMessage? Create_9b6f9516(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_9b6f9516((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UIRawMessage((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage operator_assign_e1f154a7(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? operator_assign_e1f154a7(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_e1f154a7((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e1f154a7((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage operator_assign_c7ed1619(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? operator_assign_c7ed1619(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_c7ed1619((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c7ed1619((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle, false);
     }
 
     public bool operator_equal(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
@@ -88,7 +103,7 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_42613d84((void*)__hosihikari_shim_handle, (void*)arg0.Handle) != 0;
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage rawText(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage[] messages)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? rawText(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage[] messages)
     {
         var __hs_vectorItems0 = messages;
         var __hs_vectorHandles0 = new nint[__hs_vectorItems0?.Length ?? 0];
@@ -99,11 +114,17 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         fixed (nint* __hs_vectorHandleData0 = __hs_vectorHandles0)
         {
             var __hs_vectorData0 = (void**)__hs_vectorHandleData0;
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_2f050d6f(__hs_vectorData0, (nuint)(messages?.Length ?? 0)));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2f050d6f(__hs_vectorData0, (nuint)(messages?.Length ?? 0));
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage text(string value)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? text(string value)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -118,11 +139,17 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_9c2a5b19(__hs_stringData0, (nuint)__hs_stringByteCount0));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9c2a5b19(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage translate(string key)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? translate(string key)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(key);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -137,11 +164,17 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_1715a593(__hs_stringData0, (nuint)__hs_stringByteCount0));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1715a593(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage translate(string key, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage substitutions)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? translate(string key, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage substitutions)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(key);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -156,11 +189,17 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_f7a82947(__hs_stringData0, (nuint)__hs_stringByteCount0, (void*)substitutions.Handle));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f7a82947(__hs_stringData0, (nuint)__hs_stringByteCount0, (void*)substitutions.Handle);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage translate(string key, string[] substitutions)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? translate(string key, string[] substitutions)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(key);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -195,7 +234,13 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
             }
             fixed (byte* __hs_stringData0 = __hs_stringBytes0)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)NativeMethods.TablePtr->C0.hs_method_93e42ffe(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(substitutions?.Length ?? 0)));
+                var __hs_handle = NativeMethods.TablePtr->C0.hs_method_93e42ffe(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_vectorData1, (nuint)(substitutions?.Length ?? 0));
+                if (__hs_handle == null)
+                {
+                    NativeMethods.GetLastError();
+                    return null;
+                }
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage((nint)__hs_handle);
             }
         }
     }

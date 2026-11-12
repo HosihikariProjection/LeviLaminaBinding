@@ -79,14 +79,26 @@ public sealed unsafe partial class FileSink : global::System.IDisposable
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink AsSink()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink? AsSink()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)NativeMethods.TablePtr->C0.hs_cast_7c9b318d((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_7c9b318d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase AsSinkBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase? AsSinkBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)NativeMethods.TablePtr->C0.hs_cast_3e50fea1((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_3e50fea1((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.SinkBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

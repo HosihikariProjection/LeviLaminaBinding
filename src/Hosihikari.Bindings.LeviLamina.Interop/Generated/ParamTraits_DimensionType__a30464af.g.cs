@@ -40,8 +40,14 @@ public sealed unsafe partial class ParamTraits_DimensionType_
         return __hs_handle;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_DimensionType_ AsParamTraitsBase_DimensionType_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_DimensionType_? AsParamTraitsBase_DimensionType_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_DimensionType_((nint)NativeMethods.TablePtr->C0.hs_cast_3728e3e0((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_3728e3e0((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_DimensionType_((nint)__hs_handle, false);
     }
 }

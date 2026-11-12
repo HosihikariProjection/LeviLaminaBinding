@@ -40,12 +40,13 @@ public sealed unsafe partial class DynamicListener : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static DynamicListener Create(nint fnInvoke, nint fnUserData, nint fnRelease, int priority, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
+    public static DynamicListener? Create(nint fnInvoke, nint fnUserData, nint fnRelease, int priority, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_28da94b8((void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, priority, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DynamicListener((nint)handle);
@@ -63,9 +64,15 @@ public sealed unsafe partial class DynamicListener : global::System.IDisposable
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase AsListenerBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase? AsListenerBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)NativeMethods.TablePtr->C0.hs_cast_4f5ad8f3((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_4f5ad8f3((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ListenerBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

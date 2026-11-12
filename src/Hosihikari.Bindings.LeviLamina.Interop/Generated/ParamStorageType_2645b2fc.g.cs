@@ -50,9 +50,15 @@ public sealed unsafe partial class ParamStorageType : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_95601f24((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424 AsOptional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424? AsOptional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424((nint)NativeMethods.TablePtr->C0.hs_cast_31f1bb95((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_31f1bb95((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424((nint)__hs_handle, false);
     }
 
     public void Dispose()

@@ -40,18 +40,19 @@ public sealed unsafe partial class SymbolLoader : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static SymbolLoader Create()
+    public static SymbolLoader? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_5677749d();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new SymbolLoader((nint)handle);
     }
 
-    public static SymbolLoader Create(string arg0)
+    public static SymbolLoader? Create(string arg0)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(arg0);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -69,7 +70,8 @@ public sealed unsafe partial class SymbolLoader : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_ff53b02a(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new SymbolLoader((nint)handle);

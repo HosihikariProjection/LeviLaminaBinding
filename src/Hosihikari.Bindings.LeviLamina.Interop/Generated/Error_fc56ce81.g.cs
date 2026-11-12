@@ -40,23 +40,25 @@ public sealed unsafe partial class Error : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Error Create()
+    public static Error? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c9b03de9();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Error((nint)handle);
     }
 
-    public static Error Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error arg0)
+    public static Error? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_af81c54d((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Error((nint)handle);
@@ -66,12 +68,13 @@ public sealed unsafe partial class Error : global::System.IDisposable
     public static Error Create(nint i) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
 
-    public static Error Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase i)
+    public static Error? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase i)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_507cce9a((void*)i.ReleaseHandle());
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Error((nint)handle);
@@ -85,12 +88,18 @@ public sealed unsafe partial class Error : global::System.IDisposable
     public nint join_377137a4(nint err) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error log(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput arg0, int arg1)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? log(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput arg0, int arg1)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_24ce3688((void*)__hosihikari_shim_handle, (void*)arg0.Handle, arg1), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_24ce3688((void*)__hosihikari_shim_handle, (void*)arg0.Handle, arg1);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error log(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput arg0, string locale, int arg2)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? log(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput arg0, string locale, int arg2)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(locale);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -105,11 +114,17 @@ public sealed unsafe partial class Error : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(locale, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_ecc40f03((void*)__hosihikari_shim_handle, (void*)arg0.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, arg2), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ecc40f03((void*)__hosihikari_shim_handle, (void*)arg0.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, arg2);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error log(nint @outInvoke, nint @outUserData, nint @outRelease, string locale)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? log(nint @outInvoke, nint @outUserData, nint @outRelease, string locale)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(locale);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -124,16 +139,28 @@ public sealed unsafe partial class Error : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(locale, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_4962dd8b((void*)__hosihikari_shim_handle, (void*)@outInvoke, (void*)@outUserData, (void*)@outRelease, __hs_stringData1, (nuint)__hs_stringByteCount1), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4962dd8b((void*)__hosihikari_shim_handle, (void*)@outInvoke, (void*)@outUserData, (void*)@outRelease, __hs_stringData1, (nuint)__hs_stringByteCount1);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error log(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger arg0, int arg1)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? log(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger arg0, int arg1)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_e159e652((void*)__hosihikari_shim_handle, (void*)arg0.Handle, arg1), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e159e652((void*)__hosihikari_shim_handle, (void*)arg0.Handle, arg1);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error log(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger arg0, string locale, int arg2)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? log(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Logger arg0, string locale, int arg2)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(locale);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -148,7 +175,13 @@ public sealed unsafe partial class Error : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(locale, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_909c5e3f((void*)__hosihikari_shim_handle, (void*)arg0.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, arg2), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_909c5e3f((void*)__hosihikari_shim_handle, (void*)arg0.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, arg2);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
         }
     }
 
@@ -187,9 +220,15 @@ public sealed unsafe partial class Error : global::System.IDisposable
     public nint operator_unexpected_type() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_a7aa13d7((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a7aa13d7((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
 

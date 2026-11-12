@@ -40,12 +40,13 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Compressor Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
+    public static Compressor? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_740e1911((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Compressor((nint)handle);
@@ -62,9 +63,15 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
         if (!__hs_hasValue) { throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "Binding API call returned an error."); }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor((nint)NativeMethods.TablePtr->C0.hs_method_8799de9d((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8799de9d((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor((nint)__hs_handle, false);
     }
 
     public void status()

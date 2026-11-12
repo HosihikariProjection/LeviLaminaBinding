@@ -50,9 +50,15 @@ public sealed unsafe partial class ParamTraits_std__unique_ptr_Command__ : globa
         return NativeMethods.TablePtr->C0.hs_method_71b4b439();
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_std__unique_ptr_Command__ AsParamTraitsBase_std__unique_ptr_Command__()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_std__unique_ptr_Command__? AsParamTraitsBase_std__unique_ptr_Command__()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_std__unique_ptr_Command__((nint)NativeMethods.TablePtr->C0.hs_cast_1f8958d1((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_1f8958d1((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_std__unique_ptr_Command__((nint)__hs_handle, false);
     }
 
     public void Dispose()

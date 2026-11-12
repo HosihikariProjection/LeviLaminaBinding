@@ -40,34 +40,37 @@ public sealed unsafe partial class BindingHandle : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static BindingHandle Create()
+    public static BindingHandle? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_5268f1f9();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new BindingHandle((nint)handle);
     }
 
-    public static BindingHandle Create_d43627b6(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
+    public static BindingHandle? Create_d43627b6(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_d43627b6((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new BindingHandle((nint)handle);
     }
 
-    public static BindingHandle Create_82cd4ec2(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
+    public static BindingHandle? Create_82cd4ec2(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_82cd4ec2((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new BindingHandle((nint)handle);
@@ -83,14 +86,26 @@ public sealed unsafe partial class BindingHandle : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_76b2ba1c((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle operator_assign_91e7b69b(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle? operator_assign_91e7b69b(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle((nint)NativeMethods.TablePtr->C0.hs_method_91e7b69b((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_91e7b69b((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle operator_assign_22fb7d49(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle? operator_assign_22fb7d49(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle((nint)NativeMethods.TablePtr->C0.hs_method_22fb7d49((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_22fb7d49((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.detail.BindingHandle((nint)__hs_handle, false);
     }
 
     public void setClientWritable(bool writable)

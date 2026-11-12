@@ -23,7 +23,12 @@ public static unsafe partial class Functions
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
             var __hs_handle = NativeMethods.TablePtr->C0.hs_function_f92df458(__hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
-            return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle) : null;
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                if (!__hs_hasValue) { return null; }
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version((nint)__hs_handle);
         }
     }
 

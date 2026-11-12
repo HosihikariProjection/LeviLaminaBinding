@@ -40,14 +40,26 @@ public sealed unsafe partial class ObservableUIRawMessage : global::System.IDisp
         return __hs_handle;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_ AsObservable_ll__ui__UIRawMessage_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_? AsObservable_ll__ui__UIRawMessage_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_((nint)NativeMethods.TablePtr->C0.hs_cast_c52d1147((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_c52d1147((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_ll__ui__UIRawMessage_ AsUIObservable_ll__ui__UIRawMessage_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_ll__ui__UIRawMessage_? AsUIObservable_ll__ui__UIRawMessage_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_ll__ui__UIRawMessage_((nint)NativeMethods.TablePtr->C0.hs_cast_8be32832((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_8be32832((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIObservable_ll__ui__UIRawMessage_((nint)__hs_handle, false);
     }
 
     public void Dispose()

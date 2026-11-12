@@ -11,9 +11,15 @@ public static unsafe partial class Functions
         NativeMethods.TablePtr->C0.hs_function_c7b18402((void*)logger.Handle, level, (void*)arg2);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace stacktraceFromCurrentException(ulong skip, ulong maxDepth)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace? stacktraceFromCurrentException(ulong skip, ulong maxDepth)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->C0.hs_function_d65bfad9(skip, maxDepth));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_d65bfad9(skip, maxDepth);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::exception_ptr' is not a known bindable declaration.", false)]

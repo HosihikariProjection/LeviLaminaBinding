@@ -40,12 +40,13 @@ public sealed unsafe partial class AnyExceptionRef : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static AnyExceptionRef Create(nint ptr)
+    public static AnyExceptionRef? Create(nint ptr)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_fae4759b((void*)ptr);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new AnyExceptionRef((nint)handle);

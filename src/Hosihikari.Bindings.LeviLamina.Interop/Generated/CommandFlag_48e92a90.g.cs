@@ -40,23 +40,25 @@ public sealed unsafe partial class CommandFlag : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CommandFlag Create()
+    public static CommandFlag? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_7e3de4f4();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CommandFlag((nint)handle);
     }
 
-    public static CommandFlag Create(ushort value)
+    public static CommandFlag? Create(ushort value)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_3a3ddaa4(value);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new CommandFlag((nint)handle);

@@ -79,13 +79,23 @@ public sealed unsafe partial class ListenerBase : global::System.IDisposable
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.DynamicListener? TryAsDynamicListener()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_23031961((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.DynamicListener((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.DynamicListener((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_? TryAsMultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_c2575429((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.MultiListener_ll__event__ServiceRegisterEvent__ll__event__ServiceUnregisterEvent_((nint)__hs_handle, false);
     }
 
     public void Dispose()

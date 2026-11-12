@@ -40,12 +40,13 @@ public sealed unsafe partial class StacktraceEntry : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static StacktraceEntry Create(nint address)
+    public static StacktraceEntry? Create(nint address)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_97ce3c53((void*)address);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new StacktraceEntry((nint)handle);

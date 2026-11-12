@@ -69,9 +69,15 @@ public sealed unsafe partial class ErrorCodeError : global::System.IDisposable
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase AsErrorInfoBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase? AsErrorInfoBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)NativeMethods.TablePtr->C0.hs_cast_7ceb9a63((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_7ceb9a63((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

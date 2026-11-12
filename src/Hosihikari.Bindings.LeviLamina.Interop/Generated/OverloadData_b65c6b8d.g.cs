@@ -40,20 +40,27 @@ public sealed unsafe partial class OverloadData : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static OverloadData Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
+    public static OverloadData? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_b014024d((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new OverloadData((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData((nint)NativeMethods.TablePtr->C0.hs_method_c306872e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c306872e((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData((nint)__hs_handle, false);
     }
 
 

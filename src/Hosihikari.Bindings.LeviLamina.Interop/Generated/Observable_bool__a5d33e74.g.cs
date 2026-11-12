@@ -40,12 +40,13 @@ public sealed unsafe partial class Observable_bool_ : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Observable_bool_ Create(bool initial)
+    public static Observable_bool_? Create(bool initial)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c29772f9(initial);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Observable_bool_((nint)handle);

@@ -40,18 +40,19 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ModalForm Create()
+    public static ModalForm? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_55e7cbcc();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ModalForm((nint)handle);
     }
 
-    public static ModalForm Create(string title, string content, string upperButton, string lowerButton)
+    public static ModalForm? Create(string title, string content, string upperButton, string lowerButton)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(title);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -108,7 +109,8 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
                         var handle = NativeMethods.TablePtr->C0.hs_create_4b5ab410(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2, __hs_stringData3, (nuint)__hs_stringByteCount3);
                         if (handle == null)
                         {
-                            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                            NativeMethods.GetLastError();
+                            return null;
                         }
 
                         return new ModalForm((nint)handle);
@@ -128,7 +130,7 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_337e43e5((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm setContent(string content)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm? setContent(string content)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(content);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -143,11 +145,17 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(content, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)NativeMethods.TablePtr->C0.hs_method_8e45f3ac((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8e45f3ac((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm setLowerButton(string lowerButton)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm? setLowerButton(string lowerButton)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(lowerButton);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -162,11 +170,17 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(lowerButton, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)NativeMethods.TablePtr->C0.hs_method_8d93c96d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8d93c96d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm setTitle(string title)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm? setTitle(string title)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(title);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -181,11 +195,17 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(title, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)NativeMethods.TablePtr->C0.hs_method_96625c5f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_96625c5f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm setUpperButton(string upperButton)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm? setUpperButton(string upperButton)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(upperButton);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -200,14 +220,26 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(upperButton, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)NativeMethods.TablePtr->C0.hs_method_712c6f8b((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_712c6f8b((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.ModalForm((nint)__hs_handle, false);
         }
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form AsForm()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form? AsForm()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form((nint)NativeMethods.TablePtr->C0.hs_cast_d4653a21((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_d4653a21((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.form.Form((nint)__hs_handle, false);
     }
 
     public void Dispose()

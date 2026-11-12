@@ -43,7 +43,12 @@ public sealed unsafe partial class PacketRegistrar
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.Packet? createPacket(ulong runtimeId)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_441bd9bd((void*)__hosihikari_shim_handle, runtimeId);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.Packet((nint)__hs_handle) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.Packet((nint)__hs_handle);
     }
 
     public ulong[] getHandledPackets(byte side)
@@ -61,12 +66,23 @@ public sealed unsafe partial class PacketRegistrar
     {
         var __hs_hasValue = false;
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b2afa9ba((void*)__hosihikari_shim_handle, runtimeId, side, &__hs_hasValue);
-        return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.IPacketHandler((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            if (!__hs_hasValue) { return null; }
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.IPacketHandler((nint)__hs_handle, false);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_5ade0854(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_5ade0854();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.network.PacketRegistrar((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: vector return type 'std::pair<unsigned long long, std::basic_string<char>>' is not supported.", false)]

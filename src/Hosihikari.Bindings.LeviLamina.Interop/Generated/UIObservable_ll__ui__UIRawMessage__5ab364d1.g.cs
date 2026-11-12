@@ -40,12 +40,13 @@ public sealed unsafe partial class UIObservable_ll__ui__UIRawMessage_ : global::
         return __hs_handle;
     }
 
-    public static UIObservable_ll__ui__UIRawMessage_ Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
+    public static UIObservable_ll__ui__UIRawMessage_? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ObservableOptions options)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_2b68ce18((void*)initial.Handle, (void*)options.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new UIObservable_ll__ui__UIRawMessage_((nint)handle);
@@ -56,9 +57,15 @@ public sealed unsafe partial class UIObservable_ll__ui__UIRawMessage_ : global::
         return NativeMethods.TablePtr->C0.hs_method_b0335033((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_ AsObservable_ll__ui__UIRawMessage_()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_? AsObservable_ll__ui__UIRawMessage_()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_((nint)NativeMethods.TablePtr->C0.hs_cast_7ffb6452((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_7ffb6452((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.Observable_ll__ui__UIRawMessage_((nint)__hs_handle, false);
     }
 
     public void Dispose()

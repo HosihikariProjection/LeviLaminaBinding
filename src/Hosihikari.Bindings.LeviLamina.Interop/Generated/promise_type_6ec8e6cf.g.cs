@@ -44,9 +44,15 @@ public sealed unsafe partial class promise_type : global::System.IDisposable
     public nint final_suspend() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::suspend_never' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation get_return_object()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation? get_return_object()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation((nint)NativeMethods.TablePtr->C0.hs_method_9a9417d2((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9a9417d2((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::suspend_always' is not a known bindable declaration.", false)]

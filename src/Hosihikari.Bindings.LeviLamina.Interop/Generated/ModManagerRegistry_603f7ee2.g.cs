@@ -99,9 +99,15 @@ public sealed unsafe partial class ModManagerRegistry
         return NativeMethods.TablePtr->C0.hs_method_ea621a8b((void*)__hosihikari_shim_handle, (void*)fnInvoke, (void*)fnUserData, (void*)fnRelease, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.ModManagerRegistry getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.ModManagerRegistry? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.ModManagerRegistry((nint)NativeMethods.TablePtr->C0.hs_method_35a0463e(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_35a0463e();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.ModManagerRegistry((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.Abi.SharedHandle? getManager(string type)

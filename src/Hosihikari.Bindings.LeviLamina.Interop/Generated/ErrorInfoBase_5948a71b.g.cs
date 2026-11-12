@@ -58,25 +58,45 @@ public sealed unsafe partial class ErrorInfoBase : global::System.IDisposable
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorCodeError? TryAsErrorCodeError()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_3c4ffa74((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorCodeError((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorCodeError((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.GetServiceError? TryAsGetServiceError()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_5e328588((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.GetServiceError((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.GetServiceError((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18nStringError? TryAsI18nStringError()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_93e33275((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18nStringError((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18nStringError((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.StringError? TryAsStringError()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_c287f886((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StringError((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StringError((nint)__hs_handle, false);
     }
 
     public void Dispose()

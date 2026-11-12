@@ -56,7 +56,7 @@ public sealed unsafe partial class SymbolView : global::System.IDisposable
     public static SymbolView Create_82bafcb3(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the class stores borrowed strings but the constructor has no string parameter.");
 
-    public static SymbolView Create(string symbol)
+    public static SymbolView? Create(string symbol)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(symbol);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -74,21 +74,34 @@ public sealed unsafe partial class SymbolView : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_0a9efa25(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new SymbolView((nint)handle);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView operator_assign_43d0519c(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView? operator_assign_43d0519c(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView((nint)NativeMethods.TablePtr->C0.hs_method_43d0519c((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_43d0519c((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView operator_assign_c9ceea3e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView? operator_assign_c9ceea3e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView((nint)NativeMethods.TablePtr->C0.hs_method_c9ceea3e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c9ceea3e((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SymbolView((nint)__hs_handle, false);
     }
 
     public string raw()

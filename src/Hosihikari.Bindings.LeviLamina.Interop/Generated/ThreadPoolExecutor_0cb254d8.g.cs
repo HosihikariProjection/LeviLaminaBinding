@@ -40,7 +40,7 @@ public sealed unsafe partial class ThreadPoolExecutor : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static ThreadPoolExecutor Create(string name, ulong nThreads)
+    public static ThreadPoolExecutor? Create(string name, ulong nThreads)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,7 +58,8 @@ public sealed unsafe partial class ThreadPoolExecutor : global::System.IDisposab
             var handle = NativeMethods.TablePtr->C0.hs_create_831264b0(__hs_stringData0, (nuint)__hs_stringByteCount0, nThreads);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new ThreadPoolExecutor((nint)handle);
@@ -81,9 +82,15 @@ public sealed unsafe partial class ThreadPoolExecutor : global::System.IDisposab
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor getDefault()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor? getDefault()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor((nint)NativeMethods.TablePtr->C0.hs_method_8b93b0f4(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8b93b0f4();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.thread.ThreadPoolExecutor((nint)__hs_handle, false);
     }
 
     public void resize(ulong nThreads)
@@ -92,9 +99,15 @@ public sealed unsafe partial class ThreadPoolExecutor : global::System.IDisposab
     }
 
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor AsExecutor()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? AsExecutor()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)NativeMethods.TablePtr->C0.hs_cast_52beb4ae((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_52beb4ae((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor((nint)__hs_handle, false);
     }
 
     public void Dispose()

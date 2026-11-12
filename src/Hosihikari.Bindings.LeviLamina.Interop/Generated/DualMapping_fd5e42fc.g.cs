@@ -40,23 +40,25 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static DualMapping Create()
+    public static DualMapping? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_2e72a0cf();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DualMapping((nint)handle);
     }
 
-    public static DualMapping Create(ulong size)
+    public static DualMapping? Create(ulong size)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_e5a81f46(size);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new DualMapping((nint)handle);

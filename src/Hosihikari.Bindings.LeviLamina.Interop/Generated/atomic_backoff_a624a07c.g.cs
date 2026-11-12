@@ -40,23 +40,25 @@ public sealed unsafe partial class atomic_backoff : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static atomic_backoff Create()
+    public static atomic_backoff? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_4e58c38b();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new atomic_backoff((nint)handle);
     }
 
-    public static atomic_backoff Create(bool arg0)
+    public static atomic_backoff? Create(bool arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_31808cc3(arg0);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new atomic_backoff((nint)handle);

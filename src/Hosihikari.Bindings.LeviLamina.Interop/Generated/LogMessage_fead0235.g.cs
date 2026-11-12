@@ -40,40 +40,43 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static LogMessage Create()
+    public static LogMessage? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_8700b79c();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new LogMessage((nint)handle);
     }
 
-    public static LogMessage Create_27674e0e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
+    public static LogMessage? Create_27674e0e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_27674e0e((void*)other.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new LogMessage((nint)handle);
     }
 
-    public static LogMessage Create_854a7168(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
+    public static LogMessage? Create_854a7168(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessage other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_854a7168((void*)other.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new LogMessage((nint)handle);
     }
 
-    public static LogMessage Create(string msg, string tit, int lvl, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs tm)
+    public static LogMessage? Create(string msg, string tit, int lvl, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs tm)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(msg);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -104,7 +107,8 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
                 var handle = NativeMethods.TablePtr->C0.hs_create_076b1b16(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, lvl, (void*)tm.Handle);
                 if (handle == null)
                 {
-                    throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                    NativeMethods.GetLastError();
+                    return null;
                 }
 
                 return new LogMessage((nint)handle);
@@ -130,9 +134,15 @@ public sealed unsafe partial class LogMessage : global::System.IDisposable
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView AsLogMessageView()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView? AsLogMessageView()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView((nint)NativeMethods.TablePtr->C0.hs_cast_91a3eab5((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_91a3eab5((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView((nint)__hs_handle, false);
     }
 
     public void Dispose()

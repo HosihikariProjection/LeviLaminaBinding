@@ -40,9 +40,15 @@ public sealed unsafe partial class Stacktrace : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace current(ulong skip, ulong maxDepth)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace? current(ulong skip, ulong maxDepth)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)NativeMethods.TablePtr->C0.hs_method_16b128cf(skip, maxDepth));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_16b128cf(skip, maxDepth);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)__hs_handle);
     }
 
     public bool empty()
@@ -59,9 +65,15 @@ public sealed unsafe partial class Stacktrace : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_e66468aa((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry operator_index(ulong index)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry? operator_index(ulong index)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry((nint)NativeMethods.TablePtr->C0.hs_method_ca44197a((void*)__hosihikari_shim_handle, index), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ca44197a((void*)__hosihikari_shim_handle, index);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry((nint)__hs_handle, false);
     }
 
     public ulong size()

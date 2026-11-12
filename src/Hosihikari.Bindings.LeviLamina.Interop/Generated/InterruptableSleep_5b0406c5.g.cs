@@ -40,12 +40,13 @@ public sealed unsafe partial class InterruptableSleep : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static InterruptableSleep Create()
+    public static InterruptableSleep? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_86816acd();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new InterruptableSleep((nint)handle);

@@ -60,7 +60,12 @@ public sealed unsafe partial class AnyObjBase : global::System.IDisposable
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunctionObjBase? TryAsAnyFunctionObjBase()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_3ebd3f13((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunctionObjBase((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunctionObjBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

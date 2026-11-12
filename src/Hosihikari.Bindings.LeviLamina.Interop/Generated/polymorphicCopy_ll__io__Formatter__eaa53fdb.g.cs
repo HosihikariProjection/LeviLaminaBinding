@@ -50,7 +50,12 @@ public sealed unsafe partial class polymorphicCopy_ll__io__Formatter_ : global::
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_call(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter t)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_65dd2c26((void*)__hosihikari_shim_handle, (void*)t.Handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has an abstract template argument.", false)]

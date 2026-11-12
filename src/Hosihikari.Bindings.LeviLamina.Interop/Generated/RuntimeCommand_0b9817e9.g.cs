@@ -59,7 +59,7 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
         return (nint)NativeMethods.TablePtr->C0.hs_method_840715b8(arg0, paramCount);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType operator_index(string name)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType? operator_index(string name)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -74,13 +74,25 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->C0.hs_method_23aef0d5((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_23aef0d5((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType operator_index(ulong idx)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType? operator_index(ulong idx)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)NativeMethods.TablePtr->C0.hs_method_da2608f1((void*)__hosihikari_shim_handle, idx), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_da2608f1((void*)__hosihikari_shim_handle, idx);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType((nint)__hs_handle, false);
     }
 
 

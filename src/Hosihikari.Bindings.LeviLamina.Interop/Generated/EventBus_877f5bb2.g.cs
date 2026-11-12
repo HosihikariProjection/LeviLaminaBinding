@@ -53,9 +53,15 @@ public sealed unsafe partial class EventBus
     public nint events() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::coro::Generator<std::pair<std::basic_string_view<char>, ll::event::EventIdView>>' is not a known bindable declaration.");
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventBus getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventBus? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventBus((nint)NativeMethods.TablePtr->C0.hs_method_cd83bdb3(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_cd83bdb3();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventBus((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.Abi.SharedHandle? getListener(ulong id)

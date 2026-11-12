@@ -44,7 +44,7 @@ public sealed unsafe partial class CommandHandle
     public static CommandHandle Create(nint registrar, nint signature, bool owned) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the constructor is not exported by the carrier.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle alias(string alias)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle? alias(string alias)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(alias);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -59,7 +59,13 @@ public sealed unsafe partial class CommandHandle
         global::System.Text.Encoding.UTF8.GetBytes(alias, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->C0.hs_method_0f895032((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0f895032((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)__hs_handle, false);
         }
     }
 
@@ -75,9 +81,15 @@ public sealed unsafe partial class CommandHandle
         return __hs_result;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload runtimeOverload(global::Hosihikari.Bindings.Abi.SharedHandle? mod)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload? runtimeOverload(global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)NativeMethods.TablePtr->C0.hs_method_d854facb((void*)__hosihikari_shim_handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_d854facb((void*)__hosihikari_shim_handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]

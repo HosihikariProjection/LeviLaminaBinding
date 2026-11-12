@@ -49,9 +49,15 @@ public sealed unsafe partial class bad_expected_access_ll__Error_ : global::Syst
         return (nint)NativeMethods.TablePtr->C0.hs_method_5a2a67ef((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error error_cd83de93()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? error_cd83de93()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_cd83de93((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_cd83de93((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
     public nint error_3eeff636()
@@ -59,9 +65,15 @@ public sealed unsafe partial class bad_expected_access_ll__Error_ : global::Syst
         return (nint)NativeMethods.TablePtr->C0.hs_method_3eeff636((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error error_648678e4()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? error_648678e4()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)NativeMethods.TablePtr->C0.hs_method_648678e4((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_648678e4((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
     public nint what()

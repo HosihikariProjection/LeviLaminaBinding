@@ -40,45 +40,49 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static AnyFunction Create()
+    public static AnyFunction? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_1580d5ce();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new AnyFunction((nint)handle);
     }
 
-    public static AnyFunction Create_3884d83f(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
+    public static AnyFunction? Create_3884d83f(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_3884d83f((void*)other.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new AnyFunction((nint)handle);
     }
 
-    public static AnyFunction Create_5830bcea(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
+    public static AnyFunction? Create_5830bcea(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_5830bcea((void*)other.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new AnyFunction((nint)handle);
     }
 
-    public static AnyFunction Create_abc535ac()
+    public static AnyFunction? Create_abc535ac()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_abc535ac();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new AnyFunction((nint)handle);
@@ -93,14 +97,26 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_0a5e165e((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction operator_assign_ab62667b(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction? operator_assign_ab62667b(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->C0.hs_method_ab62667b((void*)__hosihikari_shim_handle, (void*)other.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ab62667b((void*)__hosihikari_shim_handle, (void*)other.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction operator_assign_e043fab8(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction? operator_assign_e043fab8(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)NativeMethods.TablePtr->C0.hs_method_e043fab8((void*)__hosihikari_shim_handle, (void*)other.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e043fab8((void*)__hosihikari_shim_handle, (void*)other.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction((nint)__hs_handle, false);
     }
 
     public void swap(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)

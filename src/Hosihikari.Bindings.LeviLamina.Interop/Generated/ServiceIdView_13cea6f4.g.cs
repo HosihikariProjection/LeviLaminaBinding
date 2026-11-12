@@ -44,7 +44,7 @@ public sealed unsafe partial class ServiceIdView : global::System.IDisposable
     public static ServiceIdView Create(nint id) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the class stores borrowed strings but the constructor has no string parameter.");
 
-    public static ServiceIdView Create(string id, ulong ver)
+    public static ServiceIdView? Create(string id, ulong ver)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(id);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -62,7 +62,8 @@ public sealed unsafe partial class ServiceIdView : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_6f6c136f(__hs_stringData0, (nuint)__hs_stringByteCount0, ver);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new ServiceIdView((nint)handle);
@@ -84,9 +85,15 @@ public sealed unsafe partial class ServiceIdView : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_889068b1((void*)__hosihikari_shim_handle, value);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase AsHashedIdBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase? AsHashedIdBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)NativeMethods.TablePtr->C0.hs_cast_760b7957((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_760b7957((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

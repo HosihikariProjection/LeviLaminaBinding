@@ -40,12 +40,13 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static SignatureElement Create()
+    public static SignatureElement? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_169d3cd0();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new SignatureElement((nint)handle);
@@ -55,23 +56,25 @@ public sealed unsafe partial class SignatureElement : global::System.IDisposable
     public static SignatureElement Create(nint @byte) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.");
 
-    public static SignatureElement Create_9758b616()
+    public static SignatureElement? Create_9758b616()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_9758b616();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new SignatureElement((nint)handle);
     }
 
-    public static SignatureElement Create(byte @byte)
+    public static SignatureElement? Create(byte @byte)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_91885b98(@byte);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new SignatureElement((nint)handle);

@@ -6,9 +6,15 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils;
 
 public static unsafe partial class Functions
 {
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo getInfo(global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry arg0)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo? getInfo(global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo((nint)NativeMethods.TablePtr->C0.hs_function_aecf2df3((void*)arg0.Handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_aecf2df3((void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo((nint)__hs_handle);
     }
 
     public static string toString_92eb9ef4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace arg0)

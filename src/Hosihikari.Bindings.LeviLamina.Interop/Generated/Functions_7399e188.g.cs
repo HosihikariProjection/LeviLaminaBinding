@@ -12,8 +12,14 @@ public static unsafe partial class Functions
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18n getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18n? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18n((nint)NativeMethods.TablePtr->C0.hs_function_c0e55d9d(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_c0e55d9d();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.i18n.I18n((nint)__hs_handle, false);
     }
 }

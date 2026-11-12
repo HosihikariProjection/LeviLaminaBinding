@@ -40,7 +40,7 @@ public sealed unsafe partial class ConsoleOutputtedEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    public static ConsoleOutputtedEvent Create(string message, bool isCancelled)
+    public static ConsoleOutputtedEvent? Create(string message, bool isCancelled)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(message);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -58,7 +58,8 @@ public sealed unsafe partial class ConsoleOutputtedEvent : global::System.IDispo
             var handle = NativeMethods.TablePtr->C0.hs_create_d16d3531(__hs_stringData0, (nuint)__hs_stringByteCount0, isCancelled);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new ConsoleOutputtedEvent((nint)handle);
@@ -81,9 +82,15 @@ public sealed unsafe partial class ConsoleOutputtedEvent : global::System.IDispo
         NativeMethods.TablePtr->C0.hs_method_477f2865((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_6a6078f0((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_6a6078f0((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
     public void Dispose()

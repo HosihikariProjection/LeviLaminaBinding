@@ -59,9 +59,15 @@ public sealed unsafe partial class LoggerRegistry
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LoggerRegistry getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LoggerRegistry? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LoggerRegistry((nint)NativeMethods.TablePtr->C0.hs_method_95e32837(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_95e32837();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LoggerRegistry((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.Abi.SharedHandle? getOrCreate(string title)

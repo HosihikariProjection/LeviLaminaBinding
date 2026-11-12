@@ -31,9 +31,15 @@ public static unsafe partial class Functions
         return NativeMethods.TablePtr->C0.hs_function_124f8f48(c);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result validate_identifiers(nint first, nint last)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result? validate_identifiers(nint first, nint last)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)NativeMethods.TablePtr->C0.hs_function_ac76fd0b((void*)first, (void*)last));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_ac76fd0b((void*)first, (void*)last);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result((nint)__hs_handle);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]

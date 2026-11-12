@@ -40,34 +40,37 @@ public sealed unsafe partial class Property : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Property Create()
+    public static Property? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_e8842391();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Property((nint)handle);
     }
 
-    public static Property Create_95a67ed4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
+    public static Property? Create_95a67ed4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_95a67ed4((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Property((nint)handle);
     }
 
-    public static Property Create_917bf7ba(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
+    public static Property? Create_917bf7ba(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_917bf7ba((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Property((nint)handle);
@@ -85,14 +88,26 @@ public sealed unsafe partial class Property : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_525dca87((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property operator_assign_bfa12fa4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property? operator_assign_bfa12fa4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->C0.hs_method_bfa12fa4((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_bfa12fa4((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property operator_assign_a1807e9e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property? operator_assign_a1807e9e(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)NativeMethods.TablePtr->C0.hs_method_a1807e9e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a1807e9e((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property((nint)__hs_handle, false);
     }
 
     public void set(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue value)

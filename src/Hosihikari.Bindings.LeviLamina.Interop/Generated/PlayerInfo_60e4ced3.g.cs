@@ -66,7 +66,12 @@ public sealed unsafe partial class PlayerInfo
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
             var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f4b9630e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
-            return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                if (!__hs_hasValue) { return null; }
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false);
         }
     }
 
@@ -74,7 +79,12 @@ public sealed unsafe partial class PlayerInfo
     {
         var __hs_hasValue = false;
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f4045e5b((void*)__hosihikari_shim_handle, (void*)arg0.Handle, &__hs_hasValue);
-        return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            if (!__hs_hasValue) { return null; }
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry? fromXuid(string arg0)
@@ -94,12 +104,23 @@ public sealed unsafe partial class PlayerInfo
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
             var __hs_handle = NativeMethods.TablePtr->C0.hs_method_bfbc3d9c((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
-            return __hs_hasValue && __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false) : null;
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                if (!__hs_hasValue) { return null; }
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested.PlayerInfoEntry((nint)__hs_handle, false);
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo getInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo? getInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo((nint)NativeMethods.TablePtr->C0.hs_method_2bde7741(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2bde7741();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo((nint)__hs_handle, false);
     }
 }

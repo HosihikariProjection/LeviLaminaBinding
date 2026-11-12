@@ -40,29 +40,31 @@ public sealed unsafe partial class WriteBatch : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static WriteBatch Create()
+    public static WriteBatch? Create()
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c74e5863();
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new WriteBatch((nint)handle);
     }
 
-    public static WriteBatch Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch arg0)
+    public static WriteBatch? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch arg0)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_0c343120((void*)arg0.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new WriteBatch((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch del(string key)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch? del(string key)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(key);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -77,16 +79,28 @@ public sealed unsafe partial class WriteBatch : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(key, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)NativeMethods.TablePtr->C0.hs_method_2ab0e96e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0), false);
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2ab0e96e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)__hs_handle, false);
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch arg0)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch arg0)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)NativeMethods.TablePtr->C0.hs_method_43fe181e((void*)__hosihikari_shim_handle, (void*)arg0.Handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_43fe181e((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch set(string key, string val)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch? set(string key, string val)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(key);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -114,7 +128,13 @@ public sealed unsafe partial class WriteBatch : global::System.IDisposable
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)NativeMethods.TablePtr->C0.hs_method_ec2470f1((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1), false);
+                var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ec2470f1((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1);
+                if (__hs_handle == null)
+                {
+                    NativeMethods.GetLastError();
+                    return null;
+                }
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch((nint)__hs_handle, false);
             }
         }
     }

@@ -44,7 +44,7 @@ public sealed unsafe partial class EventIdView : global::System.IDisposable
     public static EventIdView Create(nint id) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the class stores borrowed strings but the constructor has no string parameter.");
 
-    public static EventIdView Create(string id)
+    public static EventIdView? Create(string id)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(id);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -62,7 +62,8 @@ public sealed unsafe partial class EventIdView : global::System.IDisposable
             var handle = NativeMethods.TablePtr->C0.hs_create_194bfb6c(__hs_stringData0, (nuint)__hs_stringByteCount0);
             if (handle == null)
             {
-                throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+                NativeMethods.GetLastError();
+                return null;
             }
 
             return new EventIdView((nint)handle);
@@ -78,9 +79,15 @@ public sealed unsafe partial class EventIdView : global::System.IDisposable
         }
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase AsHashedIdBase()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase? AsHashedIdBase()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)NativeMethods.TablePtr->C0.hs_cast_d045d900((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_d045d900((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.HashedIdBase((nint)__hs_handle, false);
     }
 
     public void Dispose()

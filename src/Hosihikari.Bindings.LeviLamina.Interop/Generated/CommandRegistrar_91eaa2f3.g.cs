@@ -190,12 +190,18 @@ public sealed unsafe partial class CommandRegistrar
     public nint executeCommand(nint commandStr, nint origin, nint outputType, nint version) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'CommandOutput' has no accessible destructor.");
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar getInstance(bool isClientSide)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar? getInstance(bool isClientSide)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_c8f00dfd(isClientSide), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c8f00dfd(isClientSide);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle getOrCreateCommand(string name, string description, byte requirement, global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag flag, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle? getOrCreateCommand(string name, string description, byte requirement, global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag flag, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -223,14 +229,26 @@ public sealed unsafe partial class CommandRegistrar
         {
             fixed (byte* __hs_stringData1 = __hs_stringBytes1)
             {
-                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)NativeMethods.TablePtr->C0.hs_method_650fa79f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, requirement, (void*)flag.Handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData)), false);
+                var __hs_handle = NativeMethods.TablePtr->C0.hs_method_650fa79f((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, requirement, (void*)flag.Handle, mod?.ToNative() ?? default(global::Hosihikari.Bindings.Abi.SharedHandleData));
+                if (__hs_handle == null)
+                {
+                    NativeMethods.GetLastError();
+                    return null;
+                }
+                return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandHandle((nint)__hs_handle, false);
             }
         }
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar getServerInstance()
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar? getServerInstance()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)NativeMethods.TablePtr->C0.hs_method_0402fde1(), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0402fde1();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar((nint)__hs_handle, false);
     }
 
     public bool hasEnum(string name)

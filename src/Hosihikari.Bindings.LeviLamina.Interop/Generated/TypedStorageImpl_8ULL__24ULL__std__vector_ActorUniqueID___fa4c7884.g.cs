@@ -40,12 +40,13 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_Act
         return __hs_handle;
     }
 
-    public static TypedStorageImpl_8ULL__24ULL__std__vector_ActorUniqueID__ Create_714494c6(nint other)
+    public static TypedStorageImpl_8ULL__24ULL__std__vector_ActorUniqueID__? Create_714494c6(nint other)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_714494c6((void*)other);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new TypedStorageImpl_8ULL__24ULL__std__vector_ActorUniqueID__((nint)handle);

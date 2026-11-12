@@ -40,12 +40,13 @@ public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposa
         return __hs_handle;
     }
 
-    public static ServerStoppingEvent Create(nint server)
+    public static ServerStoppingEvent? Create(nint server)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_c0e70e83((void*)server);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new ServerStoppingEvent((nint)handle);
@@ -61,9 +62,15 @@ public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposa
         return (nint)NativeMethods.TablePtr->C0.hs_method_78145d83((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event AsEvent()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)NativeMethods.TablePtr->C0.hs_cast_e11a664b((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_e11a664b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
     public void Dispose()

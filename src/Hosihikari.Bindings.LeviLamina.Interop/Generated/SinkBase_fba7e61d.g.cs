@@ -62,19 +62,34 @@ public sealed unsafe partial class SinkBase : global::System.IDisposable
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.ConsoleSink? TryAsConsoleSink()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_57c3e563((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.ConsoleSink((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.ConsoleSink((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.FileSink? TryAsFileSink()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_ba1c896b((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.FileSink((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.FileSink((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink? TryAsSink()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_cast_8a29b5fe((void*)__hosihikari_shim_handle);
-        return __hs_handle != null ? new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)__hs_handle, false) : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Sink((nint)__hs_handle, false);
     }
 
     public void Dispose()

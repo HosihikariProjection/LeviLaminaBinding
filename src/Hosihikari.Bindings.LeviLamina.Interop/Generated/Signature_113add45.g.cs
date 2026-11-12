@@ -40,20 +40,27 @@ public sealed unsafe partial class Signature : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Signature Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView view)
+    public static Signature? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView view)
     {
         var handle = NativeMethods.TablePtr->C0.hs_create_246fa34b((void*)view.Handle);
         if (handle == null)
         {
-            throw new global::System.InvalidOperationException(NativeMethods.GetLastError() ?? "BindingShim create call failed.");
+            NativeMethods.GetLastError();
+            return null;
         }
 
         return new Signature((nint)handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement back()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement? back()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)NativeMethods.TablePtr->C0.hs_method_af6295cb((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_af6295cb((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<ll::memory::SignatureElement>>>' is not a known bindable declaration.", false)]
@@ -64,9 +71,15 @@ public sealed unsafe partial class Signature : global::System.IDisposable
     public nint end() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<ll::memory::SignatureElement>>>' is not a known bindable declaration.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement front()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement? front()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)NativeMethods.TablePtr->C0.hs_method_2f83b432((void*)__hosihikari_shim_handle), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2f83b432((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)__hs_handle, false);
     }
 
     public bool operator_equal(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature other)
@@ -74,12 +87,18 @@ public sealed unsafe partial class Signature : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_fc945bb7((void*)__hosihikari_shim_handle, (void*)other.Handle) != 0;
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement operator_index(ulong idx)
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement? operator_index(ulong idx)
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)NativeMethods.TablePtr->C0.hs_method_24a2fcc0((void*)__hosihikari_shim_handle, idx), false);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_24a2fcc0((void*)__hosihikari_shim_handle, idx);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)__hs_handle, false);
     }
 
-    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature parse(string str)
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature? parse(string str)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -94,7 +113,13 @@ public sealed unsafe partial class Signature : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
         fixed (byte* __hs_stringData0 = __hs_stringBytes0)
         {
-            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature((nint)NativeMethods.TablePtr->C0.hs_method_36ec8175(__hs_stringData0, (nuint)__hs_stringByteCount0));
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_36ec8175(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature((nint)__hs_handle);
         }
     }
 
@@ -103,9 +128,15 @@ public sealed unsafe partial class Signature : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_a98ed6d1((void*)__hosihikari_shim_handle);
     }
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView view()
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView? view()
     {
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView((nint)NativeMethods.TablePtr->C0.hs_method_4f9fc09f((void*)__hosihikari_shim_handle));
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4f9fc09f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView((nint)__hs_handle);
     }
 
     public void Dispose()
