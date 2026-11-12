@@ -54,9 +54,15 @@ public sealed unsafe partial class RuntimeCommand : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_9a996ccd((void*)arg0, paramCount);
     }
 
-    public static nint operator_new(ulong arg0, uint paramCount)
+    public static nint? operator_new(ulong arg0, uint paramCount)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_840715b8(arg0, paramCount);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_840715b8(arg0, paramCount);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamStorageType? operator_index(string name)

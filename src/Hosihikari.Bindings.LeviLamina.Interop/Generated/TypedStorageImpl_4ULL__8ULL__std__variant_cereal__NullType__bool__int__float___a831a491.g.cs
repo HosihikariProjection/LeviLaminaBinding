@@ -163,14 +163,26 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__8ULL__std__variant_cer
         return new global::Hosihikari.Bindings.LeviLamina.Interop.Variant_361b5093((nint)__hs_handle);
     }
 
-    public nint operator_operator___c09508d5()
+    public nint? operator_operator___c09508d5()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_c09508d5((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c09508d5((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint operator_operator___25e2358d()
+    public nint? operator_operator___25e2358d()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_25e2358d((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_25e2358d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]

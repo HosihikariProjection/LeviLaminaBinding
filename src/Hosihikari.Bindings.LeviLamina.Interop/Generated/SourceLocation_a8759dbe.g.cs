@@ -59,19 +59,37 @@ public sealed unsafe partial class SourceLocation : global::System.IDisposable
     public static nint current(nint file, nint function, nint funcsig, int line, int column) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: consteval methods cannot be called at runtime.");
 
-    public nint file()
+    public nint? file()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_673db6c0((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_673db6c0((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint funcsig()
+    public nint? funcsig()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_26ba98aa((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_26ba98aa((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint function()
+    public nint? function()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_968c3612((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_968c3612((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public int line()

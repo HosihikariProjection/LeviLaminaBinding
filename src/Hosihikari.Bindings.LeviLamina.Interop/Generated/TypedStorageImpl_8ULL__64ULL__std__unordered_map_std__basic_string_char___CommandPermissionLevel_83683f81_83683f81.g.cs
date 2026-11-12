@@ -203,14 +203,26 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__64ULL__std__unordered_
         return __hs_result;
     }
 
-    public nint operator_operator___ccf33e78()
+    public nint? operator_operator___ccf33e78()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_ccf33e78((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ccf33e78((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint operator_operator___76585082()
+    public nint? operator_operator___76585082()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_76585082((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_76585082((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]

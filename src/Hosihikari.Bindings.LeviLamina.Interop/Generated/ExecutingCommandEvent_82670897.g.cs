@@ -52,9 +52,15 @@ public sealed unsafe partial class ExecutingCommandEvent : global::System.IDispo
         return new ExecutingCommandEvent((nint)handle);
     }
 
-    public nint commandContext()
+    public nint? commandContext()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_88790774((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_88790774((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void deserialize(nint arg0)
@@ -62,9 +68,15 @@ public sealed unsafe partial class ExecutingCommandEvent : global::System.IDispo
         NativeMethods.TablePtr->C0.hs_method_b97254a8((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint suppressOutput()
+    public nint? suppressOutput()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_25fe1a29((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_25fe1a29((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__ExecuteCommandEvent_? AsCancellable_ll__event__ExecuteCommandEvent_()

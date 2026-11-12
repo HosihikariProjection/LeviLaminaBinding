@@ -52,9 +52,15 @@ public sealed unsafe partial class PlayerAttackEvent : global::System.IDisposabl
         return new PlayerAttackEvent((nint)handle);
     }
 
-    public nint cause()
+    public nint? cause()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_90fbaaf0((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_90fbaaf0((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)
@@ -62,9 +68,15 @@ public sealed unsafe partial class PlayerAttackEvent : global::System.IDisposabl
         NativeMethods.TablePtr->C0.hs_method_418f8a6a((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint target()
+    public nint? target()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_4cdc3704((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4cdc3704((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()

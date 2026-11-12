@@ -57,19 +57,37 @@ public sealed unsafe partial class SpawningMobEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_1a7776aa((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint fromSpawner()
+    public nint? fromSpawner()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_05181445((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_05181445((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint naturalSpawn()
+    public nint? naturalSpawn()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_0b4d2f4a((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0b4d2f4a((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint surface()
+    public nint? surface()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_1fa3d3ad((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1fa3d3ad((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Cancellable_ll__event__SpawnMobEvent_? AsCancellable_ll__event__SpawnMobEvent_()

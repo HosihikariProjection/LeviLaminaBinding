@@ -94,14 +94,26 @@ public sealed unsafe partial class DynamicLibrary : global::System.IDisposable
     public nint free() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: optional return type 'std::system_error' is not a known bindable declaration.");
 
-    public nint getAddress(nint name)
+    public nint? getAddress(nint name)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_2c07dd8a((void*)__hosihikari_shim_handle, (void*)name);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2c07dd8a((void*)__hosihikari_shim_handle, (void*)name);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint handle()
+    public nint? handle()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_68fc63cd((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_68fc63cd((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: optional return type 'std::system_error' is not a known bindable declaration.", false)]

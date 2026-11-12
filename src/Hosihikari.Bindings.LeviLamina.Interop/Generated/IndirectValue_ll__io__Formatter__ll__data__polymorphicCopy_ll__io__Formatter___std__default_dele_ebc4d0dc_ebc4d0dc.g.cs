@@ -104,14 +104,26 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)__hs_handle, false);
     }
 
-    public nint getDeleter_4b749aae()
+    public nint? getDeleter_4b749aae()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_4b749aae((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4b749aae((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint getDeleter_9b683563()
+    public nint? getDeleter_9b683563()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_9b683563((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9b683563((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public bool operator_bool()
@@ -119,9 +131,15 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
         return NativeMethods.TablePtr->C0.hs_method_8b9de394((void*)__hosihikari_shim_handle) != 0;
     }
 
-    public nint operator_multiply_ad17d380()
+    public nint? operator_multiply_ad17d380()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_ad17d380((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ad17d380((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_multiply_db594926()
@@ -135,9 +153,15 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false);
     }
 
-    public nint operator_multiply_273df807()
+    public nint? operator_multiply_273df807()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_273df807((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_273df807((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? operator_multiply_01d3c2c9()

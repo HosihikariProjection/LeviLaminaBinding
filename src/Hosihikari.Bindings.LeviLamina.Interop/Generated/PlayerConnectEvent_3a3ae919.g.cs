@@ -52,14 +52,26 @@ public sealed unsafe partial class PlayerConnectEvent : global::System.IDisposab
         return new PlayerConnectEvent((nint)handle);
     }
 
-    public nint connectionRequest()
+    public nint? connectionRequest()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_bc4029aa((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_bc4029aa((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint networkIdentifier()
+    public nint? networkIdentifier()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_eb72a114((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_eb72a114((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

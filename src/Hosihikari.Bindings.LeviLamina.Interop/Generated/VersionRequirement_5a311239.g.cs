@@ -78,9 +78,15 @@ public sealed unsafe partial class VersionRequirement : global::System.IDisposab
         }
     }
 
-    public nint comparatorSets()
+    public nint? comparatorSets()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_14510e0e((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_14510e0e((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.detail.from_chars_result? from_chars(nint first, nint last)

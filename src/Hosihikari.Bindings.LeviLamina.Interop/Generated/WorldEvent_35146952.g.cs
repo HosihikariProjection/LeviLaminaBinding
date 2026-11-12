@@ -40,9 +40,15 @@ public sealed unsafe partial class WorldEvent
         return __hs_handle;
     }
 
-    public nint blockSource()
+    public nint? blockSource()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_b2ad2a9c((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b2ad2a9c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

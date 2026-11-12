@@ -40,14 +40,26 @@ public sealed unsafe partial class ExecuteCommandEvent
         return __hs_handle;
     }
 
-    public nint commandContext()
+    public nint? commandContext()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_3bf2e906((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3bf2e906((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint minecraftCommands()
+    public nint? minecraftCommands()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_12ff330c((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_12ff330c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)
@@ -55,9 +67,15 @@ public sealed unsafe partial class ExecuteCommandEvent
         NativeMethods.TablePtr->C0.hs_method_68caa5c1((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint suppressOutput()
+    public nint? suppressOutput()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_8fc39706((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8fc39706((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()

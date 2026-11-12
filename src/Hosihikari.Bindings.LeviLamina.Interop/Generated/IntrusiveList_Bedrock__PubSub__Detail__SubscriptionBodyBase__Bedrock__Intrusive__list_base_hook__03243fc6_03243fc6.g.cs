@@ -48,14 +48,26 @@ public sealed unsafe partial class IntrusiveList_Bedrock__PubSub__Detail__Subscr
     public static IntrusiveList_Bedrock__PubSub__Detail__SubscriptionBodyBase__Bedrock__Intrusive__list_base_hook__03243fc6 Create(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint back_a5667e5f()
+    public nint? back_a5667e5f()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_a5667e5f((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a5667e5f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint back_e165119c()
+    public nint? back_e165119c()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_e165119c((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e165119c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>::Iterator<false>' is not a known bindable declaration.", false)]
@@ -100,14 +112,26 @@ public sealed unsafe partial class IntrusiveList_Bedrock__PubSub__Detail__Subscr
     public nint erase(nint first, nint last) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>::Iterator<false>' is not a known bindable declaration.");
 
-    public nint front_53269807()
+    public nint? front_53269807()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_53269807((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_53269807((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint front_02497977()
+    public nint? front_02497977()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_02497977((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_02497977((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>::Iterator<false>' is not a known bindable declaration.", false)]

@@ -40,9 +40,15 @@ public sealed unsafe partial class LevelEvent
         return __hs_handle;
     }
 
-    public nint level()
+    public nint? level()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_fb7b62c0((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_fb7b62c0((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

@@ -44,9 +44,15 @@ public sealed unsafe partial class bad_expected_access_ll__Error_ : global::Syst
     public static bad_expected_access_ll__Error_ Create(nint e) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
 
-    public nint error_5a2a67ef()
+    public nint? error_5a2a67ef()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_5a2a67ef((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_5a2a67ef((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? error_cd83de93()
@@ -60,9 +66,15 @@ public sealed unsafe partial class bad_expected_access_ll__Error_ : global::Syst
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
-    public nint error_3eeff636()
+    public nint? error_3eeff636()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_3eeff636((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3eeff636((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error? error_648678e4()
@@ -76,9 +88,15 @@ public sealed unsafe partial class bad_expected_access_ll__Error_ : global::Syst
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error((nint)__hs_handle, false);
     }
 
-    public nint what()
+    public nint? what()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_3782fb1b((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3782fb1b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void Dispose()

@@ -57,9 +57,15 @@ public sealed unsafe partial class PlayerAddExperienceEvent : global::System.IDi
         NativeMethods.TablePtr->C0.hs_method_1ee28c5a((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint experience()
+    public nint? experience()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_e5c66566((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e5c66566((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

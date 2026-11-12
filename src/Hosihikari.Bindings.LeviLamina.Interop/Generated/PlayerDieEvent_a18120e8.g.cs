@@ -57,9 +57,15 @@ public sealed unsafe partial class PlayerDieEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_87387cf1((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint source()
+    public nint? source()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_32fdf504((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_32fdf504((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()

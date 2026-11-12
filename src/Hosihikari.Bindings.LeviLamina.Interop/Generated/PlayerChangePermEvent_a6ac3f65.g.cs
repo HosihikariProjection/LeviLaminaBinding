@@ -57,9 +57,15 @@ public sealed unsafe partial class PlayerChangePermEvent : global::System.IDispo
         NativeMethods.TablePtr->C0.hs_method_e1588088((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint newPerm()
+    public nint? newPerm()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_cfd26973((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_cfd26973((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

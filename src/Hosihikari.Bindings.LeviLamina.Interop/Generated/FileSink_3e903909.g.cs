@@ -54,9 +54,15 @@ public sealed unsafe partial class FileSink : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_42dee24a((void*)__hosihikari_shim_handle);
     }
 
-    public static nint getDefault()
+    public static nint? getDefault()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_2b821de4();
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2b821de4();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void rotate()

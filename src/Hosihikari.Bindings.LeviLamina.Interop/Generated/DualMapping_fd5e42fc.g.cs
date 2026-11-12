@@ -69,9 +69,15 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_2ad35bbc((void*)__hosihikari_shim_handle, size);
     }
 
-    public nint executable()
+    public nint? executable()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_35b2a35f((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_35b2a35f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void free()
@@ -84,9 +90,15 @@ public sealed unsafe partial class DualMapping : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_731d79ad((void*)__hosihikari_shim_handle);
     }
 
-    public nint writable()
+    public nint? writable()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_d56c2648((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_d56c2648((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
 

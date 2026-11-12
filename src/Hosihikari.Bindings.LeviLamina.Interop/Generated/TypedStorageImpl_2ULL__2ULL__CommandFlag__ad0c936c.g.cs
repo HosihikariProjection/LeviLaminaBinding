@@ -53,9 +53,15 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
         get => (nint)NativeMethods.TablePtr->C0.hs_get_58da2b8f((void*)__hosihikari_shim_handle);
     }
 
-    public nint get_fbc66274()
+    public nint? get_fbc66274()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_fbc66274((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_fbc66274((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? get_fe2bf2ba()
@@ -69,9 +75,15 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
         return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)__hs_handle, false);
     }
 
-    public nint get_656a0d6d()
+    public nint? get_656a0d6d()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_656a0d6d((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_656a0d6d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? get_87d2ee40()
@@ -107,9 +119,15 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
         return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)__hs_handle, false);
     }
 
-    public nint operator_multiply_a1c72ce6()
+    public nint? operator_multiply_a1c72ce6()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_a1c72ce6((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a1c72ce6((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? operator_multiply_d5988d23()
@@ -123,9 +141,15 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__CommandFlag_
         return new global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag((nint)__hs_handle, false);
     }
 
-    public nint operator_multiply_810ad943()
+    public nint? operator_multiply_810ad943()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_810ad943((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_810ad943((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.CommandFlag? operator_multiply_0d569cc4()

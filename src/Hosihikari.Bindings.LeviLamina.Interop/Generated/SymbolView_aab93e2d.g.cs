@@ -110,9 +110,15 @@ public sealed unsafe partial class SymbolView : global::System.IDisposable
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public nint resolve(bool disableErrorOutput)
+    public nint? resolve(bool disableErrorOutput)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_5cd95024((void*)__hosihikari_shim_handle, disableErrorOutput);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_5cd95024((void*)__hosihikari_shim_handle, disableErrorOutput);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public ulong size()

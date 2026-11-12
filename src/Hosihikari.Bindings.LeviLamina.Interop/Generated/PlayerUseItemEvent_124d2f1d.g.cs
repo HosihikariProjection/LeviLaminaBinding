@@ -52,9 +52,15 @@ public sealed unsafe partial class PlayerUseItemEvent : global::System.IDisposab
         return new PlayerUseItemEvent((nint)handle);
     }
 
-    public nint item()
+    public nint? item()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_556b2cea((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_556b2cea((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

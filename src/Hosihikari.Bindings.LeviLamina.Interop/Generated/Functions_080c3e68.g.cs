@@ -6,9 +6,15 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
 public static unsafe partial class Functions
 {
-    public static nint getDefaultAllocator()
+    public static nint? getDefaultAllocator()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_function_146d1261();
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_146d1261();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public static ulong getUsableSize(nint ptr)
@@ -53,9 +59,15 @@ public static unsafe partial class Functions
         NativeMethods.TablePtr->C0.hs_function_1874baca(arg0);
     }
 
-    public static nint toFuncPtr(ulong t)
+    public static nint? toFuncPtr(ulong t)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_function_fae3176c(t);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_fae3176c(t);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public static bool unhook(nint target, nint detour, bool suspendThreads)

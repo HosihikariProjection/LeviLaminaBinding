@@ -62,13 +62,25 @@ public sealed unsafe partial class TightPair_ll__data__polymorphicCopy_ll__io__F
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_((nint)__hs_handle, false);
     }
 
-    public nint second_73c45094()
+    public nint? second_73c45094()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_73c45094((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_73c45094((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint second_85bab499()
+    public nint? second_85bab499()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_85bab499((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_85bab499((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 }

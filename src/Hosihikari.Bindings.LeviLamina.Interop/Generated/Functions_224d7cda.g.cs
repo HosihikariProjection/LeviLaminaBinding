@@ -45,9 +45,15 @@ public static unsafe partial class Functions
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public static nint getCurrentModuleHandle()
+    public static nint? getCurrentModuleHandle()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_function_f07a905e();
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_f07a905e();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public static string getEnvironmentVariable(string name)
@@ -87,9 +93,15 @@ public static unsafe partial class Functions
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public static nint getModuleHandle(nint addr)
+    public static nint? getModuleHandle(nint addr)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_function_95f051b8((void*)addr);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_95f051b8((void*)addr);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public static string? getModulePath(nint handle, nint process)

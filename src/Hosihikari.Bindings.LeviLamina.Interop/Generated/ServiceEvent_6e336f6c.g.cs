@@ -40,9 +40,15 @@ public sealed unsafe partial class ServiceEvent
         return __hs_handle;
     }
 
-    public nint service()
+    public nint? service()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_1a6732fc((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1a6732fc((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event? AsEvent()

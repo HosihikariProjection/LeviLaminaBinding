@@ -52,24 +52,48 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return new BlockChangedEvent((nint)handle);
     }
 
-    public nint layer()
+    public nint? layer()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_a7c076d9((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a7c076d9((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint newBlock()
+    public nint? newBlock()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_65b397e1((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_65b397e1((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint pos()
+    public nint? pos()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_ae68cfcd((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ae68cfcd((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint previousBlock()
+    public nint? previousBlock()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_06e4a59d((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_06e4a59d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

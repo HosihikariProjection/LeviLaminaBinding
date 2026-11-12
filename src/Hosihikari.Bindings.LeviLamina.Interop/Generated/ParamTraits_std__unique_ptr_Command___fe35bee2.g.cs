@@ -40,9 +40,15 @@ public sealed unsafe partial class ParamTraits_std__unique_ptr_Command__ : globa
         return __hs_handle;
     }
 
-    public static nint parseRule()
+    public static nint? parseRule()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_4f549684();
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4f549684();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public static int parseRuleValue()

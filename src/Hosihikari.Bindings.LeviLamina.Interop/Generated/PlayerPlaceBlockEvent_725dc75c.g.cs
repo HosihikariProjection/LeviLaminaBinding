@@ -40,9 +40,15 @@ public sealed unsafe partial class PlayerPlaceBlockEvent
         return __hs_handle;
     }
 
-    public nint pos()
+    public nint? pos()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_1903f7b8((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1903f7b8((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

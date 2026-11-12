@@ -57,19 +57,37 @@ public sealed unsafe partial class PlayerPickUpItemEvent : global::System.IDispo
         NativeMethods.TablePtr->C0.hs_method_7579f233((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint favoredSlot()
+    public nint? favoredSlot()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_0e63e30b((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0e63e30b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint itemActor()
+    public nint? itemActor()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_ecadd0cc((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ecadd0cc((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
-    public nint orgCount()
+    public nint? orgCount()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_3ea5079b((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3ea5079b((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public void serialize(nint arg0)

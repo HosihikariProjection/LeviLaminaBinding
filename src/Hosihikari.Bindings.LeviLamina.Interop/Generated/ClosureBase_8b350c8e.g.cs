@@ -52,9 +52,15 @@ public sealed unsafe partial class ClosureBase : global::System.IDisposable
         return new ClosureBase((nint)handle);
     }
 
-    public static nint getClosureData()
+    public static nint? getClosureData()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_91463dca();
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_91463dca();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public const ulong jitSize = 48;

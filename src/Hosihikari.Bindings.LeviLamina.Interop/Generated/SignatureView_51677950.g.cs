@@ -160,9 +160,15 @@ public sealed unsafe partial class SignatureView : global::System.IDisposable
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement((nint)__hs_handle, false);
     }
 
-    public nint resolve(bool disableErrorOutput)
+    public nint? resolve(bool disableErrorOutput)
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_1c4014f3((void*)__hosihikari_shim_handle, disableErrorOutput);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1c4014f3((void*)__hosihikari_shim_handle, disableErrorOutput);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::span<std::byte>' is not a known bindable declaration.", false)]

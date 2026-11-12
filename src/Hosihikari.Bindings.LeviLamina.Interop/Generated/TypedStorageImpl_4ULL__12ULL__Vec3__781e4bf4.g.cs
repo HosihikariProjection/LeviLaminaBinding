@@ -53,9 +53,15 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__12ULL__Vec3_ : global:
         get => (nint)NativeMethods.TablePtr->C0.hs_get_73f929ec((void*)__hosihikari_shim_handle);
     }
 
-    public nint get_7e623e92()
+    public nint? get_7e623e92()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_7e623e92((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7e623e92((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3? get_d2667bd9()
@@ -69,9 +75,15 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__12ULL__Vec3_ : global:
         return new global::Hosihikari.Bindings.LeviLamina.Interop.Vec3((nint)__hs_handle, false);
     }
 
-    public nint get_1e6cd977()
+    public nint? get_1e6cd977()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_1e6cd977((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1e6cd977((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3? get_f2da1cd9()
@@ -107,9 +119,15 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__12ULL__Vec3_ : global:
         return new global::Hosihikari.Bindings.LeviLamina.Interop.Vec3((nint)__hs_handle, false);
     }
 
-    public nint operator_multiply_c50c378d()
+    public nint? operator_multiply_c50c378d()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_c50c378d((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_c50c378d((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3? operator_multiply_44975da8()
@@ -123,9 +141,15 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__12ULL__Vec3_ : global:
         return new global::Hosihikari.Bindings.LeviLamina.Interop.Vec3((nint)__hs_handle, false);
     }
 
-    public nint operator_multiply_ba923d84()
+    public nint? operator_multiply_ba923d84()
     {
-        return (nint)NativeMethods.TablePtr->C0.hs_method_ba923d84((void*)__hosihikari_shim_handle);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ba923d84((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
     }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.Vec3? operator_multiply_48ff48db()
