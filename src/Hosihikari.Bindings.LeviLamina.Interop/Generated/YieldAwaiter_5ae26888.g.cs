@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
-public sealed unsafe partial class YieldAwaiter
+public sealed unsafe partial class YieldAwaiter : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class YieldAwaiter
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static YieldAwaiter Create(nint exec) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static YieldAwaiter? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? exec)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_501aaeaa((void*)(exec?.Handle ?? 0), exec is not null);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new YieldAwaiter((nint)handle);
+    }
 
     public bool await_ready()
     {
@@ -61,5 +69,18 @@ public sealed unsafe partial class YieldAwaiter
     public void setExecutor(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? ex)
     {
         NativeMethods.TablePtr->C0.hs_method_d23d09a5((void*)__hosihikari_shim_handle, (void*)(ex?.Handle ?? 0), ex is not null);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_5ae26888((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

@@ -40,13 +40,21 @@ public sealed unsafe partial class Decompressor : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Decompressor Create(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Decompressor? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Decompressor arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c9715dd9((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+        return new Decompressor((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: callback return type 'nonstd::expected_lite::expected<void, ll::Error>' is not supported.", false)]
     public static Decompressor Create(nint sink, nint format) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: callback return type 'nonstd::expected_lite::expected<void, ll::Error>' is not supported.");
 
     public void finish()
     {

@@ -40,9 +40,17 @@ public sealed unsafe partial class Mod : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Mod Create(nint manifest) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Mod? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.mod.Manifest manifest)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_31ccf128((void*)manifest.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new Mod((nint)handle);
+    }
 
     public string getBehaviorDir()
     {

@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
-public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___
+public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___ : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -67,5 +67,18 @@ public sealed unsafe partial class ForwardAwaiter_const_ll__coro__Executor___
     public nint t
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_3cf3081b((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_87455beb((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

@@ -40,13 +40,85 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static ModalForm Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static ModalForm? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_55e7cbcc();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static ModalForm Create(nint title, nint content, nint upperButton, nint lowerButton) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new ModalForm((nint)handle);
+    }
+
+    public static ModalForm? Create(string title, string content, string upperButton, string lowerButton)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(title);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(title, __hs_stringBytes0);
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(content);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(content, __hs_stringBytes1);
+        var __hs_stringByteCount2 = global::System.Text.Encoding.UTF8.GetByteCount(upperButton);
+        scoped global::System.Span<byte> __hs_stringBytes2;
+        if (__hs_stringByteCount2 <= 256)
+        {
+            __hs_stringBytes2 = stackalloc byte[__hs_stringByteCount2 == 0 ? 1 : __hs_stringByteCount2];
+        }
+        else
+        {
+            __hs_stringBytes2 = new byte[__hs_stringByteCount2];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(upperButton, __hs_stringBytes2);
+        var __hs_stringByteCount3 = global::System.Text.Encoding.UTF8.GetByteCount(lowerButton);
+        scoped global::System.Span<byte> __hs_stringBytes3;
+        if (__hs_stringByteCount3 <= 256)
+        {
+            __hs_stringBytes3 = stackalloc byte[__hs_stringByteCount3 == 0 ? 1 : __hs_stringByteCount3];
+        }
+        else
+        {
+            __hs_stringBytes3 = new byte[__hs_stringByteCount3];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(lowerButton, __hs_stringBytes3);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+            {
+                fixed (byte* __hs_stringData2 = __hs_stringBytes2)
+                {
+                    fixed (byte* __hs_stringData3 = __hs_stringBytes3)
+                    {
+                        var handle = NativeMethods.TablePtr->C0.hs_create_4b5ab410(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2, __hs_stringData3, (nuint)__hs_stringByteCount3);
+                        if (handle == null)
+                        {
+                            NativeMethods.GetLastError();
+                            return null;
+                        }
+
+                        return new ModalForm((nint)handle);
+                    }
+                }
+            }
+        }
+    }
 
     public bool sendTo(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {

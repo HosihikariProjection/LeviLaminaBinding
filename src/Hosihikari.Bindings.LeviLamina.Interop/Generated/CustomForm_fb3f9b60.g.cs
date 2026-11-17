@@ -40,13 +40,29 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static CustomForm Create(nint player, nint title) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static CustomForm? Create(nint player, global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 title)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9b58a241((void*)player, (void*)title.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static CustomForm Create(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new CustomForm((nint)handle);
+    }
+
+    public static CustomForm? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_efa252c2((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new CustomForm((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.CustomForm? button(global::Hosihikari.Bindings.LeviLamina.Interop.Variant_d6da2e34 label, nint callbackInvoke, nint callbackUserData, nint callbackRelease, global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.ButtonOptions options)
     {

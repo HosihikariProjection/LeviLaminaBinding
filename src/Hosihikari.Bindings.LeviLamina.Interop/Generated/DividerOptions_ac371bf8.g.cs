@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class DividerOptions
+public sealed unsafe partial class DividerOptions : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -44,5 +44,18 @@ public sealed unsafe partial class DividerOptions
     public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_4ad32f22((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_ac371bf8((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

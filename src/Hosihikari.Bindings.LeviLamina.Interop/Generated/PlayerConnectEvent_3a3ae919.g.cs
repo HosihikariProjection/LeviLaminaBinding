@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class PlayerConnectEvent
+public sealed unsafe partial class PlayerConnectEvent : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class PlayerConnectEvent
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static PlayerConnectEvent Create(nint networkIdentifier, nint connectionRequest, nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static PlayerConnectEvent? Create(nint networkIdentifier, nint connectionRequest, nint player)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_ba32fdb7((void*)networkIdentifier, (void*)connectionRequest, (void*)player);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new PlayerConnectEvent((nint)handle);
+    }
 
     public nint? connectionRequest()
     {
@@ -144,5 +152,18 @@ public sealed unsafe partial class PlayerConnectEvent
         nuint __hs_idHash = 0;
         NativeMethods.TablePtr->C0.hs_event_id_fde9dd36(&__hs_idName, &__hs_idSize, &__hs_idHash);
         return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_3a3ae919((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

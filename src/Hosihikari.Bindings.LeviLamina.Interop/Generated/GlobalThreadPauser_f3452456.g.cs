@@ -40,9 +40,17 @@ public sealed unsafe partial class GlobalThreadPauser : global::System.IDisposab
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static GlobalThreadPauser Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static GlobalThreadPauser? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_38490708();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new GlobalThreadPauser((nint)handle);
+    }
 
 
     public void Dispose()

@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.nonstd.expected_lite;
 
-public sealed unsafe partial class bad_expected_access_ll__Error_
+public sealed unsafe partial class bad_expected_access_ll__Error_ : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,9 @@ public sealed unsafe partial class bad_expected_access_ll__Error_
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.", false)]
     public static bad_expected_access_ll__Error_ Create(nint e) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: constructors with mutable reference parameters are not projected.");
 
     public nint? error_5a2a67ef()
     {
@@ -97,5 +97,18 @@ public sealed unsafe partial class bad_expected_access_ll__Error_
             return null;
         }
         return (nint)__hs_handle;
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_b401a6bc((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

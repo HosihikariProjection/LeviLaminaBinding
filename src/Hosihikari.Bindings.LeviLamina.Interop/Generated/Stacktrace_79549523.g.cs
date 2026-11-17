@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
-public sealed unsafe partial class Stacktrace
+public sealed unsafe partial class Stacktrace : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,18 +40,25 @@ public sealed unsafe partial class Stacktrace
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::Stacktrace' has no accessible destructor.", false)]
-    public static nint current(ulong skip, ulong maxDepth) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::Stacktrace' has no accessible destructor.");
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace? current(ulong skip, ulong maxDepth)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_16b128cf(skip, maxDepth);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace((nint)__hs_handle);
+    }
 
     public bool empty()
     {
         return NativeMethods.TablePtr->C0.hs_method_98d6483c((void*)__hosihikari_shim_handle) != 0;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::Stacktrace' has no accessible destructor.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::thread::id' is not a known bindable declaration.", false)]
     public static nint fromThread(nint id) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::Stacktrace' has no accessible destructor.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::thread::id' is not a known bindable declaration.");
 
     public ulong getHash()
     {
@@ -72,5 +79,18 @@ public sealed unsafe partial class Stacktrace
     public ulong size()
     {
         return NativeMethods.TablePtr->C0.hs_method_87be660e((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_79549523((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class BlockChangedEvent
+public sealed unsafe partial class BlockChangedEvent : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class BlockChangedEvent
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static BlockChangedEvent Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static BlockChangedEvent? Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_17b1672c((void*)blockSource, (void*)layer, (void*)previousBlock, (void*)newBlock, (void*)pos);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new BlockChangedEvent((nint)handle);
+    }
 
     public nint? layer()
     {
@@ -122,5 +130,18 @@ public sealed unsafe partial class BlockChangedEvent
         nuint __hs_idHash = 0;
         NativeMethods.TablePtr->C0.hs_event_id_bc49689d(&__hs_idName, &__hs_idSize, &__hs_idHash);
         return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_f09c3279((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

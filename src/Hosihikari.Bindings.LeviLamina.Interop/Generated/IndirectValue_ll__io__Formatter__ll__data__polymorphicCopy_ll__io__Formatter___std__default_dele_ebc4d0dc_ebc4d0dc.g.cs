@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
-public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc
+public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__polymorphicCopy_ll__io__Formatter___std__default_dele_ebc4d0dc : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -219,5 +219,18 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
     public void reset(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.Formatter? ptr, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.polymorphicCopy_ll__io__Formatter_ copy)
     {
         NativeMethods.TablePtr->C0.hs_method_c0fd1b7f((void*)__hosihikari_shim_handle, (void*)(ptr?.Handle ?? 0), (void*)copy.Handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_ebc4d0dc((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

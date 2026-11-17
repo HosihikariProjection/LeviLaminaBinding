@@ -40,21 +40,45 @@ public sealed unsafe partial class Error : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Error Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Error? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c9b03de9();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Error Create_af81c54d(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new Error((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Error Create_699c61d1(nint i) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Error? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Error arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_af81c54d((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Error Create_507cce9a(nint i) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new Error((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
+    public static Error Create(nint i) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
+
+    public static Error? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase i)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_507cce9a((void*)i.ReleaseHandle());
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new Error((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'll::Error' is not copy-constructible.", false)]
     public nint join_ef96b8b2(nint arg0) =>

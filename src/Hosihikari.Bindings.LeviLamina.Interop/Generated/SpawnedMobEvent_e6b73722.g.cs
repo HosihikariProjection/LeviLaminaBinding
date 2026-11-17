@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class SpawnedMobEvent
+public sealed unsafe partial class SpawnedMobEvent : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class SpawnedMobEvent
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static SpawnedMobEvent Create(nint mob, nint blockSource, nint identifier, nint spawner, nint pos, nint naturalSpawn, nint surface, nint fromSpawner) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static SpawnedMobEvent? Create(nint? mob, nint blockSource, nint identifier, nint? spawner, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 pos, nint naturalSpawn, nint surface, nint fromSpawner)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_6f129826((void*)(mob ?? 0), (void*)blockSource, (void*)identifier, (void*)(spawner ?? 0), (void*)pos.Handle, (void*)naturalSpawn, (void*)surface, (void*)fromSpawner, mob is not null, spawner is not null);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new SpawnedMobEvent((nint)handle);
+    }
 
     public nint? mob()
     {
@@ -96,5 +104,18 @@ public sealed unsafe partial class SpawnedMobEvent
         nuint __hs_idHash = 0;
         NativeMethods.TablePtr->C0.hs_event_id_4641ad49(&__hs_idName, &__hs_idSize, &__hs_idHash);
         return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_e6b73722((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

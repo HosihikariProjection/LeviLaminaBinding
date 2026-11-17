@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class DropdownOptions
+public sealed unsafe partial class DropdownOptions : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -56,5 +56,18 @@ public sealed unsafe partial class DropdownOptions
     public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_7ab25c31((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_a3d5bb6a((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

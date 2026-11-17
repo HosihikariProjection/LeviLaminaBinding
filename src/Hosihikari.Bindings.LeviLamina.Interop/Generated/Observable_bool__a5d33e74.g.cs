@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
-public sealed unsafe partial class Observable_bool_
+public sealed unsafe partial class Observable_bool_ : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class Observable_bool_
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Observable_bool_ Create(bool initial) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Observable_bool_? Create(bool initial)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c29772f9(initial);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new Observable_bool_((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the template constructor has no visible definition.", false)]
     public static Observable_bool_ Create_5c5dad5c(nint arg0) =>
@@ -78,5 +86,18 @@ public sealed unsafe partial class Observable_bool_
     public bool unsubscribe(uint id)
     {
         return NativeMethods.TablePtr->C0.hs_method_8da0720f((void*)__hosihikari_shim_handle, id) != 0;
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_a5d33e74((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

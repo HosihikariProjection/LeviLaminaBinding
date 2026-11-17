@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
-public sealed unsafe partial class SignatureElement
+public sealed unsafe partial class SignatureElement : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,21 +40,45 @@ public sealed unsafe partial class SignatureElement
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static SignatureElement Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static SignatureElement? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_169d3cd0();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static SignatureElement Create_cedf0afa(nint @byte) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new SignatureElement((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static SignatureElement Create_9758b616(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.", false)]
+    public static SignatureElement Create(nint @byte) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::byte' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static SignatureElement Create(byte @byte) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static SignatureElement? Create_9758b616()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9758b616();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new SignatureElement((nint)handle);
+    }
+
+    public static SignatureElement? Create(byte @byte)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_91885b98(@byte);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new SignatureElement((nint)handle);
+    }
 
     public ulong hash()
     {
@@ -82,5 +106,18 @@ public sealed unsafe partial class SignatureElement
     public bool operator_equal(byte other)
     {
         return NativeMethods.TablePtr->C0.hs_method_1b15f4fa((void*)__hosihikari_shim_handle, other) != 0;
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_d5da3fe3((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

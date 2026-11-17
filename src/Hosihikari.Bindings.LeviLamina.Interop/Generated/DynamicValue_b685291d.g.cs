@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.cereal;
 
-public sealed unsafe partial class DynamicValue
+public sealed unsafe partial class DynamicValue : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,53 +40,184 @@ public sealed unsafe partial class DynamicValue
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_3a25b1fb();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create(bool value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new DynamicValue((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_dc126234(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create(bool value)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_af6f93a0(value);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_fb14efa6(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new DynamicValue((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_925b22e9(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create_dc126234(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_dc126234((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_565569fd(nint value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new DynamicValue((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_3f53fa35(nint value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.NullType arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_fb14efa6((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_0764b243(nint value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new DynamicValue((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_ea8678a6(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create_925b22e9(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_925b22e9((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+        return new DynamicValue((nint)handle);
+    }
+
+    public static DynamicValue? Create_565569fd(nint value)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_565569fd((void*)value);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new DynamicValue((nint)handle);
+    }
+
+    public static DynamicValue? Create_3f53fa35(string value)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_3f53fa35(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+
+            return new DynamicValue((nint)handle);
+        }
+    }
+
+    public static DynamicValue? Create_0764b243(string value)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(value, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_0764b243(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+
+            return new DynamicValue((nint)handle);
+        }
+    }
+
+    public static DynamicValue? Create_ea8678a6()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_ea8678a6();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new DynamicValue((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::unordered_map<std::basic_string<char>, cereal::DynamicValue, cereal::util::internal::StringViewHash, std::equal_to<void>>' is not a known bindable declaration.", false)]
     public static DynamicValue Create_e158ef2f(nint value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::unordered_map<std::basic_string<char>, cereal::DynamicValue, cereal::util::internal::StringViewHash, std::equal_to<void>>' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static DynamicValue Create_cdb6c434(nint value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static DynamicValue? Create(global::Hosihikari.Bindings.LeviLamina.Interop.cereal.DynamicValue[] value)
+    {
+        var __hs_vectorItems0 = value;
+        var __hs_vectorHandles0 = new nint[__hs_vectorItems0?.Length ?? 0];
+        for (var __hs_i0 = 0; __hs_i0 < __hs_vectorHandles0.Length; __hs_i0++)
+        {
+            __hs_vectorHandles0[__hs_i0] = __hs_vectorItems0![__hs_i0]?.Handle ?? 0;
+        }
+        fixed (nint* __hs_vectorHandleData0 = __hs_vectorHandles0)
+        {
+            var __hs_vectorData0 = (void**)__hs_vectorHandleData0;
+            var handle = NativeMethods.TablePtr->C0.hs_create_cdb6c434(__hs_vectorData0, (nuint)(value?.Length ?? 0));
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+
+            return new DynamicValue((nint)handle);
+        }
+    }
 
     // The native field type is not projected; this is the address of the field storage.
     public nint mValue_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_31923cf7((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_b685291d((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

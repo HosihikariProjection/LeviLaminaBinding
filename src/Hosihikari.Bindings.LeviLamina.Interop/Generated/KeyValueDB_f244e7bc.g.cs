@@ -40,17 +40,69 @@ public sealed unsafe partial class KeyValueDB : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static KeyValueDB Create_95636f1d(nint path) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static KeyValueDB? Create(string path)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(path);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(path, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_95636f1d(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static KeyValueDB Create(nint path, bool createIfMiss, bool fixIfError, int bloomFilterBit) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+            return new KeyValueDB((nint)handle);
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static KeyValueDB Create_fadc003b(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static KeyValueDB? Create(string path, bool createIfMiss, bool fixIfError, int bloomFilterBit)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(path);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(path, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_bb79597a(__hs_stringData0, (nuint)__hs_stringByteCount0, createIfMiss, fixIfError, bloomFilterBit);
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+
+            return new KeyValueDB((nint)handle);
+        }
+    }
+
+    public static KeyValueDB? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_fadc003b((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new KeyValueDB((nint)handle);
+    }
 
     public bool del(string key)
     {

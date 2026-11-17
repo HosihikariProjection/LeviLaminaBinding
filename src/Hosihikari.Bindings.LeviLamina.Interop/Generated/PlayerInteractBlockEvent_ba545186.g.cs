@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class PlayerInteractBlockEvent
+public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class PlayerInteractBlockEvent
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static PlayerInteractBlockEvent Create(nint player, nint item, nint blockPos, nint face, nint clickPos, nint block) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static PlayerInteractBlockEvent? Create(nint player, nint item, nint blockPos, nint face, global::Hosihikari.Bindings.LeviLamina.Interop.Vec3 clickPos, nint? block)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9cac68c5((void*)player, (void*)item, (void*)blockPos, (void*)face, (void*)clickPos.Handle, (void*)(block ?? 0), block is not null);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new PlayerInteractBlockEvent((nint)handle);
+    }
 
     public nint? block()
     {
@@ -184,5 +192,18 @@ public sealed unsafe partial class PlayerInteractBlockEvent
         nuint __hs_idHash = 0;
         NativeMethods.TablePtr->C0.hs_event_id_38363856(&__hs_idName, &__hs_idSize, &__hs_idHash);
         return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_ba545186((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

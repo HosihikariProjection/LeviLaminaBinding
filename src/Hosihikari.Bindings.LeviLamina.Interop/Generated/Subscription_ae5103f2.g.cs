@@ -40,13 +40,29 @@ public sealed unsafe partial class Subscription : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Subscription Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static Subscription? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_013ecf39();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static Subscription Create_c6d34139(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new Subscription((nint)handle);
+    }
+
+    public static Subscription? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Subscription arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_c6d34139((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new Subscription((nint)handle);
+    }
 
     public bool operator_bool()
     {

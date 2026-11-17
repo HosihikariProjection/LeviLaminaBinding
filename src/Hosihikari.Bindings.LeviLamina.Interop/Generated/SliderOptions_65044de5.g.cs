@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class SliderOptions
+public sealed unsafe partial class SliderOptions : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -62,5 +62,18 @@ public sealed unsafe partial class SliderOptions
     public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_5dbee48c((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_65044de5((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

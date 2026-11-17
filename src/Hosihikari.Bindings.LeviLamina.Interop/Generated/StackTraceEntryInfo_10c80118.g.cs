@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils;
 
-public sealed unsafe partial class StackTraceEntryInfo
+public sealed unsafe partial class StackTraceEntryInfo : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -67,6 +67,19 @@ public sealed unsafe partial class StackTraceEntryInfo
         {
             var view = NativeMethods.TablePtr->C0.hs_get_660797d7((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
+        }
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_10c80118((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
         }
     }
 }

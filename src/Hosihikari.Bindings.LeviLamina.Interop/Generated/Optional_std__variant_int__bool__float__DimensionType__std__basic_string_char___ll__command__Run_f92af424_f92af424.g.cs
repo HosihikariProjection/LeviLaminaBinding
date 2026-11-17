@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.command;
 
-public sealed unsafe partial class Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424
+public sealed unsafe partial class Optional_std__variant_int__bool__float__DimensionType__std__basic_string_char___ll__command__Run_f92af424 : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -342,5 +342,18 @@ public sealed unsafe partial class Optional_std__variant_int__bool__float__Dimen
             return null;
         }
         return (nint)__hs_handle;
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_f92af424((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

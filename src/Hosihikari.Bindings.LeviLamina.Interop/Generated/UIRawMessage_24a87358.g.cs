@@ -40,17 +40,41 @@ public sealed unsafe partial class UIRawMessage : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static UIRawMessage Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static UIRawMessage? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_ac42d1ce();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static UIRawMessage Create_3a8703de(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new UIRawMessage((nint)handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static UIRawMessage Create_9b6f9516(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static UIRawMessage? Create_3a8703de(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_3a8703de((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new UIRawMessage((nint)handle);
+    }
+
+    public static UIRawMessage? Create_9b6f9516(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_9b6f9516((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new UIRawMessage((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? operator_assign_e1f154a7(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage arg0)
     {

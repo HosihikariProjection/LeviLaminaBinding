@@ -40,9 +40,17 @@ public sealed unsafe partial class RuntimeOverload : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static RuntimeOverload Create(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static RuntimeOverload? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload arg0)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_270aec83((void*)arg0.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new RuntimeOverload((nint)handle);
+    }
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.RuntimeOverload? deoption(byte option)
     {

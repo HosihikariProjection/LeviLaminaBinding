@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class ToggleOptions
+public sealed unsafe partial class ToggleOptions : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -56,5 +56,18 @@ public sealed unsafe partial class ToggleOptions
     public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_3871ca84((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_978dbe2e((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

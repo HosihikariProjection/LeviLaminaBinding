@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll;
 
-public sealed unsafe partial class ErrorCodeError
+public sealed unsafe partial class ErrorCodeError : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,9 @@ public sealed unsafe partial class ErrorCodeError
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::error_code' is not a known bindable declaration.", false)]
     public static ErrorCodeError Create(nint ec) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::error_code' is not a known bindable declaration.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint ec_Address
@@ -79,5 +79,18 @@ public sealed unsafe partial class ErrorCodeError
             return null;
         }
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)__hs_handle, false);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_2c0d3924((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

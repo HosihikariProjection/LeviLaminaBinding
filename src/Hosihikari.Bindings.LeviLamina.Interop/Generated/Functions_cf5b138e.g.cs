@@ -6,6 +6,17 @@ namespace Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils;
 
 public static unsafe partial class Functions
 {
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo? getInfo(global::Hosihikari.Bindings.LeviLamina.Interop.ll.StacktraceEntry arg0)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_function_aecf2df3((void*)arg0.Handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils.StackTraceEntryInfo((nint)__hs_handle);
+    }
+
     public static string toString_92eb9ef4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.Stacktrace arg0)
     {
         var __hs_view = NativeMethods.TablePtr->C0.hs_function_92eb9ef4((void*)arg0.Handle);
@@ -17,8 +28,4 @@ public static unsafe partial class Functions
         var __hs_view = NativeMethods.TablePtr->C0.hs_function_a0908623((void*)arg0.Handle);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::stacktrace_utils::StackTraceEntryInfo' has no accessible destructor.", false)]
-    public static nint getInfo(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::stacktrace_utils::StackTraceEntryInfo' has no accessible destructor.");
 }

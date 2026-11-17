@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.mod;
 
-public sealed unsafe partial class Manifest
+public sealed unsafe partial class Manifest : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -125,5 +125,18 @@ public sealed unsafe partial class Manifest
     public nint version_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_2f1d9d5b((void*)__hosihikari_shim_handle);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_24b0327e((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

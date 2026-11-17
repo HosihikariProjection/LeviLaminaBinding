@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class MobDieEvent
+public sealed unsafe partial class MobDieEvent : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class MobDieEvent
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static MobDieEvent Create(nint mob, nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static MobDieEvent? Create(nint mob, nint source)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_cf30b76c((void*)mob, (void*)source);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new MobDieEvent((nint)handle);
+    }
 
     public void serialize(nint arg0)
     {
@@ -100,5 +108,18 @@ public sealed unsafe partial class MobDieEvent
         nuint __hs_idHash = 0;
         NativeMethods.TablePtr->C0.hs_event_id_94d2605d(&__hs_idName, &__hs_idSize, &__hs_idHash);
         return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_89e3d6a7((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

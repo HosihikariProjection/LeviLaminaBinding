@@ -40,9 +40,9 @@ public sealed unsafe partial class FileSink : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>>' is not a known bindable declaration.", false)]
     public static FileSink Create(nint path, nint formatter, nint policy) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>>' is not a known bindable declaration.");
 
     public void append(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView view)
     {

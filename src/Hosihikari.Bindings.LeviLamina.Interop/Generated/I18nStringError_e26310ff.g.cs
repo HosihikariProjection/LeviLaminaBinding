@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.i18n;
 
-public sealed unsafe partial class I18nStringError
+public sealed unsafe partial class I18nStringError : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -92,5 +92,18 @@ public sealed unsafe partial class I18nStringError
             return null;
         }
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.ErrorInfoBase((nint)__hs_handle, false);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_e26310ff((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

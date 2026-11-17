@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
-public sealed unsafe partial class RotatePolicy
+public sealed unsafe partial class RotatePolicy : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,13 +40,29 @@ public sealed unsafe partial class RotatePolicy
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static RotatePolicy Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static RotatePolicy? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_440f50b9();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static RotatePolicy Create(nint config) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new RotatePolicy((nint)handle);
+    }
+
+    public static RotatePolicy? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig config)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_23531b04((void*)config.Handle);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new RotatePolicy((nint)handle);
+    }
 
     public static string defaultNamer(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.ArchiveNameInfo info)
     {
@@ -54,9 +70,16 @@ public sealed unsafe partial class RotatePolicy
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::io::RotatePolicy' has no accessible destructor.", false)]
-    public static nint disabled() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::io::RotatePolicy' has no accessible destructor.");
+    public static global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy? disabled()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2e63ad40();
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotatePolicy((nint)__hs_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: field type 'std::function<std::basic_string<char> (const ll::io::ArchiveNameInfo &)>' is not supported.", false)]
     public nint namer
@@ -74,5 +97,18 @@ public sealed unsafe partial class RotatePolicy
             return null;
         }
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.RotateConfig((nint)__hs_handle, false);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_5aa7f297((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

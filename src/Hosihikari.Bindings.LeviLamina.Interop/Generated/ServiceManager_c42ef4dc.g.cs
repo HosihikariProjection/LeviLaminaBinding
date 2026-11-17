@@ -60,13 +60,57 @@ public sealed unsafe partial class ServiceManager
         return global::Hosihikari.Bindings.Abi.SharedHandle.FromNative(__hs_shared);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: optional return type 'll::service::QueryServiceResult' has no accessible destructor.", false)]
-    public nint queryService(nint name) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: optional return type 'll::service::QueryServiceResult' has no accessible destructor.");
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult? queryService(string name)
+    {
+        var __hs_hasValue = false;
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8164fb4d((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, &__hs_hasValue);
+            if (__hs_handle == null)
+            {
+                NativeMethods.GetLastError();
+                if (!__hs_hasValue) { return null; }
+            }
+            return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult((nint)__hs_handle);
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: vector return type 'll::service::QueryServiceResult' is not supported.", false)]
-    public nint queryServices(nint name) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: vector return type 'll::service::QueryServiceResult' is not supported.");
+    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult[] queryServices(string name)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var __hs_view = NativeMethods.TablePtr->C0.hs_method_ab559b2a((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0);
+            var __hs_items = (void**)__hs_view.Data;
+            var __hs_result = __hs_view.Size == 0 ? global::System.Array.Empty<global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult>() : new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult[checked((int)__hs_view.Size)];
+            for (var __hs_i = 0; __hs_i < __hs_result.Length; __hs_i++)
+            {
+                __hs_result[__hs_i] = new global::Hosihikari.Bindings.LeviLamina.Interop.ll.service.QueryServiceResult((nint)__hs_items[__hs_i]);
+            }
+            return __hs_result;
+        }
+    }
 
     public bool registerService(global::Hosihikari.Bindings.Abi.SharedHandle? service, global::Hosihikari.Bindings.Abi.SharedHandle? mod)
     {

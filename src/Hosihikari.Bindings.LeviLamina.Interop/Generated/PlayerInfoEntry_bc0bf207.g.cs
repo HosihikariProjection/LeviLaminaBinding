@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested;
 
-public sealed unsafe partial class PlayerInfoEntry
+public sealed unsafe partial class PlayerInfoEntry : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -61,6 +61,19 @@ public sealed unsafe partial class PlayerInfoEntry
         {
             var view = NativeMethods.TablePtr->C0.hs_get_74ea7e9c((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
+        }
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_bc0bf207((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
         }
     }
 }

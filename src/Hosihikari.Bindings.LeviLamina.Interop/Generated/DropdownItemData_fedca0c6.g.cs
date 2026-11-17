@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class DropdownItemData
+public sealed unsafe partial class DropdownItemData : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -56,5 +56,18 @@ public sealed unsafe partial class DropdownItemData
     {
         get => NativeMethods.TablePtr->C0.hs_get_db760430((void*)__hosihikari_shim_handle);
         set => NativeMethods.TablePtr->C0.hs_set_db760430((void*)__hosihikari_shim_handle, value);
+    }
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_fedca0c6((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
     }
 }

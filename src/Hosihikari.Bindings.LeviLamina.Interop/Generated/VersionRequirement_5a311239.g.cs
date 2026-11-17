@@ -40,13 +40,43 @@ public sealed unsafe partial class VersionRequirement : global::System.IDisposab
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static VersionRequirement Create() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+    public static VersionRequirement? Create()
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_1d1605f1();
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
-    public static VersionRequirement Create(nint str) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
+        return new VersionRequirement((nint)handle);
+    }
+
+    public static VersionRequirement? Create(string str)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var handle = NativeMethods.TablePtr->C0.hs_create_c8fa15ea(__hs_stringData0, (nuint)__hs_stringByteCount0);
+            if (handle == null)
+            {
+                NativeMethods.GetLastError();
+                return null;
+            }
+
+            return new VersionRequirement((nint)handle);
+        }
+    }
 
     public nint? comparatorSets()
     {
