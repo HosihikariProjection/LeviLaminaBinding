@@ -54,7 +54,8 @@ public sealed unsafe partial class ListenerBase : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_57d3c253((void*)__hosihikari_shim_handle);
     }
 
-    public nint modPtr
+    // The native field type is not projected; this is the address of the field storage.
+    public nint modPtr_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_ef4962f4((void*)__hosihikari_shim_handle);
     }

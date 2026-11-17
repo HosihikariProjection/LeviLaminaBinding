@@ -40,17 +40,9 @@ public sealed unsafe partial class I18n : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static I18n? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_de425995();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new I18n((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static I18n Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void clear()
     {

@@ -93,6 +93,15 @@ public sealed unsafe partial class ConsoleOutputtedEvent : global::System.IDispo
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
+    public static (string Name, nuint Hash) eventId()
+    {
+        byte* __hs_idName = null;
+        nuint __hs_idSize = 0;
+        nuint __hs_idHash = 0;
+        NativeMethods.TablePtr->C0.hs_event_id_a918573c(&__hs_idName, &__hs_idSize, &__hs_idHash);
+        return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
+
     public void Dispose()
     {
         if (__hosihikari_shim_handle != 0)

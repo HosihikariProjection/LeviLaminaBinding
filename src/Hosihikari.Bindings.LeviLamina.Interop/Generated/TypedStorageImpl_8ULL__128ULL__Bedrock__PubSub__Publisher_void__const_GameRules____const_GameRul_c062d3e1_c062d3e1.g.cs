@@ -48,7 +48,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__128ULL__Bedrock__PubSu
     public static TypedStorageImpl_8ULL__128ULL__Bedrock__PubSub__Publisher_void__const_GameRules____const_GameRul_c062d3e1 Create_0ebd1331(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_67397d89((void*)__hosihikari_shim_handle);
     }

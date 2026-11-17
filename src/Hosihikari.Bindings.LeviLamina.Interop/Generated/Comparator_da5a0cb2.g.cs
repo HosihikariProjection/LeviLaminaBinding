@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data.VersionRequirement_Nested;
 
-public sealed unsafe partial class Comparator : global::System.IDisposable
+public sealed unsafe partial class Comparator
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -51,22 +51,9 @@ public sealed unsafe partial class Comparator : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_d66a06ee((void*)__hosihikari_shim_handle, (void*)arg0.Handle) != 0;
     }
 
-    public nint version
+    // The native field type is not projected; this is the address of the field storage.
+    public nint version_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_a1073178((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_a1073178((void*)__hosihikari_shim_handle, (void*)value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_da5a0cb2((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

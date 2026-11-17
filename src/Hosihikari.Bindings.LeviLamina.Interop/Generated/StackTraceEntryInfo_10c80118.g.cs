@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.stacktrace_utils;
 
-public sealed unsafe partial class StackTraceEntryInfo : global::System.IDisposable
+public sealed unsafe partial class StackTraceEntryInfo
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,7 +40,8 @@ public sealed unsafe partial class StackTraceEntryInfo : global::System.IDisposa
         return __hs_handle;
     }
 
-    public nint displacement
+    // The native field type is not projected; this is the address of the field storage.
+    public nint displacement_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_25d8a580((void*)__hosihikari_shim_handle);
     }
@@ -54,7 +55,8 @@ public sealed unsafe partial class StackTraceEntryInfo : global::System.IDisposa
         }
     }
 
-    public nint line
+    // The native field type is not projected; this is the address of the field storage.
+    public nint line_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_619b799d((void*)__hosihikari_shim_handle);
     }
@@ -65,19 +67,6 @@ public sealed unsafe partial class StackTraceEntryInfo : global::System.IDisposa
         {
             var view = NativeMethods.TablePtr->C0.hs_get_660797d7((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
-        }
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_10c80118((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
         }
     }
 }

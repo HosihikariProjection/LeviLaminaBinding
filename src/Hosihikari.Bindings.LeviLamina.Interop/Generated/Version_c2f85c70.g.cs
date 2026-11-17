@@ -40,111 +40,24 @@ public sealed unsafe partial class Version : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Version? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_31e91982();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Version Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new Version((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Version Create(nint str) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static Version? Create(string str)
-    {
-        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(str);
-        scoped global::System.Span<byte> __hs_stringBytes0;
-        if (__hs_stringByteCount0 <= 256)
-        {
-            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
-        }
-        else
-        {
-            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(str, __hs_stringBytes0);
-        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
-        {
-            var handle = NativeMethods.TablePtr->C0.hs_create_03243ed9(__hs_stringData0, (nuint)__hs_stringByteCount0);
-            if (handle == null)
-            {
-                NativeMethods.GetLastError();
-                return null;
-            }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Version Create_b09560d2(ushort mj, ushort mn, ushort pt, nint prt, nint bu) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-            return new Version((nint)handle);
-        }
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Version Create_bbf847ff(ushort mj, ushort mn, ushort pt, nint prt, nint bu) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static Version? Create(ushort mj, ushort mn, ushort pt, string prt, string? bu)
-    {
-        var __hs_stringByteCount3 = global::System.Text.Encoding.UTF8.GetByteCount(prt);
-        scoped global::System.Span<byte> __hs_stringBytes3;
-        if (__hs_stringByteCount3 <= 256)
-        {
-            __hs_stringBytes3 = stackalloc byte[__hs_stringByteCount3 == 0 ? 1 : __hs_stringByteCount3];
-        }
-        else
-        {
-            __hs_stringBytes3 = new byte[__hs_stringByteCount3];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(prt, __hs_stringBytes3);
-        var __hs_stringByteCount4 = global::System.Text.Encoding.UTF8.GetByteCount(bu ?? string.Empty);
-        scoped global::System.Span<byte> __hs_stringBytes4;
-        if (__hs_stringByteCount4 <= 256)
-        {
-            __hs_stringBytes4 = stackalloc byte[__hs_stringByteCount4 == 0 ? 1 : __hs_stringByteCount4];
-        }
-        else
-        {
-            __hs_stringBytes4 = new byte[__hs_stringByteCount4];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(bu ?? string.Empty, __hs_stringBytes4);
-        fixed (byte* __hs_stringData3 = __hs_stringBytes3)
-        {
-            fixed (byte* __hs_stringData4 = __hs_stringBytes4)
-            {
-                var handle = NativeMethods.TablePtr->C0.hs_create_b09560d2(mj, mn, pt, __hs_stringData3, (nuint)__hs_stringByteCount3, __hs_stringData4, (nuint)__hs_stringByteCount4, bu is not null);
-                if (handle == null)
-                {
-                    NativeMethods.GetLastError();
-                    return null;
-                }
-
-                return new Version((nint)handle);
-            }
-        }
-    }
-
-    public static Version? Create(ushort mj, ushort mn, ushort pt, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.PreRelease? prt, string? bu)
-    {
-        var __hs_stringByteCount4 = global::System.Text.Encoding.UTF8.GetByteCount(bu ?? string.Empty);
-        scoped global::System.Span<byte> __hs_stringBytes4;
-        if (__hs_stringByteCount4 <= 256)
-        {
-            __hs_stringBytes4 = stackalloc byte[__hs_stringByteCount4 == 0 ? 1 : __hs_stringByteCount4];
-        }
-        else
-        {
-            __hs_stringBytes4 = new byte[__hs_stringByteCount4];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(bu ?? string.Empty, __hs_stringBytes4);
-        fixed (byte* __hs_stringData4 = __hs_stringBytes4)
-        {
-            var handle = NativeMethods.TablePtr->C0.hs_create_bbf847ff(mj, mn, pt, (void*)(prt?.Handle ?? 0), __hs_stringData4, (nuint)__hs_stringByteCount4, prt is not null, bu is not null);
-            if (handle == null)
-            {
-                NativeMethods.GetLastError();
-                return null;
-            }
-
-            return new Version((nint)handle);
-        }
-    }
-
-    public nint build
+    // The native field type is not projected; this is the address of the field storage.
+    public nint build_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_0f6202d2((void*)__hosihikari_shim_handle);
     }
@@ -243,7 +156,8 @@ public sealed unsafe partial class Version : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_bfb7c086((void*)__hosihikari_shim_handle, value);
     }
 
-    public nint preRelease
+    // The native field type is not projected; this is the address of the field storage.
+    public nint preRelease_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_c9ebbae8((void*)__hosihikari_shim_handle);
     }

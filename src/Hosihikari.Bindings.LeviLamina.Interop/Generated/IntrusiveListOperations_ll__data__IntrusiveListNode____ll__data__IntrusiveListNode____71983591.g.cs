@@ -40,25 +40,21 @@ public sealed unsafe partial class IntrusiveListOperations_ll__data__IntrusiveLi
         return __hs_handle;
     }
 
-    public static void init(nint node)
-    {
-        NativeMethods.TablePtr->C0.hs_method_4857e03a((void*)node);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void init(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static bool is_linked(nint node)
-    {
-        return NativeMethods.TablePtr->C0.hs_method_88f42207((void*)node) != 0;
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static bool is_linked(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static void link_before(nint node, nint pos)
-    {
-        NativeMethods.TablePtr->C0.hs_method_715d108d((void*)node, (void*)pos);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void link_before(nint node, nint pos) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static void unlink(nint node)
-    {
-        NativeMethods.TablePtr->C0.hs_method_8d35563d((void*)node);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void unlink(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
     public void Dispose()
     {

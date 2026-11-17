@@ -48,7 +48,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__64ULL__std__function_b
     public static TypedStorageImpl_8ULL__64ULL__std__function_bool__const_std__variant_cereal__NullType__bool__int_2e8f1a43 Create_6c42e9d9(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_5e920391((void*)__hosihikari_shim_handle);
     }

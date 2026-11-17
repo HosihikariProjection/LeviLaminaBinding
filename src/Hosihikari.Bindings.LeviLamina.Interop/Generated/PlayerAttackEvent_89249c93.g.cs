@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class PlayerAttackEvent : global::System.IDisposable
+public sealed unsafe partial class PlayerAttackEvent
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,17 +40,9 @@ public sealed unsafe partial class PlayerAttackEvent : global::System.IDisposabl
         return __hs_handle;
     }
 
-    public static PlayerAttackEvent? Create(nint source, nint target, nint cause)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_8bedaa3b((void*)source, (void*)target, (void*)cause);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new PlayerAttackEvent((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static PlayerAttackEvent Create(nint source, nint target, nint cause) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public nint? cause()
     {
@@ -156,16 +148,12 @@ public sealed unsafe partial class PlayerAttackEvent : global::System.IDisposabl
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.PlayerLeftClickEvent((nint)__hs_handle, false);
     }
 
-    public void Dispose()
+    public static (string Name, nuint Hash) eventId()
     {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_89249c93((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
+        byte* __hs_idName = null;
+        nuint __hs_idSize = 0;
+        nuint __hs_idHash = 0;
+        NativeMethods.TablePtr->C0.hs_event_id_6027653d(&__hs_idName, &__hs_idSize, &__hs_idHash);
+        return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
     }
 }

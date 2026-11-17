@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class ToggleOptions : global::System.IDisposable
+public sealed unsafe partial class ToggleOptions
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,31 +40,21 @@ public sealed unsafe partial class ToggleOptions : global::System.IDisposable
         return __hs_handle;
     }
 
-    public nint description
+    // The native field type is not projected; this is the address of the field storage.
+    public nint description_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_e656b131((void*)__hosihikari_shim_handle);
     }
 
-    public nint disabled
+    // The native field type is not projected; this is the address of the field storage.
+    public nint disabled_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_43f46802((void*)__hosihikari_shim_handle);
     }
 
-    public nint visible
+    // The native field type is not projected; this is the address of the field storage.
+    public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_3871ca84((void*)__hosihikari_shim_handle);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_978dbe2e((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

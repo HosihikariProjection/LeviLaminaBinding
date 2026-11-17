@@ -52,7 +52,8 @@ public sealed unsafe partial class FixedString_260ULL_ : global::System.IDisposa
     public static FixedString_260ULL_ Create_4a325773(nint s) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: consteval constructors cannot be called at runtime.");
 
-    public nint buf
+    // The native field type is not projected; this is the address of the field storage.
+    public nint buf_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_a33d628f((void*)__hosihikari_shim_handle);
     }

@@ -40,21 +40,13 @@ public sealed unsafe partial class ViaContinuation : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ViaContinuation? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ViaContinuation other)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_15b2ea8e((void*)other.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ViaContinuation Create_15b2ea8e(nint other) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new ViaContinuation((nint)handle);
-    }
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::coroutine_handle<ll::coro::ViaContinuation::promise_type>' is not a known bindable declaration.", false)]
-    public static ViaContinuation Create(nint h) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::coroutine_handle<ll::coro::ViaContinuation::promise_type>' is not a known bindable declaration.");
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ViaContinuation Create_2ded596c(nint h) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::coroutine_handle<void>' is not a known bindable declaration.", false)]
     public nint get() =>

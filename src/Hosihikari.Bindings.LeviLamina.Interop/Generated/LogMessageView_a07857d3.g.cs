@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
-public sealed unsafe partial class LogMessageView : global::System.IDisposable
+public sealed unsafe partial class LogMessageView
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,45 +40,9 @@ public sealed unsafe partial class LogMessageView : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static LogMessageView? Create(string msg, string tit, int lvl, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.TmWithMs tm)
-    {
-        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(msg);
-        scoped global::System.Span<byte> __hs_stringBytes0;
-        if (__hs_stringByteCount0 <= 256)
-        {
-            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
-        }
-        else
-        {
-            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(msg, __hs_stringBytes0);
-        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(tit);
-        scoped global::System.Span<byte> __hs_stringBytes1;
-        if (__hs_stringByteCount1 <= 256)
-        {
-            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
-        }
-        else
-        {
-            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(tit, __hs_stringBytes1);
-        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
-        {
-            fixed (byte* __hs_stringData1 = __hs_stringBytes1)
-            {
-                var handle = NativeMethods.TablePtr->C0.hs_create_d7798e45(__hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, lvl, (void*)tm.Handle);
-                if (handle == null)
-                {
-                    NativeMethods.GetLastError();
-                    return null;
-                }
-
-                return new LogMessageView((nint)handle);
-            }
-        }
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static LogMessageView Create(nint msg, nint tit, nint lvl, nint tm) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public int lvl
     {
@@ -104,22 +68,9 @@ public sealed unsafe partial class LogMessageView : global::System.IDisposable
         }
     }
 
-    public nint tm
+    // The native field type is not projected; this is the address of the field storage.
+    public nint tm_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_cac11fa3((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_cac11fa3((void*)__hosihikari_shim_handle, (void*)value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_a07857d3((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

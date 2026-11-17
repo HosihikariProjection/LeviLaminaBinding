@@ -312,10 +312,6 @@ public static unsafe partial class Functions
     public static nint sanitizeConsoleText(nint str) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::basic_string<wchar_t>' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the signature uses a type the binding cannot name.", false)]
-    public static void splitByPattern(nint fn, nint s, nint pattern, bool keepEmpty) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the signature uses a type the binding cannot name.");
-
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::basic_string<char8_t>' is not a known bindable declaration.", false)]
     public static nint str2u8str(nint str) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'std::basic_string<char8_t>' is not a known bindable declaration.");
@@ -354,58 +350,6 @@ public static unsafe partial class Functions
 
     [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
     public static nint svtoll(nint str, nint idx, int @base) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_0fe6d81f(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_26702b66(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: expected value type 'unsigned long': by-value return type 'unsigned long' is not a known bindable declaration.", false)]
-    public static nint svtonum_30ac6f55(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: expected value type 'unsigned long': by-value return type 'unsigned long' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_8048bd3d(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_82151946(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_85309af3(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_a777cf74(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_c42aa2a5(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: expected value type 'long double': by-value return type 'long double' is not a known bindable declaration.", false)]
-    public static nint svtonum_c4a54eb4(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: expected value type 'long double': by-value return type 'long double' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_e5fcf956(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_ee10ab6f(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: expected value type 'long': by-value return type 'long' is not a known bindable declaration.", false)]
-    public static nint svtonum_f6ab0237(nint str, nint idx, nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: expected value type 'long': by-value return type 'long' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
-    public static nint svtonum_f829e51d(nint str, nint idx, nint args) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
 
     [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]

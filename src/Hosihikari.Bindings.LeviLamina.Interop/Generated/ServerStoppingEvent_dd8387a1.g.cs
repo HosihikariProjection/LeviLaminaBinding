@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposable
+public sealed unsafe partial class ServerStoppingEvent
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,17 +40,9 @@ public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposa
         return __hs_handle;
     }
 
-    public static ServerStoppingEvent? Create(nint server)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_c0e70e83((void*)server);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new ServerStoppingEvent((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ServerStoppingEvent Create(nint server) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void serialize(nint arg0)
     {
@@ -79,16 +71,12 @@ public sealed unsafe partial class ServerStoppingEvent : global::System.IDisposa
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.Event((nint)__hs_handle, false);
     }
 
-    public void Dispose()
+    public static (string Name, nuint Hash) eventId()
     {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_dd8387a1((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
+        byte* __hs_idName = null;
+        nuint __hs_idSize = 0;
+        nuint __hs_idHash = 0;
+        NativeMethods.TablePtr->C0.hs_event_id_1f2d1376(&__hs_idName, &__hs_idSize, &__hs_idHash);
+        return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
     }
 }

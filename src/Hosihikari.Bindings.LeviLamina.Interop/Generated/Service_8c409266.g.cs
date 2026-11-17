@@ -44,7 +44,8 @@ public sealed unsafe partial class Service : global::System.IDisposable
     public static Service Create() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the class is abstract.");
 
-    public static nint ServiceId
+    // The native field type is not projected; this is the address of the field storage.
+    public static nint ServiceId_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_c1507ac8();
     }

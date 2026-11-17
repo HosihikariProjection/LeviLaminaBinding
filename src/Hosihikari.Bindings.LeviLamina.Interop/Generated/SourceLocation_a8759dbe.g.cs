@@ -103,17 +103,20 @@ public sealed unsafe partial class SourceLocation : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_39c65bcf((void*)__hosihikari_shim_handle, value);
     }
 
-    public nint mFile
+    // The native field type is not projected; this is the address of the field storage.
+    public nint mFile_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_b1b86cf8((void*)__hosihikari_shim_handle);
     }
 
-    public nint mFuncsig
+    // The native field type is not projected; this is the address of the field storage.
+    public nint mFuncsig_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_0743d79a((void*)__hosihikari_shim_handle);
     }
 
-    public nint mFunction
+    // The native field type is not projected; this is the address of the field storage.
+    public nint mFunction_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_7c28faef((void*)__hosihikari_shim_handle);
     }

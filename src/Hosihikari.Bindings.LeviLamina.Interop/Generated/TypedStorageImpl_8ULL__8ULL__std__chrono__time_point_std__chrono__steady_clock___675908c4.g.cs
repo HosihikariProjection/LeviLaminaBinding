@@ -48,7 +48,8 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__std__chrono__tim
     public static TypedStorageImpl_8ULL__8ULL__std__chrono__time_point_std__chrono__steady_clock__ Create_1823649b(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_194a09a8((void*)__hosihikari_shim_handle);
     }

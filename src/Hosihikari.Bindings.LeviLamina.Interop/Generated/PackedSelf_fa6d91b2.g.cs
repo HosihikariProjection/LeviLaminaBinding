@@ -40,7 +40,8 @@ public sealed unsafe partial class PackedSelf : global::System.IDisposable
         return __hs_handle;
     }
 
-    public nint jitfn
+    // The native field type is not projected; this is the address of the field storage.
+    public nint jitfn_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_74d115d4((void*)__hosihikari_shim_handle);
     }

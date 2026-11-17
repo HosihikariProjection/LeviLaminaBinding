@@ -40,31 +40,9 @@ public sealed unsafe partial class ServerThreadExecutor : global::System.IDispos
         return __hs_handle;
     }
 
-    public static ServerThreadExecutor? Create(string name, long maxOnceDuration, ulong checkPack)
-    {
-        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(name);
-        scoped global::System.Span<byte> __hs_stringBytes0;
-        if (__hs_stringByteCount0 <= 256)
-        {
-            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
-        }
-        else
-        {
-            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(name, __hs_stringBytes0);
-        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
-        {
-            var handle = NativeMethods.TablePtr->C0.hs_create_bd0ab358(__hs_stringData0, (nuint)__hs_stringByteCount0, maxOnceDuration, checkPack);
-            if (handle == null)
-            {
-                NativeMethods.GetLastError();
-                return null;
-            }
-
-            return new ServerThreadExecutor((nint)handle);
-        }
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ServerThreadExecutor Create(nint name, nint maxOnceDuration, ulong checkPack) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void execute(nint arg0Invoke, nint arg0UserData, nint arg0Release)
     {

@@ -96,18 +96,6 @@ public static unsafe partial class Functions
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
-    public static nint makeError_2e28feea(nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
-    public static nint makeError_bd2b8aec(nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
-    public static nint makeError_dd494cf3(nint args) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.", false)]
     public static nint makeExceptionError(nint exc) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'nonstd::expected_lite::unexpected_type<ll::Error>' is not a known bindable declaration.");
 

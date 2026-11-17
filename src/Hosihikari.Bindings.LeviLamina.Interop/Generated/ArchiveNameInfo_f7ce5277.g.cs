@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.io;
 
-public sealed unsafe partial class ArchiveNameInfo : global::System.IDisposable
+public sealed unsafe partial class ArchiveNameInfo
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -52,22 +52,9 @@ public sealed unsafe partial class ArchiveNameInfo : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_ce0770c3((void*)__hosihikari_shim_handle, value);
     }
 
-    public nint time
+    // The native field type is not projected; this is the address of the field storage.
+    public nint time_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_695c220c((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_695c220c((void*)__hosihikari_shim_handle, (void*)value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_f7ce5277((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

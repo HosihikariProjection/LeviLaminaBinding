@@ -53,8 +53,4 @@ public static unsafe partial class Functions
     [global::System.Obsolete("BindingShim cannot project this member: the parameter type is not supported by a free function.", false)]
     public static nint parse_numeric_identifier(nint first, nint last, nint value) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the parameter type is not supported by a free function.");
-
-    [global::System.Obsolete("BindingShim cannot project this member: the function is not exported by the carrier.", false)]
-    public static ulong spin_wait_until_eq(nint location, nint value, nint order) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the function is not exported by the carrier.");
 }

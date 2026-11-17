@@ -40,21 +40,13 @@ public sealed unsafe partial class ConsoleSink : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ConsoleSink? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_dc14334a();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ConsoleSink Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new ConsoleSink((nint)handle);
-    }
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>>' is not a known bindable declaration.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
     public static ConsoleSink Create(nint formatter) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>>' is not a known bindable declaration.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void append(global::Hosihikari.Bindings.LeviLamina.Interop.ll.io.LogMessageView view)
     {

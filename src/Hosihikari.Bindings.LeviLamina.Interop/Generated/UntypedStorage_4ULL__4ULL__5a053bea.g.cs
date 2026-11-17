@@ -40,7 +40,8 @@ public sealed unsafe partial class UntypedStorage_4ULL__4ULL_ : global::System.I
         return __hs_handle;
     }
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_6c7ef6e2((void*)__hosihikari_shim_handle);
     }

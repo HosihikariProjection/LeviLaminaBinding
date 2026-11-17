@@ -40,41 +40,17 @@ public sealed unsafe partial class Property : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Property? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_e8842391();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Property Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new Property((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Property Create_95a67ed4(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static Property? Create_95a67ed4(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_95a67ed4((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new Property((nint)handle);
-    }
-
-    public static Property? Create_917bf7ba(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_917bf7ba((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new Property((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Property Create_917bf7ba(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void erase()
     {

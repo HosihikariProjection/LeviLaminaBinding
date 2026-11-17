@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
 
-public sealed unsafe partial class BlockChangedEvent : global::System.IDisposable
+public sealed unsafe partial class BlockChangedEvent
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,17 +40,9 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return __hs_handle;
     }
 
-    public static BlockChangedEvent? Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_17b1672c((void*)blockSource, (void*)layer, (void*)previousBlock, (void*)newBlock, (void*)pos);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new BlockChangedEvent((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static BlockChangedEvent Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public nint? layer()
     {
@@ -123,16 +115,12 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.WorldEvent((nint)__hs_handle, false);
     }
 
-    public void Dispose()
+    public static (string Name, nuint Hash) eventId()
     {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_f09c3279((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
+        byte* __hs_idName = null;
+        nuint __hs_idSize = 0;
+        nuint __hs_idHash = 0;
+        NativeMethods.TablePtr->C0.hs_event_id_bc49689d(&__hs_idName, &__hs_idSize, &__hs_idHash);
+        return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
     }
 }

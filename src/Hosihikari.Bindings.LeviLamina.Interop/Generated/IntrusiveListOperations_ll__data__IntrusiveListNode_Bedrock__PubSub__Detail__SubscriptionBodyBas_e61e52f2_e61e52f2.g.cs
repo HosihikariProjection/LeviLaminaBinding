@@ -40,25 +40,21 @@ public sealed unsafe partial class IntrusiveListOperations_ll__data__IntrusiveLi
         return __hs_handle;
     }
 
-    public static void init(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node)
-    {
-        NativeMethods.TablePtr->C0.hs_method_cd633a6c((void*)node.Handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void init(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static bool is_linked(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node)
-    {
-        return NativeMethods.TablePtr->C0.hs_method_37cc3099((void*)node.Handle) != 0;
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static bool is_linked(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static void link_before(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node, global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ pos)
-    {
-        NativeMethods.TablePtr->C0.hs_method_3d4e8034((void*)node.Handle, (void*)pos.Handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void link_before(nint node, nint pos) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
-    public static void unlink(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.IntrusiveListNode_Bedrock__PubSub__Detail__SubscriptionBodyBase_ node)
-    {
-        NativeMethods.TablePtr->C0.hs_method_8ea59c49((void*)node.Handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.", false)]
+    public static void unlink(nint node) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the operations class is instantiated with itself as the hook traits.");
 
     public void Dispose()
     {

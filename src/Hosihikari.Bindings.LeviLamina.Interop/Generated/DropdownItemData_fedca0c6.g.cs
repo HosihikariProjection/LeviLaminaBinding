@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class DropdownItemData : global::System.IDisposable
+public sealed unsafe partial class DropdownItemData
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,33 +40,21 @@ public sealed unsafe partial class DropdownItemData : global::System.IDisposable
         return __hs_handle;
     }
 
-    public nint description
+    // The native field type is not projected; this is the address of the field storage.
+    public nint description_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_b625ce32((void*)__hosihikari_shim_handle);
     }
 
-    public nint label
+    // The native field type is not projected; this is the address of the field storage.
+    public nint label_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_47236392((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_47236392((void*)__hosihikari_shim_handle, (void*)value);
     }
 
     public double value
     {
         get => NativeMethods.TablePtr->C0.hs_get_db760430((void*)__hosihikari_shim_handle);
         set => NativeMethods.TablePtr->C0.hs_set_db760430((void*)__hosihikari_shim_handle, value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_fedca0c6((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

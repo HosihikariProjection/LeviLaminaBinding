@@ -48,7 +48,8 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__2ULL__VoxelShapes__Reg
     public static TypedStorageImpl_2ULL__2ULL__VoxelShapes__RegistryHandle_ Create_f427b8d6(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_0ffcbb86((void*)__hosihikari_shim_handle);
     }

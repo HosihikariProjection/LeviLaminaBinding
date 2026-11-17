@@ -40,17 +40,9 @@ public sealed unsafe partial class OverloadData : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static OverloadData? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_b014024d((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new OverloadData((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static OverloadData Create(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData? operator_assign(global::Hosihikari.Bindings.LeviLamina.Interop.ll.command.OverloadData arg0)
     {

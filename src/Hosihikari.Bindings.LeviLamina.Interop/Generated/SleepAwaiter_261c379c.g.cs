@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
-public sealed unsafe partial class SleepAwaiter : global::System.IDisposable
+public sealed unsafe partial class SleepAwaiter
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -57,18 +57,5 @@ public sealed unsafe partial class SleepAwaiter : global::System.IDisposable
     public void setExecutor(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Executor? ex)
     {
         NativeMethods.TablePtr->C0.hs_method_43664c68((void*)__hosihikari_shim_handle, (void*)(ex?.Handle ?? 0), ex is not null);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_261c379c((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

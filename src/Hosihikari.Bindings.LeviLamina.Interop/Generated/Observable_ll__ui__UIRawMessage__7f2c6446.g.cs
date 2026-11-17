@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
-public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::System.IDisposable
+public sealed unsafe partial class Observable_ll__ui__UIRawMessage_
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -48,17 +48,9 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
     public static Observable_ll__ui__UIRawMessage_ Create_a2d09c48(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    public static Observable_ll__ui__UIRawMessage_? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage initial)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_e7f8498b((void*)initial.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new Observable_ll__ui__UIRawMessage_((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Observable_ll__ui__UIRawMessage_ Create_e7f8498b(nint initial) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.ui.UIRawMessage? getData()
     {
@@ -92,18 +84,5 @@ public sealed unsafe partial class Observable_ll__ui__UIRawMessage_ : global::Sy
     public bool unsubscribe(uint id)
     {
         return NativeMethods.TablePtr->C0.hs_method_8658992c((void*)__hosihikari_shim_handle, id) != 0;
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_7f2c6446((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

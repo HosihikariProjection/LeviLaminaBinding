@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
-public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
+public sealed unsafe partial class CoroPromiseBase
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,41 +40,20 @@ public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CoroPromiseBase? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_506910ad();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static CoroPromiseBase Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new CoroPromiseBase((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::coro::ForwardAwaiter<const ll::coro::Executor &>' has no accessible destructor.", false)]
+    public nint await_transform_4df3425c(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::coro::ForwardAwaiter<const ll::coro::Executor &>' has no accessible destructor.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___? await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CurrentExecutor arg0)
-    {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4df3425c((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
-        if (__hs_handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.ForwardAwaiter_const_ll__coro__Executor___((nint)__hs_handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::coro::YieldAwaiter' has no accessible destructor.", false)]
+    public nint await_transform_a18a91ba(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::coro::YieldAwaiter' has no accessible destructor.");
 
-    public global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter? await_transform(global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.Yield arg0)
-    {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a18a91ba((void*)__hosihikari_shim_handle, (void*)arg0.Handle);
-        if (__hs_handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-        return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.YieldAwaiter((nint)__hs_handle);
-    }
-
-    public nint exec
+    // The native field type is not projected; this is the address of the field storage.
+    public nint exec_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_bd666446((void*)__hosihikari_shim_handle);
     }
@@ -90,7 +69,8 @@ public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.coro.CoroPromiseBase_Nested.FinalAwaiter((nint)__hs_handle);
     }
 
-    public nint handle
+    // The native field type is not projected; this is the address of the field storage.
+    public nint handle_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_5164c43a((void*)__hosihikari_shim_handle);
     }
@@ -103,18 +83,5 @@ public sealed unsafe partial class CoroPromiseBase : global::System.IDisposable
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_1f9f5375((void*)__hosihikari_shim_handle);
         set => NativeMethods.TablePtr->C0.hs_set_1f9f5375((void*)__hosihikari_shim_handle, (void*)value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_1d5838d2((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

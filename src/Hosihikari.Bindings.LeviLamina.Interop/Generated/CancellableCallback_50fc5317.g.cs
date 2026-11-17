@@ -40,17 +40,9 @@ public sealed unsafe partial class CancellableCallback : global::System.IDisposa
         return __hs_handle;
     }
 
-    public static CancellableCallback? Create(nint callbackInvoke, nint callbackUserData, nint callbackRelease)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_3e70cb9d((void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new CancellableCallback((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static CancellableCallback Create(nint callback) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public bool call()
     {

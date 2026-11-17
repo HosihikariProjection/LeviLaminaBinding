@@ -48,7 +48,8 @@ public sealed unsafe partial class TypedStorageImpl_2ULL__12ULL__Bedrock__DenseE
     public static TypedStorageImpl_2ULL__12ULL__Bedrock__DenseEnumMap_SharedTypes__Facing__VoxelShapes__RegistryHa_98d6bda5 Create_efc373b2(nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
 
-    public nint data
+    // The native field type is not projected; this is the address of the field storage.
+    public nint data_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_86fb929e((void*)__hosihikari_shim_handle);
     }

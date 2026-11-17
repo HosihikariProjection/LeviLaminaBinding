@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.mod;
 
-public sealed unsafe partial class Manifest : global::System.IDisposable
+public sealed unsafe partial class Manifest
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,22 +40,26 @@ public sealed unsafe partial class Manifest : global::System.IDisposable
         return __hs_handle;
     }
 
-    public nint author
+    // The native field type is not projected; this is the address of the field storage.
+    public nint author_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_ba07129a((void*)__hosihikari_shim_handle);
     }
 
-    public nint conflicts
+    // The native field type is not projected; this is the address of the field storage.
+    public nint conflicts_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_aac0620d((void*)__hosihikari_shim_handle);
     }
 
-    public nint dependencies
+    // The native field type is not projected; this is the address of the field storage.
+    public nint dependencies_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_ddac7a02((void*)__hosihikari_shim_handle);
     }
 
-    public nint description
+    // The native field type is not projected; this is the address of the field storage.
+    public nint description_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_63d2d4f8((void*)__hosihikari_shim_handle);
     }
@@ -69,12 +73,14 @@ public sealed unsafe partial class Manifest : global::System.IDisposable
         }
     }
 
-    public nint extraInfo
+    // The native field type is not projected; this is the address of the field storage.
+    public nint extraInfo_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_4bc0a60b((void*)__hosihikari_shim_handle);
     }
 
-    public nint loadBefore
+    // The native field type is not projected; this is the address of the field storage.
+    public nint loadBefore_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_29d78aa1((void*)__hosihikari_shim_handle);
     }
@@ -88,17 +94,20 @@ public sealed unsafe partial class Manifest : global::System.IDisposable
         }
     }
 
-    public nint optionalDependencies
+    // The native field type is not projected; this is the address of the field storage.
+    public nint optionalDependencies_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_48ffed85((void*)__hosihikari_shim_handle);
     }
 
-    public nint passive
+    // The native field type is not projected; this is the address of the field storage.
+    public nint passive_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_54f682b0((void*)__hosihikari_shim_handle);
     }
 
-    public nint platform
+    // The native field type is not projected; this is the address of the field storage.
+    public nint platform_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_c2f05568((void*)__hosihikari_shim_handle);
     }
@@ -112,21 +121,9 @@ public sealed unsafe partial class Manifest : global::System.IDisposable
         }
     }
 
-    public nint version
+    // The native field type is not projected; this is the address of the field storage.
+    public nint version_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_2f1d9d5b((void*)__hosihikari_shim_handle);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_24b0327e((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
-public sealed unsafe partial class SignatureView : global::System.IDisposable
+public sealed unsafe partial class SignatureView
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,57 +40,25 @@ public sealed unsafe partial class SignatureView : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static SignatureView? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_3315cbfd();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static SignatureView Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new SignatureView((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static SignatureView Create_a180a7d4(nint signature) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static SignatureView? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Signature signature)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_a180a7d4((void*)signature.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static SignatureView Create_70e00a55(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new SignatureView((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static SignatureView Create_0ef1ff8a(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static SignatureView? Create_70e00a55(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_70e00a55((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new SignatureView((nint)handle);
-    }
-
-    public static SignatureView? Create_0ef1ff8a(global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureView arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_0ef1ff8a((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new SignatureView((nint)handle);
-    }
-
-    [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'std::span<const ll::memory::SignatureElement>' is not a known bindable declaration.", false)]
-    public static SignatureView Create(nint span) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'std::span<const ll::memory::SignatureElement>' is not a known bindable declaration.");
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static SignatureView Create_5f331b0c(nint span) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.memory.SignatureElement? back()
     {
@@ -184,18 +152,5 @@ public sealed unsafe partial class SignatureView : global::System.IDisposable
     {
         var __hs_view = NativeMethods.TablePtr->C0.hs_method_0efb275c((void*)__hosihikari_shim_handle, alignWildcard, upperCase);
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_51677950((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

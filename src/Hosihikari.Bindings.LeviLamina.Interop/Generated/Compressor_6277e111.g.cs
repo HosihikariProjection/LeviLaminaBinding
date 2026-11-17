@@ -40,21 +40,13 @@ public sealed unsafe partial class Compressor : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static Compressor? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.compress_utils.Compressor arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_740e1911((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Compressor Create(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new Compressor((nint)handle);
-    }
-
-    [global::System.Obsolete("BindingShim cannot project this member: callback return type 'nonstd::expected_lite::expected<void, ll::Error>' is not supported.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
     public static Compressor Create(nint sink, nint format, nint level) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: callback return type 'nonstd::expected_lite::expected<void, ll::Error>' is not supported.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public void finish()
     {

@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop;
 
-public sealed unsafe partial class CommandOutput : global::System.IDisposable
+public sealed unsafe partial class CommandOutput
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,43 +40,20 @@ public sealed unsafe partial class CommandOutput : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CommandOutput? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_35a72701();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static CommandOutput Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new CommandOutput((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static CommandOutput Create_470d908a(nint type) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static CommandOutput? Create(int type)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_470d908a(type);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static CommandOutput Create_cabc8719(nint rhs) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new CommandOutput((nint)handle);
-    }
-
-    public static CommandOutput? Create(global::Hosihikari.Bindings.LeviLamina.Interop.CommandOutput rhs)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_cabc8719((void*)rhs.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new CommandOutput((nint)handle);
-    }
-
-    public nint mBag
+    // The native field type is not projected; this is the address of the field storage.
+    public nint mBag_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_d9470435((void*)__hosihikari_shim_handle);
     }
@@ -87,7 +64,8 @@ public sealed unsafe partial class CommandOutput : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_41f5a5a1((void*)__hosihikari_shim_handle, value);
     }
 
-    public nint mMessages
+    // The native field type is not projected; this is the address of the field storage.
+    public nint mMessages_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_c2d9ad8d((void*)__hosihikari_shim_handle);
     }
@@ -102,18 +80,5 @@ public sealed unsafe partial class CommandOutput : global::System.IDisposable
     {
         get => NativeMethods.TablePtr->C0.hs_get_7cc793c2((void*)__hosihikari_shim_handle);
         set => NativeMethods.TablePtr->C0.hs_set_7cc793c2((void*)__hosihikari_shim_handle, value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_0a07a953((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

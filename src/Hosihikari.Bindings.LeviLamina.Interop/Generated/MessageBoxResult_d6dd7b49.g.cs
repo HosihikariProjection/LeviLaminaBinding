@@ -46,7 +46,8 @@ public sealed unsafe partial class MessageBoxResult : global::System.IDisposable
         set => NativeMethods.TablePtr->C0.hs_set_208f3155((void*)__hosihikari_shim_handle, value);
     }
 
-    public nint selection
+    // The native field type is not projected; this is the address of the field storage.
+    public nint selection_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_d5d74922((void*)__hosihikari_shim_handle);
     }

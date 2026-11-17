@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.ui;
 
-public sealed unsafe partial class SliderOptions : global::System.IDisposable
+public sealed unsafe partial class SliderOptions
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,36 +40,27 @@ public sealed unsafe partial class SliderOptions : global::System.IDisposable
         return __hs_handle;
     }
 
-    public nint description
+    // The native field type is not projected; this is the address of the field storage.
+    public nint description_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_fb15d7b0((void*)__hosihikari_shim_handle);
     }
 
-    public nint disabled
+    // The native field type is not projected; this is the address of the field storage.
+    public nint disabled_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_9df78fa6((void*)__hosihikari_shim_handle);
     }
 
-    public nint step
+    // The native field type is not projected; this is the address of the field storage.
+    public nint step_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_ef57028e((void*)__hosihikari_shim_handle);
     }
 
-    public nint visible
+    // The native field type is not projected; this is the address of the field storage.
+    public nint visible_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_5dbee48c((void*)__hosihikari_shim_handle);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_65044de5((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

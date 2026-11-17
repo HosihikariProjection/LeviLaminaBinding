@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.service;
 
-public sealed unsafe partial class QueryServiceResult : global::System.IDisposable
+public sealed unsafe partial class QueryServiceResult
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -58,7 +58,8 @@ public sealed unsafe partial class QueryServiceResult : global::System.IDisposab
         }
     }
 
-    public nint service
+    // The native field type is not projected; this is the address of the field storage.
+    public nint service_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_88d3e791((void*)__hosihikari_shim_handle);
     }
@@ -67,18 +68,5 @@ public sealed unsafe partial class QueryServiceResult : global::System.IDisposab
     {
         get => NativeMethods.TablePtr->C0.hs_get_914f6e92((void*)__hosihikari_shim_handle);
         set => NativeMethods.TablePtr->C0.hs_set_914f6e92((void*)__hosihikari_shim_handle, value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_3d01d1b1((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

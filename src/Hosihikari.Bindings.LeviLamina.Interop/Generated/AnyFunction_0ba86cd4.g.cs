@@ -40,53 +40,21 @@ public sealed unsafe partial class AnyFunction : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static AnyFunction? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_1580d5ce();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static AnyFunction Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new AnyFunction((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static AnyFunction Create_3884d83f(nint other) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-    public static AnyFunction? Create_3884d83f(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_3884d83f((void*)other.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static AnyFunction Create_5830bcea(nint other) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new AnyFunction((nint)handle);
-    }
-
-    public static AnyFunction? Create_5830bcea(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.AnyFunction other)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_5830bcea((void*)other.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new AnyFunction((nint)handle);
-    }
-
-    public static AnyFunction? Create_abc535ac()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_abc535ac();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new AnyFunction((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static AnyFunction Create_abc535ac(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'std::any' is not a known bindable declaration.", false)]
     public nint invoke(nint args) =>

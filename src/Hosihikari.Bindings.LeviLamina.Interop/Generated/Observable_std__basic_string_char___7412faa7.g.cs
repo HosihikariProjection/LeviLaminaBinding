@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.data;
 
-public sealed unsafe partial class Observable_std__basic_string_char__ : global::System.IDisposable
+public sealed unsafe partial class Observable_std__basic_string_char__
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -48,31 +48,9 @@ public sealed unsafe partial class Observable_std__basic_string_char__ : global:
     public static Observable_std__basic_string_char__ Create_d9a2fa31(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template constructor has no visible definition.");
 
-    public static Observable_std__basic_string_char__? Create(string initial)
-    {
-        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(initial);
-        scoped global::System.Span<byte> __hs_stringBytes0;
-        if (__hs_stringByteCount0 <= 256)
-        {
-            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
-        }
-        else
-        {
-            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
-        }
-        global::System.Text.Encoding.UTF8.GetBytes(initial, __hs_stringBytes0);
-        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
-        {
-            var handle = NativeMethods.TablePtr->C0.hs_create_42eb507b(__hs_stringData0, (nuint)__hs_stringByteCount0);
-            if (handle == null)
-            {
-                NativeMethods.GetLastError();
-                return null;
-            }
-
-            return new Observable_std__basic_string_char__((nint)handle);
-        }
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static Observable_std__basic_string_char__ Create_42eb507b(nint initial) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public string getData()
     {
@@ -115,18 +93,5 @@ public sealed unsafe partial class Observable_std__basic_string_char__ : global:
     public bool unsubscribe(uint id)
     {
         return NativeMethods.TablePtr->C0.hs_method_e9a29ddb((void*)__hosihikari_shim_handle, id) != 0;
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_7412faa7((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

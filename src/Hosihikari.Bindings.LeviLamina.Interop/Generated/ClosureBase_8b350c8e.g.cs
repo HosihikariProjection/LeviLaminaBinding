@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
 
-public sealed unsafe partial class ClosureBase : global::System.IDisposable
+public sealed unsafe partial class ClosureBase
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,17 +40,9 @@ public sealed unsafe partial class ClosureBase : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ClosureBase? Create(nint impl)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_2cab3c34((void*)impl);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new ClosureBase((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ClosureBase Create(nint impl) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public static nint? getClosureData()
     {
@@ -65,22 +57,9 @@ public sealed unsafe partial class ClosureBase : global::System.IDisposable
 
     public const ulong jitSize = 48;
 
-    public nint storage
+    // The native field type is not projected; this is the address of the field storage.
+    public nint storage_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_d7ccbcbe((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_d7ccbcbe((void*)__hosihikari_shim_handle, (void*)value);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_8b350c8e((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }

@@ -40,29 +40,13 @@ public sealed unsafe partial class WriteBatch : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static WriteBatch? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_c74e5863();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static WriteBatch Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
-        return new WriteBatch((nint)handle);
-    }
-
-    public static WriteBatch? Create(global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch arg0)
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_0c343120((void*)arg0.Handle);
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new WriteBatch((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static WriteBatch Create(nint arg0) =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public global::Hosihikari.Bindings.LeviLamina.Interop.ll.data.KeyValueDB_Nested.WriteBatch? del(string key)
     {

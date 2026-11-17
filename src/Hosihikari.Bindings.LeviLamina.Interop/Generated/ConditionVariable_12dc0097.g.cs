@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.coro;
 
-public sealed unsafe partial class ConditionVariable : global::System.IDisposable
+public sealed unsafe partial class ConditionVariable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,17 +40,9 @@ public sealed unsafe partial class ConditionVariable : global::System.IDisposabl
         return __hs_handle;
     }
 
-    public static ConditionVariable? Create()
-    {
-        var handle = NativeMethods.TablePtr->C0.hs_create_0f936f92();
-        if (handle == null)
-        {
-            NativeMethods.GetLastError();
-            return null;
-        }
-
-        return new ConditionVariable((nint)handle);
-    }
+    [global::System.Obsolete("BindingShim cannot project this member: a stored member type is not declared by the surface.", false)]
+    public static ConditionVariable Create() =>
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: a stored member type is not declared by the surface.");
 
     public ulong notifyAll(bool inplace)
     {
@@ -65,17 +57,4 @@ public sealed unsafe partial class ConditionVariable : global::System.IDisposabl
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'll::coro::ConditionVariable::Awaiter<std::monostate>' is not a known bindable declaration.", false)]
     public nint wait() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::coro::ConditionVariable::Awaiter<std::monostate>' is not a known bindable declaration.");
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_12dc0097((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
-    }
 }

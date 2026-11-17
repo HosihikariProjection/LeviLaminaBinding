@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo_Nested;
 
-public sealed unsafe partial class PlayerInfoEntry : global::System.IDisposable
+public sealed unsafe partial class PlayerInfoEntry
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -49,10 +49,10 @@ public sealed unsafe partial class PlayerInfoEntry : global::System.IDisposable
         }
     }
 
-    public nint uuid
+    // The native field type is not projected; this is the address of the field storage.
+    public nint uuid_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_eb409eeb((void*)__hosihikari_shim_handle);
-        set => NativeMethods.TablePtr->C0.hs_set_eb409eeb((void*)__hosihikari_shim_handle, (void*)value);
     }
 
     public string xuid
@@ -61,19 +61,6 @@ public sealed unsafe partial class PlayerInfoEntry : global::System.IDisposable
         {
             var view = NativeMethods.TablePtr->C0.hs_get_74ea7e9c((void*)__hosihikari_shim_handle);
             return global::System.Text.Encoding.UTF8.GetString(view.Data, checked((int)view.Size));
-        }
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_bc0bf207((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
         }
     }
 }

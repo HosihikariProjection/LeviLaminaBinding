@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Bindings.LeviLamina.Interop.ll.mod;
 
-public sealed unsafe partial class Dependency : global::System.IDisposable
+public sealed unsafe partial class Dependency
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -54,21 +54,9 @@ public sealed unsafe partial class Dependency : global::System.IDisposable
         return NativeMethods.TablePtr->C0.hs_method_bdbf76a1((void*)__hosihikari_shim_handle, (void*)other.Handle) != 0;
     }
 
-    public nint version
+    // The native field type is not projected; this is the address of the field storage.
+    public nint version_Address
     {
         get => (nint)NativeMethods.TablePtr->C0.hs_get_57bb9825((void*)__hosihikari_shim_handle);
-    }
-
-    public void Dispose()
-    {
-        if (__hosihikari_shim_handle != 0)
-        {
-            if (_ownsHandle)
-            {
-                NativeMethods.TablePtr->C0.hs_destroy_99f56511((void*)__hosihikari_shim_handle);
-            }
-
-            __hosihikari_shim_handle = 0;
-        }
     }
 }
