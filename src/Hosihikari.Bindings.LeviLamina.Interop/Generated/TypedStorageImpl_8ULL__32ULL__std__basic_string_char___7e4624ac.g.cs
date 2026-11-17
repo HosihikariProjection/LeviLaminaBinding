@@ -145,7 +145,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
 
 
-    public void assignGet(string value)
+    public void setGet(string value)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -164,7 +164,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
         }
     }
 
-    public void assignOperator__3(string value)
+    public void setOperator__3(string value)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
         scoped global::System.Span<byte> __hs_stringBytes0;
@@ -183,7 +183,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__32ULL__std__basic_stri
         }
     }
 
-    public void assignOperator_std__basic_string_char____2(string value)
+    public void setOperator_std__basic_string_char____2(string value)
     {
         var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(value);
         scoped global::System.Span<byte> __hs_stringBytes0;
