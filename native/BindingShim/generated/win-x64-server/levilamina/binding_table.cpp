@@ -285,14 +285,14 @@ using hosihikari::abi::clearLastError;
 thread_local std::string g_stringResult;
 
 template <class T, class U>
-std::vector<T> hs_make_vector(U const* data, std::size_t count)
+[[maybe_unused]] std::vector<T> hs_make_vector(U const* data, std::size_t count)
 {
     std::vector<T> result;
     result.reserve(count);
     for (std::size_t i = 0; i < count; ++i) { result.push_back(static_cast<T>(data[i])); }
     return result;
 }
-inline std::vector<std::string> hs_make_string_vector(HosihikariStringView const* data, std::size_t count)
+[[maybe_unused]] inline std::vector<std::string> hs_make_string_vector(HosihikariStringView const* data, std::size_t count)
 {
     std::vector<std::string> result;
     result.reserve(count);
@@ -304,7 +304,7 @@ struct hs_unique_void_deleter
     void operator()(void*) const noexcept {}
 };
 template <class T>
-void const* hs_type_tag()
+[[maybe_unused]] void const* hs_type_tag()
 {
     static const int tag = 0;
     return &tag;
@@ -330,13 +330,13 @@ struct hs_shared_holder final : hs_shared_holder_base
 };
 
 template <class T>
-void hs_release_shared_holder(void* holder)
+[[maybe_unused]] void hs_release_shared_holder(void* holder)
 {
     delete static_cast<hs_shared_holder<T>*>(holder);
 }
 
 template <class T>
-HosihikariSharedHandle hs_make_shared_handle(std::shared_ptr<T> value)
+[[maybe_unused]] HosihikariSharedHandle hs_make_shared_handle(std::shared_ptr<T> value)
 {
     if (!value) { return HosihikariSharedHandle{nullptr, nullptr, nullptr}; }
     auto* holder = new hs_shared_holder<T>(std::move(value));
@@ -344,7 +344,7 @@ HosihikariSharedHandle hs_make_shared_handle(std::shared_ptr<T> value)
 }
 
 template <class T>
-HosihikariSharedHandle hs_make_non_owner_handle(std::shared_ptr<T> value)
+[[maybe_unused]] HosihikariSharedHandle hs_make_non_owner_handle(std::shared_ptr<T> value)
 {
     if (!value) { return HosihikariSharedHandle{nullptr, nullptr, nullptr}; }
     void* target = *reinterpret_cast<void**>(value.get());
@@ -353,7 +353,7 @@ HosihikariSharedHandle hs_make_non_owner_handle(std::shared_ptr<T> value)
 }
 
 template <class T>
-std::shared_ptr<T> hs_shared_from_handle(HosihikariSharedHandle handle)
+[[maybe_unused]] std::shared_ptr<T> hs_shared_from_handle(HosihikariSharedHandle handle)
 {
     if (handle.holder == nullptr) { return {}; }
     auto* holder = static_cast<hs_shared_holder_base*>(handle.holder);
@@ -367,13 +367,13 @@ std::shared_ptr<T> hs_shared_from_handle(HosihikariSharedHandle handle)
 }
 
 template <class T>
-std::weak_ptr<T> hs_weak_from_handle(HosihikariSharedHandle handle)
+[[maybe_unused]] std::weak_ptr<T> hs_weak_from_handle(HosihikariSharedHandle handle)
 {
     return std::weak_ptr<T>(hs_shared_from_handle<T>(handle));
 }
 
 template <class T>
-Bedrock::NonOwnerPointer<T> hs_non_owner_from_handle(HosihikariSharedHandle handle)
+[[maybe_unused]] Bedrock::NonOwnerPointer<T> hs_non_owner_from_handle(HosihikariSharedHandle handle)
 {
     auto shared = hs_shared_from_handle<T>(handle);
     auto* pointer = const_cast<T*>(shared.get());
@@ -404,14 +404,14 @@ struct hs_borrowed_entry
 inline std::mutex hs_borrowedMutex;
 inline std::unordered_map<void*, hs_borrowed_entry> hs_borrowedRegistry;
 
-inline void hs_register_borrowed(void* target, void* holder, void (*release)(void*))
+[[maybe_unused]] inline void hs_register_borrowed(void* target, void* holder, void (*release)(void*))
 {
     std::lock_guard<std::mutex> lock(hs_borrowedMutex);
     hs_borrowedRegistry[target] = hs_borrowed_entry{holder, release};
 }
 
 template <class T>
-void hs_destroy_borrowed_or_delete(void* target)
+[[maybe_unused]] void hs_destroy_borrowed_or_delete(void* target)
 {
     void* holder = nullptr;
     void (*release)(void*) = nullptr;
@@ -431,7 +431,7 @@ void hs_destroy_borrowed_or_delete(void* target)
 }
 
 template <class T>
-std::vector<T> hs_make_record_vector(void const* const* data, std::size_t count)
+[[maybe_unused]] std::vector<T> hs_make_record_vector(void const* const* data, std::size_t count)
 {
     std::vector<T> result;
     result.reserve(count);
@@ -439,7 +439,7 @@ std::vector<T> hs_make_record_vector(void const* const* data, std::size_t count)
     return result;
 }
 template <class T>
-std::vector<std::optional<T>> hs_make_optional_record_vector(void const* const* data, std::size_t count)
+[[maybe_unused]] std::vector<std::optional<T>> hs_make_optional_record_vector(void const* const* data, std::size_t count)
 {
     std::vector<std::optional<T>> result;
     result.reserve(count);
@@ -447,7 +447,7 @@ std::vector<std::optional<T>> hs_make_optional_record_vector(void const* const* 
     return result;
 }
 template <class V>
-std::vector<V> hs_make_variant_vector(void const* const* data, std::size_t count)
+[[maybe_unused]] std::vector<V> hs_make_variant_vector(void const* const* data, std::size_t count)
 {
     std::vector<V> result;
     result.reserve(count);
@@ -455,7 +455,7 @@ std::vector<V> hs_make_variant_vector(void const* const* data, std::size_t count
     return result;
 }
 
-inline std::vector<std::basic_string_view<char>> hs_make_string_view_vector(HosihikariStringView const* data, std::size_t count)
+[[maybe_unused]] inline std::vector<std::basic_string_view<char>> hs_make_string_view_vector(HosihikariStringView const* data, std::size_t count)
 {
     std::vector<std::basic_string_view<char>> result;
     result.reserve(count);
@@ -464,13 +464,13 @@ inline std::vector<std::basic_string_view<char>> hs_make_string_view_vector(Hosi
 }
 
 template <class T>
-void hs_release_game_ref_handle(void* holder)
+[[maybe_unused]] void hs_release_game_ref_handle(void* holder)
 {
     delete static_cast<T*>(holder);
 }
 
 template <class T>
-HosihikariSharedHandle hs_make_game_ref_handle(T const& value)
+[[maybe_unused]] HosihikariSharedHandle hs_make_game_ref_handle(T const& value)
 {
     if (!static_cast<bool>(value)) { return HosihikariSharedHandle{nullptr, nullptr, nullptr}; }
     auto* holder = new T(value);
@@ -478,7 +478,7 @@ HosihikariSharedHandle hs_make_game_ref_handle(T const& value)
 }
 
 template <class T>
-T const& hs_game_ref_from_handle(HosihikariSharedHandle handle)
+[[maybe_unused]] T const& hs_game_ref_from_handle(HosihikariSharedHandle handle)
 {
     if (handle.holder == nullptr) { throw std::invalid_argument("empty game reference handle"); }
     return *static_cast<T const*>(handle.holder);
@@ -64500,6 +64500,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_a4399e76(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::ActorEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_53789cfc(void* hs_self) try
 {
     clearLastError();
@@ -64603,6 +64623,7 @@ static void* hs_event_id_ca64bdd2(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -64750,6 +64771,7 @@ static void* hs_event_id_bc49689d(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -66778,6 +66800,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_44cc2a59(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::CommandRegisterEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_4d71a0ac(void* hs_self) try
 {
     clearLastError();
@@ -66849,6 +66891,7 @@ static void* hs_event_id_a918573c(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -66987,6 +67030,7 @@ static void* hs_event_id_b2f9e9e8(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -68241,6 +68285,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_adfec972(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::Event>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_3078c0ff() try
 {
     clearLastError();
@@ -68728,6 +68792,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_409a46fb(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::ExecuteCommandEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_3bf2e906(void* hs_self) try
 {
     clearLastError();
@@ -68847,6 +68931,7 @@ static void* hs_event_id_ab0a106b(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -68978,6 +69063,7 @@ static void* hs_event_id_decff173(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -69125,6 +69211,7 @@ static void* hs_event_id_0c166f4e(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -69205,6 +69292,26 @@ static void* hs_cast_0d45bc89(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::Event*>(static_cast<ll::event::Event const*>(static_cast<ll::event::LevelEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_ac1f7130(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::LevelEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -69486,6 +69593,7 @@ static void* hs_event_id_94d2605d(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -70138,6 +70246,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_2003eb19(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::MobEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_aea176be(void* hs_self) try
 {
     clearLastError();
@@ -70305,6 +70433,7 @@ static void* hs_event_id_97c5ed7f(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -70516,6 +70645,7 @@ static void* hs_event_id_6027653d(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -70695,6 +70825,7 @@ static void* hs_event_id_45d0a6fc(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -70890,6 +71021,7 @@ static void* hs_event_id_b74eecf3(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -71048,6 +71180,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_c462546d(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerClickEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_create_678553ad(void* player) try
 {
     clearLastError();
@@ -71183,6 +71335,7 @@ static void* hs_event_id_fde9dd36(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -71394,6 +71547,7 @@ static void* hs_event_id_9adfb13f(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -71541,6 +71695,7 @@ static void* hs_event_id_91a8a133(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -71704,6 +71859,7 @@ static void* hs_event_id_7c716861(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -72308,6 +72464,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_59e08579(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_a649bec1(void* hs_self) try
 {
     clearLastError();
@@ -72475,6 +72651,7 @@ static void* hs_event_id_38363856(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -72722,6 +72899,7 @@ static void* hs_event_id_76e6ca6c(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -72853,6 +73031,7 @@ static void* hs_event_id_e42cf9f0(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -73025,6 +73204,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_ad94b0e8(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerLeftClickEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_create_c8ff32dc(void* player) try
 {
     clearLastError();
@@ -73144,6 +73343,7 @@ static void* hs_event_id_1d0c3d63(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -73396,6 +73596,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_6a75eb48(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerPlaceBlockEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_1903f7b8(void* hs_self) try
 {
     clearLastError();
@@ -73563,6 +73783,7 @@ static void* hs_event_id_159ec9fa(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -73774,6 +73995,7 @@ static void* hs_event_id_01284ad8(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -73921,6 +74143,7 @@ static void* hs_event_id_68b66a53(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74045,6 +74268,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_bb012d18(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerRightClickEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_create_5766ad9a(void* player) try
 {
     clearLastError();
@@ -74145,6 +74388,26 @@ static void* hs_cast_711779d8(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::ServerPlayerEvent*>(static_cast<ll::event::ServerPlayerEvent const*>(static_cast<ll::event::PlayerSneakEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_493a77f1(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerSneakEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74292,6 +74555,7 @@ static void* hs_event_id_04f493d9(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74455,6 +74719,7 @@ static void* hs_event_id_9b182aad(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74551,6 +74816,26 @@ static void* hs_cast_66acf6ac(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::ServerPlayerEvent*>(static_cast<ll::event::ServerPlayerEvent const*>(static_cast<ll::event::PlayerSprintEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_7fa8ae42(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::PlayerSprintEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74682,6 +74967,7 @@ static void* hs_event_id_5a77f454(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74829,6 +75115,7 @@ static void* hs_event_id_5d18bfb6(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -74976,6 +75263,7 @@ static void* hs_event_id_246ffdd9(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75139,6 +75427,7 @@ static void* hs_event_id_7d80d312(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75254,6 +75543,7 @@ static void* hs_event_id_1e9adb24(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75369,6 +75659,7 @@ static void* hs_event_id_0308d2f6(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75461,6 +75752,26 @@ catch (...)
     return nullptr;
 }
 
+static void* hs_event_id_028e2ec0(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::ServerPlayerEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_da3af522(void* hs_self) try
 {
     clearLastError();
@@ -75516,6 +75827,7 @@ static void* hs_event_id_bbefc8b1(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75615,6 +75927,7 @@ static void* hs_event_id_1f2d1376(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75679,6 +75992,26 @@ static void* hs_cast_69f77e8f(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::Event*>(static_cast<ll::event::Event const*>(static_cast<ll::event::ServiceEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_54d1b985(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::ServiceEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75762,6 +76095,7 @@ static void* hs_event_id_4d95748a(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75829,6 +76163,7 @@ static void* hs_event_id_1413e9e8(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -75909,6 +76244,26 @@ static void* hs_cast_c6a2e722(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::WorldEvent*>(static_cast<ll::event::WorldEvent const*>(static_cast<ll::event::SpawnMobEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_eed80637(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::SpawnMobEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -76108,6 +76463,7 @@ static void* hs_event_id_4641ad49(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -76259,6 +76615,7 @@ static void* hs_event_id_2dfca293(const char** name_data, std::size_t* name_size
     *name_data = hs_id.name.data();
     *name_size = hs_id.name.size();
     *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -76467,6 +76824,26 @@ static void* hs_cast_f67ddadd(void* hs_self) try
 {
     clearLastError();
     return const_cast<ll::event::Event*>(static_cast<ll::event::Event const*>(static_cast<ll::event::WorldEvent const*>(hs_self)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_event_id_42370feb(const char** name_data, std::size_t* name_size, std::size_t* id_hash) try
+{
+    clearLastError();
+    ll::event::EventIdView const hs_id{ll::reflection::type_unprefix_name_v<ll::event::WorldEvent>};
+    *name_data = hs_id.name.data();
+    *name_size = hs_id.name.size();
+    *id_hash = hs_id.hash;
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -93325,6 +93702,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_e4f5bda6,
     &hs_cast_c08fc57d,
     &hs_cast_8989f82e,
+    &hs_event_id_a4399e76,
     &hs_method_53789cfc,
     &hs_method_f72bfd89,
     &hs_destroy_62658527,
@@ -93467,6 +93845,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6d46885e,
     &hs_cast_3a2492d0,
     &hs_cast_5fd97bbf,
+    &hs_event_id_44cc2a59,
     &hs_method_4d71a0ac,
     &hs_method_448b143b,
     &hs_destroy_7a168a6c,
@@ -93555,6 +93934,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_6afc3a4e,
     &hs_cast_915dc2e3,
     &hs_cast_bc3b6e53,
+    &hs_event_id_adfec972,
     &hs_get_3078c0ff,
     &hs_method_9a20ce2e,
     &hs_method_c4d191a1,
@@ -93585,6 +93965,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_e71dc0c5,
     &hs_cast_40b30d00,
     &hs_cast_34f96e76,
+    &hs_event_id_409a46fb,
     &hs_method_3bf2e906,
     &hs_method_12ff330c,
     &hs_method_68caa5c1,
@@ -93615,6 +93996,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_15ee8151,
     &hs_cast_2bfcb528,
     &hs_cast_0d45bc89,
+    &hs_event_id_ac1f7130,
     &hs_method_fb7b62c0,
     &hs_method_5670062e,
     &hs_destroy_c0585396,
@@ -93671,6 +94053,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_50537d4e,
     &hs_cast_12d56b5a,
     &hs_cast_f5fb5ca5,
+    &hs_event_id_2003eb19,
     &hs_method_aea176be,
     &hs_method_d8021936,
     &hs_cast_2f8d55d6,
@@ -93727,6 +94110,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_8771b16d,
     &hs_cast_50783c15,
     &hs_cast_402b6e20,
+    &hs_event_id_c462546d,
     &hs_create_678553ad,
     &hs_destroy_3a3ae919,
     &hs_cast_fadb3208,
@@ -93805,6 +94189,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_186e04f6,
     &hs_cast_340cfcd5,
     &hs_cast_19f2b03c,
+    &hs_event_id_59e08579,
     &hs_method_a649bec1,
     &hs_method_183a591f,
     &hs_destroy_ba545186,
@@ -93849,6 +94234,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_6baff9ef,
     &hs_cast_99b01029,
     &hs_cast_ff157c8c,
+    &hs_event_id_ad94b0e8,
     &hs_create_c8ff32dc,
     &hs_destroy_a18008f6,
     &hs_cast_fd96e116,
@@ -93872,6 +94258,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_c32854b4,
     &hs_cast_378fee0d,
     &hs_cast_6644d7b1,
+    &hs_event_id_6a75eb48,
     &hs_method_1903f7b8,
     &hs_method_35eb3764,
     &hs_destroy_70573eb3,
@@ -93912,6 +94299,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_86beeb19,
     &hs_cast_df5bb981,
     &hs_cast_a75e1431,
+    &hs_event_id_bb012d18,
     &hs_create_5766ad9a,
     &hs_cast_40e19d0b,
     &hs_cast_3d92a9cd,
@@ -93919,6 +94307,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_9b2b8093,
     &hs_cast_b1228dd3,
     &hs_cast_711779d8,
+    &hs_event_id_493a77f1,
     &hs_destroy_80727cc3,
     &hs_cast_bb2e9913,
     &hs_cast_a041a10d,
@@ -93944,6 +94333,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_f4a10042,
     &hs_cast_82369d5d,
     &hs_cast_66acf6ac,
+    &hs_event_id_7fa8ae42,
     &hs_destroy_cf84a0bc,
     &hs_cast_39bbc49b,
     &hs_cast_72731aa7,
@@ -93999,6 +94389,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_a6947981,
     &hs_cast_76f09a65,
     &hs_cast_4221a170,
+    &hs_event_id_028e2ec0,
     &hs_method_da3af522,
     &hs_destroy_766928d5,
     &hs_cast_f19136bc,
@@ -94013,6 +94404,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c366a36e,
     &hs_method_78145d83,
     &hs_cast_69f77e8f,
+    &hs_event_id_54d1b985,
     &hs_method_1a6732fc,
     &hs_destroy_7e334500,
     &hs_cast_bcb81f68,
@@ -94027,6 +94419,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_777bde01,
     &hs_cast_ae3bf516,
     &hs_cast_c6a2e722,
+    &hs_event_id_eed80637,
     &hs_method_63164f43,
     &hs_method_63a422c4,
     &hs_method_de73fc86,
@@ -94061,6 +94454,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_cast_18893248,
     &hs_cast_2033466d,
     &hs_cast_f67ddadd,
+    &hs_event_id_42370feb,
     &hs_method_b2ad2a9c,
     &hs_method_07d58633,
     &hs_function_3ec798b4,

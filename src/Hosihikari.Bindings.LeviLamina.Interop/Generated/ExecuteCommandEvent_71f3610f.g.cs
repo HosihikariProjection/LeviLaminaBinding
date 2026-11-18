@@ -121,4 +121,13 @@ public sealed unsafe partial class ExecuteCommandEvent
         }
         return new global::Hosihikari.Bindings.LeviLamina.Interop.ll.@event.ExecutingCommandEvent((nint)__hs_handle, false);
     }
+
+    public static (string Name, nuint Hash) eventId()
+    {
+        byte* __hs_idName = null;
+        nuint __hs_idSize = 0;
+        nuint __hs_idHash = 0;
+        NativeMethods.TablePtr->C0.hs_event_id_409a46fb(&__hs_idName, &__hs_idSize, &__hs_idHash);
+        return (global::System.Text.Encoding.UTF8.GetString(__hs_idName, checked((int)__hs_idSize)), __hs_idHash);
+    }
 }

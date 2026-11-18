@@ -12,6 +12,26 @@ if ([string]::IsNullOrWhiteSpace($LeviLaminaRoot)) {
 
 $ErrorActionPreference = "Stop"
 
+# Windows refuses to remove a directory that is any process's working directory, and an
+# idle shell or MSBuild node sitting in Generated/ is enough. Regeneration only needs the
+# directory to end up holding exactly the new files, so fall back to emptying it.
+function Reset-GeneratedDirectory([string]$Path) {
+    if (-not (Test-Path $Path)) {
+        New-Item -ItemType Directory -Force -Path $Path | Out-Null
+        return
+    }
+
+    try {
+        Remove-Item $Path -Recurse -Force -ErrorAction Stop
+        New-Item -ItemType Directory -Force -Path $Path | Out-Null
+        return
+    } catch {
+        Write-Warning "could not remove $Path (a process is using it); emptying it instead"
+    }
+
+    Get-ChildItem $Path -Force | Remove-Item -Recurse -Force
+}
+
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $IrDirectory = (Resolve-Path $IrDirectory).Path
 if ([string]::IsNullOrWhiteSpace($GeneratorRoot)) {
@@ -47,16 +67,10 @@ $InteropGenerated = Join-Path $RepoRoot "src\Hosihikari.Bindings.LeviLamina.Inte
 $ShimTarget = Join-Path $RepoRoot "native\BindingShim\generated\win-x64-server\levilamina"
 $CoverageTarget = Join-Path $RepoRoot "coverage"
 
-if (Test-Path $InteropGenerated) {
-    Remove-Item $InteropGenerated -Recurse -Force
-}
-New-Item -ItemType Directory -Force -Path $InteropGenerated | Out-Null
+Reset-GeneratedDirectory $InteropGenerated
 Copy-Item (Join-Path $Output "interop\levilamina\*") $InteropGenerated -Recurse -Force
 
-if (Test-Path $ShimTarget) {
-    Remove-Item $ShimTarget -Recurse -Force
-}
-New-Item -ItemType Directory -Force -Path $ShimTarget | Out-Null
+Reset-GeneratedDirectory $ShimTarget
 Copy-Item (Join-Path $Output "shim\win-x64-server\levilamina\*") $ShimTarget -Recurse -Force
 
 New-Item -ItemType Directory -Force -Path $CoverageTarget | Out-Null
