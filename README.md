@@ -53,7 +53,7 @@ The plugin validates `NativeMethods.Load`, `EventId`, `Version`, out-of-line `ll
 dotnet build Hosihikari.Bindings.LeviLamina.slnx -c Release
 ```
 
-The package version follows the upstream version plus the binding revision (`26.60.7-r0`). The platform for this interop surface is Windows x64.
+The package version follows the upstream version plus the binding revision (`26.60.7-r1`). The platform for this interop surface is Windows x64.
 
 ## Related repositories
 

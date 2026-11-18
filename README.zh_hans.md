@@ -53,7 +53,7 @@ powershell -File scripts/run-runtime-smoke.ps1 -ServerRoot C:\path\to\bedrock-se
 dotnet build Hosihikari.Bindings.LeviLamina.slnx -c Release
 ```
 
-包版本跟随上游版本 + 绑定修订（`26.60.7-r0`）。该面的平台是 Windows x64。
+包版本跟随上游版本 + 绑定修订（`26.60.7-r1`）。该面的平台是 Windows x64。
 
 ## 相关仓库
 
