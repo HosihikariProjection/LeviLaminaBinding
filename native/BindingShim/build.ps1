@@ -32,10 +32,26 @@ if (-not (Test-Path $CarrierImportLibrary)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($FmtLib)) {
+    # The carrier pins the fmt version; match that pin instead of taking whichever package
+    # the directory walk reaches first.
+    $CarrierLuaForFmt = Join-Path $LeviLaminaRoot "xmake.lua"
+    if (-not (Test-Path $CarrierLuaForFmt)) {
+        throw "$CarrierLuaForFmt was not found, so the pinned fmt version is unknown; pass -FmtLib explicitly."
+    }
+    $FmtPinMatch = Select-String -Path $CarrierLuaForFmt -Pattern 'add_requires\("fmt\s+([0-9][^\s"]*)"\)' | Select-Object -First 1
+    if (-not $FmtPinMatch) {
+        throw "$CarrierLuaForFmt does not pin fmt; pass -FmtLib explicitly."
+    }
+    $FmtVersion = $FmtPinMatch.Matches[0].Groups[1].Value
+    # Filter the candidates the same way as the runtime data, so a package directory carrying
+    # a "+sha" suffix still matches; a pin that itself names build metadata settles on its base.
+    $FmtBaseVersion = ($FmtVersion -split '\+')[0]
+    $FmtPinnedPattern = [regex]::Escape($FmtBaseVersion) + '(?:[+]|' + [regex]::Escape([string][IO.Path]::DirectorySeparatorChar) + ')'
     $Fmt = Get-ChildItem "$env:LOCALAPPDATA\.xmake\packages\f\fmt" -Recurse -Filter fmt.lib -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -match $FmtPinnedPattern } |
         Select-Object -First 1
     if (-not $Fmt) {
-        throw "fmt.lib was not found; pass -FmtLib explicitly."
+        throw "fmt $FmtVersion is pinned by the carrier but fmt.lib is not installed; pass -FmtLib explicitly."
     }
 
     $FmtLib = $Fmt.FullName
