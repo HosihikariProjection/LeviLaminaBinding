@@ -1,6 +1,6 @@
 # LeviLamina BindingShim
 
-The native side of the LeviLamina binding: it includes the LL/Bedrock headers and projects the selected declarations into the C ABI described in ADR-0004.
+The native side of the LeviLamina binding: it includes the LL/Bedrock headers and projects the selected declarations into the C ABI described in PJ-0004.
 
 ## Target
 
