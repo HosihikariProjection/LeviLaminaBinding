@@ -1,4 +1,4 @@
-# Hosihikari.Bindings.LeviLamina
+# Hosihikari.Binding.LeviLamina
 
 [English](README.md) | [简体中文](README.zh_hans.md)
 
@@ -6,18 +6,18 @@
 
 ## 边界
 
-- `Hosihikari.Bindings.LeviLamina.Interop` 由 `HosihikariProjection/BindingGenerator` 从版本化 IR 生成。它镜像 LLAPI 声明：一层指针与引用返回投影为类型化借用包装，`optional_ref<T>` 结果复用同一包装，其余不透明句柄保留 `nint`；提交入库并由 CI 重跑比对。
+- `Hosihikari.Binding.LeviLamina.Interop` 由 `HosihikariProjection/BindingGenerator` 从版本化 IR 生成。它镜像 LLAPI 声明：一层指针与引用返回投影为类型化借用包装，`optional_ref<T>` 结果复用同一包装，其余不透明句柄保留 `nint`；提交入库并由 CI 重跑比对。
 - `native/BindingShim/` 是用 LeviLamina 的 xmake/LLVM 工具链编译的 C ABI 投影。它不托管 CLR；HostingShim 是独立的一层。
 
 ## 当前状态
 
 Interop 工程可构建。carrier 链接的生成 Interop、v1 绑定垫片函数表及其 `extern "C"` 实现、覆盖清单均已提交：
 
-- `src/Hosihikari.Bindings.LeviLamina.Interop/Generated/` 包含生成的原生风格 C# 类、带求值结果的导出枚举 C# 枚举与 `NativeMethods`；有意不支持的成员为带 `[Obsolete]` 标记的 `NotSupportedException` stub，调用时产生编译器警告 CS0618；没有可用成员的类型保留类型身份并带同一标记。
+- `src/Hosihikari.Binding.LeviLamina.Interop/Generated/` 包含生成的原生风格 C# 类、带求值结果的导出枚举 C# 枚举与 `NativeMethods`；有意不支持的成员为带 `[Obsolete]` 标记的 `NotSupportedException` stub，调用时产生编译器警告 CS0618；没有可用成员的类型保留类型身份并带同一标记。
 - `native/BindingShim/generated/win-x64-server/levilamina/` 是 4,957 个函数的函数表与实现。
 - `coverage/` 包含覆盖清单、汇总、基线与 provenance。
 
-载体在使用生成的包装前调用 `Hosihikari.Bindings.LeviLamina.Interop.NativeMethods.Load(path)`。`native/BindingShim/build.ps1` 用 clang-cl 针对 `LeviLamina.lib`、fmt 与 prelink 生成的 Bedrock 导入构建 shim。
+载体在使用生成的包装前调用 `Hosihikari.Binding.LeviLamina.Interop.NativeMethods.Load(path)`。`native/BindingShim/build.ps1` 用 clang-cl 针对 `LeviLamina.lib`、fmt 与 prelink 生成的 Bedrock 导入构建 shim。
 
 命名空间级函数投影为 `Functions` 静态类，其中包含载体导出的 out-of-line 函数：`ll::service::getLevel`/`getDedicatedServer`/`getNetworkSystem`、`ll::getGameVersion`、`ll::file_utils::readFile` 与字符串/系统工具都可经导入库调用。返回与参数复用成员映射，因此 optional 引用、按值 record（例如 `ll::data::Version`）、`std::optional` 字符串与 `expected` 结果都能跨界。
 
@@ -50,10 +50,10 @@ powershell -File scripts/run-runtime-smoke.ps1 -ServerRoot C:\path\to\bedrock-se
 ## 构建
 
 ```shell
-dotnet build Hosihikari.Bindings.LeviLamina.slnx -c Release
+dotnet build Hosihikari.Binding.LeviLamina.slnx -c Release
 ```
 
-包版本跟随上游版本 + 绑定修订（`26.60.7-r1`）。该面的平台是 Windows x64。
+包版本跟随上游版本 + 绑定修订（`26.60.7-r0`）。该面的平台是 Windows x64。
 
 ## 相关仓库
 

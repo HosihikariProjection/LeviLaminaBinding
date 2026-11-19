@@ -45,7 +45,7 @@ if ([string]::IsNullOrWhiteSpace($FmtLib)) {
 
 & (Join-Path $GeneratorRoot "frontend\build-carrier-shim.ps1") `
     -ShimDirectory $ShimDirectory `
-    -OutputDll (Join-Path $Output "Hosihikari.Bindings.LeviLamina.Shim.dll") `
+    -OutputDll (Join-Path $Output "Hosihikari.Binding.LeviLamina.Shim.dll") `
     -LlvmRoot $LlvmRoot `
     -LeviLaminaRoot $LeviLaminaRoot `
     -CarrierImportLibrary $CarrierImportLibrary `

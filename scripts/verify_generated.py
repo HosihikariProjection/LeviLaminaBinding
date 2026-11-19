@@ -11,7 +11,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 COVERAGE = ROOT / "coverage"
 SHIM = ROOT / "native" / "BindingShim" / "generated" / "win-x64-server" / "levilamina"
-INTEROP = ROOT / "src" / "Hosihikari.Bindings.LeviLamina.Interop" / "Generated"
+INTEROP = ROOT / "src" / "Hosihikari.Binding.LeviLamina.Interop" / "Generated"
 
 
 def load(name: str) -> dict:

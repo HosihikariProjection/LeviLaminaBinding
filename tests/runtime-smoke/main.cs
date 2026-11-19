@@ -6,19 +6,19 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Hosihikari;
-using Hosihikari.Bindings.Abi;
-using Hosihikari.Bindings.LeviLamina.Interop;
-using Hosihikari.Bindings.LeviLamina.Interop.ll;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.@event;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.io;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.memory;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.mod;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.network;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.thread;
-using LlEventId = Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventId;
-using LlHashFunctions = Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils.Functions;
-using LlReflectionFunctions = Hosihikari.Bindings.LeviLamina.Interop.ll.reflection.Functions;
-using LlVersion = Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version;
+using Hosihikari.Binding.Abi;
+using Hosihikari.Binding.LeviLamina.Interop;
+using Hosihikari.Binding.LeviLamina.Interop.ll;
+using Hosihikari.Binding.LeviLamina.Interop.ll.@event;
+using Hosihikari.Binding.LeviLamina.Interop.ll.io;
+using Hosihikari.Binding.LeviLamina.Interop.ll.memory;
+using Hosihikari.Binding.LeviLamina.Interop.ll.mod;
+using Hosihikari.Binding.LeviLamina.Interop.ll.network;
+using Hosihikari.Binding.LeviLamina.Interop.ll.thread;
+using LlEventId = Hosihikari.Binding.LeviLamina.Interop.ll.@event.EventId;
+using LlHashFunctions = Hosihikari.Binding.LeviLamina.Interop.ll.hash_utils.Functions;
+using LlReflectionFunctions = Hosihikari.Binding.LeviLamina.Interop.ll.reflection.Functions;
+using LlVersion = Hosihikari.Binding.LeviLamina.Interop.ll.data.Version;
 
 public sealed class ShimSmokePlugin : IPlugin
 {
@@ -105,7 +105,7 @@ public sealed class ShimSmokePlugin : IPlugin
 
         try
         {
-            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Bindings.LeviLamina.Shim.dll");
+            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Binding.LeviLamina.Shim.dll");
             NativeMethods.Load(shimPath);
             log.AppendLine("load=ok");
 
@@ -191,7 +191,7 @@ public sealed class ShimSmokePlugin : IPlugin
 
             log.AppendLine("shared.dispose=ok");
 
-            var commandRegistrar = Hosihikari.Bindings.LeviLamina.Interop.ll.command.CommandRegistrar.getInstance(false);
+            var commandRegistrar = Hosihikari.Binding.LeviLamina.Interop.ll.command.CommandRegistrar.getInstance(false);
             var registered = commandRegistrar.tryRegisterRuntimeEnum(
                 "hosihikari_smoke_enum",
                 new[]
@@ -204,30 +204,30 @@ public sealed class ShimSmokePlugin : IPlugin
                 new[] { new KeyValuePair<string, ulong>("three", 3) });
             log.AppendLine($"command_enum.pairs={(registered && added ? "ok" : "failed")}");
 
-            var intParser = Hosihikari.Bindings.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
+            var intParser = Hosihikari.Binding.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
             log.AppendLine($"member_function_pointer.parseFn={(intParser != 0 ? "ok" : "failed")}");
 
             var hookOk = false;
             if (NativeLibrary.TryLoad("LeviLamina.dll", out var llModule)
                 && NativeLibrary.TryGetExport(llModule, "?shouldHookSuspendThreads@memory@ll@@YA_NXZ", out var hookTarget))
             {
-                var baselineSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var baselineSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 _hookDetourValue = !baselineSuspend;
                 var detour = Marshal.GetFunctionPointerForDelegate(HookDetourDelegate);
                 var originalSlot = Marshal.AllocHGlobal(IntPtr.Size);
                 Marshal.WriteIntPtr(originalSlot, IntPtr.Zero);
-                Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.hook(
+                Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.hook(
                     hookTarget,
                     detour,
                     originalSlot,
-                    (int)Hosihikari.Bindings.LeviLamina.Interop.ll.memory.HookPriority.Normal,
+                    (int)Hosihikari.Binding.LeviLamina.Interop.ll.memory.HookPriority.Normal,
                     false);
-                var detouredSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var detouredSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 var original = Marshal.ReadIntPtr(originalSlot);
                 var originalSuspend = original != IntPtr.Zero
                     && Marshal.GetDelegateForFunctionPointer<HookValue>(original)();
-                var unhooked = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.unhook(hookTarget, detour, false);
-                var restoredSuspend = Hosihikari.Bindings.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var unhooked = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.unhook(hookTarget, detour, false);
+                var restoredSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 Marshal.FreeHGlobal(originalSlot);
                 hookOk = original != IntPtr.Zero
                     && detouredSuspend == !baselineSuspend
@@ -300,7 +300,7 @@ public sealed class ShimSmokePlugin : IPlugin
                 log.AppendLine($"packet_handler.register={(packetRegistered && registeredHandler is not null && registeredHandler.Handle == packetDirector!.Target ? "ok" : "failed")}");
             }
 
-            var playerInfo = Hosihikari.Bindings.LeviLamina.Interop.ll.service.PlayerInfo.getInstance();
+            var playerInfo = Hosihikari.Binding.LeviLamina.Interop.ll.service.PlayerInfo.getInstance();
             if (playerInfo.Handle != 0)
             {
                 var missingByName = playerInfo.fromName("hosihikari-missing-player");
@@ -312,7 +312,7 @@ public sealed class ShimSmokePlugin : IPlugin
                 log.AppendLine("optional_ref.missing=failed:no-service");
             }
 
-            using (var property = Hosihikari.Bindings.LeviLamina.Interop.ll.ui.Property.Create())
+            using (var property = Hosihikari.Binding.LeviLamina.Interop.ll.ui.Property.Create())
             {
                 var expectedError = false;
                 try

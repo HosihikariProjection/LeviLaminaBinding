@@ -57,13 +57,13 @@ if (-not (Test-Path $AbiHeader)) {
     throw "hosihikari_abi.h was not found under $AbiRoot."
 }
 
-$GeneratorProject = Join-Path $GeneratorRoot "src\Hosihikari.Bindings.Generator\Hosihikari.Bindings.Generator.csproj"
+$GeneratorProject = Join-Path $GeneratorRoot "src\Hosihikari.Binding.Generator\Hosihikari.Binding.Generator.csproj"
 dotnet run --project $GeneratorProject -c Release -- emit $Manifest $IrDirectory $Output --native-root $LeviLaminaRoot --link-carrier --ll-allocator --abi-header $AbiHeader
 if ($LASTEXITCODE -ne 0) {
     throw "The generator exited with $LASTEXITCODE."
 }
 
-$InteropGenerated = Join-Path $RepoRoot "src\Hosihikari.Bindings.LeviLamina.Interop\Generated"
+$InteropGenerated = Join-Path $RepoRoot "src\Hosihikari.Binding.LeviLamina.Interop\Generated"
 $ShimTarget = Join-Path $RepoRoot "native\BindingShim\generated\win-x64-server\levilamina"
 $CoverageTarget = Join-Path $RepoRoot "coverage"
 

@@ -21,12 +21,12 @@ if (-not (Test-Path $ServerExecutable)) {
     throw "bedrock_server_mod.exe was not found under $ServerRoot."
 }
 
-dotnet build (Join-Path $RepoRoot "Hosihikari.Bindings.LeviLamina.slnx") -c Release --nologo -v:q
+dotnet build (Join-Path $RepoRoot "Hosihikari.Binding.LeviLamina.slnx") -c Release --nologo -v:q
 & (Join-Path $RepoRoot "native\BindingShim\build.ps1") -LlvmRoot $LlvmRoot -GeneratorRoot $GeneratorRoot
 
-$InteropDll = Join-Path $RepoRoot "src\Hosihikari.Bindings.LeviLamina.Interop\bin\Release\net10.0\Hosihikari.Bindings.LeviLamina.Interop.dll"
-$AbiDll = Join-Path (Split-Path $InteropDll -Parent) "Hosihikari.Bindings.Abi.dll"
-$ShimDll = Join-Path $RepoRoot "artifacts\native\Hosihikari.Bindings.LeviLamina.Shim.dll"
+$InteropDll = Join-Path $RepoRoot "src\Hosihikari.Binding.LeviLamina.Interop\bin\Release\net10.0\Hosihikari.Binding.LeviLamina.Interop.dll"
+$AbiDll = Join-Path (Split-Path $InteropDll -Parent) "Hosihikari.Binding.Abi.dll"
+$ShimDll = Join-Path $RepoRoot "artifacts\native\Hosihikari.Binding.LeviLamina.Shim.dll"
 $PluginSource = Join-Path $RepoRoot "tests\benchmarks"
 $PluginTarget = Join-Path $ServerRoot "plugins\shim-benchmarks"
 $DataTarget = Join-Path $ServerRoot "data\hosihikari\shim-benchmarks"

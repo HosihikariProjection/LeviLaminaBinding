@@ -6,12 +6,12 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Hosihikari;
-using Hosihikari.Bindings.LeviLamina.Interop;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.io;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.command;
-using Hosihikari.Bindings.LeviLamina.Interop.ll.hash_utils;
-using LlEventId = Hosihikari.Bindings.LeviLamina.Interop.ll.@event.EventId;
-using LlVersion = Hosihikari.Bindings.LeviLamina.Interop.ll.data.Version;
+using Hosihikari.Binding.LeviLamina.Interop;
+using Hosihikari.Binding.LeviLamina.Interop.ll.io;
+using Hosihikari.Binding.LeviLamina.Interop.ll.command;
+using Hosihikari.Binding.LeviLamina.Interop.ll.hash_utils;
+using LlEventId = Hosihikari.Binding.LeviLamina.Interop.ll.@event.EventId;
+using LlVersion = Hosihikari.Binding.LeviLamina.Interop.ll.data.Version;
 
 public sealed class ShimBenchmarkPlugin : IPlugin
 {
@@ -63,7 +63,7 @@ public sealed class ShimBenchmarkPlugin : IPlugin
 
         try
         {
-            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Bindings.LeviLamina.Shim.dll");
+            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Binding.LeviLamina.Shim.dll");
             NativeMethods.Load(shimPath);
             log.AppendLine("load=ok");
 

@@ -1,5 +1,5 @@
 {
-  "generator": "Hosihikari.Bindings.Generator 0.3.0 (IR 1.7.0)",
+  "generator": "Hosihikari.Binding.Generator 0.3.0 (IR 1.7.0)",
   "irVersion": "1.7.0",
   "irManifestSha256": "sha256:c5bbb7e63cc818d7b08439b451d5d9aef1d16076ca76770ae3ab22c8dcae5aba",
   "carrierCommit": "dacca851fe5f8b97e292496f702db3a73b118f39",
