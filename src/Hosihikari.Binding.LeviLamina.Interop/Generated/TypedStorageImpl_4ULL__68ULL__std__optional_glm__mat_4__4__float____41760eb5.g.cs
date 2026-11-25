@@ -40,13 +40,13 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__68ULL__std__optional_g
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
     public static TypedStorageImpl_4ULL__68ULL__std__optional_glm__mat_4__4__float___ Create_a5b79434(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has no accessible destructor.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_4ULL__68ULL__std__optional_glm__mat_4__4__float___ Create_bacf86f9(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move constructors are not projected.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint data_Address

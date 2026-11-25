@@ -40,13 +40,21 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__bool__CommandReg
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
-    public static TypedStorageImpl_8ULL__8ULL__bool__CommandRegistry_____void____const_CommandRegistry__ParseToken_537cd008 Create_a6dcc663(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+    public static TypedStorageImpl_8ULL__8ULL__bool__CommandRegistry_____void____const_CommandRegistry__ParseToken_537cd008? Create_a6dcc663(nint other)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_a6dcc663((void*)other);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+        return new TypedStorageImpl_8ULL__8ULL__bool__CommandRegistry_____void____const_CommandRegistry__ParseToken_537cd008((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__8ULL__bool__CommandRegistry_____void____const_CommandRegistry__ParseToken_537cd008 Create_fb5223b8(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move constructors are not projected.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint data_Address

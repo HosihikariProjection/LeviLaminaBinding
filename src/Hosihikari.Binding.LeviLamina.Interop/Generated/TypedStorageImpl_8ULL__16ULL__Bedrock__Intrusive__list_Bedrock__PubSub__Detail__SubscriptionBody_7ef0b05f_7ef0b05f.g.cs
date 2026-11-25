@@ -40,13 +40,21 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__16ULL__Bedrock__Intrus
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
-    public static TypedStorageImpl_8ULL__16ULL__Bedrock__Intrusive__list_Bedrock__PubSub__Detail__SubscriptionBody_7ef0b05f Create_35a13bbf(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+    public static TypedStorageImpl_8ULL__16ULL__Bedrock__Intrusive__list_Bedrock__PubSub__Detail__SubscriptionBody_7ef0b05f? Create_35a13bbf(nint other)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_35a13bbf((void*)other);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+        return new TypedStorageImpl_8ULL__16ULL__Bedrock__Intrusive__list_Bedrock__PubSub__Detail__SubscriptionBody_7ef0b05f((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__16ULL__Bedrock__Intrusive__list_Bedrock__PubSub__Detail__SubscriptionBody_7ef0b05f Create_d53e8210(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move constructors are not projected.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint data_Address

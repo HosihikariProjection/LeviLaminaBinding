@@ -40,13 +40,21 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__std__atomic_unsi
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
-    public static TypedStorageImpl_8ULL__8ULL__std__atomic_unsigned_long_long__ Create_d2e4d00f(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+    public static TypedStorageImpl_8ULL__8ULL__std__atomic_unsigned_long_long__? Create_d2e4d00f(nint other)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_d2e4d00f((void*)other);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+        return new TypedStorageImpl_8ULL__8ULL__std__atomic_unsigned_long_long__((nint)handle);
+    }
+
+    [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__8ULL__std__atomic_unsigned_long_long__ Create_7b00ad38(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move constructors are not projected.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint data_Address

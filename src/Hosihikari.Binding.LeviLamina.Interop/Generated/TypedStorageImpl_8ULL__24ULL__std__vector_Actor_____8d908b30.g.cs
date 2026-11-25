@@ -52,9 +52,9 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_Act
         return new TypedStorageImpl_8ULL__24ULL__std__vector_Actor____((nint)handle);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: template copy and move constructors are not projected.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__24ULL__std__vector_Actor____ Create_54af3282(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: template copy and move constructors are not projected.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move constructors are not projected.");
 
     // The native field type is not projected; this is the address of the field storage.
     public nint data_Address
