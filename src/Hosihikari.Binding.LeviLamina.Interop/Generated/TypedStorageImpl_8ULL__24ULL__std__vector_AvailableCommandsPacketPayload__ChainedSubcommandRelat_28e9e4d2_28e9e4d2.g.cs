@@ -186,13 +186,20 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_Ava
         return (nint)__hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
-    public nint operator_assign_b4960e46(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+    public nint? operator_assign_b4960e46(nint u)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b4960e46((void*)__hosihikari_shim_handle, (void*)u);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign_e8ef24c6(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
     public void Destroy() =>

@@ -110,13 +110,13 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__bool__CommandReg
     public nint operator_operator___29295ddb() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*const *)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: return type 'bool (CommandRegistry::*&)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.", false)]
     public nint operator_assign_61636c86(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: return type 'bool (CommandRegistry::*&)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const' is not supported.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign_39d124a9(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
 
     public void Dispose()

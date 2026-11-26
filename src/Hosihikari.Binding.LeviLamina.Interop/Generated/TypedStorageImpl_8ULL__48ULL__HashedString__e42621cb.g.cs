@@ -205,9 +205,9 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
         return (nint)__hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign_6b6571d7(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
 
     public void Dispose()

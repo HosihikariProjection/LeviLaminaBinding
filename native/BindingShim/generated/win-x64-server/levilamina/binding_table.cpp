@@ -28,83 +28,142 @@
 #include "mc/deps/core/utility/EnableNonOwnerReferences.h"
 #include "mc/deps/core/utility/NonOwnerPointer.h"
 #include "mc/deps/cereal/ComponentStorageSentinelType.h"
+#include "mc/deps/game_refs/OwnerPtr.h"
+#include "mc/deps/game_refs/WeakRef.h"
 #include "mc/world/level/levelgen/feature/gamerefs_feature/GameRefsFeature.h"
+#include "ll/api/io/LogLevel.h"
+#include "mc/server/commands/CommandOutputMessageType.h"
 #include "ll/api/Expected.h"
+#include "ll/api/base/TypeTraits.h"
+#include "ll/api/base/Meta.h"
+#include "ll/api/reflection/TypeName.h"
+#include "ll/api/utils/StringUtils.h"
+#include "ll/api/reflection/Reflection.h"
+#include "ll/api/utils/HashUtils.h"
+#include "ll/api/data/Version.h"
 #include "ll/api/Versions.h"
 #include "ll/api/base/Alias.h"
 #include "ll/api/base/FixedString.h"
-#include "ll/api/base/Meta.h"
 #include "ll/api/base/SourceLocation.h"
-#include "ll/api/base/TypeTraits.h"
 #include "ll/api/chrono/GameChrono.h"
 #include "ll/api/command/Command.h"
-#include "ll/api/command/CommandHandle.h"
-#include "ll/api/command/CommandRegistrar.h"
+#include "ll/api/data/VersionRequirement.h"
+#include "ll/api/mod/Manifest.h"
+#include "ll/api/data/TmWithMs.h"
+#include "ll/api/io/LogMessage.h"
+#include "ll/api/io/Formatter.h"
+#include "ll/api/data/TightPair.h"
+#include "ll/api/data/IndirectValue.h"
+#include "ll/api/io/Sink.h"
+#include "ll/api/io/Logger.h"
+#include "ll/api/mod/Mod.h"
+#include "ll/api/utils/SystemUtils.h"
+#include "ll/api/mod/NativeMod.h"
+#include "mc/deps/core/utility/typeid_t.h"
+#include "mc/server/commands/CommandParameterDataType.h"
+#include "mc/world/level/BlockPos.h"
 #include "mc/world/level/dimension/DimensionType.h"
+#include "mc/deps/core/math/Vec3.h"
+#include "mc/deps/core/utility/optional_ref.h"
+#include "mc/deps/shared_types/legacy/LevelSoundEvent.h"
+#include "mc/deps/shared_types/legacy/actor/ActorDamageCause.h"
+#include "mc/platform/brstd/bitset.h"
+#include "mc/server/commands/CommandPermissionLevel.h"
+#include "mc/world/actor/Actor.h"
+#include "ll/api/memory/Symbol.h"
+#include "ll/api/memory/Signature.h"
+#include "mc/server/commands/BlockStateCommandParam.h"
+#include "mc/server/commands/CommandFilePath.h"
+#include "mc/server/commands/CommandIntegerRange.h"
+#include "mc/server/commands/CommandRawText.h"
+#include "mc/server/commands/CommandWildcardInt.h"
+#include "mc/server/commands/CommandSelector.h"
+#include "mc/server/commands/WildcardCommandSelector.h"
+#include "mc/platform/UUID.h"
+#include "mc/server/commands/CommandFlag.h"
+#include "mc/server/commands/CommandRegistry.h"
+#include "ll/api/command/OverloadData.h"
+#include "ll/api/command/CommandHandle.h"
+#include "ll/api/mod/ModManager.h"
+#include "ll/api/mod/ModManagerRegistry.h"
+#include "mc/server/commands/CommandOutputType.h"
+#include "mc/server/commands/CommandOutputMessage.h"
+#include "mc/server/commands/CommandPropertyBag.h"
+#include "mc/server/commands/CommandOutput.h"
+#include "ll/api/command/CommandRegistrar.h"
+#include "mc/deps/json/Value.h"
+#include "mc/server/commands/CommandBlockName.h"
+#include "mc/server/commands/CommandItem.h"
+#include "mc/server/commands/CommandParameterOption.h"
+#include "mc/server/commands/CommandPosition.h"
+#include "mc/server/commands/CommandPositionFloat.h"
+#include "mc/server/commands/RelativeFloat.h"
+#include "mc/world/actor/ActorDefinitionIdentifier.h"
+#include "mc/world/effect/MobEffect.h"
+#include "ll/api/command/ParamTraits.h"
 #include "ll/api/command/runtime/RuntimeEnum.h"
 #include "ll/api/command/Optional.h"
-#include "ll/api/command/OverloadData.h"
-#include "ll/api/command/ParamTraits.h"
 #include "ll/api/command/runtime/ParamKind.h"
-#include "mc/server/commands/CommandOutputType.h"
-#include "mc/server/commands/CommandOutput.h"
 #include "ll/api/command/runtime/RuntimeCommand.h"
 #include "ll/api/command/runtime/RuntimeOverload.h"
-#include "ll/api/coro/Executor.h"
 #include "ll/api/data/CancellableCallback.h"
+#include "ll/api/coro/Executor.h"
+#include "ll/api/data/IntrusiveList.h"
 #include "ll/api/coro/ConditionVariable.h"
-#include "ll/api/coro/CoroPromise.h"
-#include "ll/api/coro/CoroTask.h"
 #include "ll/api/coro/ForwardAwaiter.h"
 #include "ll/api/coro/SleepAwaiter.h"
 #include "ll/api/coro/YieldAwaiter.h"
-#include "ll/api/data/AnyFunction.h"
+#include "ll/api/coro/CoroPromise.h"
+#include "ll/api/coro/CoroTask.h"
 #include "ll/api/data/AnyObjBase.h"
+#include "ll/api/data/AnyFunction.h"
 #include "ll/api/data/ConcurrentPriorityQueue.h"
-#include "ll/api/io/Formatter.h"
-#include "ll/api/data/IndirectValue.h"
-#include "ll/api/data/IntrusiveList.h"
 #include "ll/api/data/KeyValueDB.h"
 #include "ll/api/ui/base/UIRawMessage.h"
 #include "ll/api/data/Observable.h"
+#include "ll/api/memory/Memory.h"
 #include "ll/api/data/SmallVector.h"
-#include "ll/api/data/TightPair.h"
-#include "ll/api/data/TmWithMs.h"
-#include "ll/api/data/Version.h"
-#include "ll/api/data/VersionRequirement.h"
+#include "ll/api/event/EventId.h"
+#include "ll/api/event/Event.h"
 #include "ll/api/event/Cancellable.h"
+#include "ll/api/event/ListenerBase.h"
 #include "ll/api/event/DynamicListener.h"
 #include "ll/api/event/EmitterBase.h"
-#include "ll/api/event/Event.h"
 #include "ll/api/event/EventBus.h"
-#include "ll/api/event/EventId.h"
 #include "ll/api/event/EventRefObjSerializer.h"
-#include "ll/api/mod/Mod.h"
-#include "ll/api/event/ListenerBase.h"
 #include "ll/api/event/MultiListener.h"
 #include "ll/api/event/command/CommandRegisterEvent.h"
+#include "mc/deps/core/utility/MCRESULT.h"
+#include "mc/server/commands/MinecraftCommands.h"
 #include "ll/api/event/command/ExecuteCommandEvent.h"
 #include "ll/api/event/command/ServerCommandRegisterEvent.h"
 #include "ll/api/event/entity/ActorEvent.h"
+#include "mc/world/actor/ActorDamageSource.h"
 #include "ll/api/event/entity/ActorHurtEvent.h"
-#include "ll/api/event/entity/MobDieEvent.h"
+#include "mc/world/item/ItemStack.h"
+#include "mc/world/actor/Mob.h"
 #include "ll/api/event/entity/MobEvent.h"
+#include "ll/api/event/entity/MobDieEvent.h"
 #include "ll/api/event/io/ConsoleOutputEvent.h"
+#include "ll/api/event/player/PlayerEvent.h"
 #include "ll/api/event/player/PlayerAddExperienceEvent.h"
-#include "ll/api/event/player/PlayerAttackEvent.h"
-#include "mc/server/commands/CommandPermissionLevel.h"
-#include "ll/api/event/player/PlayerChangePermEvent.h"
-#include "ll/api/event/player/PlayerChatEvent.h"
 #include "ll/api/event/player/PlayerClickEvent.h"
+#include "ll/api/event/player/PlayerAttackEvent.h"
+#include "ll/api/event/player/PlayerChangePermEvent.h"
+#include "ll/api/event/player/ServerPlayerEvent.h"
+#include "ll/api/event/player/PlayerChatEvent.h"
+#include "mc/deps/core/utility/NonOwnerPointer.h"
+#include "mc/network/ConnectionRequest.h"
+#include "mc/network/NetworkIdentifier.h"
 #include "ll/api/event/player/PlayerConnectEvent.h"
 #include "ll/api/event/player/PlayerDestroyBlockEvent.h"
 #include "ll/api/event/player/PlayerDieEvent.h"
 #include "ll/api/event/player/PlayerDisconnectEvent.h"
-#include "ll/api/event/player/PlayerEvent.h"
-#include "mc/deps/core/math/Vec3.h"
+#include "mc/common/FacingID.h"
 #include "ll/api/event/player/PlayerInteractBlockEvent.h"
 #include "ll/api/event/player/PlayerJoinEvent.h"
 #include "ll/api/event/player/PlayerJumpEvent.h"
+#include "mc/world/actor/item/ItemActor.h"
 #include "ll/api/event/player/PlayerPickUpItemEvent.h"
 #include "ll/api/event/player/PlayerPlaceBlockEvent.h"
 #include "ll/api/event/player/PlayerRespawnEvent.h"
@@ -112,128 +171,110 @@
 #include "ll/api/event/player/PlayerSprintEvent.h"
 #include "ll/api/event/player/PlayerSwingEvent.h"
 #include "ll/api/event/player/PlayerUseItemEvent.h"
-#include "ll/api/event/player/ServerPlayerEvent.h"
+#include "mc/deps/core/file/FileStorageArea.h"
+#include "mc/common/editor/IEditorPlayer.h"
+#include "mc/server/editor/IEditorManager.h"
+#include "mc/deps/script_core/lifetime_registry/scripting/RegistryManager.h"
+#include "mc/server/server_initialization/IServerInitializer.h"
+#include "mc/deps/cereal/ReflectionCtx.h"
+#include "mc/deps/core/utility/UniqueOwnerPointer.h"
+#include "mc/network/connection/DisconnectFailReason.h"
+#include "mc/server/ServerInstance.h"
 #include "ll/api/event/server/ServerStartedEvent.h"
 #include "ll/api/event/server/ServerStoppingEvent.h"
+#include "ll/api/service/ServiceId.h"
 #include "ll/api/service/Service.h"
 #include "ll/api/event/service/ServiceEvents.h"
+#include "ll/api/event/world/WorldEvent.h"
 #include "ll/api/event/world/BlockChangedEvent.h"
 #include "ll/api/event/world/FireSpreadEvent.h"
+#include "mc/config/player_capabilities/ISharedController.h"
+#include "mc/world/level/position_trackingdb/PositionTrackingDBClient.h"
+#include "mc/deps/voxel_shapes/RegistryHandle.h"
+#include "mc/deps/voxel_shapes/VoxelShapeRegistry.h"
+#include "mc/common/SubClientId.h"
+#include "mc/deps/core/utility/pub_sub/Subscription.h"
+#include "mc/network/GamePublishSetting.h"
+#include "mc/world/level/Level.h"
 #include "ll/api/event/world/LevelEvent.h"
 #include "ll/api/event/world/ServerLevelTickEvent.h"
 #include "ll/api/event/world/SpawnMobEvent.h"
-#include "ll/api/event/world/WorldEvent.h"
-#include "ll/api/form/CustomForm.h"
 #include "ll/api/form/FormBase.h"
+#include "ll/api/form/CustomForm.h"
 #include "ll/api/form/FormIdManager.h"
 #include "ll/api/form/ModalForm.h"
 #include "ll/api/form/SimpleForm.h"
 #include "ll/api/i18n/I18n.h"
 #include "ll/api/io/ConsoleSink.h"
-#include "ll/api/io/LogLevel.h"
+#include "ll/api/io/RotatePolicy.h"
 #include "ll/api/io/FileSink.h"
 #include "ll/api/io/FileUtils.h"
-#include "ll/api/io/LogMessage.h"
-#include "ll/api/io/Logger.h"
 #include "ll/api/io/LoggerRegistry.h"
 #include "ll/api/io/PatternFormatter.h"
-#include "ll/api/io/RotatePolicy.h"
-#include "ll/api/io/Sink.h"
 #include "ll/api/io/StdoutRedirector.h"
-#include "ll/api/memory/Memory.h"
 #include "ll/api/memory/Closure.h"
+#include "ll/api/thread/GlobalThreadPauser.h"
 #include "ll/api/memory/Hook.h"
-#include "ll/api/memory/Signature.h"
-#include "ll/api/memory/Symbol.h"
-#include "ll/api/mod/Manifest.h"
-#include "ll/api/mod/ModManager.h"
-#include "ll/api/mod/ModManagerRegistry.h"
-#include "ll/api/mod/NativeMod.h"
 #include "mc/deps/raknet/PacketPriority.h"
-#include "mc/network/NetworkPeer.h"
-#include "mc/common/SubClientId.h"
 #include "mc/network/Compressibility.h"
-#include "ll/api/network/packet/Packet.h"
+#include "mc/network/NetworkPeer.h"
 #include "ll/api/network/packet/PacketRegistrar.h"
-#include "ll/api/reflection/Reflection.h"
-#include "ll/api/reflection/TypeName.h"
+#include "ll/api/network/packet/Packet.h"
+#include "ll/api/service/TargetedBedrock.h"
 #include "ll/api/service/Bedrock.h"
 #include "ll/api/service/GamingStatus.h"
-#include "mc/platform/UUID.h"
 #include "ll/api/service/PlayerInfo.h"
 #include "ll/api/service/ServerInfo.h"
-#include "ll/api/service/ServiceId.h"
 #include "ll/api/service/ServiceManager.h"
-#include "ll/api/service/TargetedBedrock.h"
-#include "ll/api/thread/GlobalThreadPauser.h"
 #include "ll/api/thread/InplaceExecutor.h"
 #include "ll/api/thread/InterruptableSleep.h"
 #include "ll/api/thread/ServerThreadExecutor.h"
 #include "ll/api/thread/ServerTickSyncSleep.h"
 #include "ll/api/thread/ThreadPoolExecutor.h"
+#include "mc/deps/cereal/schema/dynamic/NullType.h"
+#include "mc/external/cereal/StringViewHash.h"
+#include "mc/deps/cereal/schema/dynamic/DynamicValue.h"
 #include "ll/api/ui/base/DataStore.h"
 #include "ll/api/ui/base/Observable.h"
+#include "mc/ui/DataDrivenScreenClosedReason.h"
 #include "ll/api/ui/base/ScreenSession.h"
 #include "ll/api/ui/form/CustomForm.h"
-#include "mc/ui/DataDrivenScreenClosedReason.h"
 #include "ll/api/ui/form/MessageBox.h"
 #include "ll/api/utils/Base64Utils.h"
 #include "ll/api/utils/CompressUtils.h"
+#include "ll/api/utils/StacktraceUtils.h"
 #include "ll/api/utils/ErrorUtils.h"
 #include "ll/api/utils/FontUtils.h"
-#include "ll/api/utils/HashUtils.h"
-#include "ll/api/utils/StacktraceUtils.h"
-#include "ll/api/utils/StringUtils.h"
-#include "ll/api/utils/SystemUtils.h"
-#include "mc/deps/cereal/schema/dynamic/NullType.h"
-#include "mc/deps/cereal/schema/dynamic/DynamicValue.h"
-#include "mc/deps/ecs/gamerefs_entity/GameRefsEntity.h"
-#include "mc/deps/game_refs/OwnerPtr.h"
-#include "mc/deps/game_refs/WeakRef.h"
-#include "mc/platform/brstd/bitset.h"
-#include "mc/server/commands/CommandFlag.h"
-#include "mc/server/commands/CommandOutputMessageType.h"
-#include "mc/server/commands/CommandParameterDataType.h"
-#include "mc/server/commands/CommandParameterOption.h"
-#include "mc/server/commands/CommandRegistry.h"
-#include "mc/external/absl/flat_hash_set.h"
-#include "mc/server/commands/CommandSelector.h"
-#include "mc/world/actor/Actor.h"
-#include "mc/server/commands/CommandPosition.h"
-#include "mc/server/commands/CommandPositionFloat.h"
-#include "mc/server/commands/CommandRawText.h"
-#include "mc/deps/json/Value.h"
-#include "mc/server/commands/CommandItem.h"
-#include "mc/server/commands/CommandBlockName.h"
-#include "mc/server/commands/BlockStateCommandParam.h"
-#include "mc/world/effect/MobEffect.h"
-#include "mc/world/actor/ActorDefinitionIdentifier.h"
-#include "mc/server/commands/RelativeFloat.h"
-#include "mc/server/commands/CommandIntegerRange.h"
-#include "mc/server/commands/CommandFilePath.h"
-#include "mc/server/commands/CommandWildcardInt.h"
-#include "mc/server/commands/WildcardCommandSelector.h"
-#include "mc/deps/core/utility/pub_sub/detail/SubscriptionBodyBase.h"
 #include "mc/deps/core/container/list_base_hook.h"
-#include "mc/deps/core/utility/optional_ref.h"
+#include "mc/deps/core/utility/pub_sub/Publisher.h"
+#include "mc/deps/core/utility/pub_sub/SubscriptionContext.h"
+#include "mc/deps/core/utility/pub_sub/detail/PublisherDisconnector.h"
+#include "mc/deps/core/utility/pub_sub/detail/SubscriptionBodyBase.h"
+#include "mc/deps/core/utility/pub_sub/thread_model/MultiThreaded.h"
+#include "mc/deps/core/utility/pub_sub/thread_model/SingleThreaded.h"
+#include "mc/deps/ecs/gamerefs_entity/GameRefsEntity.h"
+#include "mc/deps/minecraft_renderer/renderer/MaterialPtr.h"
+#include "mc/deps/puv/puv_load_data/LoadResultWithTiming.h"
+#include "mc/deps/shared_types/item/CreativeItemCategory.h"
+#include "mc/deps/shared_types/legacy/ContainerType.h"
+#include "mc/deps/shared_types/v1_26_0/block/BlockedDirections.h"
+#include "mc/deps/shared_types/v1_26_0/block/LiquidReaction.h"
+#include "mc/deps/shared_types/v1_26_0/block/LiquidType.h"
+#include "mc/deps/shared_types/v1_26_0/block/DetectionRule.h"
+#include "mc/deps/shared_types/v1_26_20/block/LavaFlammable.h"
+#include "mc/events/MinecraftEventing.h"
+#include "mc/resources/ResourcePackRepository.h"
+#include "mc/scripting/data_sync/DataStoreSyncServer.h"
+#include "mc/util/Token.h"
+#include "mc/world/level/LevelRandom.h"
+#include "mc/world/level/block/block_events/IBlockEventExecutor.h"
+#include "mc/world/level/block/block_events/BlockEventManager.h"
+#include "mc/world/level/block/registry/UnknownBlockTypeRegistry.h"
+#include "mc/world/level/block/traits/block_trait/IGetPlacementBlockCallback.h"
+#include "mc/world/level/editor/EditorLevelMigrationVersion.h"
+#include "mc/external/absl/flat_hash_set.h"
 #include "mc/external/absl/Duration.h"
 #include "mc/external/absl/Span.h"
-#include "mc/server/commands/MinecraftCommands.h"
-#include "mc/deps/core/utility/MCRESULT.h"
-#include "mc/world/actor/ActorDamageSource.h"
-#include "mc/deps/shared_types/legacy/actor/ActorDamageCause.h"
-#include "mc/network/NetworkIdentifier.h"
-#include "mc/network/ConnectionRequest.h"
-#include "mc/world/level/BlockPos.h"
-#include "mc/world/item/ItemStack.h"
-#include "mc/common/FacingID.h"
-#include "mc/world/actor/item/ItemActor.h"
-#include "mc/server/ServerInstance.h"
-#include "mc/world/level/Level.h"
-#include "mc/world/actor/Mob.h"
-#include "mc/server/commands/CommandPropertyBag.h"
-#include "mc/server/commands/CommandOutputMessage.h"
-#include "mc/external/cereal/StringViewHash.h"
 
 void* operator new(std::size_t size)
 {
@@ -283,6 +324,22 @@ namespace {
 using hosihikari::abi::setLastError;
 using hosihikari::abi::clearLastError;
 thread_local std::string g_stringResult;
+
+// `requires { sizeof(T); }` only degrades to false in a template context; a
+// partial specialization is what makes it one. A non-type template argument
+// (an enumerator, a constant) is handled by the auto form.
+template <auto V, class = void>
+struct hs_is_complete_value : std::false_type {};
+template <auto V>
+struct hs_is_complete_value<V, std::void_t<decltype(sizeof(V))>> : std::true_type {};
+template <class T, class = void>
+struct hs_is_complete : std::false_type {};
+template <class T>
+struct hs_is_complete<T, std::void_t<decltype(sizeof(T))>> : std::true_type {};
+template <class T>
+inline constexpr bool hs_is_complete_v = hs_is_complete<T>::value;
+template <auto V>
+inline constexpr bool hs_is_complete_value_v = hs_is_complete_value<V>::value;
 
 template <class T, class U>
 [[maybe_unused]] std::vector<T> hs_make_vector(U const* data, std::size_t count)
@@ -370,6 +427,22 @@ template <class T>
 [[maybe_unused]] std::weak_ptr<T> hs_weak_from_handle(HosihikariSharedHandle handle)
 {
     return std::weak_ptr<T>(hs_shared_from_handle<T>(handle));
+}
+
+template <class T>
+[[maybe_unused]] Bedrock::NonOwnerPointer<T> hs_non_owner_from_handle(HosihikariSharedHandle handle)
+{
+    auto shared = hs_shared_from_handle<T>(handle);
+    auto* pointer = const_cast<T*>(shared.get());
+    if (pointer == nullptr) { return Bedrock::NonOwnerPointer<T>{}; }
+    if constexpr (requires { static_cast<Bedrock::EnableNonOwnerReferences const&>(*pointer); })
+    {
+        return Bedrock::NonOwnerPointer<T>(*pointer);
+    }
+    else
+    {
+        return Bedrock::NonOwnerPointer<T>{};
+    }
 }
 
 template <class T>
@@ -2636,6 +2709,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_02479b22(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BlockClientPredictionOverrides>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<7>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 1, Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_95ad971a(void* hs_self) try
 {
     clearLastError();
@@ -2836,6 +2952,37 @@ static void* hs_method_ce180ed6(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_baae67a0(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, Brightness>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 1, Brightness>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -3060,6 +3207,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_9773b104(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, CommandMessageParams>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 1, CommandMessageParams>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_61b79bed(void* hs_self) try
 {
     clearLastError();
@@ -3272,6 +3450,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_303f7397(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_2c81846b(void* hs_self) try
 {
     clearLastError();
@@ -3472,6 +3668,37 @@ static void* hs_method_01741467(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_082f3213(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, SharedTypes::v1_26_0::BlockedDirections>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 1, SharedTypes::v1_26_0::BlockedDirections>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -3956,6 +4183,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_264b37e6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 1ULL, std::atomic<bool>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 1, std::atomic<bool>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_8976a809(void* hs_self) try
 {
     clearLastError();
@@ -4156,6 +4420,37 @@ static void* hs_method_eede2e6c(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_09a6292c(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, BrightnessPair>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 2, BrightnessPair>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -4380,6 +4675,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_789b59b1(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 2ULL, Material>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 2, Material>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_28b81e10(void* hs_self) try
 {
     clearLastError();
@@ -4580,6 +4906,24 @@ static void* hs_method_023f4196(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<CommandPermissionLevel>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_ae6997cf(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -4804,6 +5148,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_8e4884c0(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_feacd729(void* hs_self) try
 {
     clearLastError();
@@ -5004,6 +5366,24 @@ static void* hs_method_8379806d(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<1ULL, 2ULL, std::optional<bool>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_11c8ac8e(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -5228,6 +5608,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d81f5765(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_8f9cb4a3(void* hs_self) try
 {
     clearLastError();
@@ -5440,6 +5838,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_61d8bb78(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 5ULL, SharedTypes::v1_26_0::DetectionRule>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 5, SharedTypes::v1_26_0::DetectionRule>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_d78d5ca5(void* hs_self) try
 {
     clearLastError();
@@ -5456,18 +5885,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_c712b517(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<MolangLoopBreak>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopBreak>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopBreak>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -5692,6 +6128,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c6b76329(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopBreak>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopBreak>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_57af2362(void* hs_self) try
 {
     clearLastError();
@@ -5708,18 +6175,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_6bf9d163(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<MolangLoopContinue>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopContinue>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopContinue>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -5944,6 +6418,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_1ca8b5e6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<1ULL, 8ULL, MolangLoopContinue>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<1, 8, MolangLoopContinue>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_86fb929e(void* hs_self) try
 {
     clearLastError();
@@ -6144,6 +6649,55 @@ static void* hs_method_3b542369(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_06404dae(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<SharedTypes::Facing>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<VoxelShapes::RegistryHandle>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_value_v<6>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        {
+                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 12ULL, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<2, 12, Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>*>(u))));
+                        }
 }
 catch (std::exception const& hs_error)
 {
@@ -6368,6 +6922,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_95f325f2(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, CommandFlag>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<2, 2, CommandFlag>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_505cce1a(void* hs_self) try
 {
     clearLastError();
@@ -6568,6 +7153,37 @@ static void* hs_method_4b4aa595(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_5462f22b(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, NewBlockID>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<2, 2, NewBlockID>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -6792,6 +7408,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_dbe31556(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<2ULL, 2ULL, VoxelShapes::RegistryHandle>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<2, 2, VoxelShapes::RegistryHandle>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_7a9fa288(void* hs_self) try
 {
     clearLastError();
@@ -6992,6 +7639,37 @@ static void* hs_method_8f7f6252(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_88d28d35(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, BlockPos>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 12, BlockPos>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -7216,6 +7894,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_6b6a808e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, ClockSpriteCalculator>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 12, ClockSpriteCalculator>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_161d2e92(void* hs_self) try
 {
     clearLastError();
@@ -7428,6 +8137,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_39d49992(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_781e4bf4(void* hs_self) try
 {
     clearLastError();
@@ -7444,18 +8171,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_568a3573(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<Vec3>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<4ULL, 12ULL, Vec3>(*static_cast<const ll::TypedStorageImpl<4, 12, Vec3>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<4ULL, 12ULL, Vec3>(*static_cast<const ll::TypedStorageImpl<4, 12, Vec3>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -7680,6 +8414,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_57c26dbe(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 12ULL, Vec3>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 12, Vec3>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c0509c8c(void* hs_self) try
 {
     clearLastError();
@@ -7880,6 +8645,37 @@ static void* hs_method_7130b870(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_f38d9296(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 16ULL, mce::Color>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 16, mce::Color>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -8104,6 +8900,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_1a74373b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_ff3d91ac(void* hs_self) try
 {
     clearLastError();
@@ -8304,6 +9118,37 @@ static void* hs_method_d7261d7c(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_564ac800(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, ConnectionDefinition>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 20, ConnectionDefinition>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -8528,6 +9373,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_537ae9d6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 20ULL, InventoryOptions>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 20, InventoryOptions>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c3bc0420(void* hs_self) try
 {
     clearLastError();
@@ -8728,6 +9604,24 @@ static void* hs_method_da3bd1b4(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 20ULL, std::optional<MERSUniformData>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_54658568(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -8952,6 +9846,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_24792d02(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 24ULL, AABB>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 24, AABB>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_615711a2(void* hs_self) try
 {
     clearLastError();
@@ -9152,6 +10077,37 @@ static void* hs_method_490edd9a(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_6bbdca88(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 28ULL, Player::PlayerSpawnPoint>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 28, Player::PlayerSpawnPoint>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -9376,6 +10332,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2643a855(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, ActorVersion>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, ActorVersion>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_f32ed234(void* hs_self) try
 {
     clearLastError();
@@ -9392,18 +10379,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_adf7ee88(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<CommandRegistry::Symbol>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>(*static_cast<const ll::TypedStorageImpl<4, 4, CommandRegistry::Symbol>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>(*static_cast<const ll::TypedStorageImpl<4, 4, CommandRegistry::Symbol>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -9628,6 +10622,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_439b1bc6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, CommandRegistry::Symbol>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, CommandRegistry::Symbol>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_a5d68bc3(void* hs_self) try
 {
     clearLastError();
@@ -9828,6 +10853,37 @@ static void* hs_method_e47ae7b5(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_30f8f406(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, DimensionType>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, DimensionType>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -10052,6 +11108,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_636f3108(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, EducationEditionOfferValue>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, EducationEditionOfferValue>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_539f562f(void* hs_self) try
 {
     clearLastError();
@@ -10252,6 +11339,43 @@ static void* hs_method_85594104(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_a37c4c1f(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ServerInstance::InstanceState>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<ServerInstance::InstanceState>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, std::atomic<ServerInstance::InstanceState>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -10476,6 +11600,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_acefdb97(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<int>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::atomic<int>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, std::atomic<int>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_175eb592(void* hs_self) try
 {
     clearLastError();
@@ -10676,6 +11837,37 @@ static void* hs_method_a9923638(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_4235be31(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 4ULL, std::thread::id>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 4, std::thread::id>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -10900,6 +12092,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_3bdfe114(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<HudVisibility>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<13>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 52ULL, std::array<HudVisibility, 13>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 52, std::array<HudVisibility, 13>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_9767c5a8(void* hs_self) try
 {
     clearLastError();
@@ -11100,6 +12335,37 @@ static void* hs_method_62df9ea6(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_277de672(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 64ULL, Player::CachedSpawnData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 64, Player::CachedSpawnData>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -11324,6 +12590,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_29c46b8b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_5667985a(void* hs_self) try
 {
     clearLastError();
@@ -11524,6 +12808,37 @@ static void* hs_method_b032207c(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_a93be3aa(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CachedComponentData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, CachedComponentData>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -11748,6 +13063,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c7592f75(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, CommandVersion>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, CommandVersion>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_cc5b1c09(void* hs_self) try
 {
     clearLastError();
@@ -11960,6 +13306,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a97a81bf(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, IntRange>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, IntRange>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_6755a7fe(void* hs_self) try
 {
     clearLastError();
@@ -11976,18 +13353,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_925db484(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<MolangVariableSettings>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>(*static_cast<const ll::TypedStorageImpl<4, 8, MolangVariableSettings>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<4ULL, 8ULL, MolangVariableSettings>(*static_cast<const ll::TypedStorageImpl<4, 8, MolangVariableSettings>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -12440,6 +13824,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_975a8a39(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, PlayerInventorySlotData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, PlayerInventorySlotData>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_ae5d060d(void* hs_self) try
 {
     clearLastError();
@@ -12640,6 +14055,37 @@ static void* hs_method_2ea1fbdc(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_8bffe713(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<4ULL, 8ULL, Vec2>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, Vec2>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -12864,6 +14310,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_eeab5dbe(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_24398522(void* hs_self) try
 {
     clearLastError();
@@ -13064,6 +14528,24 @@ static void* hs_method_cd7ca45e(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::optional<SharedTypes::Legacy::LevelSoundEvent>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_3fe90a4f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -13288,6 +14770,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d3881ff1(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_100b81a6(void* hs_self) try
 {
     clearLastError();
@@ -13484,6 +14984,61 @@ static void* hs_method_25e2358d(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_3ca95511(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<cereal::NullType>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<bool>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<int>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<float>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!hs_is_complete_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        if constexpr (!::std::is_copy_assignable_v<P>)
+                        {
+                            setLastError("the payload of this template is not copy assignable");
+                            return nullptr;
+                        }
+                        else
+                            {
+                                return static_cast<void*>(new std::variant<cereal::NullType, bool, int, float>(static_cast<ll::TypedStorageImpl<4ULL, 8ULL, std::variant<cereal::NullType, bool, int, float>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<4, 8, std::variant<cereal::NullType, bool, int, float>>*>(u))));
+                            }
 }
 catch (std::exception const& hs_error)
 {
@@ -13708,6 +15263,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_dda207ad(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_a6242289(void* hs_self) try
 {
     clearLastError();
@@ -13908,6 +15481,24 @@ static void* hs_method_a3dda307(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 112ULL, InventoryMenu> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_e3c7d604(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -14132,6 +15723,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_631e4948(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<Bedrock::PubSub::ThreadModel::MultiThreaded>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<0>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 128ULL, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 128, Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_82131320(void* hs_self) try
 {
     clearLastError();
@@ -14332,6 +15966,24 @@ static void* hs_method_9ccb2bdc(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 128ULL, ItemInstance> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_758aa00f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -14556,6 +16208,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_cf5a7029(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_7209e901(void* hs_self) try
 {
     clearLastError();
@@ -14756,6 +16426,24 @@ static void* hs_method_e3efdcce(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 136ULL, ItemGroup> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_78d00527(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -14980,6 +16668,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_ca7f27fe(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_6783d172(void* hs_self) try
 {
     clearLastError();
@@ -15180,6 +16886,37 @@ static void* hs_method_5d8b3a6d(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_bb0fb00e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 152ULL, ItemStack>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 152, ItemStack>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -15404,6 +17141,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c4f76df4(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 160ULL, BlockType::NameInfo>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 160, BlockType::NameInfo>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_6abb2f93(void* hs_self) try
 {
     clearLastError();
@@ -15604,6 +17372,37 @@ static void* hs_method_df49b41f(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_63e2a526(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 168ULL, PlayerItemInUse>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 168, PlayerItemInUse>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -15828,6 +17627,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a6ed32d8(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_7ef0b05f(void* hs_self) try
 {
     clearLastError();
@@ -15844,18 +17661,37 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_35a13bbf(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>)
+    if constexpr (!hs_is_complete_v<Bedrock::PubSub::Detail::SubscriptionBodyBase>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_constructible_v<P>)
+                {
+                    setLastError("the payload of this template is not copy constructible");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(other))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -16080,6 +17916,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_3e380369(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<Bedrock::PubSub::Detail::SubscriptionBodyBase>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_8ccbbd3f(void* hs_self) try
 {
     clearLastError();
@@ -16280,6 +18159,24 @@ static void* hs_method_de9ac1c7(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::PubSub::Subscription> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_08440692(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -16504,6 +18401,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_16011fa9(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ActorEventBroadcaster>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_56ecd6ea(void* hs_self) try
 {
     clearLastError();
@@ -16704,6 +18638,43 @@ static void* hs_method_81d09a09(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_cad4c6c2(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LoadingScreenIdManager>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -16928,6 +18899,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2b6e2767(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LocalProfilerControlBroker>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_f93bd749(void* hs_self) try
 {
     clearLastError();
@@ -17128,6 +19136,43 @@ static void* hs_method_106b73ad(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_6671bb9d(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<PlayerLocationReceiver>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -17352,6 +19397,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_41beb2be(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<PlayerLocationSender>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Bedrock::UniqueOwnerPointer<PlayerLocationSender>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_82968bc2(void* hs_self) try
 {
     clearLastError();
@@ -17552,6 +19634,37 @@ static void* hs_method_d8e6bec5(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b96d32b5(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CallbackToken>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, CallbackToken>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -17776,6 +19889,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_24d6595e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, CommandLexer::Token>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, CommandLexer::Token>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_958c09cc(void* hs_self) try
 {
     clearLastError();
@@ -17988,6 +20132,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a9b3b567(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ItemRegistryRef>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, ItemRegistryRef>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_aa0b6097(void* hs_self) try
 {
     clearLastError();
@@ -18004,18 +20179,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_cf812198(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<Json::Value>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>(*static_cast<const ll::TypedStorageImpl<8, 16, Json::Value>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>(*static_cast<const ll::TypedStorageImpl<8, 16, Json::Value>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -18240,6 +20422,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_fe888a25(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, Json::Value>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, Json::Value>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_661c399c(void* hs_self) try
 {
     clearLastError();
@@ -18440,6 +20653,43 @@ static void* hs_method_3a987da3(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_83bb1361(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BlockSource>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<BlockSource>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, OwnerPtr<BlockSource>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -18664,6 +20914,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_e0cf32a5(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LevelChunkSaveManager>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<LevelChunkSaveManager>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, OwnerPtr<LevelChunkSaveManager>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_ce124628(void* hs_self) try
 {
     clearLastError();
@@ -18864,6 +21151,43 @@ static void* hs_method_357a8829(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_613bc96b(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<PauseManager>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, OwnerPtr<PauseManager>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, OwnerPtr<PauseManager>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -19088,6 +21412,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_9e05113e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, ServerLocatorBar::GroupStrongHandle>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, ServerLocatorBar::GroupStrongHandle>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_cb4ccf4b(void* hs_self) try
 {
     clearLastError();
@@ -19288,6 +21643,43 @@ static void* hs_method_f2f9cb0c(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_f2f73e9c(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<Dimension>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<Dimension>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, WeakRef<Dimension>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -19512,6 +21904,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_21a71acd(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<IContainerRegistryAccess>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, WeakRef<IContainerRegistryAccess>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, WeakRef<IContainerRegistryAccess>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c8acfabf(void* hs_self) try
 {
     clearLastError();
@@ -19712,6 +22141,49 @@ static void* hs_method_df74b926(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_741a16d6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LevelCrashDumpManager>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -19936,6 +22408,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_0f299c7b(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ContainerRegistry>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<OwnerPtr<ContainerRegistry>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, gsl::not_null<OwnerPtr<ContainerRegistry>>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_63be61d6(void* hs_self) try
 {
     clearLastError();
@@ -19952,18 +22467,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_d1b32721(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<mce::UUID>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>(*static_cast<const ll::TypedStorageImpl<8, 16, mce::UUID>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>(*static_cast<const ll::TypedStorageImpl<8, 16, mce::UUID>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -20188,6 +22710,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2412081c(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, mce::UUID>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, mce::UUID>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_34b7635e(void* hs_self) try
 {
     clearLastError();
@@ -20388,6 +22941,49 @@ static void* hs_method_95040899(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_650134d2(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<HashedString>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<GameRule>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<HashedString, GameRule>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, std::map<HashedString, GameRule>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -20612,6 +23208,55 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_62f6b82a(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<std::basic_string<char>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<int>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        {
+                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::basic_string<char>, int>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, std::map<std::basic_string<char>, int>>*>(u))));
+                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_e24dcfb6(void* hs_self) try
 {
     clearLastError();
@@ -20812,6 +23457,49 @@ static void* hs_method_fa9b1496(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_4bf4696e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::uint64_t>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<BlockStateInstance>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::map<std::uint64_t, BlockStateInstance>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, std::map<std::uint64_t, BlockStateInstance>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -21036,6 +23724,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_bbcee391(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<CommandRegistry::Symbol>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::set<CommandRegistry::Symbol>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, std::set<CommandRegistry::Symbol>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c5c80156(void* hs_self) try
 {
     clearLastError();
@@ -21236,6 +23961,37 @@ static void* hs_method_3d97709a(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_e0516dc3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 16ULL, std::thread>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 16, std::thread>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -21460,6 +24216,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_3bc095a3(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_10562d7a(void* hs_self) try
 {
     clearLastError();
@@ -21660,6 +24434,24 @@ static void* hs_method_beb10c6b(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 176ULL, std::optional<CloudSaveLevelInfo>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_a55367ca(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -21884,6 +24676,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_b9f8be50(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_d5dbded0(void* hs_self) try
 {
     clearLastError();
@@ -22084,6 +24894,37 @@ static void* hs_method_95b04516(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b6cb7006(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ActorTerrainInterlockData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, ActorTerrainInterlockData>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -22308,6 +25149,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_ae39ebca(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<CDNConfig>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<CDNConfig>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, Bedrock::NonOwnerPointer<CDNConfig>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_63a605f6(void* hs_self) try
 {
     clearLastError();
@@ -22508,6 +25386,43 @@ static void* hs_method_bebb8b44(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b6344399(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<IPacketObserver>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<IPacketObserver>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, Bedrock::NonOwnerPointer<IPacketObserver>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -22732,6 +25647,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c7790a78(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LinkedAssetValidator>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, Bedrock::NonOwnerPointer<LinkedAssetValidator>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_a7272af4(void* hs_self) try
 {
     clearLastError();
@@ -22932,6 +25884,43 @@ static void* hs_method_fbbd92a0(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_0f45dd14(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<NetEventCallback>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<NetEventCallback>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, Bedrock::NonOwnerPointer<NetEventCallback>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -23156,6 +26145,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_80ba62e3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ServerTextSettings>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, Bedrock::NonOwnerPointer<ServerTextSettings>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_9b5637af(void* hs_self) try
 {
     clearLastError();
@@ -23172,18 +26198,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_e2355324(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<BlockState::StateListNode>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>(*static_cast<const ll::TypedStorageImpl<8, 24, BlockState::StateListNode>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>(*static_cast<const ll::TypedStorageImpl<8, 24, BlockState::StateListNode>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -23408,6 +26441,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_31b687bf(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BlockState::StateListNode>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, BlockState::StateListNode>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_58bfaca9(void* hs_self) try
 {
     clearLastError();
@@ -23608,6 +26672,37 @@ static void* hs_method_97f92d17(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_ec3c0d9d(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, BuiltInActorComponents>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, BuiltInActorComponents>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -23832,6 +26927,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a43bef23(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, CompoundTag>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, CompoundTag>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_622d7574(void* hs_self) try
 {
     clearLastError();
@@ -24032,6 +27158,24 @@ static void* hs_method_74afb8bc(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, EntityContext> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_7fbb0b77(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -24256,6 +27400,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_0eafdd67(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ItemStackNetIdVariant>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, ItemStackNetIdVariant>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_5933dbf6(void* hs_self) try
 {
     clearLastError();
@@ -24456,6 +27631,37 @@ static void* hs_method_0b9808d1(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_7471e817(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, PermissionsHandler>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, PermissionsHandler>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -24680,6 +27886,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_dbef1cd1(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, SemVersion>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, SemVersion>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_00712d3a(void* hs_self) try
 {
     clearLastError();
@@ -24880,6 +28117,37 @@ static void* hs_method_f5626ea6(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_7c29fc8d(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, ServerLocatorBar>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, ServerLocatorBar>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -25104,6 +28372,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d78897a4(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, VanillaWaypointManager>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, VanillaWaypointManager>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_1cf6aa8a(void* hs_self) try
 {
     clearLastError();
@@ -25304,6 +28603,24 @@ static void* hs_method_fcfa3776(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, WeakRef<EntityContext>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_23d560d5(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -25528,6 +28845,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_449a45fa(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<void>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Bedrock::typeid_t<void>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, brstd::flat_set<Bedrock::typeid_t<void>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, brstd::flat_set<Bedrock::typeid_t<void>>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_76a26102(void* hs_self) try
 {
     clearLastError();
@@ -25728,6 +29088,49 @@ static void* hs_method_8053f5fd(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_61d81d74(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<LevelData>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Bedrock::NonOwnerPointer<LevelData>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -25952,6 +29355,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_13a69512(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<PacketSender>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Bedrock::NonOwnerPointer<PacketSender>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_031465ff(void* hs_self) try
 {
     clearLastError();
@@ -25968,18 +29414,67 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_da530921(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>)
+    if constexpr (!hs_is_complete_v<ItemStackNetIdTag>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<int>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<TypedServerNetId<ItemStackNetIdTag, int>>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<ItemStackRequestIdTag>)
+                {
+                    setLastError("the payload of this template is not copy constructible");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!hs_is_complete_v<TypedClientNetId<ItemStackRequestIdTag, int>>)
+                    {
+                        setLastError("the payload of this template is not copy constructible");
+                        return nullptr;
+                    }
+                    else
+                        if constexpr (!hs_is_complete_v<ItemStackLegacyRequestIdTag>)
+                        {
+                            setLastError("the payload of this template is not copy constructible");
+                            return nullptr;
+                        }
+                        else
+                            if constexpr (!hs_is_complete_v<TypedClientNetId<ItemStackLegacyRequestIdTag, int>>)
+                            {
+                                setLastError("the payload of this template is not copy constructible");
+                                return nullptr;
+                            }
+                            else
+                                if constexpr (!hs_is_complete_v<P>)
+                                {
+                                    setLastError("the payload of this template is not copy constructible");
+                                    return nullptr;
+                                }
+                                else
+                                    if constexpr (!::std::is_copy_constructible_v<P>)
+                                    {
+                                        setLastError("the payload of this template is not copy constructible");
+                                        return nullptr;
+                                    }
+                                    else
+                                        {
+                                            return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(other))));
+                                        }
 }
 catch (std::exception const& hs_error)
 {
@@ -26204,6 +29699,79 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_b12ed80f(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ItemStackNetIdTag>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<int>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<TypedServerNetId<ItemStackNetIdTag, int>>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<ItemStackRequestIdTag>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!hs_is_complete_v<TypedClientNetId<ItemStackRequestIdTag, int>>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        if constexpr (!hs_is_complete_v<ItemStackLegacyRequestIdTag>)
+                        {
+                            setLastError("the payload of this template is not copy assignable");
+                            return nullptr;
+                        }
+                        else
+                            if constexpr (!hs_is_complete_v<TypedClientNetId<ItemStackLegacyRequestIdTag, int>>)
+                            {
+                                setLastError("the payload of this template is not copy assignable");
+                                return nullptr;
+                            }
+                            else
+                                if constexpr (!hs_is_complete_v<P>)
+                                {
+                                    setLastError("the payload of this template is not copy assignable");
+                                    return nullptr;
+                                }
+                                else
+                                    if constexpr (!::std::is_copy_assignable_v<P>)
+                                    {
+                                        setLastError("the payload of this template is not copy assignable");
+                                        return nullptr;
+                                    }
+                                    else
+                                        {
+                                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>*>(u))));
+                                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_52b2f140(void* hs_self) try
 {
     clearLastError();
@@ -26404,6 +29972,24 @@ static void* hs_method_8b68bbba(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AABB>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_48e1c423(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -27148,6 +30734,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_671e6e5d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_4b3b50de(void* hs_self) try
 {
     clearLastError();
@@ -27348,6 +30952,24 @@ static void* hs_method_bd39519a(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b4960e46(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -27572,6 +31194,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_7fe3ad3f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_707cd925(void* hs_self) try
 {
     clearLastError();
@@ -27772,6 +31412,24 @@ static void* hs_method_ac99768c(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_f64a236d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -27996,6 +31654,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_e412ff1a(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_da8a0611(void* hs_self) try
 {
     clearLastError();
@@ -28196,6 +31872,24 @@ static void* hs_method_c3627595(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::OverloadData>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_230b9fbf(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -28420,6 +32114,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d2ddff3d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_0a03b335(void* hs_self) try
 {
     clearLastError();
@@ -28620,6 +32332,24 @@ static void* hs_method_4c09d555(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<AvailableCommandsPacketPayload::SoftEnumData>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_d2a71105(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -28844,6 +32574,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_1a09269c(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_4bb69d65(void* hs_self) try
 {
     clearLastError();
@@ -29044,6 +32792,24 @@ static void* hs_method_6b9f3348(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockActor *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_e38a515d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -29268,6 +33034,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d8913e8b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_5a07e4be(void* hs_self) try
 {
     clearLastError();
@@ -29480,6 +33264,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d934533e(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_07e7e35f(void* hs_self) try
 {
     clearLastError();
@@ -29496,18 +33298,12 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_988bb92a(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::vector<BlockType::RemovedStateCollection::SplitBlock>>)
-    {
-        setLastError("the payload of this template is not copy constructible");
-        return nullptr;
-    }
-    else
-    {
-        return new ll::TypedStorageImpl<8ULL, 24ULL, std::vector<BlockType::RemovedStateCollection::SplitBlock>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<BlockType::RemovedStateCollection::SplitBlock>>*>(other));
-    }
+    setLastError("the payload of this template is not copy constructible");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -29732,6 +33528,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2bbab20b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_709f353f(void* hs_self) try
 {
     clearLastError();
@@ -29932,6 +33746,24 @@ static void* hs_method_a5455fb8(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<CommandMessage::MessageComponent>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_4f74451e(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -30156,6 +33988,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_256e77c2(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_58ff5354(void* hs_self) try
 {
     clearLastError();
@@ -30356,6 +34206,24 @@ static void* hs_method_188f1567(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ContainerOwner::OwnedContainer>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_fe8cef35(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -30580,6 +34448,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_8663f125(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_149626cf(void* hs_self) try
 {
     clearLastError();
@@ -30780,6 +34666,24 @@ static void* hs_method_95c5ce7d(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<HashedString>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_45cf16de(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -31004,6 +34908,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2a469ae5(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_1d1d93fb(void* hs_self) try
 {
     clearLastError();
@@ -31204,6 +35126,24 @@ static void* hs_method_7bc896ff(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<ItemInstance>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_d60706b6(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -31428,6 +35368,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_037284da(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_18e05857(void* hs_self) try
 {
     clearLastError();
@@ -31628,6 +35586,24 @@ static void* hs_method_06dc60b7(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<LevelListener *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_4de0f757(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -32112,6 +36088,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_92f38d3c(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_7eb267ce(void* hs_self) try
 {
     clearLastError();
@@ -32312,6 +36306,24 @@ static void* hs_method_66a216ad(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<PlayerListener *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_514aff9d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -32536,6 +36548,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_e1249d41(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_c8197551(void* hs_self) try
 {
     clearLastError();
@@ -32552,18 +36582,37 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_8258b924(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::vector<short>>)
+    if constexpr (!hs_is_complete_v<short>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<short>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<short>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_constructible_v<P>)
+                {
+                    setLastError("the payload of this template is not copy constructible");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 24ULL, std::vector<short>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<short>>*>(other))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -33016,6 +37065,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_558fdba5(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_1ef1fd50(void* hs_self) try
 {
     clearLastError();
@@ -33216,6 +37283,24 @@ static void* hs_method_6e754daa(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_085ce8fa(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -33440,6 +37525,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_b39c2b04(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_6c4fcb21(void* hs_self) try
 {
     clearLastError();
@@ -33640,6 +37743,24 @@ static void* hs_method_369b6bd1(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_94ab459f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -33864,6 +37985,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_24725036(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_96e582ed(void* hs_self) try
 {
     clearLastError();
@@ -34064,6 +38203,24 @@ static void* hs_method_9ff3a65b(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<Block>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b79b225f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -34288,6 +38445,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_b8b8c737(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_eb53e8af(void* hs_self) try
 {
     clearLastError();
@@ -34488,6 +38663,24 @@ static void* hs_method_bb0a68de(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_893ea364(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -34712,6 +38905,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_845852ee(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_aab0cf0a(void* hs_self) try
 {
     clearLastError();
@@ -34728,18 +38939,12 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_002c9b8f(void* other) try
 {
     clearLastError();
-    if constexpr (true)
-    {
-        setLastError("the payload of this template is not copy constructible");
-        return nullptr;
-    }
-    else
-    {
-        return new ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<std::unique_ptr<MolangVariable>>>*>(other));
-    }
+    setLastError("the payload of this template is not copy constructible");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -34952,6 +39157,24 @@ static void* hs_method_0061669a(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<std::unique_ptr<MolangVariable>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_7ab7c7ab(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -35192,6 +39415,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_da098aa3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<unsigned char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<unsigned char>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned char>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<unsigned char>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_ee3249da(void* hs_self) try
 {
     clearLastError();
@@ -35392,6 +39658,49 @@ static void* hs_method_fd3d7935(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_c4dc7b61(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<unsigned int>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<unsigned int>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned int>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<unsigned int>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -35616,6 +39925,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_bdee7c37(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<unsigned short>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<unsigned short>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 24ULL, std::vector<unsigned short>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 24, std::vector<unsigned short>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_24b405c2(void* hs_self) try
 {
     clearLastError();
@@ -35816,6 +40168,24 @@ static void* hs_method_da1158c1(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 328ULL, std::optional<EducationLevelSettings>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_8d2f1505(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -36040,6 +40410,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c649837b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_d81a4db0(void* hs_self) try
 {
     clearLastError();
@@ -36240,6 +40628,24 @@ static void* hs_method_35b7e53b(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BlockEvents::BlockEventManager> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_8949d3e3(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -36464,6 +40870,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_81e94141(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, BuiltInMobComponents>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 32, BuiltInMobComponents>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_e526f6d4(void* hs_self) try
 {
     clearLastError();
@@ -36664,6 +41101,24 @@ static void* hs_method_cde52fbc(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CommandRegistry::LexicalToken> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_0c8ec460(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -36888,6 +41343,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_f92788e6(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, CompassSpriteCalculator>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 32, CompassSpriteCalculator>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_b80a3c45(void* hs_self) try
 {
     clearLastError();
@@ -37088,6 +41574,24 @@ static void* hs_method_d5a0f8a5(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, OwnerPtr<EntityContext>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b6f0d28f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -37312,6 +41816,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_aca9a0f3(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_246f806b(void* hs_self) try
 {
     clearLastError();
@@ -37524,6 +42046,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2c979ce3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, RawGameServerToken>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 32, RawGameServerToken>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_7e4624ac(void* hs_self) try
 {
     clearLastError();
@@ -37540,18 +42093,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_26a4254b(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::basic_string<char>>)
+    if constexpr (!hs_is_complete_v<char>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>(*static_cast<const ll::TypedStorageImpl<8, 32, std::basic_string<char>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>(*static_cast<const ll::TypedStorageImpl<8, 32, std::basic_string<char>>*>(other))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -37840,6 +42406,45 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static HosihikariStringView hs_method_1256f922(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return HosihikariStringView{nullptr, 0};
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return HosihikariStringView{nullptr, 0};
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return HosihikariStringView{nullptr, 0};
+            }
+            else
+                {
+                    auto result = static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::basic_string<char>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 32, std::basic_string<char>>*>(u));
+                    g_stringResult.assign(result.data(), result.size());
+                    return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariStringView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariStringView{nullptr, 0};
+}
+
 static void* hs_get_23fc071e(void* hs_self) try
 {
     clearLastError();
@@ -38040,6 +42645,24 @@ static void* hs_method_09492b71(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_341a0c6b(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -38264,6 +42887,49 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_0510feb7(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<bool>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 32ULL, std::vector<bool>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 32, std::vector<bool>>*>(u))));
+                    }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_d95d6cab(void* hs_self) try
 {
     clearLastError();
@@ -38464,6 +43130,24 @@ static void* hs_method_ff3b2aa1(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 384ULL, PlayerAuthenticationInfo> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_68b7a77a(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -38688,6 +43372,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_ec13f5b3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, EducationLocalLevelSettings>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 40, EducationLocalLevelSettings>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c08d9506(void* hs_self) try
 {
     clearLastError();
@@ -38888,6 +43603,43 @@ static void* hs_method_938c4df2(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_ae4d1d4e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BlockPos>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<BlockPos>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 40, std::deque<BlockPos>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -39112,6 +43864,55 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_d721f193(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<CommandRegistry::Symbol>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<CommandRegistry::ParseToken *>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        {
+                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 40, std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>*>(u))));
+                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_b6e54c0d(void* hs_self) try
 {
     clearLastError();
@@ -39312,6 +44113,24 @@ static void* hs_method_a097722f(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 40ULL, std::optional<std::basic_string<char>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b865530d(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -39536,6 +44355,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_5fdc1040(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_86503f45(void* hs_self) try
 {
     clearLastError();
@@ -39736,6 +44573,49 @@ static void* hs_method_e978a6ab(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b50950ac(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<Bedrock::PubSub::ThreadModel::SingleThreaded>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<0>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 48, Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -40220,6 +45100,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_9505c210(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_38ba2da4(void* hs_self) try
 {
     clearLastError();
@@ -40420,6 +45318,37 @@ static void* hs_method_7ed47ee6(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_d74aad80(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, PackIdVersion>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 48, PackIdVersion>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -40644,6 +45573,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_b34fd24d(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SpawnSettings>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 48, SpawnSettings>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c985247e(void* hs_self) try
 {
     clearLastError();
@@ -40844,6 +45804,37 @@ static void* hs_method_ab636dba(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_e835f8d1(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 48ULL, SynchedActorDataEntityWrapper>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 48, SynchedActorDataEntityWrapper>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -41068,6 +46059,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_9d2198b4(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_976e8f16(void* hs_self) try
 {
     clearLastError();
@@ -41268,6 +46277,24 @@ static void* hs_method_3c941c31(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 48ULL, brstd::flat_map<BoneCacheKey, Matrix>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_534f92cf(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -41492,6 +46519,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a4a67cc5(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_8dba4a83(void* hs_self) try
 {
     clearLastError();
@@ -41692,6 +46737,24 @@ static void* hs_method_bd7965e3(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 56ULL, MolangVariableMap> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_eb89d009(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -41916,6 +46979,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_3ac19a80(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c826400a(void* hs_self) try
 {
     clearLastError();
@@ -42116,6 +47197,24 @@ static void* hs_method_a3879cf2(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, EduSharedUriResource> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_07295c26(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -42340,6 +47439,55 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_70d0e321(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BaseLightTextureImageBuilder>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<Level &>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<Scheduler &>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        {
+                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>*>(u))));
+                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_fa1f3263(void* hs_self) try
 {
     clearLastError();
@@ -42540,6 +47688,43 @@ static void* hs_method_fd68f388(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_09326301(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool () const>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool () const>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, brstd::move_only_function<bool () const>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -42764,6 +47949,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_134a435e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_f45097d9(void* hs_self) try
 {
     clearLastError();
@@ -42964,6 +48186,24 @@ static void* hs_method_e3166499(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_37eb5c1c(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -43188,6 +48428,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_92777be2(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_44f29626(void* hs_self) try
 {
     clearLastError();
@@ -43388,6 +48665,43 @@ static void* hs_method_5a7dee02(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_6a7cd4cc(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool ()>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool ()>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<bool ()>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -43612,6 +48926,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_7e6943f0(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_b22795ca(void* hs_self) try
 {
     clearLastError();
@@ -43812,6 +49163,43 @@ static void* hs_method_6aaf7160(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_a2bdc840(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<const Block *(const BlockType &, int, int)>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<const Block *(const BlockType &, int, int)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<const Block *(const BlockType &, int, int)>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -44036,6 +49424,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_cde1fd96(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_c6668831(void* hs_self) try
 {
     clearLastError();
@@ -44236,6 +49642,43 @@ static void* hs_method_eea0ef91(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_2a184143(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -44460,6 +49903,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_a2515ec2(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<void (Connection::DisconnectFailReason, const char *)>>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_bfd734c9(void* hs_self) try
 {
     clearLastError();
@@ -44660,6 +50134,37 @@ static void* hs_method_37046eff(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_987082fa(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -44884,6 +50389,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_1a01b0ec(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_2e81262a(void* hs_self) try
 {
     clearLastError();
@@ -45084,6 +50620,37 @@ static void* hs_method_05f60955(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_2366a756(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (ServerPlayer &)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<void (ServerPlayer &)>>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -45308,6 +50875,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_397aaec3(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::function<void (const char *)>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::function<void (const char *)>>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_bbed9049(void* hs_self) try
 {
     clearLastError();
@@ -45508,6 +51106,49 @@ static void* hs_method_491fd7f2(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_faf9486e(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ActorUniqueID>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<ServerPlayer::NearbyActor>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -45732,6 +51373,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_932695bf(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_4345bdeb(void* hs_self) try
 {
     clearLastError();
@@ -45932,6 +51591,49 @@ static void* hs_method_b7e65aed(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_a690f98b(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<HashedString>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<std::uint64_t>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<HashedString, std::uint64_t>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_map<HashedString, std::uint64_t>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -46322,6 +52024,72 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static HosihikariArrayView hs_method_6c296d53(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return HosihikariArrayView{nullptr, 0};
+    }
+    else
+        if constexpr (!hs_is_complete_v<std::basic_string<char>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return HosihikariArrayView{nullptr, 0};
+        }
+        else
+            if constexpr (!hs_is_complete_v<CommandPermissionLevel>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return HosihikariArrayView{nullptr, 0};
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return HosihikariArrayView{nullptr, 0};
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return HosihikariArrayView{nullptr, 0};
+                    }
+                    else
+                        {
+                            thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
+                            thread_local std::vector<std::string> hs_mapStrings;
+                            auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>*>(u));
+                            hs_mapEntries.clear();
+                            hs_mapEntries.reserve(result.size());
+                            hs_mapStrings.clear();
+                            hs_mapStrings.reserve(result.size() * 2);
+                            for (auto const& item : result)
+                            {
+                                HosihikariMapEntry entry{};
+                                hs_mapStrings.emplace_back(item.first.data(), item.first.size());
+                                auto const& hs_stored_Key = hs_mapStrings.back();
+                                entry.key = reinterpret_cast<std::uint64_t>(hs_stored_Key.data());
+                                entry.keySize = static_cast<std::uint64_t>(hs_stored_Key.size());
+                                entry.value = static_cast<std::uint64_t>(item.second);
+                                hs_mapEntries.push_back(entry);
+                            }
+                            return HosihikariArrayView{hs_mapEntries.data(), hs_mapEntries.size()};
+                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariArrayView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariArrayView{nullptr, 0};
+}
+
 static void* hs_get_cbad0219(void* hs_self) try
 {
     clearLastError();
@@ -46522,6 +52290,24 @@ static void* hs_method_90d0a5ff(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_d8d81aa7(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -46912,6 +52698,72 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static HosihikariArrayView hs_method_eb9cb3bf(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return HosihikariArrayView{nullptr, 0};
+    }
+    else
+        if constexpr (!hs_is_complete_v<std::basic_string<char>>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return HosihikariArrayView{nullptr, 0};
+        }
+        else
+            if constexpr (!hs_is_complete_v<unsigned int>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return HosihikariArrayView{nullptr, 0};
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return HosihikariArrayView{nullptr, 0};
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return HosihikariArrayView{nullptr, 0};
+                    }
+                    else
+                        {
+                            thread_local std::vector<HosihikariMapEntry> hs_mapEntries;
+                            thread_local std::vector<std::string> hs_mapStrings;
+                            auto result = static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_map<std::basic_string<char>, unsigned int>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_map<std::basic_string<char>, unsigned int>>*>(u));
+                            hs_mapEntries.clear();
+                            hs_mapEntries.reserve(result.size());
+                            hs_mapStrings.clear();
+                            hs_mapStrings.reserve(result.size() * 2);
+                            for (auto const& item : result)
+                            {
+                                HosihikariMapEntry entry{};
+                                hs_mapStrings.emplace_back(item.first.data(), item.first.size());
+                                auto const& hs_stored_Key = hs_mapStrings.back();
+                                entry.key = reinterpret_cast<std::uint64_t>(hs_stored_Key.data());
+                                entry.keySize = static_cast<std::uint64_t>(hs_stored_Key.size());
+                                entry.value = static_cast<std::uint64_t>(item.second);
+                                hs_mapEntries.push_back(entry);
+                            }
+                            return HosihikariArrayView{hs_mapEntries.data(), hs_mapEntries.size()};
+                        }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariArrayView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariArrayView{nullptr, 0};
+}
+
 static void* hs_get_f23aea8f(void* hs_self) try
 {
     clearLastError();
@@ -47112,6 +52964,43 @@ static void* hs_method_e579284d(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_965cdb65(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BlockSource *>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<BlockSource *>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_set<BlockSource *>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -47336,6 +53225,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_20c0b145(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ChunkPos>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 64ULL, std::unordered_set<ChunkPos>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 64, std::unordered_set<ChunkPos>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_16ac02c5(void* hs_self) try
 {
     clearLastError();
@@ -47536,6 +53462,49 @@ static void* hs_method_5114bc3f(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_b6ef3517(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<unsigned short>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<const Block *>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_assignable_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Core::Cache<unsigned short, const Block *, const Block *>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 72, Core::Cache<unsigned short, const Block *, const Block *>>*>(u))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -47760,6 +53729,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_8f7d229f(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_7de80fca(void* hs_self) try
 {
     clearLastError();
@@ -47960,6 +53947,24 @@ static void* hs_method_553b06d4(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, Experiments> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_015d797e(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -48184,6 +54189,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_c3ddbc8f(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::condition_variable>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 72, std::condition_variable>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_fa01ba3e(void* hs_self) try
 {
     clearLastError();
@@ -48384,6 +54420,24 @@ static void* hs_method_e9f41bc9(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 72ULL, std::optional<ExternalLinkSettings>>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_55dc9099(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -48608,6 +54662,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_59efcf95(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, VariantParameterList>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 80, VariantParameterList>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_7db8ff81(void* hs_self) try
 {
     clearLastError();
@@ -48624,18 +54709,25 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_5b38ecc1(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::mutex>)
+    if constexpr (!hs_is_complete_v<P>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>(*static_cast<const ll::TypedStorageImpl<8, 80, std::mutex>*>(other));
-    }
+        if constexpr (!::std::is_copy_constructible_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>(*static_cast<const ll::TypedStorageImpl<8, 80, std::mutex>*>(other))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -48848,6 +54940,37 @@ static void* hs_method_416d49fe(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_ef33040c(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 80ULL, std::mutex>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 80, std::mutex>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -49332,6 +55455,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2867657c(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ActorUniqueID>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, ActorUniqueID>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_ba043dac(void* hs_self) try
 {
     clearLastError();
@@ -49532,6 +55686,55 @@ static void* hs_method_74783e29(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_3cb81aef(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<const char>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<1>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_value_v<0>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                if constexpr (!hs_is_complete_v<P>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return nullptr;
+                }
+                else
+                    if constexpr (!::std::is_copy_assignable_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return nullptr;
+                    }
+                    else
+                        {
+                            return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, Bedrock::PackedPointer::Packed<const char, 1, 0>>*>(u))));
+                        }
 }
 catch (std::exception const& hs_error)
 {
@@ -49756,6 +55959,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_20482413(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ChunkPos>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, ChunkPos>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_1d81178b(void* hs_self) try
 {
     clearLastError();
@@ -49956,6 +56190,37 @@ static void* hs_method_1e65305a(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_ef589258(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, LevelSeed64>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, LevelSeed64>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -50180,6 +56445,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_9ca794e3(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the carrier does not export the payload's copy assignment");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_d5eb1feb(void* hs_self) try
 {
     clearLastError();
@@ -50380,6 +56663,43 @@ static void* hs_method_219d0932(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_5b82ef3d(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<DebuggerDiagnostics>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<DebuggerDiagnostics>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, ServiceRegistrationToken<DebuggerDiagnostics>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -50604,6 +56924,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_3a9cc1c1(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ServerInstance>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerInstance>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, ServiceRegistrationToken<ServerInstance>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_0f3442f7(void* hs_self) try
 {
     clearLastError();
@@ -50804,6 +57161,43 @@ static void* hs_method_13277350(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_3924ff15(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ServerPerformanceData>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, ServiceRegistrationToken<ServerPerformanceData>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, ServiceRegistrationToken<ServerPerformanceData>>*>(u))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -51028,6 +57422,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_87af2dae(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, Tick>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, Tick>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_4efa5a68(void* hs_self) try
 {
     clearLastError();
@@ -51240,6 +57665,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_2dfe37a1(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<Item>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, WeakPtr<Item>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, WeakPtr<Item>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_537cd008(void* hs_self) try
 {
     clearLastError();
@@ -51256,18 +57718,12 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_a6dcc663(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::vector<std::basic_string<char>>>)
-    {
-        setLastError("the payload of this template is not copy constructible");
-        return nullptr;
-    }
-    else
-    {
-        return new ll::TypedStorageImpl<8ULL, 8ULL, bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const>(*static_cast<const ll::TypedStorageImpl<8, 8, bool (CommandRegistry::*)(void *, const CommandRegistry::ParseToken &, const CommandOrigin &, int, std::basic_string<char> &, std::vector<std::basic_string<char>> &) const>*>(other));
-    }
+    setLastError("the payload of this template is not copy constructible");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -51312,18 +57768,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_d2e4d00f(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::atomic<std::uint64_t>>)
+    if constexpr (!hs_is_complete_v<std::uint64_t>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::atomic<std::uint64_t>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::atomic<std::uint64_t>>*>(other))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -51548,6 +58017,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_1ecbb132(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::uint64_t>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::atomic<std::uint64_t>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::atomic<std::uint64_t>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_a9bb8f00(void* hs_self) try
 {
     clearLastError();
@@ -51754,6 +58260,61 @@ catch (...)
 {
     setLastError("unknown native exception");
     return nullptr;
+}
+
+template <class P>
+static std::int64_t hs_method_b3463dce(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::int64_t>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return 0;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<1>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return 0;
+        }
+        else
+            if constexpr (!hs_is_complete_value_v<1000000>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return 0;
+            }
+            else
+                if constexpr (!hs_is_complete_v<std::ratio<1, 1000000>>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return 0;
+                }
+                else
+                    if constexpr (!hs_is_complete_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return 0;
+                    }
+                    else
+                        if constexpr (!::std::is_copy_assignable_v<P>)
+                        {
+                            setLastError("the payload of this template is not copy assignable");
+                            return 0;
+                        }
+                        else
+                            {
+                                return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>*>(u))).count());
+                            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
 }
 
 static void* hs_get_d898b382(void* hs_self) try
@@ -51964,6 +58525,61 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static std::int64_t hs_method_3286e0dc(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::int64_t>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return 0;
+    }
+    else
+        if constexpr (!hs_is_complete_value_v<1>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return 0;
+        }
+        else
+            if constexpr (!hs_is_complete_value_v<1000>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return 0;
+            }
+            else
+                if constexpr (!hs_is_complete_v<std::ratio<1, 1000>>)
+                {
+                    setLastError("the payload of this template is not copy assignable");
+                    return 0;
+                }
+                else
+                    if constexpr (!hs_is_complete_v<P>)
+                    {
+                        setLastError("the payload of this template is not copy assignable");
+                        return 0;
+                    }
+                    else
+                        if constexpr (!::std::is_copy_assignable_v<P>)
+                        {
+                            setLastError("the payload of this template is not copy assignable");
+                            return 0;
+                        }
+                        else
+                            {
+                                return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>*>(u))).count());
+                            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
 static void* hs_get_194a09a8(void* hs_self) try
 {
     clearLastError();
@@ -52172,6 +58788,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static std::int64_t hs_method_30f02361(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<std::chrono::steady_clock>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return 0;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return 0;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return 0;
+            }
+            else
+                {
+                    return static_cast<std::int64_t>((static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::chrono::time_point<std::chrono::steady_clock>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::chrono::time_point<std::chrono::steady_clock>>*>(u))).time_since_epoch().count());
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
 static void hs_destroy_bc3ac26a(void* hs_self) try
 {
     clearLastError();
@@ -52188,18 +58841,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_aa323320(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::reference_wrapper<BlockType>>)
+    if constexpr (!hs_is_complete_v<BlockType>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<BlockType>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<BlockType>>*>(other))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -52424,6 +59090,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_84aeddfc(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<BlockType>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<BlockType>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<BlockType>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void hs_destroy_2e4c0a29(void* hs_self) try
 {
     clearLastError();
@@ -52440,18 +59143,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_fbda3b30(void* other) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<std::reference_wrapper<const BlockState>>)
+    if constexpr (!hs_is_complete_v<const BlockState>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<const BlockState>>*>(other));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<const BlockState>>*>(other))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -52676,6 +59392,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_4a5cbe70(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<const BlockState>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 8ULL, std::reference_wrapper<const BlockState>>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 8, std::reference_wrapper<const BlockState>>*>(u))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_415b322b(void* hs_self) try
 {
     clearLastError();
@@ -52876,6 +59629,37 @@ static void* hs_method_57075786(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_e49002ca(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, BlockComponentDirectData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 96, BlockComponentDirectData>*>(u))));
+            }
 }
 catch (std::exception const& hs_error)
 {
@@ -53100,6 +59884,24 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_f45da228(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_2b393808(void* hs_self) try
 {
     clearLastError();
@@ -53312,6 +60114,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_90285297(void* hs_self, void* u) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<P>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!::std::is_copy_assignable_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            {
+                return const_cast<void*>(static_cast<void const*>(&static_cast<ll::TypedStorageImpl<8ULL, 96ULL, MobEffect::FactorCalculationData>*>(hs_self)->operator=(*static_cast<const ll::TypedStorageImpl<8, 96, MobEffect::FactorCalculationData>*>(u))));
+            }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_get_0f42833f(void* hs_self) try
 {
     clearLastError();
@@ -53512,6 +60345,24 @@ static void* hs_method_5e1145a7(void* hs_self) try
 {
     clearLastError();
     return const_cast<void*>(static_cast<void const*>(static_cast<ll::TypedStorageImpl<8ULL, 96ULL, NetEaseBlockComponentStorage> const*>(hs_self)->operator->()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+template <class P>
+static void* hs_method_9528365a(void* hs_self, void* u) try
+{
+    clearLastError();
+    setLastError("the payload of this template is not copy assignable");
+    return nullptr;
 }
 catch (std::exception const& hs_error)
 {
@@ -61838,6 +68689,43 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
+static void* hs_method_533352a5(void* hs_self, void* other) try
+{
+    clearLastError();
+    if constexpr (!hs_is_complete_v<ll::io::Formatter>)
+    {
+        setLastError("the payload of this template is not copy assignable");
+        return nullptr;
+    }
+    else
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy assignable");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_assignable_v<P>)
+            {
+                setLastError("the payload of this template is not copy assignable");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>, std::default_delete<ll::io::Formatter>>*>(hs_self)->operator=(*static_cast<const ll::data::IndirectValue<ll::io::Formatter, ll::data::polymorphicCopy<ll::io::Formatter>>*>(other))));
+                }
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
 static void* hs_method_532356ed(void* hs_self) try
 {
     clearLastError();
@@ -62595,18 +69483,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_c29772f9(bool initial) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::data::Observable<bool>>)
+    if constexpr (!hs_is_complete_v<bool>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::data::Observable<bool>(static_cast<bool>(initial));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::data::Observable<bool>(static_cast<bool>(initial))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -62719,18 +69620,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_dfd706e0(double initial) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::data::Observable<double>>)
+    if constexpr (!hs_is_complete_v<double>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::data::Observable<double>(static_cast<double>(initial));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::data::Observable<double>(static_cast<double>(initial))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -62843,18 +69757,31 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_e7f8498b(void* initial) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::data::Observable<ll::ui::UIRawMessage>>)
+    if constexpr (!hs_is_complete_v<ll::ui::UIRawMessage>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::data::Observable<ll::ui::UIRawMessage>(*static_cast<ll::ui::UIRawMessage*>(initial));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::data::Observable<ll::ui::UIRawMessage>(*static_cast<ll::ui::UIRawMessage*>(initial))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -62967,18 +69894,37 @@ catch (...)
     return;
 }
 
+template <class P>
 static void* hs_create_42eb507b(const char* initial_data, std::size_t initial_size) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::data::Observable<std::basic_string<char>>>)
+    if constexpr (!hs_is_complete_v<char>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::data::Observable<std::basic_string<char>>(std::basic_string<char>(initial_data, initial_size));
-    }
+        if constexpr (!hs_is_complete_v<std::basic_string<char>>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_constructible_v<P>)
+                {
+                    setLastError("the payload of this template is not copy constructible");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(new ll::data::Observable<std::basic_string<char>>(std::basic_string<char>(initial_data, initial_size))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -88997,18 +95943,31 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
 static void* hs_create_51d18487(bool initial, void* options) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::ui::UIObservable<bool>>)
+    if constexpr (!hs_is_complete_v<bool>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::ui::UIObservable<bool>(static_cast<bool>(initial), *static_cast<ll::ui::ObservableOptions*>(options));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::ui::UIObservable<bool>(static_cast<bool>(initial), *static_cast<ll::ui::ObservableOptions*>(options))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -89069,18 +96028,31 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
 static void* hs_create_66f13cff(double initial, void* options) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::ui::UIObservable<double>>)
+    if constexpr (!hs_is_complete_v<double>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::ui::UIObservable<double>(static_cast<double>(initial), *static_cast<ll::ui::ObservableOptions*>(options));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::ui::UIObservable<double>(static_cast<double>(initial), *static_cast<ll::ui::ObservableOptions*>(options))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -89141,18 +96113,31 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
 static void* hs_create_2b68ce18(void* initial, void* options) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::ui::UIObservable<ll::ui::UIRawMessage>>)
+    if constexpr (!hs_is_complete_v<ll::ui::UIRawMessage>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::ui::UIObservable<ll::ui::UIRawMessage>(*static_cast<ll::ui::UIRawMessage*>(initial), *static_cast<ll::ui::ObservableOptions*>(options));
-    }
+        if constexpr (!hs_is_complete_v<P>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!::std::is_copy_constructible_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                {
+                    return const_cast<void*>(static_cast<void const*>(new ll::ui::UIObservable<ll::ui::UIRawMessage>(*static_cast<ll::ui::UIRawMessage*>(initial), *static_cast<ll::ui::ObservableOptions*>(options))));
+                }
 }
 catch (std::exception const& hs_error)
 {
@@ -89213,18 +96198,37 @@ catch (...)
     return nullptr;
 }
 
+template <class P>
 static void* hs_create_4e6bae49(const char* initial_data, std::size_t initial_size, void* options) try
 {
     clearLastError();
-    if constexpr (!::std::is_copy_constructible_v<ll::ui::UIObservable<std::basic_string<char>>>)
+    if constexpr (!hs_is_complete_v<char>)
     {
         setLastError("the payload of this template is not copy constructible");
         return nullptr;
     }
     else
-    {
-        return new ll::ui::UIObservable<std::basic_string<char>>(std::basic_string<char>(initial_data, initial_size), *static_cast<ll::ui::ObservableOptions*>(options));
-    }
+        if constexpr (!hs_is_complete_v<std::basic_string<char>>)
+        {
+            setLastError("the payload of this template is not copy constructible");
+            return nullptr;
+        }
+        else
+            if constexpr (!hs_is_complete_v<P>)
+            {
+                setLastError("the payload of this template is not copy constructible");
+                return nullptr;
+            }
+            else
+                if constexpr (!::std::is_copy_constructible_v<P>)
+                {
+                    setLastError("the payload of this template is not copy constructible");
+                    return nullptr;
+                }
+                else
+                    {
+                        return const_cast<void*>(static_cast<void const*>(new ll::ui::UIObservable<std::basic_string<char>>(std::basic_string<char>(initial_data, initial_size), *static_cast<ll::ui::ObservableOptions*>(options))));
+                    }
 }
 catch (std::exception const& hs_error)
 {
@@ -90446,6 +97450,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c2af99f3,
     &hs_method_599360ae,
     &hs_method_bd1b5798,
+    &hs_method_02479b22<Bedrock::EnumSet<BlockClientPredictionOverrides, 7>>,
     &hs_get_95ad971a,
     &hs_method_1affb150,
     &hs_method_dc06ac08,
@@ -90459,6 +97464,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_034f40cc,
     &hs_method_676e3683,
     &hs_method_ce180ed6,
+    &hs_method_baae67a0<Brightness>,
     &hs_get_c39301ae,
     &hs_method_f3a54240,
     &hs_method_0af22f0c,
@@ -90472,6 +97478,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_61c524ff,
     &hs_method_096551f4,
     &hs_method_40cc6723,
+    &hs_method_9773b104<CommandMessageParams>,
     &hs_get_61b79bed,
     &hs_method_bc8d498e,
     &hs_method_e8dd6197,
@@ -90485,6 +97492,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_765f5514,
     &hs_method_aec068c2,
     &hs_method_0a4866d7,
+    &hs_method_303f7397<ServerGraphicsSettings>,
     &hs_get_2c81846b,
     &hs_method_415ae0a3,
     &hs_method_4d7e78b9,
@@ -90498,6 +97506,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f432e11b,
     &hs_method_63e50a99,
     &hs_method_01741467,
+    &hs_method_082f3213<SharedTypes::v1_26_0::BlockedDirections>,
     &hs_destroy_563ce6a7,
     &hs_create_c0e7d56e,
     &hs_get_9362e19b,
@@ -90527,6 +97536,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_07a5f189,
     &hs_method_e263d91e,
     &hs_method_d79ce718,
+    &hs_method_264b37e6<std::atomic<bool>>,
     &hs_get_8976a809,
     &hs_method_5e0d3e1e,
     &hs_method_184e170b,
@@ -90540,6 +97550,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e8400401,
     &hs_method_81bb2145,
     &hs_method_eede2e6c,
+    &hs_method_09a6292c<BrightnessPair>,
     &hs_get_29e236be,
     &hs_method_76f4e504,
     &hs_method_585cfabe,
@@ -90553,6 +97564,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0d8b0820,
     &hs_method_ee939745,
     &hs_method_ad42dcd9,
+    &hs_method_789b59b1<Material>,
     &hs_get_28b81e10,
     &hs_method_5afa7015,
     &hs_method_1ebb7d31,
@@ -90566,6 +97578,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0dfb36bb,
     &hs_method_20ac216b,
     &hs_method_023f4196,
+    &hs_method_ae6997cf<std::optional<CommandPermissionLevel>>,
     &hs_get_ca6c6e13,
     &hs_method_15a211e1,
     &hs_method_e08f0f36,
@@ -90579,6 +97592,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_36d24630,
     &hs_method_9643e97d,
     &hs_method_ee7f174d,
+    &hs_method_8e4884c0<std::optional<HandSlot>>,
     &hs_get_feacd729,
     &hs_method_7063a68f,
     &hs_method_2dbf8b9f,
@@ -90592,6 +97606,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_839a599f,
     &hs_method_a347d21a,
     &hs_method_8379806d,
+    &hs_method_11c8ac8e<std::optional<bool>>,
     &hs_get_11b07810,
     &hs_method_bbf8119e,
     &hs_method_6517082e,
@@ -90605,6 +97620,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3b263e72,
     &hs_method_226d9711,
     &hs_method_30225ea6,
+    &hs_method_d81f5765<std::optional<AgentCapabilities>>,
     &hs_get_8f9cb4a3,
     &hs_method_53ea1dd7,
     &hs_method_5c4a81e6,
@@ -90618,8 +97634,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6f9767f9,
     &hs_method_eb7b1332,
     &hs_method_bacfac08,
+    &hs_method_61d8bb78<SharedTypes::v1_26_0::DetectionRule>,
     &hs_destroy_d78d5ca5,
-    &hs_create_c712b517,
+    &hs_create_c712b517<MolangLoopBreak>,
     &hs_get_46cb3777,
     &hs_method_a473745d,
     &hs_method_a4191cfb,
@@ -90633,8 +97650,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2b61f504,
     &hs_method_99190696,
     &hs_method_55aea1fd,
+    &hs_method_c6b76329<MolangLoopBreak>,
     &hs_destroy_57af2362,
-    &hs_create_6bf9d163,
+    &hs_create_6bf9d163<MolangLoopContinue>,
     &hs_get_6347f156,
     &hs_method_c912cddd,
     &hs_method_b07f6854,
@@ -90648,6 +97666,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2d24a809,
     &hs_method_ca689542,
     &hs_method_4c297392,
+    &hs_method_1ca8b5e6<MolangLoopContinue>,
     &hs_get_86fb929e,
     &hs_method_8763d225,
     &hs_method_68b2ec68,
@@ -90661,6 +97680,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7657c4a8,
     &hs_method_629a6b62,
     &hs_method_3b542369,
+    &hs_method_06404dae<Bedrock::DenseEnumMap<SharedTypes::Facing, VoxelShapes::RegistryHandle, 6>>,
     &hs_get_58da2b8f,
     &hs_method_fbc66274,
     &hs_method_fe2bf2ba,
@@ -90674,6 +97694,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0d569cc4,
     &hs_method_78d43b82,
     &hs_method_27b49df6,
+    &hs_method_95f325f2<CommandFlag>,
     &hs_get_505cce1a,
     &hs_method_6cb41dce,
     &hs_method_4f0b153a,
@@ -90687,6 +97708,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_567b1c42,
     &hs_method_6e065726,
     &hs_method_4b4aa595,
+    &hs_method_5462f22b<NewBlockID>,
     &hs_get_0ffcbb86,
     &hs_method_538137e1,
     &hs_method_6366d30a,
@@ -90700,6 +97722,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_38ed37c3,
     &hs_method_8e2fc3f7,
     &hs_method_7d471dd8,
+    &hs_method_dbe31556<VoxelShapes::RegistryHandle>,
     &hs_get_7a9fa288,
     &hs_method_bcd35416,
     &hs_method_647ef185,
@@ -90713,6 +97736,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_30ddcfb8,
     &hs_method_e6abb7e1,
     &hs_method_8f7f6252,
+    &hs_method_88d28d35<BlockPos>,
     &hs_get_2d24e3ac,
     &hs_method_0c2c8ccb,
     &hs_method_95e3b461,
@@ -90726,6 +97750,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b2fd02b0,
     &hs_method_8ed5ec9b,
     &hs_method_b6c732d8,
+    &hs_method_6b6a808e<ClockSpriteCalculator>,
     &hs_get_161d2e92,
     &hs_method_a417dfd9,
     &hs_method_d6bc0b5b,
@@ -90739,8 +97764,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d1fe4092,
     &hs_method_16cd8ee0,
     &hs_method_608a8b33,
+    &hs_method_39d49992<FurnaceOptions>,
     &hs_destroy_781e4bf4,
-    &hs_create_568a3573,
+    &hs_create_568a3573<Vec3>,
     &hs_get_73f929ec,
     &hs_method_7e623e92,
     &hs_method_d2667bd9,
@@ -90754,6 +97780,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_48ff48db,
     &hs_method_f3a706d3,
     &hs_method_3de1cf91,
+    &hs_method_57c26dbe<Vec3>,
     &hs_get_c0509c8c,
     &hs_method_9b63ec0b,
     &hs_method_0ba4e2d9,
@@ -90767,6 +97794,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1720ff1a,
     &hs_method_834989ea,
     &hs_method_7130b870,
+    &hs_method_f38d9296<mce::Color>,
     &hs_get_f3b219a1,
     &hs_method_b00f9c9b,
     &hs_method_e5f84dc0,
@@ -90780,6 +97808,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_36b8c264,
     &hs_method_22097a48,
     &hs_method_d396eeca,
+    &hs_method_1a74373b<std::optional<Vec3>>,
     &hs_get_ff3d91ac,
     &hs_method_4b7dc1bd,
     &hs_method_87efa149,
@@ -90793,6 +97822,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_16ef9635,
     &hs_method_a8c4188f,
     &hs_method_d7261d7c,
+    &hs_method_564ac800<ConnectionDefinition>,
     &hs_get_d2357430,
     &hs_method_8d48cde9,
     &hs_method_96df5a52,
@@ -90806,6 +97836,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_853f39c1,
     &hs_method_92fe93e1,
     &hs_method_ccf3db73,
+    &hs_method_537ae9d6<InventoryOptions>,
     &hs_get_c3bc0420,
     &hs_method_066a0e8d,
     &hs_method_d490a93b,
@@ -90819,6 +97850,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c67a9b37,
     &hs_method_d158152d,
     &hs_method_da3bd1b4,
+    &hs_method_54658568<std::optional<MERSUniformData>>,
     &hs_get_0a3d5481,
     &hs_method_2187948a,
     &hs_method_96f44769,
@@ -90832,6 +97864,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f49d6b6c,
     &hs_method_990252e1,
     &hs_method_428eb2eb,
+    &hs_method_24792d02<AABB>,
     &hs_get_615711a2,
     &hs_method_efe8e540,
     &hs_method_d5395eb6,
@@ -90845,6 +97878,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3f450394,
     &hs_method_17e66555,
     &hs_method_490edd9a,
+    &hs_method_6bbdca88<Player::PlayerSpawnPoint>,
     &hs_get_b7750068,
     &hs_method_edf67537,
     &hs_method_50724b03,
@@ -90858,8 +97892,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_bd6e3ff7,
     &hs_method_0cf98e8a,
     &hs_method_12a902e5,
+    &hs_method_2643a855<ActorVersion>,
     &hs_destroy_f32ed234,
-    &hs_create_adf7ee88,
+    &hs_create_adf7ee88<CommandRegistry::Symbol>,
     &hs_get_42a6f5c4,
     &hs_method_8602ad49,
     &hs_method_85367e2e,
@@ -90873,6 +97908,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_72e7888c,
     &hs_method_0cd5fce7,
     &hs_method_5bdfbe8d,
+    &hs_method_439b1bc6<CommandRegistry::Symbol>,
     &hs_get_a5d68bc3,
     &hs_method_ed5906da,
     &hs_method_6d14bc14,
@@ -90886,6 +97922,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_45c17232,
     &hs_method_7a1bca7f,
     &hs_method_e47ae7b5,
+    &hs_method_30f8f406<DimensionType>,
     &hs_get_f6930f70,
     &hs_method_ad8424c1,
     &hs_method_3058a09b,
@@ -90899,6 +97936,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_cfb07ee6,
     &hs_method_982fea70,
     &hs_method_7f05df34,
+    &hs_method_636f3108<EducationEditionOfferValue>,
     &hs_get_539f562f,
     &hs_method_ecec115d,
     &hs_method_541c5715,
@@ -90912,6 +97950,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_64489024,
     &hs_method_5be7e3c6,
     &hs_method_85594104,
+    &hs_method_a37c4c1f<std::atomic<ServerInstance::InstanceState>>,
     &hs_get_7d169d55,
     &hs_method_5803d93f,
     &hs_method_36c3b069,
@@ -90925,6 +97964,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8a519ce1,
     &hs_method_3f4bd1d8,
     &hs_method_cf5f9716,
+    &hs_method_acefdb97<std::atomic<int>>,
     &hs_get_175eb592,
     &hs_method_e7d9e7a9,
     &hs_method_1bb04bad,
@@ -90938,6 +97978,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_23573baa,
     &hs_method_a58fc2cb,
     &hs_method_a9923638,
+    &hs_method_4235be31<std::thread::id>,
     &hs_get_a425df56,
     &hs_method_5c12d7c9,
     &hs_method_faf83094,
@@ -90951,6 +97992,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1c4351bf,
     &hs_method_ae6f498d,
     &hs_method_755b5a1e,
+    &hs_method_3bdfe114<std::array<HudVisibility, 13>>,
     &hs_get_9767c5a8,
     &hs_method_9f443f3a,
     &hs_method_8adedb93,
@@ -90964,6 +98006,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_4516d473,
     &hs_method_f64847f3,
     &hs_method_62df9ea6,
+    &hs_method_277de672<Player::CachedSpawnData>,
     &hs_get_a196a3dc,
     &hs_method_d856b6d4,
     &hs_method_f1a91a05,
@@ -90977,6 +98020,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3402b306,
     &hs_method_edc33e19,
     &hs_method_0b8aae49,
+    &hs_method_29c46b8b<std::optional<glm::mat<4, 4, float>>>,
     &hs_get_5667985a,
     &hs_method_0d95577e,
     &hs_method_708259e2,
@@ -90990,6 +98034,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_116f7b3e,
     &hs_method_105f95fd,
     &hs_method_b032207c,
+    &hs_method_a93be3aa<CachedComponentData>,
     &hs_get_4401c300,
     &hs_method_6bd8f07a,
     &hs_method_6ca2b70f,
@@ -91003,6 +98048,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3bc5064d,
     &hs_method_1d7ed1f7,
     &hs_method_35a7ee14,
+    &hs_method_c7592f75<CommandVersion>,
     &hs_get_cc5b1c09,
     &hs_method_e54d9307,
     &hs_method_bbb3b9e1,
@@ -91016,8 +98062,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2a8dbf2d,
     &hs_method_c4e9fdf9,
     &hs_method_1ff18816,
+    &hs_method_a97a81bf<IntRange>,
     &hs_destroy_6755a7fe,
-    &hs_create_925db484,
+    &hs_create_925db484<MolangVariableSettings>,
     &hs_get_cbabe6a4,
     &hs_method_2af4c66b,
     &hs_method_0702be50,
@@ -91045,6 +98092,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2a3f75ed,
     &hs_method_04f016b5,
     &hs_method_3f83a047,
+    &hs_method_975a8a39<PlayerInventorySlotData>,
     &hs_get_ae5d060d,
     &hs_method_6e4231d9,
     &hs_method_6ba73076,
@@ -91058,6 +98106,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_69f2cbe7,
     &hs_method_9056892b,
     &hs_method_2ea1fbdc,
+    &hs_method_8bffe713<Vec2>,
     &hs_get_826b02de,
     &hs_method_f1e13386,
     &hs_method_93a820ca,
@@ -91071,6 +98120,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_411ef89f,
     &hs_method_4f29b20c,
     &hs_method_53d4c0b2,
+    &hs_method_eeab5dbe<std::optional<PlayerSpawnFallbackType>>,
     &hs_get_24398522,
     &hs_method_4906202f,
     &hs_method_112be5a8,
@@ -91084,6 +98134,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2d4ca324,
     &hs_method_cd6dd4a3,
     &hs_method_cd7ca45e,
+    &hs_method_3fe90a4f<std::optional<SharedTypes::Legacy::LevelSoundEvent>>,
     &hs_get_2f3c2242,
     &hs_method_06bffaa0,
     &hs_method_ee2e56a3,
@@ -91097,6 +98148,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_ddf4c81b,
     &hs_method_2a80dcff,
     &hs_method_1842a73d,
+    &hs_method_d3881ff1<std::optional<int>>,
     &hs_get_100b81a6,
     &hs_method_28fce32f,
     &hs_method_11379302,
@@ -91110,6 +98162,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8cc58f97,
     &hs_method_c09508d5,
     &hs_method_25e2358d,
+    &hs_method_3ca95511<std::variant<cereal::NullType, bool, int, float>>,
     &hs_get_4ec49055,
     &hs_method_07cd5e6f,
     &hs_method_674bf5be,
@@ -91123,6 +98176,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f8f388c8,
     &hs_method_b6a2cff6,
     &hs_method_a4dd87d5,
+    &hs_method_dda207ad<std::optional<const CommandsRegistryConfiguration>>,
     &hs_get_a6242289,
     &hs_method_5dcda339,
     &hs_method_70254bf5,
@@ -91136,6 +98190,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c58c217c,
     &hs_method_7bdff9a7,
     &hs_method_a3dda307,
+    &hs_method_e3c7d604<InventoryMenu>,
     &hs_get_67397d89,
     &hs_method_9b6cbcd8,
     &hs_method_0bec7f39,
@@ -91149,6 +98204,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5da64402,
     &hs_method_913b6d3b,
     &hs_method_ce09451f,
+    &hs_method_631e4948<Bedrock::PubSub::Publisher<void (const GameRules &, const GameRuleId &), Bedrock::PubSub::ThreadModel::MultiThreaded, 0>>,
     &hs_get_82131320,
     &hs_method_0d47d23e,
     &hs_method_da2b07dc,
@@ -91162,6 +98218,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_aefce0af,
     &hs_method_2a766c84,
     &hs_method_9ccb2bdc,
+    &hs_method_758aa00f<ItemInstance>,
     &hs_get_bcaad8d1,
     &hs_method_f7916c2b,
     &hs_method_067542f0,
@@ -91175,6 +98232,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_11fe1e2a,
     &hs_method_e4264912,
     &hs_method_b8d4d6b9,
+    &hs_method_cf5a7029<LevelSettings>,
     &hs_get_7209e901,
     &hs_method_803a8011,
     &hs_method_f47e4764,
@@ -91188,6 +98246,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_ec2e0e1f,
     &hs_method_0c57e735,
     &hs_method_e3efdcce,
+    &hs_method_78d00527<ItemGroup>,
     &hs_get_9ad9f14b,
     &hs_method_112de692,
     &hs_method_39d09df9,
@@ -91201,6 +98260,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9df9733f,
     &hs_method_7b1603a3,
     &hs_method_8d2fe0a2,
+    &hs_method_ca7f27fe<std::optional<WebToken>>,
     &hs_get_6783d172,
     &hs_method_88dffa8f,
     &hs_method_bcc55a84,
@@ -91214,6 +98274,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_23f68d34,
     &hs_method_35bd0a28,
     &hs_method_5d8b3a6d,
+    &hs_method_bb0fb00e<ItemStack>,
     &hs_get_ae0d82f2,
     &hs_method_41eaae04,
     &hs_method_2051c929,
@@ -91227,6 +98288,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_813b06d6,
     &hs_method_bb86b12c,
     &hs_method_63d32493,
+    &hs_method_c4f76df4<BlockType::NameInfo>,
     &hs_get_6abb2f93,
     &hs_method_91091146,
     &hs_method_97fe47ca,
@@ -91240,6 +98302,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8d2b1a97,
     &hs_method_2be62d50,
     &hs_method_df49b41f,
+    &hs_method_63e2a526<PlayerItemInUse>,
     &hs_get_42045e72,
     &hs_method_a87c3647,
     &hs_method_22803062,
@@ -91253,8 +98316,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_dbf3ea50,
     &hs_method_c1615564,
     &hs_method_a52c2b1a,
+    &hs_method_a6ed32d8<ActorDefinitionPtr>,
     &hs_destroy_7ef0b05f,
-    &hs_create_35a13bbf,
+    &hs_create_35a13bbf<Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>,
     &hs_get_8e09d102,
     &hs_method_7fe2d180,
     &hs_method_5a2319a9,
@@ -91268,6 +98332,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b86962d1,
     &hs_method_90bd7d57,
     &hs_method_e4f173d6,
+    &hs_method_3e380369<Bedrock::Intrusive::list<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>>,
     &hs_get_8ccbbd3f,
     &hs_method_43bb2870,
     &hs_method_0744c515,
@@ -91281,6 +98346,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5df1792d,
     &hs_method_659f2660,
     &hs_method_de9ac1c7,
+    &hs_method_08440692<Bedrock::PubSub::Subscription>,
     &hs_get_1a9181d5,
     &hs_method_81f35d38,
     &hs_method_81a9eb55,
@@ -91294,6 +98360,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7e84c50e,
     &hs_method_23af0fb6,
     &hs_method_877b7c57,
+    &hs_method_16011fa9<Bedrock::UniqueOwnerPointer<ActorEventBroadcaster>>,
     &hs_get_56ecd6ea,
     &hs_method_f4b40598,
     &hs_method_2f18cb62,
@@ -91307,6 +98374,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0c367f68,
     &hs_method_74a5f854,
     &hs_method_81d09a09,
+    &hs_method_cad4c6c2<Bedrock::UniqueOwnerPointer<LoadingScreenIdManager>>,
     &hs_get_b6898bd3,
     &hs_method_0af6fc48,
     &hs_method_fc3fc3b9,
@@ -91320,6 +98388,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e2a58f46,
     &hs_method_031d7acf,
     &hs_method_460d1549,
+    &hs_method_2b6e2767<Bedrock::UniqueOwnerPointer<LocalProfilerControlBroker>>,
     &hs_get_f93bd749,
     &hs_method_22c4f8e2,
     &hs_method_dc6a6434,
@@ -91333,6 +98402,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a6303241,
     &hs_method_8c98a415,
     &hs_method_106b73ad,
+    &hs_method_6671bb9d<Bedrock::UniqueOwnerPointer<PlayerLocationReceiver>>,
     &hs_get_b46ff30b,
     &hs_method_4467dc73,
     &hs_method_4af25716,
@@ -91346,6 +98416,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d90ebf88,
     &hs_method_a8f3497d,
     &hs_method_d1e86bd8,
+    &hs_method_41beb2be<Bedrock::UniqueOwnerPointer<PlayerLocationSender>>,
     &hs_get_82968bc2,
     &hs_method_1c8c8960,
     &hs_method_327624ed,
@@ -91359,6 +98430,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a791a4d6,
     &hs_method_7f6e6f0f,
     &hs_method_d8e6bec5,
+    &hs_method_b96d32b5<CallbackToken>,
     &hs_get_7a0b96e6,
     &hs_method_688127ae,
     &hs_method_6a8b31e3,
@@ -91372,6 +98444,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3cda6e68,
     &hs_method_2697fdd4,
     &hs_method_dd43d0fa,
+    &hs_method_24d6595e<CommandLexer::Token>,
     &hs_get_958c09cc,
     &hs_method_9c8e1f19,
     &hs_method_565cf1d1,
@@ -91385,8 +98458,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_741e81d8,
     &hs_method_eaf9f5b9,
     &hs_method_828cf741,
+    &hs_method_a9b3b567<ItemRegistryRef>,
     &hs_destroy_aa0b6097,
-    &hs_create_cf812198,
+    &hs_create_cf812198<Json::Value>,
     &hs_get_745fe953,
     &hs_method_fe740cc4,
     &hs_method_01161bff,
@@ -91400,6 +98474,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8b0a143c,
     &hs_method_6aafda47,
     &hs_method_28f9826f,
+    &hs_method_fe888a25<Json::Value>,
     &hs_get_661c399c,
     &hs_method_c91ae82c,
     &hs_method_e20e9c5f,
@@ -91413,6 +98488,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_34ad796b,
     &hs_method_8ecfd32f,
     &hs_method_3a987da3,
+    &hs_method_83bb1361<OwnerPtr<BlockSource>>,
     &hs_get_cc476a9e,
     &hs_method_c2d3c600,
     &hs_method_49a333bf,
@@ -91426,6 +98502,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_31a41222,
     &hs_method_63712149,
     &hs_method_e7ea51ff,
+    &hs_method_e0cf32a5<OwnerPtr<LevelChunkSaveManager>>,
     &hs_get_ce124628,
     &hs_method_540cf38d,
     &hs_method_417af0d9,
@@ -91439,6 +98516,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_85bddf16,
     &hs_method_e2a73dec,
     &hs_method_357a8829,
+    &hs_method_613bc96b<OwnerPtr<PauseManager>>,
     &hs_get_e81739fc,
     &hs_method_e27a518a,
     &hs_method_d5241994,
@@ -91452,6 +98530,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_034e59fc,
     &hs_method_d4dd1c48,
     &hs_method_4b1388fa,
+    &hs_method_9e05113e<ServerLocatorBar::GroupStrongHandle>,
     &hs_get_cb4ccf4b,
     &hs_method_8a866797,
     &hs_method_26d67d8c,
@@ -91465,6 +98544,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_efcfa7a7,
     &hs_method_b464e895,
     &hs_method_f2f9cb0c,
+    &hs_method_f2f73e9c<WeakRef<Dimension>>,
     &hs_get_7a961569,
     &hs_method_2ec216f1,
     &hs_method_1e097d72,
@@ -91478,6 +98558,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b1c46f15,
     &hs_method_074435db,
     &hs_method_29b57f19,
+    &hs_method_21a71acd<WeakRef<IContainerRegistryAccess>>,
     &hs_get_c8acfabf,
     &hs_method_88499c61,
     &hs_method_424b30d4,
@@ -91491,6 +98572,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2e16556a,
     &hs_method_e57ee63c,
     &hs_method_df74b926,
+    &hs_method_741a16d6<gsl::not_null<Bedrock::UniqueOwnerPointer<LevelCrashDumpManager>>>,
     &hs_get_fd835458,
     &hs_method_c6751ac1,
     &hs_method_63a6c23c,
@@ -91504,8 +98586,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_346d055e,
     &hs_method_a8d87b6d,
     &hs_method_1d36b308,
+    &hs_method_0f299c7b<gsl::not_null<OwnerPtr<ContainerRegistry>>>,
     &hs_destroy_63be61d6,
-    &hs_create_d1b32721,
+    &hs_create_d1b32721<mce::UUID>,
     &hs_get_4e33105a,
     &hs_method_07419bcd,
     &hs_method_91c6737a,
@@ -91519,6 +98602,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e7e6f3ed,
     &hs_method_86228093,
     &hs_method_743291d2,
+    &hs_method_2412081c<mce::UUID>,
     &hs_get_34b7635e,
     &hs_method_f98fda24,
     &hs_method_e91b506f,
@@ -91532,6 +98616,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_dfb77d80,
     &hs_method_58054968,
     &hs_method_95040899,
+    &hs_method_650134d2<std::map<HashedString, GameRule>>,
     &hs_get_a0c75684,
     &hs_method_43476df2,
     &hs_method_7747bf6a,
@@ -91545,6 +98630,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_cb6a0ad9,
     &hs_method_a941afdd,
     &hs_method_4c258cb3,
+    &hs_method_62f6b82a<std::map<std::basic_string<char>, int>>,
     &hs_get_e24dcfb6,
     &hs_method_06098a40,
     &hs_method_c316b6da,
@@ -91558,6 +98644,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e8cf426e,
     &hs_method_7d48e1d2,
     &hs_method_fa9b1496,
+    &hs_method_4bf4696e<std::map<std::uint64_t, BlockStateInstance>>,
     &hs_get_2eca2a32,
     &hs_method_906b294b,
     &hs_method_2f58f512,
@@ -91571,6 +98658,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a35d2348,
     &hs_method_35c0ba00,
     &hs_method_6618b048,
+    &hs_method_bbcee391<std::set<CommandRegistry::Symbol>>,
     &hs_get_c5c80156,
     &hs_method_49d86ba3,
     &hs_method_b4a3e9f4,
@@ -91584,6 +98672,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7c8cc3c3,
     &hs_method_8b11b4ae,
     &hs_method_3d97709a,
+    &hs_method_e0516dc3<std::thread>,
     &hs_get_21c2ee41,
     &hs_method_130dd058,
     &hs_method_a46184bc,
@@ -91597,6 +98686,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_42c0f223,
     &hs_method_bc08a7ff,
     &hs_method_bc94c402,
+    &hs_method_3bc095a3<NetworkIdentifier>,
     &hs_get_10562d7a,
     &hs_method_03fba2ec,
     &hs_method_485ec607,
@@ -91610,6 +98700,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9d6e30a2,
     &hs_method_6a3abb6a,
     &hs_method_beb10c6b,
+    &hs_method_a55367ca<std::optional<CloudSaveLevelInfo>>,
     &hs_get_187e81bc,
     &hs_method_c828c013,
     &hs_method_8befe64f,
@@ -91623,6 +98714,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_607c6113,
     &hs_method_b4b29160,
     &hs_method_48d08c33,
+    &hs_method_b9f8be50<GameRules>,
     &hs_get_d5dbded0,
     &hs_method_26d728de,
     &hs_method_953e2a6e,
@@ -91636,6 +98728,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b519485c,
     &hs_method_b58fed8c,
     &hs_method_95b04516,
+    &hs_method_b6cb7006<ActorTerrainInterlockData>,
     &hs_get_e453a587,
     &hs_method_d1251596,
     &hs_method_f26d1d8b,
@@ -91649,6 +98742,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_727fc502,
     &hs_method_500b39f6,
     &hs_method_c8e48322,
+    &hs_method_ae39ebca<Bedrock::NonOwnerPointer<CDNConfig>>,
     &hs_get_63a605f6,
     &hs_method_e83f8206,
     &hs_method_dcf50c0d,
@@ -91662,6 +98756,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_690cdb33,
     &hs_method_802aa82b,
     &hs_method_bebb8b44,
+    &hs_method_b6344399<Bedrock::NonOwnerPointer<IPacketObserver>>,
     &hs_get_298df712,
     &hs_method_ca23a0d7,
     &hs_method_c5b8c18c,
@@ -91675,6 +98770,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_24407513,
     &hs_method_916ecaca,
     &hs_method_a5b30bcc,
+    &hs_method_c7790a78<Bedrock::NonOwnerPointer<LinkedAssetValidator>>,
     &hs_get_a7272af4,
     &hs_method_b4f20b74,
     &hs_method_47f879f5,
@@ -91688,6 +98784,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_754287b4,
     &hs_method_42051909,
     &hs_method_fbbd92a0,
+    &hs_method_0f45dd14<Bedrock::NonOwnerPointer<NetEventCallback>>,
     &hs_get_f47e5989,
     &hs_method_9a992878,
     &hs_method_7e5c5988,
@@ -91701,8 +98798,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_13ecb7e8,
     &hs_method_8e61af1f,
     &hs_method_f48662ad,
+    &hs_method_80ba62e3<Bedrock::NonOwnerPointer<ServerTextSettings>>,
     &hs_destroy_9b5637af,
-    &hs_create_e2355324,
+    &hs_create_e2355324<BlockState::StateListNode>,
     &hs_get_f07caabf,
     &hs_method_d707ff99,
     &hs_method_45e7a2fb,
@@ -91716,6 +98814,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9c518ffe,
     &hs_method_b2ee7ff0,
     &hs_method_1223c495,
+    &hs_method_31b687bf<BlockState::StateListNode>,
     &hs_get_58bfaca9,
     &hs_method_a21e7b48,
     &hs_method_38688f91,
@@ -91729,6 +98828,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1251d150,
     &hs_method_24ba5c65,
     &hs_method_97f92d17,
+    &hs_method_ec3c0d9d<BuiltInActorComponents>,
     &hs_get_9668eea3,
     &hs_method_988dc0be,
     &hs_method_28ba0195,
@@ -91742,6 +98842,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c5b74d65,
     &hs_method_cffeefe7,
     &hs_method_6ae2f63d,
+    &hs_method_a43bef23<CompoundTag>,
     &hs_get_622d7574,
     &hs_method_8cc62c59,
     &hs_method_545365f5,
@@ -91755,6 +98856,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d1b0ea91,
     &hs_method_7853515c,
     &hs_method_74afb8bc,
+    &hs_method_7fbb0b77<EntityContext>,
     &hs_get_b935046b,
     &hs_method_c69b89ef,
     &hs_method_af52b216,
@@ -91768,6 +98870,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d02dec0b,
     &hs_method_d4678fe0,
     &hs_method_ddccae14,
+    &hs_method_0eafdd67<ItemStackNetIdVariant>,
     &hs_get_5933dbf6,
     &hs_method_c1c274fb,
     &hs_method_7651c7ca,
@@ -91781,6 +98884,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_078cc815,
     &hs_method_c949fdb5,
     &hs_method_0b9808d1,
+    &hs_method_7471e817<PermissionsHandler>,
     &hs_get_7d659238,
     &hs_method_297d9714,
     &hs_method_71079444,
@@ -91794,6 +98898,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_64fb63ba,
     &hs_method_688ddd3a,
     &hs_method_777d3821,
+    &hs_method_dbef1cd1<SemVersion>,
     &hs_get_00712d3a,
     &hs_method_f409db2b,
     &hs_method_c8276406,
@@ -91807,6 +98912,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1f01b9c2,
     &hs_method_65f8625c,
     &hs_method_f5626ea6,
+    &hs_method_7c29fc8d<ServerLocatorBar>,
     &hs_get_cacc8bf8,
     &hs_method_fae31fef,
     &hs_method_c5763602,
@@ -91820,6 +98926,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_248f911d,
     &hs_method_fd2c6829,
     &hs_method_f6d0c948,
+    &hs_method_d78897a4<VanillaWaypointManager>,
     &hs_get_1cf6aa8a,
     &hs_method_cee384cf,
     &hs_method_d193e007,
@@ -91833,6 +98940,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1f1e6a67,
     &hs_method_c65440bf,
     &hs_method_fcfa3776,
+    &hs_method_23d560d5<WeakRef<EntityContext>>,
     &hs_get_d0dd454d,
     &hs_method_06916959,
     &hs_method_db678896,
@@ -91846,6 +98954,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a51d53e8,
     &hs_method_cbb8ad6a,
     &hs_method_2f4da82e,
+    &hs_method_449a45fa<brstd::flat_set<Bedrock::typeid_t<void>>>,
     &hs_get_76a26102,
     &hs_method_4035b2fa,
     &hs_method_836cf0b4,
@@ -91859,6 +98968,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b9e17145,
     &hs_method_dc99a04e,
     &hs_method_8053f5fd,
+    &hs_method_61d81d74<gsl::not_null<Bedrock::NonOwnerPointer<LevelData>>>,
     &hs_get_a680020b,
     &hs_method_2df7ee42,
     &hs_method_2cfa49d6,
@@ -91872,8 +98982,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b7fb5acb,
     &hs_method_671d7fd1,
     &hs_method_680cf407,
+    &hs_method_13a69512<gsl::not_null<Bedrock::NonOwnerPointer<PacketSender>>>,
     &hs_destroy_031465ff,
-    &hs_create_da530921,
+    &hs_create_da530921<std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>,
     &hs_get_1b7b75e1,
     &hs_method_35ef664b,
     &hs_method_1f529948,
@@ -91887,6 +98998,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b6bec3ce,
     &hs_method_e89b4b36,
     &hs_method_efc80e1e,
+    &hs_method_b12ed80f<std::variant<TypedServerNetId<ItemStackNetIdTag, int>, TypedClientNetId<ItemStackRequestIdTag, int>, TypedClientNetId<ItemStackLegacyRequestIdTag, int>>>,
     &hs_get_52b2f140,
     &hs_method_9a799c28,
     &hs_method_93caa398,
@@ -91900,6 +99012,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d9722d05,
     &hs_method_de125ec8,
     &hs_method_8b68bbba,
+    &hs_method_48e1c423<std::vector<AABB>>,
     &hs_destroy_8d908b30,
     &hs_create_ba1ac832,
     &hs_get_7fa10893,
@@ -91945,6 +99058,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9cdd4bc5,
     &hs_method_702ac0f7,
     &hs_method_d471e1d8,
+    &hs_method_671e6e5d<std::vector<AvailableCommandsPacketPayload::ChainedSubcommandData>>,
     &hs_get_4b3b50de,
     &hs_method_e5995983,
     &hs_method_fabcf03b,
@@ -91958,6 +99072,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f7eb0321,
     &hs_method_276b3920,
     &hs_method_bd39519a,
+    &hs_method_b4960e46<std::vector<AvailableCommandsPacketPayload::ChainedSubcommandRelationship>>,
     &hs_get_fbaa9371,
     &hs_method_d719741a,
     &hs_method_83df4491,
@@ -91971,6 +99086,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c5157a23,
     &hs_method_761563e9,
     &hs_method_b354a44a,
+    &hs_method_7fe3ad3f<std::vector<AvailableCommandsPacketPayload::CommandData>>,
     &hs_get_707cd925,
     &hs_method_379ed806,
     &hs_method_18e1c09d,
@@ -91984,6 +99100,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8525b962,
     &hs_method_418224f2,
     &hs_method_ac99768c,
+    &hs_method_f64a236d<std::vector<AvailableCommandsPacketPayload::ConstrainedValueData>>,
     &hs_get_b48f93f7,
     &hs_method_8d493f27,
     &hs_method_a0005172,
@@ -91997,6 +99114,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_158c98be,
     &hs_method_491b6b9e,
     &hs_method_9e5d9858,
+    &hs_method_e412ff1a<std::vector<AvailableCommandsPacketPayload::EnumData>>,
     &hs_get_da8a0611,
     &hs_method_284d10b7,
     &hs_method_bb3c02d8,
@@ -92010,6 +99128,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b36af525,
     &hs_method_fbb78680,
     &hs_method_c3627595,
+    &hs_method_230b9fbf<std::vector<AvailableCommandsPacketPayload::OverloadData>>,
     &hs_get_a239e0b2,
     &hs_method_e42838af,
     &hs_method_523b9000,
@@ -92023,6 +99142,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_cbfd189f,
     &hs_method_f08a7e1c,
     &hs_method_b56332c3,
+    &hs_method_d2ddff3d<std::vector<AvailableCommandsPacketPayload::ParamData>>,
     &hs_get_0a03b335,
     &hs_method_697c99aa,
     &hs_method_3eeefdd3,
@@ -92036,6 +99156,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_68ae4faf,
     &hs_method_1e07c625,
     &hs_method_4c09d555,
+    &hs_method_d2a71105<std::vector<AvailableCommandsPacketPayload::SoftEnumData>>,
     &hs_get_1a07efc4,
     &hs_method_350170c3,
     &hs_method_fbc8a189,
@@ -92049,6 +99170,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_09ca8dd0,
     &hs_method_76d2e961,
     &hs_method_30af60d4,
+    &hs_method_1a09269c<std::vector<BiomeIdType>>,
     &hs_get_4bb69d65,
     &hs_method_fc06d14f,
     &hs_method_10e907eb,
@@ -92062,6 +99184,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_bc009410,
     &hs_method_b4b2925f,
     &hs_method_6b9f3348,
+    &hs_method_e38a515d<std::vector<BlockActor *>>,
     &hs_get_8daa9d51,
     &hs_method_05e6af9a,
     &hs_method_574d85d5,
@@ -92075,6 +99198,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_720f1dea,
     &hs_method_b1b9d62a,
     &hs_method_75598584,
+    &hs_method_d8913e8b<std::vector<BlockDataFetchResult<Block>>>,
     &hs_get_5a07e4be,
     &hs_method_03a4dc08,
     &hs_method_c8a0445b,
@@ -92088,8 +99212,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c2e144f2,
     &hs_method_33f3b606,
     &hs_method_286ee0a2,
+    &hs_method_d934533e<std::vector<BlockSourceListener *>>,
     &hs_destroy_07e7e35f,
-    &hs_create_988bb92a,
+    &hs_create_988bb92a<std::vector<BlockType::RemovedStateCollection::SplitBlock>>,
     &hs_get_99ec800f,
     &hs_method_65dc84cc,
     &hs_method_af0393d7,
@@ -92103,6 +99228,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c6e8f4f4,
     &hs_method_9672ab5c,
     &hs_method_6dcefb16,
+    &hs_method_2bbab20b<std::vector<BlockType::RemovedStateCollection::SplitBlock>>,
     &hs_get_709f353f,
     &hs_method_fabcab28,
     &hs_method_15594652,
@@ -92116,6 +99242,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_bb1456c5,
     &hs_method_5fa15cb8,
     &hs_method_a5455fb8,
+    &hs_method_4f74451e<std::vector<CommandMessage::MessageComponent>>,
     &hs_get_c4ce11cc,
     &hs_method_e0cfdebb,
     &hs_method_38c52bfb,
@@ -92129,6 +99256,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_69886e9a,
     &hs_method_9c1d841a,
     &hs_method_472ab050,
+    &hs_method_256e77c2<std::vector<CommandRegistry::Symbol>>,
     &hs_get_58ff5354,
     &hs_method_bd34ac4f,
     &hs_method_dea5b719,
@@ -92142,6 +99270,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_64e4dbfe,
     &hs_method_b9236776,
     &hs_method_188f1567,
+    &hs_method_fe8cef35<std::vector<ContainerOwner::OwnedContainer>>,
     &hs_get_404e3a51,
     &hs_method_e2ebcdfd,
     &hs_method_ce4ea8b2,
@@ -92155,6 +99284,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f9bb8859,
     &hs_method_62bd0aea,
     &hs_method_5857fcb7,
+    &hs_method_8663f125<std::vector<GameRule>>,
     &hs_get_149626cf,
     &hs_method_cfa43da5,
     &hs_method_e43fa39c,
@@ -92168,6 +99298,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c5c46a23,
     &hs_method_181d2cad,
     &hs_method_95c5ce7d,
+    &hs_method_45cf16de<std::vector<HashedString>>,
     &hs_get_75592e79,
     &hs_method_b3b010f3,
     &hs_method_688b4ed4,
@@ -92181,6 +99312,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_82e64eae,
     &hs_method_dce1a84e,
     &hs_method_610f79e3,
+    &hs_method_2a469ae5<std::vector<InventoryAction>>,
     &hs_get_1d1d93fb,
     &hs_method_fd18c12e,
     &hs_method_413384dd,
@@ -92194,6 +99326,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_87814769,
     &hs_method_32f487ba,
     &hs_method_7bc896ff,
+    &hs_method_d60706b6<std::vector<ItemInstance>>,
     &hs_get_ff970500,
     &hs_method_5d3c5450,
     &hs_method_f1f3e857,
@@ -92207,6 +99340,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_865c097e,
     &hs_method_3248a122,
     &hs_method_5a683c3d,
+    &hs_method_037284da<std::vector<ItemStack>>,
     &hs_get_18e05857,
     &hs_method_5433d277,
     &hs_method_9c71f824,
@@ -92220,6 +99354,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5941bad6,
     &hs_method_424054ea,
     &hs_method_06dc60b7,
+    &hs_method_4de0f757<std::vector<LevelListener *>>,
     &hs_destroy_8b9e84df,
     &hs_create_27275eef,
     &hs_get_d029faa9,
@@ -92249,6 +99384,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3452b328,
     &hs_method_78084cf4,
     &hs_method_247b1c6a,
+    &hs_method_92f38d3c<std::vector<PackInstanceId>>,
     &hs_get_7eb267ce,
     &hs_method_585483b8,
     &hs_method_a8d8bf42,
@@ -92262,6 +99398,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_8c000bfc,
     &hs_method_f39db33a,
     &hs_method_66a216ad,
+    &hs_method_514aff9d<std::vector<PlayerListener *>>,
     &hs_get_39089d97,
     &hs_method_467c8f41,
     &hs_method_7bbfb07a,
@@ -92275,8 +99412,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b88649c0,
     &hs_method_1dbe2373,
     &hs_method_7de7050f,
+    &hs_method_e1249d41<std::vector<mce::UUID>>,
     &hs_destroy_c8197551,
-    &hs_create_8258b924,
+    &hs_create_8258b924<std::vector<short>>,
     &hs_get_b383a19e,
     &hs_method_bcc348d3,
     &hs_method_c47951f7,
@@ -92304,6 +99442,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_800aca94,
     &hs_method_c3abeb76,
     &hs_method_d0753048,
+    &hs_method_558fdba5<std::vector<std::basic_string<char>>>,
     &hs_get_1ef1fd50,
     &hs_method_77587278,
     &hs_method_e263a34d,
@@ -92317,6 +99456,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3f5d278e,
     &hs_method_b1eeb0ac,
     &hs_method_6e754daa,
+    &hs_method_085ce8fa<std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeBuff>>>>,
     &hs_get_13fd3b9e,
     &hs_method_f9de482a,
     &hs_method_626f1a19,
@@ -92330,6 +99470,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9d8009ff,
     &hs_method_e9e15d65,
     &hs_method_1e6722f9,
+    &hs_method_b39c2b04<std::vector<std::pair<const Attribute *, std::shared_ptr<AttributeModifier>>>>,
     &hs_get_6c4fcb21,
     &hs_method_46eef98e,
     &hs_method_d946e944,
@@ -92343,6 +99484,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e3d35a1c,
     &hs_method_08b52ee8,
     &hs_method_369b6bd1,
+    &hs_method_94ab459f<std::vector<std::shared_ptr<BlockType::AlteredStateCollection>>>,
     &hs_get_ab8819b5,
     &hs_method_8fe304c3,
     &hs_method_1d9c439e,
@@ -92356,6 +99498,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e8745cfc,
     &hs_method_1707bff2,
     &hs_method_da9e742b,
+    &hs_method_24725036<std::vector<std::shared_ptr<ServerWaypointGroup>>>,
     &hs_get_96e582ed,
     &hs_method_09d2c4e1,
     &hs_method_1e2e3de9,
@@ -92369,6 +99512,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6bcceaba,
     &hs_method_886964a4,
     &hs_method_9ff3a65b,
+    &hs_method_b79b225f<std::vector<std::unique_ptr<Block>>>,
     &hs_get_075b4065,
     &hs_method_4690e487,
     &hs_method_8391c6b1,
@@ -92382,6 +99526,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_30abf942,
     &hs_method_1fa57622,
     &hs_method_f90fb80f,
+    &hs_method_b8b8c737<std::vector<std::unique_ptr<BlockEvents::IBlockEventExecutor>>>,
     &hs_get_eb53e8af,
     &hs_method_60aff261,
     &hs_method_b1a7a5f3,
@@ -92395,6 +99540,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6103ff25,
     &hs_method_40bc1d68,
     &hs_method_bb0a68de,
+    &hs_method_893ea364<std::vector<std::unique_ptr<BlockTrait::IGetPlacementBlockCallback>>>,
     &hs_get_3cfb6c6c,
     &hs_method_7e05b261,
     &hs_method_71f8bcc8,
@@ -92408,8 +99554,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9b6a6915,
     &hs_method_303d81f4,
     &hs_method_2b8d20d1,
+    &hs_method_845852ee<std::vector<std::unique_ptr<DeferredCommandBase>>>,
     &hs_destroy_aab0cf0a,
-    &hs_create_002c9b8f,
+    &hs_create_002c9b8f<std::vector<std::unique_ptr<MolangVariable>>>,
     &hs_get_922b5d10,
     &hs_method_2eabf9d8,
     &hs_method_856ba676,
@@ -92423,6 +99570,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6edad6db,
     &hs_method_354ff47f,
     &hs_method_0061669a,
+    &hs_method_7ab7c7ab<std::vector<std::unique_ptr<MolangVariable>>>,
     &hs_method_6611e613,
     &hs_get_077599c1,
     &hs_method_a5857fd8,
@@ -92437,6 +99585,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f21c0d96,
     &hs_method_fb5e1d83,
     &hs_method_b1e07e2d,
+    &hs_method_da098aa3<std::vector<unsigned char>>,
     &hs_get_ee3249da,
     &hs_method_cee8bd71,
     &hs_method_23ed747f,
@@ -92450,6 +99599,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_721cb29e,
     &hs_method_64f26669,
     &hs_method_fd3d7935,
+    &hs_method_c4dc7b61<std::vector<unsigned int>>,
     &hs_get_b0db205a,
     &hs_method_82325949,
     &hs_method_b0684ffc,
@@ -92463,6 +99613,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6fa5b5d3,
     &hs_method_e240fb2f,
     &hs_method_354503b0,
+    &hs_method_bdee7c37<std::vector<unsigned short>>,
     &hs_get_24b405c2,
     &hs_method_6c063faf,
     &hs_method_89e2925a,
@@ -92476,6 +99627,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f6bd78f0,
     &hs_method_88597aca,
     &hs_method_da1158c1,
+    &hs_method_8d2f1505<std::optional<EducationLevelSettings>>,
     &hs_get_33a7587f,
     &hs_method_0729bc63,
     &hs_method_3d601268,
@@ -92489,6 +99641,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0ce9535a,
     &hs_method_964f560e,
     &hs_method_65fef167,
+    &hs_method_c649837b<BaseGameVersion>,
     &hs_get_d81a4db0,
     &hs_method_aeeb9296,
     &hs_method_45b7afa9,
@@ -92502,6 +99655,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_41239c80,
     &hs_method_cd9e76f0,
     &hs_method_35b7e53b,
+    &hs_method_8949d3e3<BlockEvents::BlockEventManager>,
     &hs_get_9e2c0385,
     &hs_method_ed549e24,
     &hs_method_e0a76f16,
@@ -92515,6 +99669,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_14065e31,
     &hs_method_12ca3f7b,
     &hs_method_3dbe4903,
+    &hs_method_81e94141<BuiltInMobComponents>,
     &hs_get_e526f6d4,
     &hs_method_1b85e226,
     &hs_method_8d01ef29,
@@ -92528,6 +99683,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_fd58ad49,
     &hs_method_31ed5de7,
     &hs_method_cde52fbc,
+    &hs_method_0c8ec460<CommandRegistry::LexicalToken>,
     &hs_get_3dfc42b0,
     &hs_method_970d1228,
     &hs_method_0b2e05ce,
@@ -92541,6 +99697,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_33944f46,
     &hs_method_09ddf6dd,
     &hs_method_1837328f,
+    &hs_method_f92788e6<CompassSpriteCalculator>,
     &hs_get_b80a3c45,
     &hs_method_439ccd18,
     &hs_method_9fa6087e,
@@ -92554,6 +99711,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5359c3c2,
     &hs_method_b24b4293,
     &hs_method_d5a0f8a5,
+    &hs_method_b6f0d28f<OwnerPtr<EntityContext>>,
     &hs_get_947656c0,
     &hs_method_40b28637,
     &hs_method_4b4f6b38,
@@ -92567,6 +99725,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_6a32b851,
     &hs_method_01bb78a4,
     &hs_method_c7ad5442,
+    &hs_method_aca9a0f3<PuvLoadData::LoadResultWithTiming>,
     &hs_get_246f806b,
     &hs_method_06800c0a,
     &hs_method_1ce84c59,
@@ -92580,8 +99739,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_40105f7a,
     &hs_method_2664a641,
     &hs_method_fd92363e,
+    &hs_method_2c979ce3<RawGameServerToken>,
     &hs_destroy_7e4624ac,
-    &hs_create_26a4254b,
+    &hs_create_26a4254b<std::basic_string<char>>,
     &hs_get_bf3d3526,
     &hs_method_750577a9,
     &hs_method_101e9c9a,
@@ -92598,6 +99758,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_set_ref_f8cfb9e4,
     &hs_method_8edfad34,
     &hs_method_52937c63,
+    &hs_method_1256f922<std::basic_string<char>>,
     &hs_get_23fc071e,
     &hs_method_ba80e46f,
     &hs_method_09f4bacb,
@@ -92611,6 +99772,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_31844d68,
     &hs_method_005b8dca,
     &hs_method_09492b71,
+    &hs_method_341a0c6b<std::optional<std::vector<WorldSaveAndExitPackTelemetryData>>>,
     &hs_get_5a69b84a,
     &hs_method_a83aee9a,
     &hs_method_97ccc35d,
@@ -92624,6 +99786,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d7b87a73,
     &hs_method_7f079658,
     &hs_method_a0b629c8,
+    &hs_method_0510feb7<std::vector<bool>>,
     &hs_get_d95d6cab,
     &hs_method_489f9ac0,
     &hs_method_07741982,
@@ -92637,6 +99800,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a8522993,
     &hs_method_8d36fdad,
     &hs_method_ff3b2aa1,
+    &hs_method_68b7a77a<PlayerAuthenticationInfo>,
     &hs_get_01b1a3c7,
     &hs_method_d0075d51,
     &hs_method_89d907e7,
@@ -92650,6 +99814,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_33d3b64f,
     &hs_method_d9e9411c,
     &hs_method_4b05015b,
+    &hs_method_ec13f5b3<EducationLocalLevelSettings>,
     &hs_get_c08d9506,
     &hs_method_bb29200f,
     &hs_method_958cbd7d,
@@ -92663,6 +99828,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c97dbdb6,
     &hs_method_7b28e794,
     &hs_method_938c4df2,
+    &hs_method_ae4d1d4e<std::deque<BlockPos>>,
     &hs_get_57bc5fa0,
     &hs_method_373fde03,
     &hs_method_6e4842a8,
@@ -92676,6 +99842,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d20e4b3e,
     &hs_method_b4d8d9b1,
     &hs_method_c044049f,
+    &hs_method_d721f193<std::deque<std::pair<CommandRegistry::Symbol, CommandRegistry::ParseToken *>>>,
     &hs_get_b6e54c0d,
     &hs_method_46b941a5,
     &hs_method_82381e8b,
@@ -92689,6 +99856,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f152fd53,
     &hs_method_4d42b658,
     &hs_method_a097722f,
+    &hs_method_b865530d<std::optional<std::basic_string<char>>>,
     &hs_get_913d174e,
     &hs_method_0724ee6c,
     &hs_method_11d5b2b6,
@@ -92702,6 +99870,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_dc736468,
     &hs_method_69f374a9,
     &hs_method_87fcec49,
+    &hs_method_5fdc1040<PlayerUIContainer>,
     &hs_get_86503f45,
     &hs_method_cc09372c,
     &hs_method_eb31acca,
@@ -92715,6 +99884,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_23d65f0b,
     &hs_method_ee156a7c,
     &hs_method_e978a6ab,
+    &hs_method_b50950ac<Bedrock::PubSub::Publisher<void (), Bedrock::PubSub::ThreadModel::SingleThreaded, 0>>,
     &hs_destroy_e42621cb,
     &hs_create_e1958d05,
     &hs_get_4a661a30,
@@ -92744,6 +99914,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_224d5639,
     &hs_method_743c45dd,
     &hs_method_7db6f037,
+    &hs_method_9505c210<InventoryTransactionManager>,
     &hs_get_38ba2da4,
     &hs_method_e9176049,
     &hs_method_eca327fa,
@@ -92757,6 +99928,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_ef085e97,
     &hs_method_bc4c1a8a,
     &hs_method_7ed47ee6,
+    &hs_method_d74aad80<PackIdVersion>,
     &hs_get_8abfbe39,
     &hs_method_76c5d62d,
     &hs_method_98a7b876,
@@ -92770,6 +99942,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9e15076c,
     &hs_method_8635cdf2,
     &hs_method_42d6f7ed,
+    &hs_method_b34fd24d<SpawnSettings>,
     &hs_get_c985247e,
     &hs_method_3eab680c,
     &hs_method_c2e7e05c,
@@ -92783,6 +99956,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_9fa251f6,
     &hs_method_37397878,
     &hs_method_ab636dba,
+    &hs_method_e835f8d1<SynchedActorDataEntityWrapper>,
     &hs_get_47fe46b9,
     &hs_method_43b9546a,
     &hs_method_c2017c10,
@@ -92796,6 +99970,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1c49c7ee,
     &hs_method_fffdcf5c,
     &hs_method_57dfddae,
+    &hs_method_9d2198b4<brstd::flat_map<Bedrock::typeid_t<void>, std::unique_ptr<BlockComponentStorage::ComponentBase>>>,
     &hs_get_976e8f16,
     &hs_method_5d3636d8,
     &hs_method_8fe804cd,
@@ -92809,6 +99984,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3b927dc1,
     &hs_method_f96b8b41,
     &hs_method_3c941c31,
+    &hs_method_534f92cf<brstd::flat_map<BoneCacheKey, Matrix>>,
     &hs_get_d3711ca6,
     &hs_method_1a05e8e2,
     &hs_method_589e2c29,
@@ -92822,6 +99998,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_b289c2e5,
     &hs_method_72e58746,
     &hs_method_5d4488b0,
+    &hs_method_a4a67cc5<std::optional<PlayerPartyInfo>>,
     &hs_get_8dba4a83,
     &hs_method_7bc43e7d,
     &hs_method_544a20db,
@@ -92835,6 +100012,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_70bca9e9,
     &hs_method_553c9fda,
     &hs_method_bd7965e3,
+    &hs_method_eb89d009<MolangVariableMap>,
     &hs_get_d5c04b80,
     &hs_method_4eef680a,
     &hs_method_00674954,
@@ -92848,6 +100026,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_533c88a7,
     &hs_method_a8fae5dc,
     &hs_method_10153007,
+    &hs_method_3ac19a80<Stopwatch>,
     &hs_get_c826400a,
     &hs_method_c9b4004f,
     &hs_method_9989b88a,
@@ -92861,6 +100040,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_3d95799f,
     &hs_method_93387a4e,
     &hs_method_a3879cf2,
+    &hs_method_07295c26<EduSharedUriResource>,
     &hs_get_382b309b,
     &hs_method_613a5e1b,
     &hs_method_7fa35988,
@@ -92874,6 +100054,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_ecb03ae5,
     &hs_method_664528b8,
     &hs_method_e86d2098,
+    &hs_method_70d0e321<Factory<BaseLightTextureImageBuilder, Level &, Scheduler &>>,
     &hs_get_fa1f3263,
     &hs_method_08432ed5,
     &hs_method_7b057258,
@@ -92887,6 +100068,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_fafff8ff,
     &hs_method_4acd30b2,
     &hs_method_fd68f388,
+    &hs_method_09326301<brstd::move_only_function<bool () const>>,
     &hs_get_cc3cba02,
     &hs_method_030672de,
     &hs_method_343615c1,
@@ -92900,6 +100082,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a4b7bf10,
     &hs_method_15be989f,
     &hs_method_d143a3f4,
+    &hs_method_134a435e<brstd::move_only_function<bool (ServerInstanceInitArguments::HostMultiplayerArguments &&) const>>,
     &hs_get_f45097d9,
     &hs_method_913368df,
     &hs_method_d3b3f156,
@@ -92913,6 +100096,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7c2db32d,
     &hs_method_503ee879,
     &hs_method_e3166499,
+    &hs_method_37eb5c1c<brstd::move_only_function<std::unique_ptr<DimensionFactoryAndManager> (gsl::not_null<Bedrock::NonOwnerPointer<ILevel>>, br::worldgen::StructureSetRegistry &) const>>,
     &hs_get_b28b829c,
     &hs_method_1f987356,
     &hs_method_ed21c1f0,
@@ -92926,6 +100110,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_82cbc141,
     &hs_method_efb71005,
     &hs_method_2cfddd43,
+    &hs_method_92777be2<std::function<CommandRegistry::ParseToken *(CommandRegistry::ParseToken &, CommandRegistry::Symbol)>>,
     &hs_get_44f29626,
     &hs_method_21315804,
     &hs_method_c1919c1f,
@@ -92939,6 +100124,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_32a9e22e,
     &hs_method_2fc1586e,
     &hs_method_5a7dee02,
+    &hs_method_6a7cd4cc<std::function<bool ()>>,
     &hs_get_5e920391,
     &hs_method_e7f71d82,
     &hs_method_36f94065,
@@ -92952,6 +100138,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_54fa3d94,
     &hs_method_1cb08adc,
     &hs_method_f3d883b3,
+    &hs_method_7e6943f0<std::function<bool (const std::variant<cereal::NullType, bool, int, float> &, GameRule::ValidationError *)>>,
     &hs_get_b22795ca,
     &hs_method_06cea72d,
     &hs_method_3fe5264c,
@@ -92965,6 +100152,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_44e24092,
     &hs_method_bc832aee,
     &hs_method_6aaf7160,
+    &hs_method_a2bdc840<std::function<const Block *(const BlockType &, int, int)>>,
     &hs_get_0a688e9f,
     &hs_method_b3c57f76,
     &hs_method_8ad2cc34,
@@ -92978,6 +100166,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_48ae856d,
     &hs_method_637d3339,
     &hs_method_3aab7345,
+    &hs_method_cde1fd96<std::function<std::optional<int> (const BlockType &, int)>>,
     &hs_get_c6668831,
     &hs_method_8601f01e,
     &hs_method_ba8df4ac,
@@ -92991,6 +100180,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c90193b1,
     &hs_method_b7c22684,
     &hs_method_eea0ef91,
+    &hs_method_2a184143<std::function<std::variant<cereal::NullType, bool, int, float> (const std::variant<cereal::NullType, bool, int, float> &)>>,
     &hs_get_403e694b,
     &hs_method_b31fd8ce,
     &hs_method_de883968,
@@ -93004,6 +100194,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_914b79a9,
     &hs_method_910f8177,
     &hs_method_8e9a99d0,
+    &hs_method_a2515ec2<std::function<void (Connection::DisconnectFailReason, const char *)>>,
     &hs_get_bfd734c9,
     &hs_method_0841fd8b,
     &hs_method_7258a9d0,
@@ -93017,6 +100208,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_61e53caf,
     &hs_method_e2f0aaef,
     &hs_method_37046eff,
+    &hs_method_987082fa<std::function<void (GameRule &, const BaseGameVersion &, const CompoundTag &)>>,
     &hs_get_cb1d7a1c,
     &hs_method_c912e3ba,
     &hs_method_db4e62b3,
@@ -93030,6 +100222,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_ddf8749a,
     &hs_method_afdf64bb,
     &hs_method_8b87744b,
+    &hs_method_1a01b0ec<std::function<void (MobEffect::FactorCalculationData &, EffectDuration)>>,
     &hs_get_2e81262a,
     &hs_method_5241cb55,
     &hs_method_702eae66,
@@ -93043,6 +100236,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_63674a55,
     &hs_method_216137f1,
     &hs_method_05f60955,
+    &hs_method_2366a756<std::function<void (ServerPlayer &)>>,
     &hs_get_651caf5c,
     &hs_method_6e66d1e0,
     &hs_method_76bf7d47,
@@ -93056,6 +100250,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_43d79ee9,
     &hs_method_f178fe79,
     &hs_method_56ee3942,
+    &hs_method_397aaec3<std::function<void (const char *)>>,
     &hs_get_bbed9049,
     &hs_method_a18a6dd3,
     &hs_method_308be356,
@@ -93069,6 +100264,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_461c209b,
     &hs_method_8bfbcd29,
     &hs_method_491fd7f2,
+    &hs_method_faf9486e<std::unordered_map<ActorUniqueID, ServerPlayer::NearbyActor>>,
     &hs_get_4ad5493c,
     &hs_method_f48f46e8,
     &hs_method_f2a6da26,
@@ -93082,6 +100278,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_34721dd9,
     &hs_method_67e5c962,
     &hs_method_91f1aa61,
+    &hs_method_932695bf<std::unordered_map<HashedString, std::unique_ptr<Command>>>,
     &hs_get_4345bdeb,
     &hs_method_8175da8e,
     &hs_method_b631b3fc,
@@ -93095,6 +100292,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_87fc258a,
     &hs_method_f3984f41,
     &hs_method_b7e65aed,
+    &hs_method_a690f98b<std::unordered_map<HashedString, std::uint64_t>>,
     &hs_get_be342ba9,
     &hs_method_12465134,
     &hs_method_1e919a1c,
@@ -93108,6 +100306,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d2172a18,
     &hs_method_ccf33e78,
     &hs_method_76585082,
+    &hs_method_6c296d53<std::unordered_map<std::basic_string<char>, CommandPermissionLevel>>,
     &hs_get_cbad0219,
     &hs_method_7f7e4ab3,
     &hs_method_491777ee,
@@ -93121,6 +100320,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_889afdd1,
     &hs_method_f9c5dc87,
     &hs_method_90d0a5ff,
+    &hs_method_d8d81aa7<std::unordered_map<std::basic_string<char>, std::unique_ptr<BiomeJsonDocumentGlueResolvedBiomeData>>>,
     &hs_get_2053ad10,
     &hs_method_2e4d78d7,
     &hs_method_d1af69ce,
@@ -93134,6 +100334,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_be5136ae,
     &hs_method_da3cef0b,
     &hs_method_e54236ae,
+    &hs_method_eb9cb3bf<std::unordered_map<std::basic_string<char>, unsigned int>>,
     &hs_get_f23aea8f,
     &hs_method_8ecf6c52,
     &hs_method_bfdf73e2,
@@ -93147,6 +100348,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_910de465,
     &hs_method_85180231,
     &hs_method_e579284d,
+    &hs_method_965cdb65<std::unordered_set<BlockSource *>>,
     &hs_get_22566b1b,
     &hs_method_fb99ad7a,
     &hs_method_6148a214,
@@ -93160,6 +100362,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a6f5e64f,
     &hs_method_bacb51a3,
     &hs_method_9c1a12ab,
+    &hs_method_20c0b145<std::unordered_set<ChunkPos>>,
     &hs_get_16ac02c5,
     &hs_method_4a96ef9d,
     &hs_method_3e1aaf54,
@@ -93173,6 +100376,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e5a9d7a8,
     &hs_method_c5e56fe1,
     &hs_method_5114bc3f,
+    &hs_method_b6ef3517<Core::Cache<unsigned short, const Block *, const Block *>>,
     &hs_get_c8712a94,
     &hs_method_c958041a,
     &hs_method_ce243f2c,
@@ -93186,6 +100390,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f2c94803,
     &hs_method_53709e36,
     &hs_method_b97c32e4,
+    &hs_method_8f7d229f<ExperimentStorage>,
     &hs_get_7de80fca,
     &hs_method_0b2c3a8c,
     &hs_method_410cf7e8,
@@ -93199,6 +100404,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_70ffd5a4,
     &hs_method_66744b24,
     &hs_method_553b06d4,
+    &hs_method_015d797e<Experiments>,
     &hs_get_470dcfbc,
     &hs_method_59156a5a,
     &hs_method_1ff74a5b,
@@ -93212,6 +100418,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_33d1ec92,
     &hs_method_11e19798,
     &hs_method_250c9aa8,
+    &hs_method_c3ddbc8f<std::condition_variable>,
     &hs_get_fa01ba3e,
     &hs_method_a04d08a5,
     &hs_method_7cdb548f,
@@ -93225,6 +100432,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_1fa76635,
     &hs_method_31909c6c,
     &hs_method_e9f41bc9,
+    &hs_method_55dc9099<std::optional<ExternalLinkSettings>>,
     &hs_get_9465e9d8,
     &hs_method_a6482143,
     &hs_method_e8f02eb3,
@@ -93238,8 +100446,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7a855d63,
     &hs_method_c0b8d982,
     &hs_method_df830ad6,
+    &hs_method_59efcf95<VariantParameterList>,
     &hs_destroy_7db8ff81,
-    &hs_create_5b38ecc1,
+    &hs_create_5b38ecc1<std::mutex>,
     &hs_get_a6dbd15f,
     &hs_method_e60a47b6,
     &hs_method_d7b166d8,
@@ -93253,6 +100462,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_4d0a24d9,
     &hs_method_f7a6c33d,
     &hs_method_416d49fe,
+    &hs_method_ef33040c<std::mutex>,
     &hs_destroy_5d367d95,
     &hs_create_3a4c9c26,
     &hs_get_833056b7,
@@ -93282,6 +100492,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_eab099e1,
     &hs_method_97e03fa8,
     &hs_method_b4c66906,
+    &hs_method_2867657c<ActorUniqueID>,
     &hs_get_ba043dac,
     &hs_method_eb350981,
     &hs_method_1682f1f1,
@@ -93295,6 +100506,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_88da666e,
     &hs_method_18449394,
     &hs_method_74783e29,
+    &hs_method_3cb81aef<Bedrock::PackedPointer::Packed<const char, 1, 0>>,
     &hs_get_959087ee,
     &hs_method_5a529f7c,
     &hs_method_75afc690,
@@ -93308,6 +100520,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_582ebec9,
     &hs_method_f096c979,
     &hs_method_dfcf024c,
+    &hs_method_20482413<ChunkPos>,
     &hs_get_1d81178b,
     &hs_method_8edd6a48,
     &hs_method_d358a088,
@@ -93321,6 +100534,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7d390580,
     &hs_method_6468411a,
     &hs_method_1e65305a,
+    &hs_method_ef589258<LevelSeed64>,
     &hs_get_7fcce884,
     &hs_method_04163804,
     &hs_method_e661d932,
@@ -93334,6 +100548,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_a8eaf57b,
     &hs_method_5cf01989,
     &hs_method_e58afb41,
+    &hs_method_9ca794e3<MinecraftAccountPermissions>,
     &hs_get_d5eb1feb,
     &hs_method_2087ca48,
     &hs_method_aa3a09f6,
@@ -93347,6 +100562,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_5b0afbbf,
     &hs_method_134a01fa,
     &hs_method_219d0932,
+    &hs_method_5b82ef3d<ServiceRegistrationToken<DebuggerDiagnostics>>,
     &hs_get_e0c04149,
     &hs_method_981efe31,
     &hs_method_768d7655,
@@ -93360,6 +100576,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_01fa6cb1,
     &hs_method_dca17875,
     &hs_method_ed523a6e,
+    &hs_method_3a9cc1c1<ServiceRegistrationToken<ServerInstance>>,
     &hs_get_0f3442f7,
     &hs_method_6005dc70,
     &hs_method_a9c5dc0b,
@@ -93373,6 +100590,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_e2306f44,
     &hs_method_ebd85cf4,
     &hs_method_13277350,
+    &hs_method_3924ff15<ServiceRegistrationToken<ServerPerformanceData>>,
     &hs_get_d9e7d587,
     &hs_method_bbb9eeeb,
     &hs_method_e0a6225e,
@@ -93386,6 +100604,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_0809dce8,
     &hs_method_d0b166d6,
     &hs_method_18cc93ce,
+    &hs_method_87af2dae<Tick>,
     &hs_get_4efa5a68,
     &hs_method_e804c472,
     &hs_method_2fe674e4,
@@ -93399,11 +100618,12 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_2b454743,
     &hs_method_ee401e20,
     &hs_method_ae363dfe,
+    &hs_method_2dfe37a1<WeakPtr<Item>>,
     &hs_destroy_537cd008,
-    &hs_create_a6dcc663,
+    &hs_create_a6dcc663<std::vector<std::basic_string<char>>>,
     &hs_get_f822f722,
     &hs_destroy_aa9fb963,
-    &hs_create_d2e4d00f,
+    &hs_create_d2e4d00f<std::atomic<std::uint64_t>>,
     &hs_get_b20e737f,
     &hs_method_7f081835,
     &hs_method_7c3e8df2,
@@ -93417,6 +100637,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7f3b3297,
     &hs_method_8a4e2366,
     &hs_method_a6751a43,
+    &hs_method_1ecbb132<std::atomic<std::uint64_t>>,
     &hs_get_a9bb8f00,
     &hs_method_760834e8,
     &hs_method_9053b63c,
@@ -93430,6 +100651,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_f8a8930e,
     &hs_method_e690b31f,
     &hs_method_d509e2c0,
+    &hs_method_b3463dce<std::chrono::duration<std::int64_t, std::ratio<1, 1000000>>>,
     &hs_get_d898b382,
     &hs_method_7d57d85c,
     &hs_method_4b280060,
@@ -93443,6 +100665,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_314964e6,
     &hs_method_3cbc5da1,
     &hs_method_3bf88a93,
+    &hs_method_3286e0dc<std::chrono::duration<std::int64_t, std::ratio<1, 1000>>>,
     &hs_get_194a09a8,
     &hs_method_16593b83,
     &hs_method_4f64a053,
@@ -93456,8 +100679,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_994ece3b,
     &hs_method_607dd204,
     &hs_method_5543d14f,
+    &hs_method_30f02361<std::chrono::time_point<std::chrono::steady_clock>>,
     &hs_destroy_bc3ac26a,
-    &hs_create_aa323320,
+    &hs_create_aa323320<std::reference_wrapper<BlockType>>,
     &hs_get_354db36f,
     &hs_method_23fb694d,
     &hs_method_888a995c,
@@ -93471,8 +100695,9 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_94a40de9,
     &hs_method_8c738270,
     &hs_method_486bc5a8,
+    &hs_method_84aeddfc<std::reference_wrapper<BlockType>>,
     &hs_destroy_2e4c0a29,
-    &hs_create_fbda3b30,
+    &hs_create_fbda3b30<std::reference_wrapper<const BlockState>>,
     &hs_get_0a6d3cbe,
     &hs_method_95ab8bfc,
     &hs_method_9a7ce37e,
@@ -93486,6 +100711,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_c1b71c01,
     &hs_method_0ae0abcc,
     &hs_method_c27e8577,
+    &hs_method_4a5cbe70<std::reference_wrapper<const BlockState>>,
     &hs_get_415b322b,
     &hs_method_5631eeaf,
     &hs_method_1134c9e5,
@@ -93499,6 +100725,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_d7168f49,
     &hs_method_4fc70ae2,
     &hs_method_57075786,
+    &hs_method_e49002ca<BlockComponentDirectData>,
     &hs_get_41c3b456,
     &hs_method_1f4cf011,
     &hs_method_ab07d7c4,
@@ -93512,6 +100739,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_41001238,
     &hs_method_2be1beba,
     &hs_method_7470fec6,
+    &hs_method_f45da228<BlockComponentStorage>,
     &hs_get_2b393808,
     &hs_method_977d54fb,
     &hs_method_cf1bbd11,
@@ -93525,6 +100753,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_04046b73,
     &hs_method_677df252,
     &hs_method_50363979,
+    &hs_method_90285297<MobEffect::FactorCalculationData>,
     &hs_get_0f42833f,
     &hs_method_055ced82,
     &hs_method_69d90934,
@@ -93538,6 +100767,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_7533bfeb,
     &hs_method_39f48c62,
     &hs_method_5e1145a7,
+    &hs_method_9528365a<NetEaseBlockComponentStorage>,
     &hs_destroy_3ba13a23,
     &hs_get_800ad99a,
     &hs_destroy_1a794718,
@@ -94037,6 +101267,7 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_01d3c2c9,
     &hs_method_c50ef6b2,
     &hs_method_23b3117c,
+    &hs_method_533352a5<std::default_delete<ll::io::Formatter>>,
     &hs_method_532356ed,
     &hs_method_c0fd1b7f,
     &hs_destroy_03243fc6,
@@ -94084,25 +101315,25 @@ const HosihikariBindingTableV1 kTable{
     &hs_method_43fe181e,
     &hs_method_ec2470f1,
     &hs_destroy_a5d33e74,
-    &hs_create_c29772f9,
+    &hs_create_c29772f9<ll::data::Observable<bool>>,
     &hs_method_e37c0f25,
     &hs_method_22c7845e,
     &hs_method_9fd5bd9d,
     &hs_method_8da0720f,
     &hs_destroy_9c6b675b,
-    &hs_create_dfd706e0,
+    &hs_create_dfd706e0<ll::data::Observable<double>>,
     &hs_method_d53bfa12,
     &hs_method_881de8c0,
     &hs_method_2c6c6854,
     &hs_method_ffac1252,
     &hs_destroy_7f2c6446,
-    &hs_create_e7f8498b,
+    &hs_create_e7f8498b<ll::data::Observable<ll::ui::UIRawMessage>>,
     &hs_method_114db1ad,
     &hs_method_4b4adab1,
     &hs_method_3888e827,
     &hs_method_8658992c,
     &hs_destroy_7412faa7,
-    &hs_create_42eb507b,
+    &hs_create_42eb507b<ll::data::Observable<std::basic_string<char>>>,
     &hs_method_529b2a55,
     &hs_method_557d39f2,
     &hs_method_aecc67d8,
@@ -95641,19 +102872,19 @@ const HosihikariBindingTableV1 kTable{
     &hs_get_3871ca84,
     &hs_destroy_d1658863,
     &hs_cast_e10f6758,
-    &hs_create_51d18487,
+    &hs_create_51d18487<ll::ui::UIObservable<bool>>,
     &hs_method_62e115c7,
     &hs_destroy_b620251e,
     &hs_cast_4fd28dfd,
-    &hs_create_66f13cff,
+    &hs_create_66f13cff<ll::ui::UIObservable<double>>,
     &hs_method_9dad79b5,
     &hs_destroy_5ab364d1,
     &hs_cast_7ffb6452,
-    &hs_create_2b68ce18,
+    &hs_create_2b68ce18<ll::ui::UIObservable<ll::ui::UIRawMessage>>,
     &hs_method_b0335033,
     &hs_destroy_fffe6e86,
     &hs_cast_f6ab9dab,
-    &hs_create_4e6bae49,
+    &hs_create_4e6bae49<ll::ui::UIObservable<std::basic_string<char>>>,
     &hs_method_b9c200aa,
     &hs_destroy_24a87358,
     &hs_create_ac42d1ce,

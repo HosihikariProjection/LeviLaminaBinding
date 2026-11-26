@@ -146,9 +146,9 @@ public sealed unsafe partial class IntrusiveList_Bedrock__PubSub__Detail__Subscr
     public static nint iterator_to_5f9517d3(nint value) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'll::data::IntrusiveList<Bedrock::PubSub::Detail::SubscriptionBodyBase, Bedrock::Intrusive::list_base_hook<Bedrock::PubSub::Detail::SubscriptionBodyBase>>::Iterator<true>' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
     public void pop_back()
     {

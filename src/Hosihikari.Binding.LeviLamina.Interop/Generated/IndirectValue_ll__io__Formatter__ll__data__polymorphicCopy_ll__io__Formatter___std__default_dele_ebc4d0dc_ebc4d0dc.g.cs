@@ -197,13 +197,20 @@ public sealed unsafe partial class IndirectValue_ll__io__Formatter__ll__data__po
         return new global::Hosihikari.Binding.LeviLamina.Interop.ll.io.Formatter((nint)__hs_handle, false);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
-    public nint operator_assign_533352a5(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+    public nint? operator_assign_533352a5(nint other)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_533352a5((void*)__hosihikari_shim_handle, (void*)other);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign_9db0845d(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.io.Formatter? release()
     {

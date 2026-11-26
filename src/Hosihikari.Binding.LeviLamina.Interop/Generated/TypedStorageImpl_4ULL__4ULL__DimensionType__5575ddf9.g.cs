@@ -186,13 +186,20 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__4ULL__DimensionType_
         return new global::Hosihikari.Binding.LeviLamina.Interop.DimensionType((nint)__hs_handle, false);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
-    public nint operator_assign_30f8f406(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.DimensionType? operator_assign_30f8f406(nint u)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_30f8f406((void*)__hosihikari_shim_handle, (void*)u);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.DimensionType((nint)__hs_handle, false);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the template assignment operator has no visible definition.", false)]
+    [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]
     public nint operator_assign_5d6a3702(nint u) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the template assignment operator has no visible definition.");
+        throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
     [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
     public void Destroy() =>

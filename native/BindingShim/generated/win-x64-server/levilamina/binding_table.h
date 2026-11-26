@@ -144,6 +144,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c2af99f3)(void*);
     void* (*hs_method_599360ae)(void*);
     void* (*hs_method_bd1b5798)(void*);
+    void* (*hs_method_02479b22)(void*, void*);
     void* (*hs_get_95ad971a)(void*);
     void* (*hs_method_1affb150)(void*);
     void* (*hs_method_dc06ac08)(void*);
@@ -157,6 +158,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_034f40cc)(void*);
     void* (*hs_method_676e3683)(void*);
     void* (*hs_method_ce180ed6)(void*);
+    void* (*hs_method_baae67a0)(void*, void*);
     void* (*hs_get_c39301ae)(void*);
     void* (*hs_method_f3a54240)(void*);
     void* (*hs_method_0af22f0c)(void*);
@@ -170,6 +172,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_61c524ff)(void*);
     void* (*hs_method_096551f4)(void*);
     void* (*hs_method_40cc6723)(void*);
+    void* (*hs_method_9773b104)(void*, void*);
     void* (*hs_get_61b79bed)(void*);
     void* (*hs_method_bc8d498e)(void*);
     void* (*hs_method_e8dd6197)(void*);
@@ -183,6 +186,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_765f5514)(void*);
     void* (*hs_method_aec068c2)(void*);
     void* (*hs_method_0a4866d7)(void*);
+    void* (*hs_method_303f7397)(void*, void*);
     void* (*hs_get_2c81846b)(void*);
     void* (*hs_method_415ae0a3)(void*);
     void* (*hs_method_4d7e78b9)(void*);
@@ -196,6 +200,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f432e11b)(void*);
     void* (*hs_method_63e50a99)(void*);
     void* (*hs_method_01741467)(void*);
+    void* (*hs_method_082f3213)(void*, void*);
     void (*hs_destroy_563ce6a7)(void*);
     void* (*hs_create_c0e7d56e)(void*);
     void* (*hs_get_9362e19b)(void*);
@@ -225,6 +230,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_07a5f189)(void*);
     void* (*hs_method_e263d91e)(void*);
     void* (*hs_method_d79ce718)(void*);
+    void* (*hs_method_264b37e6)(void*, void*);
     void* (*hs_get_8976a809)(void*);
     void* (*hs_method_5e0d3e1e)(void*);
     void* (*hs_method_184e170b)(void*);
@@ -238,6 +244,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e8400401)(void*);
     void* (*hs_method_81bb2145)(void*);
     void* (*hs_method_eede2e6c)(void*);
+    void* (*hs_method_09a6292c)(void*, void*);
     void* (*hs_get_29e236be)(void*);
     void* (*hs_method_76f4e504)(void*);
     void* (*hs_method_585cfabe)(void*);
@@ -251,6 +258,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0d8b0820)(void*);
     void* (*hs_method_ee939745)(void*);
     void* (*hs_method_ad42dcd9)(void*);
+    void* (*hs_method_789b59b1)(void*, void*);
     void* (*hs_get_28b81e10)(void*);
     void* (*hs_method_5afa7015)(void*);
     void* (*hs_method_1ebb7d31)(void*);
@@ -264,6 +272,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0dfb36bb)(void*);
     void* (*hs_method_20ac216b)(void*);
     void* (*hs_method_023f4196)(void*);
+    void* (*hs_method_ae6997cf)(void*, void*);
     void* (*hs_get_ca6c6e13)(void*);
     void* (*hs_method_15a211e1)(void*);
     void* (*hs_method_e08f0f36)(void*);
@@ -277,6 +286,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_36d24630)(void*);
     void* (*hs_method_9643e97d)(void*);
     void* (*hs_method_ee7f174d)(void*);
+    void* (*hs_method_8e4884c0)(void*, void*);
     void* (*hs_get_feacd729)(void*);
     void* (*hs_method_7063a68f)(void*);
     void* (*hs_method_2dbf8b9f)(void*);
@@ -290,6 +300,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_839a599f)(void*);
     void* (*hs_method_a347d21a)(void*);
     void* (*hs_method_8379806d)(void*);
+    void* (*hs_method_11c8ac8e)(void*, void*);
     void* (*hs_get_11b07810)(void*);
     void* (*hs_method_bbf8119e)(void*);
     void* (*hs_method_6517082e)(void*);
@@ -303,6 +314,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3b263e72)(void*);
     void* (*hs_method_226d9711)(void*);
     void* (*hs_method_30225ea6)(void*);
+    void* (*hs_method_d81f5765)(void*, void*);
     void* (*hs_get_8f9cb4a3)(void*);
     void* (*hs_method_53ea1dd7)(void*);
     void* (*hs_method_5c4a81e6)(void*);
@@ -316,6 +328,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6f9767f9)(void*);
     void* (*hs_method_eb7b1332)(void*);
     void* (*hs_method_bacfac08)(void*);
+    void* (*hs_method_61d8bb78)(void*, void*);
     void (*hs_destroy_d78d5ca5)(void*);
     void* (*hs_create_c712b517)(void*);
     void* (*hs_get_46cb3777)(void*);
@@ -331,6 +344,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2b61f504)(void*);
     void* (*hs_method_99190696)(void*);
     void* (*hs_method_55aea1fd)(void*);
+    void* (*hs_method_c6b76329)(void*, void*);
     void (*hs_destroy_57af2362)(void*);
     void* (*hs_create_6bf9d163)(void*);
     void* (*hs_get_6347f156)(void*);
@@ -346,6 +360,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2d24a809)(void*);
     void* (*hs_method_ca689542)(void*);
     void* (*hs_method_4c297392)(void*);
+    void* (*hs_method_1ca8b5e6)(void*, void*);
     void* (*hs_get_86fb929e)(void*);
     void* (*hs_method_8763d225)(void*);
     void* (*hs_method_68b2ec68)(void*);
@@ -359,6 +374,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7657c4a8)(void*);
     void* (*hs_method_629a6b62)(void*);
     void* (*hs_method_3b542369)(void*);
+    void* (*hs_method_06404dae)(void*, void*);
     void* (*hs_get_58da2b8f)(void*);
     void* (*hs_method_fbc66274)(void*);
     void* (*hs_method_fe2bf2ba)(void*);
@@ -372,6 +388,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0d569cc4)(void*);
     void* (*hs_method_78d43b82)(void*);
     void* (*hs_method_27b49df6)(void*);
+    void* (*hs_method_95f325f2)(void*, void*);
     void* (*hs_get_505cce1a)(void*);
     void* (*hs_method_6cb41dce)(void*);
     void* (*hs_method_4f0b153a)(void*);
@@ -385,6 +402,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_567b1c42)(void*);
     void* (*hs_method_6e065726)(void*);
     void* (*hs_method_4b4aa595)(void*);
+    void* (*hs_method_5462f22b)(void*, void*);
     void* (*hs_get_0ffcbb86)(void*);
     void* (*hs_method_538137e1)(void*);
     void* (*hs_method_6366d30a)(void*);
@@ -398,6 +416,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_38ed37c3)(void*);
     void* (*hs_method_8e2fc3f7)(void*);
     void* (*hs_method_7d471dd8)(void*);
+    void* (*hs_method_dbe31556)(void*, void*);
     void* (*hs_get_7a9fa288)(void*);
     void* (*hs_method_bcd35416)(void*);
     void* (*hs_method_647ef185)(void*);
@@ -411,6 +430,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_30ddcfb8)(void*);
     void* (*hs_method_e6abb7e1)(void*);
     void* (*hs_method_8f7f6252)(void*);
+    void* (*hs_method_88d28d35)(void*, void*);
     void* (*hs_get_2d24e3ac)(void*);
     void* (*hs_method_0c2c8ccb)(void*);
     void* (*hs_method_95e3b461)(void*);
@@ -424,6 +444,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b2fd02b0)(void*);
     void* (*hs_method_8ed5ec9b)(void*);
     void* (*hs_method_b6c732d8)(void*);
+    void* (*hs_method_6b6a808e)(void*, void*);
     void* (*hs_get_161d2e92)(void*);
     void* (*hs_method_a417dfd9)(void*);
     void* (*hs_method_d6bc0b5b)(void*);
@@ -437,6 +458,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d1fe4092)(void*);
     void* (*hs_method_16cd8ee0)(void*);
     void* (*hs_method_608a8b33)(void*);
+    void* (*hs_method_39d49992)(void*, void*);
     void (*hs_destroy_781e4bf4)(void*);
     void* (*hs_create_568a3573)(void*);
     void* (*hs_get_73f929ec)(void*);
@@ -452,6 +474,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_48ff48db)(void*);
     void* (*hs_method_f3a706d3)(void*);
     void* (*hs_method_3de1cf91)(void*);
+    void* (*hs_method_57c26dbe)(void*, void*);
     void* (*hs_get_c0509c8c)(void*);
     void* (*hs_method_9b63ec0b)(void*);
     void* (*hs_method_0ba4e2d9)(void*);
@@ -465,6 +488,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1720ff1a)(void*);
     void* (*hs_method_834989ea)(void*);
     void* (*hs_method_7130b870)(void*);
+    void* (*hs_method_f38d9296)(void*, void*);
     void* (*hs_get_f3b219a1)(void*);
     void* (*hs_method_b00f9c9b)(void*);
     void* (*hs_method_e5f84dc0)(void*);
@@ -478,6 +502,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_36b8c264)(void*);
     void* (*hs_method_22097a48)(void*);
     void* (*hs_method_d396eeca)(void*);
+    void* (*hs_method_1a74373b)(void*, void*);
     void* (*hs_get_ff3d91ac)(void*);
     void* (*hs_method_4b7dc1bd)(void*);
     void* (*hs_method_87efa149)(void*);
@@ -491,6 +516,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_16ef9635)(void*);
     void* (*hs_method_a8c4188f)(void*);
     void* (*hs_method_d7261d7c)(void*);
+    void* (*hs_method_564ac800)(void*, void*);
     void* (*hs_get_d2357430)(void*);
     void* (*hs_method_8d48cde9)(void*);
     void* (*hs_method_96df5a52)(void*);
@@ -504,6 +530,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_853f39c1)(void*);
     void* (*hs_method_92fe93e1)(void*);
     void* (*hs_method_ccf3db73)(void*);
+    void* (*hs_method_537ae9d6)(void*, void*);
     void* (*hs_get_c3bc0420)(void*);
     void* (*hs_method_066a0e8d)(void*);
     void* (*hs_method_d490a93b)(void*);
@@ -517,6 +544,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c67a9b37)(void*);
     void* (*hs_method_d158152d)(void*);
     void* (*hs_method_da3bd1b4)(void*);
+    void* (*hs_method_54658568)(void*, void*);
     void* (*hs_get_0a3d5481)(void*);
     void* (*hs_method_2187948a)(void*);
     void* (*hs_method_96f44769)(void*);
@@ -530,6 +558,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f49d6b6c)(void*);
     void* (*hs_method_990252e1)(void*);
     void* (*hs_method_428eb2eb)(void*);
+    void* (*hs_method_24792d02)(void*, void*);
     void* (*hs_get_615711a2)(void*);
     void* (*hs_method_efe8e540)(void*);
     void* (*hs_method_d5395eb6)(void*);
@@ -543,6 +572,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3f450394)(void*);
     void* (*hs_method_17e66555)(void*);
     void* (*hs_method_490edd9a)(void*);
+    void* (*hs_method_6bbdca88)(void*, void*);
     void* (*hs_get_b7750068)(void*);
     void* (*hs_method_edf67537)(void*);
     void* (*hs_method_50724b03)(void*);
@@ -556,6 +586,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_bd6e3ff7)(void*);
     void* (*hs_method_0cf98e8a)(void*);
     void* (*hs_method_12a902e5)(void*);
+    void* (*hs_method_2643a855)(void*, void*);
     void (*hs_destroy_f32ed234)(void*);
     void* (*hs_create_adf7ee88)(void*);
     void* (*hs_get_42a6f5c4)(void*);
@@ -571,6 +602,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_72e7888c)(void*);
     void* (*hs_method_0cd5fce7)(void*);
     void* (*hs_method_5bdfbe8d)(void*);
+    void* (*hs_method_439b1bc6)(void*, void*);
     void* (*hs_get_a5d68bc3)(void*);
     void* (*hs_method_ed5906da)(void*);
     void* (*hs_method_6d14bc14)(void*);
@@ -584,6 +616,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_45c17232)(void*);
     void* (*hs_method_7a1bca7f)(void*);
     void* (*hs_method_e47ae7b5)(void*);
+    void* (*hs_method_30f8f406)(void*, void*);
     void* (*hs_get_f6930f70)(void*);
     void* (*hs_method_ad8424c1)(void*);
     void* (*hs_method_3058a09b)(void*);
@@ -597,6 +630,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_cfb07ee6)(void*);
     void* (*hs_method_982fea70)(void*);
     void* (*hs_method_7f05df34)(void*);
+    void* (*hs_method_636f3108)(void*, void*);
     void* (*hs_get_539f562f)(void*);
     void* (*hs_method_ecec115d)(void*);
     void* (*hs_method_541c5715)(void*);
@@ -610,6 +644,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_64489024)(void*);
     void* (*hs_method_5be7e3c6)(void*);
     void* (*hs_method_85594104)(void*);
+    void* (*hs_method_a37c4c1f)(void*, void*);
     void* (*hs_get_7d169d55)(void*);
     void* (*hs_method_5803d93f)(void*);
     void* (*hs_method_36c3b069)(void*);
@@ -623,6 +658,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8a519ce1)(void*);
     void* (*hs_method_3f4bd1d8)(void*);
     void* (*hs_method_cf5f9716)(void*);
+    void* (*hs_method_acefdb97)(void*, void*);
     void* (*hs_get_175eb592)(void*);
     void* (*hs_method_e7d9e7a9)(void*);
     void* (*hs_method_1bb04bad)(void*);
@@ -636,6 +672,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_23573baa)(void*);
     void* (*hs_method_a58fc2cb)(void*);
     void* (*hs_method_a9923638)(void*);
+    void* (*hs_method_4235be31)(void*, void*);
     void* (*hs_get_a425df56)(void*);
     void* (*hs_method_5c12d7c9)(void*);
     void* (*hs_method_faf83094)(void*);
@@ -649,6 +686,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1c4351bf)(void*);
     void* (*hs_method_ae6f498d)(void*);
     void* (*hs_method_755b5a1e)(void*);
+    void* (*hs_method_3bdfe114)(void*, void*);
     void* (*hs_get_9767c5a8)(void*);
     void* (*hs_method_9f443f3a)(void*);
     void* (*hs_method_8adedb93)(void*);
@@ -662,6 +700,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_4516d473)(void*);
     void* (*hs_method_f64847f3)(void*);
     void* (*hs_method_62df9ea6)(void*);
+    void* (*hs_method_277de672)(void*, void*);
     void* (*hs_get_a196a3dc)(void*);
     void* (*hs_method_d856b6d4)(void*);
     void* (*hs_method_f1a91a05)(void*);
@@ -675,6 +714,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3402b306)(void*);
     void* (*hs_method_edc33e19)(void*);
     void* (*hs_method_0b8aae49)(void*);
+    void* (*hs_method_29c46b8b)(void*, void*);
     void* (*hs_get_5667985a)(void*);
     void* (*hs_method_0d95577e)(void*);
     void* (*hs_method_708259e2)(void*);
@@ -688,6 +728,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_116f7b3e)(void*);
     void* (*hs_method_105f95fd)(void*);
     void* (*hs_method_b032207c)(void*);
+    void* (*hs_method_a93be3aa)(void*, void*);
     void* (*hs_get_4401c300)(void*);
     void* (*hs_method_6bd8f07a)(void*);
     void* (*hs_method_6ca2b70f)(void*);
@@ -701,6 +742,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3bc5064d)(void*);
     void* (*hs_method_1d7ed1f7)(void*);
     void* (*hs_method_35a7ee14)(void*);
+    void* (*hs_method_c7592f75)(void*, void*);
     void* (*hs_get_cc5b1c09)(void*);
     void* (*hs_method_e54d9307)(void*);
     void* (*hs_method_bbb3b9e1)(void*);
@@ -714,6 +756,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2a8dbf2d)(void*);
     void* (*hs_method_c4e9fdf9)(void*);
     void* (*hs_method_1ff18816)(void*);
+    void* (*hs_method_a97a81bf)(void*, void*);
     void (*hs_destroy_6755a7fe)(void*);
     void* (*hs_create_925db484)(void*);
     void* (*hs_get_cbabe6a4)(void*);
@@ -743,6 +786,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2a3f75ed)(void*);
     void* (*hs_method_04f016b5)(void*);
     void* (*hs_method_3f83a047)(void*);
+    void* (*hs_method_975a8a39)(void*, void*);
     void* (*hs_get_ae5d060d)(void*);
     void* (*hs_method_6e4231d9)(void*);
     void* (*hs_method_6ba73076)(void*);
@@ -756,6 +800,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_69f2cbe7)(void*);
     void* (*hs_method_9056892b)(void*);
     void* (*hs_method_2ea1fbdc)(void*);
+    void* (*hs_method_8bffe713)(void*, void*);
     void* (*hs_get_826b02de)(void*);
     void* (*hs_method_f1e13386)(void*);
     void* (*hs_method_93a820ca)(void*);
@@ -769,6 +814,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_411ef89f)(void*);
     void* (*hs_method_4f29b20c)(void*);
     void* (*hs_method_53d4c0b2)(void*);
+    void* (*hs_method_eeab5dbe)(void*, void*);
     void* (*hs_get_24398522)(void*);
     void* (*hs_method_4906202f)(void*);
     void* (*hs_method_112be5a8)(void*);
@@ -782,6 +828,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2d4ca324)(void*);
     void* (*hs_method_cd6dd4a3)(void*);
     void* (*hs_method_cd7ca45e)(void*);
+    void* (*hs_method_3fe90a4f)(void*, void*);
     void* (*hs_get_2f3c2242)(void*);
     void* (*hs_method_06bffaa0)(void*);
     void* (*hs_method_ee2e56a3)(void*);
@@ -795,6 +842,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_ddf4c81b)(void*);
     void* (*hs_method_2a80dcff)(void*);
     void* (*hs_method_1842a73d)(void*);
+    void* (*hs_method_d3881ff1)(void*, void*);
     void* (*hs_get_100b81a6)(void*);
     void* (*hs_method_28fce32f)(void*);
     void* (*hs_method_11379302)(void*);
@@ -808,6 +856,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8cc58f97)(void*);
     void* (*hs_method_c09508d5)(void*);
     void* (*hs_method_25e2358d)(void*);
+    void* (*hs_method_3ca95511)(void*, void*);
     void* (*hs_get_4ec49055)(void*);
     void* (*hs_method_07cd5e6f)(void*);
     void* (*hs_method_674bf5be)(void*);
@@ -821,6 +870,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f8f388c8)(void*);
     void* (*hs_method_b6a2cff6)(void*);
     void* (*hs_method_a4dd87d5)(void*);
+    void* (*hs_method_dda207ad)(void*, void*);
     void* (*hs_get_a6242289)(void*);
     void* (*hs_method_5dcda339)(void*);
     void* (*hs_method_70254bf5)(void*);
@@ -834,6 +884,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c58c217c)(void*);
     void* (*hs_method_7bdff9a7)(void*);
     void* (*hs_method_a3dda307)(void*);
+    void* (*hs_method_e3c7d604)(void*, void*);
     void* (*hs_get_67397d89)(void*);
     void* (*hs_method_9b6cbcd8)(void*);
     void* (*hs_method_0bec7f39)(void*);
@@ -847,6 +898,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_5da64402)(void*);
     void* (*hs_method_913b6d3b)(void*);
     void* (*hs_method_ce09451f)(void*);
+    void* (*hs_method_631e4948)(void*, void*);
     void* (*hs_get_82131320)(void*);
     void* (*hs_method_0d47d23e)(void*);
     void* (*hs_method_da2b07dc)(void*);
@@ -860,6 +912,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_aefce0af)(void*);
     void* (*hs_method_2a766c84)(void*);
     void* (*hs_method_9ccb2bdc)(void*);
+    void* (*hs_method_758aa00f)(void*, void*);
     void* (*hs_get_bcaad8d1)(void*);
     void* (*hs_method_f7916c2b)(void*);
     void* (*hs_method_067542f0)(void*);
@@ -873,6 +926,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_11fe1e2a)(void*);
     void* (*hs_method_e4264912)(void*);
     void* (*hs_method_b8d4d6b9)(void*);
+    void* (*hs_method_cf5a7029)(void*, void*);
     void* (*hs_get_7209e901)(void*);
     void* (*hs_method_803a8011)(void*);
     void* (*hs_method_f47e4764)(void*);
@@ -886,6 +940,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_ec2e0e1f)(void*);
     void* (*hs_method_0c57e735)(void*);
     void* (*hs_method_e3efdcce)(void*);
+    void* (*hs_method_78d00527)(void*, void*);
     void* (*hs_get_9ad9f14b)(void*);
     void* (*hs_method_112de692)(void*);
     void* (*hs_method_39d09df9)(void*);
@@ -899,6 +954,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9df9733f)(void*);
     void* (*hs_method_7b1603a3)(void*);
     void* (*hs_method_8d2fe0a2)(void*);
+    void* (*hs_method_ca7f27fe)(void*, void*);
     void* (*hs_get_6783d172)(void*);
     void* (*hs_method_88dffa8f)(void*);
     void* (*hs_method_bcc55a84)(void*);
@@ -912,6 +968,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_23f68d34)(void*);
     void* (*hs_method_35bd0a28)(void*);
     void* (*hs_method_5d8b3a6d)(void*);
+    void* (*hs_method_bb0fb00e)(void*, void*);
     void* (*hs_get_ae0d82f2)(void*);
     void* (*hs_method_41eaae04)(void*);
     void* (*hs_method_2051c929)(void*);
@@ -925,6 +982,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_813b06d6)(void*);
     void* (*hs_method_bb86b12c)(void*);
     void* (*hs_method_63d32493)(void*);
+    void* (*hs_method_c4f76df4)(void*, void*);
     void* (*hs_get_6abb2f93)(void*);
     void* (*hs_method_91091146)(void*);
     void* (*hs_method_97fe47ca)(void*);
@@ -938,6 +996,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8d2b1a97)(void*);
     void* (*hs_method_2be62d50)(void*);
     void* (*hs_method_df49b41f)(void*);
+    void* (*hs_method_63e2a526)(void*, void*);
     void* (*hs_get_42045e72)(void*);
     void* (*hs_method_a87c3647)(void*);
     void* (*hs_method_22803062)(void*);
@@ -951,6 +1010,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_dbf3ea50)(void*);
     void* (*hs_method_c1615564)(void*);
     void* (*hs_method_a52c2b1a)(void*);
+    void* (*hs_method_a6ed32d8)(void*, void*);
     void (*hs_destroy_7ef0b05f)(void*);
     void* (*hs_create_35a13bbf)(void*);
     void* (*hs_get_8e09d102)(void*);
@@ -966,6 +1026,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b86962d1)(void*);
     void* (*hs_method_90bd7d57)(void*);
     void* (*hs_method_e4f173d6)(void*);
+    void* (*hs_method_3e380369)(void*, void*);
     void* (*hs_get_8ccbbd3f)(void*);
     void* (*hs_method_43bb2870)(void*);
     void* (*hs_method_0744c515)(void*);
@@ -979,6 +1040,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_5df1792d)(void*);
     void* (*hs_method_659f2660)(void*);
     void* (*hs_method_de9ac1c7)(void*);
+    void* (*hs_method_08440692)(void*, void*);
     void* (*hs_get_1a9181d5)(void*);
     void* (*hs_method_81f35d38)(void*);
     void* (*hs_method_81a9eb55)(void*);
@@ -992,6 +1054,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7e84c50e)(void*);
     void* (*hs_method_23af0fb6)(void*);
     void* (*hs_method_877b7c57)(void*);
+    void* (*hs_method_16011fa9)(void*, void*);
     void* (*hs_get_56ecd6ea)(void*);
     void* (*hs_method_f4b40598)(void*);
     void* (*hs_method_2f18cb62)(void*);
@@ -1005,6 +1068,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0c367f68)(void*);
     void* (*hs_method_74a5f854)(void*);
     void* (*hs_method_81d09a09)(void*);
+    void* (*hs_method_cad4c6c2)(void*, void*);
     void* (*hs_get_b6898bd3)(void*);
     void* (*hs_method_0af6fc48)(void*);
     void* (*hs_method_fc3fc3b9)(void*);
@@ -1018,6 +1082,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e2a58f46)(void*);
     void* (*hs_method_031d7acf)(void*);
     void* (*hs_method_460d1549)(void*);
+    void* (*hs_method_2b6e2767)(void*, void*);
     void* (*hs_get_f93bd749)(void*);
     void* (*hs_method_22c4f8e2)(void*);
     void* (*hs_method_dc6a6434)(void*);
@@ -1031,6 +1096,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a6303241)(void*);
     void* (*hs_method_8c98a415)(void*);
     void* (*hs_method_106b73ad)(void*);
+    void* (*hs_method_6671bb9d)(void*, void*);
     void* (*hs_get_b46ff30b)(void*);
     void* (*hs_method_4467dc73)(void*);
     void* (*hs_method_4af25716)(void*);
@@ -1044,6 +1110,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d90ebf88)(void*);
     void* (*hs_method_a8f3497d)(void*);
     void* (*hs_method_d1e86bd8)(void*);
+    void* (*hs_method_41beb2be)(void*, void*);
     void* (*hs_get_82968bc2)(void*);
     void* (*hs_method_1c8c8960)(void*);
     void* (*hs_method_327624ed)(void*);
@@ -1057,6 +1124,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a791a4d6)(void*);
     void* (*hs_method_7f6e6f0f)(void*);
     void* (*hs_method_d8e6bec5)(void*);
+    void* (*hs_method_b96d32b5)(void*, void*);
     void* (*hs_get_7a0b96e6)(void*);
     void* (*hs_method_688127ae)(void*);
     void* (*hs_method_6a8b31e3)(void*);
@@ -1070,6 +1138,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3cda6e68)(void*);
     void* (*hs_method_2697fdd4)(void*);
     void* (*hs_method_dd43d0fa)(void*);
+    void* (*hs_method_24d6595e)(void*, void*);
     void* (*hs_get_958c09cc)(void*);
     void* (*hs_method_9c8e1f19)(void*);
     void* (*hs_method_565cf1d1)(void*);
@@ -1083,6 +1152,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_741e81d8)(void*);
     void* (*hs_method_eaf9f5b9)(void*);
     void* (*hs_method_828cf741)(void*);
+    void* (*hs_method_a9b3b567)(void*, void*);
     void (*hs_destroy_aa0b6097)(void*);
     void* (*hs_create_cf812198)(void*);
     void* (*hs_get_745fe953)(void*);
@@ -1098,6 +1168,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8b0a143c)(void*);
     void* (*hs_method_6aafda47)(void*);
     void* (*hs_method_28f9826f)(void*);
+    void* (*hs_method_fe888a25)(void*, void*);
     void* (*hs_get_661c399c)(void*);
     void* (*hs_method_c91ae82c)(void*);
     void* (*hs_method_e20e9c5f)(void*);
@@ -1111,6 +1182,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_34ad796b)(void*);
     void* (*hs_method_8ecfd32f)(void*);
     void* (*hs_method_3a987da3)(void*);
+    void* (*hs_method_83bb1361)(void*, void*);
     void* (*hs_get_cc476a9e)(void*);
     void* (*hs_method_c2d3c600)(void*);
     void* (*hs_method_49a333bf)(void*);
@@ -1124,6 +1196,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_31a41222)(void*);
     void* (*hs_method_63712149)(void*);
     void* (*hs_method_e7ea51ff)(void*);
+    void* (*hs_method_e0cf32a5)(void*, void*);
     void* (*hs_get_ce124628)(void*);
     void* (*hs_method_540cf38d)(void*);
     void* (*hs_method_417af0d9)(void*);
@@ -1137,6 +1210,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_85bddf16)(void*);
     void* (*hs_method_e2a73dec)(void*);
     void* (*hs_method_357a8829)(void*);
+    void* (*hs_method_613bc96b)(void*, void*);
     void* (*hs_get_e81739fc)(void*);
     void* (*hs_method_e27a518a)(void*);
     void* (*hs_method_d5241994)(void*);
@@ -1150,6 +1224,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_034e59fc)(void*);
     void* (*hs_method_d4dd1c48)(void*);
     void* (*hs_method_4b1388fa)(void*);
+    void* (*hs_method_9e05113e)(void*, void*);
     void* (*hs_get_cb4ccf4b)(void*);
     void* (*hs_method_8a866797)(void*);
     void* (*hs_method_26d67d8c)(void*);
@@ -1163,6 +1238,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_efcfa7a7)(void*);
     void* (*hs_method_b464e895)(void*);
     void* (*hs_method_f2f9cb0c)(void*);
+    void* (*hs_method_f2f73e9c)(void*, void*);
     void* (*hs_get_7a961569)(void*);
     void* (*hs_method_2ec216f1)(void*);
     void* (*hs_method_1e097d72)(void*);
@@ -1176,6 +1252,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b1c46f15)(void*);
     void* (*hs_method_074435db)(void*);
     void* (*hs_method_29b57f19)(void*);
+    void* (*hs_method_21a71acd)(void*, void*);
     void* (*hs_get_c8acfabf)(void*);
     void* (*hs_method_88499c61)(void*);
     void* (*hs_method_424b30d4)(void*);
@@ -1189,6 +1266,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2e16556a)(void*);
     void* (*hs_method_e57ee63c)(void*);
     void* (*hs_method_df74b926)(void*);
+    void* (*hs_method_741a16d6)(void*, void*);
     void* (*hs_get_fd835458)(void*);
     void* (*hs_method_c6751ac1)(void*);
     void* (*hs_method_63a6c23c)(void*);
@@ -1202,6 +1280,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_346d055e)(void*);
     void* (*hs_method_a8d87b6d)(void*);
     void* (*hs_method_1d36b308)(void*);
+    void* (*hs_method_0f299c7b)(void*, void*);
     void (*hs_destroy_63be61d6)(void*);
     void* (*hs_create_d1b32721)(void*);
     void* (*hs_get_4e33105a)(void*);
@@ -1217,6 +1296,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e7e6f3ed)(void*);
     void* (*hs_method_86228093)(void*);
     void* (*hs_method_743291d2)(void*);
+    void* (*hs_method_2412081c)(void*, void*);
     void* (*hs_get_34b7635e)(void*);
     void* (*hs_method_f98fda24)(void*);
     void* (*hs_method_e91b506f)(void*);
@@ -1230,6 +1310,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_dfb77d80)(void*);
     void* (*hs_method_58054968)(void*);
     void* (*hs_method_95040899)(void*);
+    void* (*hs_method_650134d2)(void*, void*);
     void* (*hs_get_a0c75684)(void*);
     void* (*hs_method_43476df2)(void*);
     void* (*hs_method_7747bf6a)(void*);
@@ -1243,6 +1324,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_cb6a0ad9)(void*);
     void* (*hs_method_a941afdd)(void*);
     void* (*hs_method_4c258cb3)(void*);
+    void* (*hs_method_62f6b82a)(void*, void*);
     void* (*hs_get_e24dcfb6)(void*);
     void* (*hs_method_06098a40)(void*);
     void* (*hs_method_c316b6da)(void*);
@@ -1256,6 +1338,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e8cf426e)(void*);
     void* (*hs_method_7d48e1d2)(void*);
     void* (*hs_method_fa9b1496)(void*);
+    void* (*hs_method_4bf4696e)(void*, void*);
     void* (*hs_get_2eca2a32)(void*);
     void* (*hs_method_906b294b)(void*);
     void* (*hs_method_2f58f512)(void*);
@@ -1269,6 +1352,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a35d2348)(void*);
     void* (*hs_method_35c0ba00)(void*);
     void* (*hs_method_6618b048)(void*);
+    void* (*hs_method_bbcee391)(void*, void*);
     void* (*hs_get_c5c80156)(void*);
     void* (*hs_method_49d86ba3)(void*);
     void* (*hs_method_b4a3e9f4)(void*);
@@ -1282,6 +1366,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7c8cc3c3)(void*);
     void* (*hs_method_8b11b4ae)(void*);
     void* (*hs_method_3d97709a)(void*);
+    void* (*hs_method_e0516dc3)(void*, void*);
     void* (*hs_get_21c2ee41)(void*);
     void* (*hs_method_130dd058)(void*);
     void* (*hs_method_a46184bc)(void*);
@@ -1295,6 +1380,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_42c0f223)(void*);
     void* (*hs_method_bc08a7ff)(void*);
     void* (*hs_method_bc94c402)(void*);
+    void* (*hs_method_3bc095a3)(void*, void*);
     void* (*hs_get_10562d7a)(void*);
     void* (*hs_method_03fba2ec)(void*);
     void* (*hs_method_485ec607)(void*);
@@ -1308,6 +1394,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9d6e30a2)(void*);
     void* (*hs_method_6a3abb6a)(void*);
     void* (*hs_method_beb10c6b)(void*);
+    void* (*hs_method_a55367ca)(void*, void*);
     void* (*hs_get_187e81bc)(void*);
     void* (*hs_method_c828c013)(void*);
     void* (*hs_method_8befe64f)(void*);
@@ -1321,6 +1408,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_607c6113)(void*);
     void* (*hs_method_b4b29160)(void*);
     void* (*hs_method_48d08c33)(void*);
+    void* (*hs_method_b9f8be50)(void*, void*);
     void* (*hs_get_d5dbded0)(void*);
     void* (*hs_method_26d728de)(void*);
     void* (*hs_method_953e2a6e)(void*);
@@ -1334,6 +1422,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b519485c)(void*);
     void* (*hs_method_b58fed8c)(void*);
     void* (*hs_method_95b04516)(void*);
+    void* (*hs_method_b6cb7006)(void*, void*);
     void* (*hs_get_e453a587)(void*);
     void* (*hs_method_d1251596)(void*);
     void* (*hs_method_f26d1d8b)(void*);
@@ -1347,6 +1436,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_727fc502)(void*);
     void* (*hs_method_500b39f6)(void*);
     void* (*hs_method_c8e48322)(void*);
+    void* (*hs_method_ae39ebca)(void*, void*);
     void* (*hs_get_63a605f6)(void*);
     void* (*hs_method_e83f8206)(void*);
     void* (*hs_method_dcf50c0d)(void*);
@@ -1360,6 +1450,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_690cdb33)(void*);
     void* (*hs_method_802aa82b)(void*);
     void* (*hs_method_bebb8b44)(void*);
+    void* (*hs_method_b6344399)(void*, void*);
     void* (*hs_get_298df712)(void*);
     void* (*hs_method_ca23a0d7)(void*);
     void* (*hs_method_c5b8c18c)(void*);
@@ -1373,6 +1464,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_24407513)(void*);
     void* (*hs_method_916ecaca)(void*);
     void* (*hs_method_a5b30bcc)(void*);
+    void* (*hs_method_c7790a78)(void*, void*);
     void* (*hs_get_a7272af4)(void*);
     void* (*hs_method_b4f20b74)(void*);
     void* (*hs_method_47f879f5)(void*);
@@ -1386,6 +1478,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_754287b4)(void*);
     void* (*hs_method_42051909)(void*);
     void* (*hs_method_fbbd92a0)(void*);
+    void* (*hs_method_0f45dd14)(void*, void*);
     void* (*hs_get_f47e5989)(void*);
     void* (*hs_method_9a992878)(void*);
     void* (*hs_method_7e5c5988)(void*);
@@ -1399,6 +1492,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_13ecb7e8)(void*);
     void* (*hs_method_8e61af1f)(void*);
     void* (*hs_method_f48662ad)(void*);
+    void* (*hs_method_80ba62e3)(void*, void*);
     void (*hs_destroy_9b5637af)(void*);
     void* (*hs_create_e2355324)(void*);
     void* (*hs_get_f07caabf)(void*);
@@ -1414,6 +1508,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9c518ffe)(void*);
     void* (*hs_method_b2ee7ff0)(void*);
     void* (*hs_method_1223c495)(void*);
+    void* (*hs_method_31b687bf)(void*, void*);
     void* (*hs_get_58bfaca9)(void*);
     void* (*hs_method_a21e7b48)(void*);
     void* (*hs_method_38688f91)(void*);
@@ -1427,6 +1522,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1251d150)(void*);
     void* (*hs_method_24ba5c65)(void*);
     void* (*hs_method_97f92d17)(void*);
+    void* (*hs_method_ec3c0d9d)(void*, void*);
     void* (*hs_get_9668eea3)(void*);
     void* (*hs_method_988dc0be)(void*);
     void* (*hs_method_28ba0195)(void*);
@@ -1440,6 +1536,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c5b74d65)(void*);
     void* (*hs_method_cffeefe7)(void*);
     void* (*hs_method_6ae2f63d)(void*);
+    void* (*hs_method_a43bef23)(void*, void*);
     void* (*hs_get_622d7574)(void*);
     void* (*hs_method_8cc62c59)(void*);
     void* (*hs_method_545365f5)(void*);
@@ -1453,6 +1550,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d1b0ea91)(void*);
     void* (*hs_method_7853515c)(void*);
     void* (*hs_method_74afb8bc)(void*);
+    void* (*hs_method_7fbb0b77)(void*, void*);
     void* (*hs_get_b935046b)(void*);
     void* (*hs_method_c69b89ef)(void*);
     void* (*hs_method_af52b216)(void*);
@@ -1466,6 +1564,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d02dec0b)(void*);
     void* (*hs_method_d4678fe0)(void*);
     void* (*hs_method_ddccae14)(void*);
+    void* (*hs_method_0eafdd67)(void*, void*);
     void* (*hs_get_5933dbf6)(void*);
     void* (*hs_method_c1c274fb)(void*);
     void* (*hs_method_7651c7ca)(void*);
@@ -1479,6 +1578,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_078cc815)(void*);
     void* (*hs_method_c949fdb5)(void*);
     void* (*hs_method_0b9808d1)(void*);
+    void* (*hs_method_7471e817)(void*, void*);
     void* (*hs_get_7d659238)(void*);
     void* (*hs_method_297d9714)(void*);
     void* (*hs_method_71079444)(void*);
@@ -1492,6 +1592,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_64fb63ba)(void*);
     void* (*hs_method_688ddd3a)(void*);
     void* (*hs_method_777d3821)(void*);
+    void* (*hs_method_dbef1cd1)(void*, void*);
     void* (*hs_get_00712d3a)(void*);
     void* (*hs_method_f409db2b)(void*);
     void* (*hs_method_c8276406)(void*);
@@ -1505,6 +1606,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1f01b9c2)(void*);
     void* (*hs_method_65f8625c)(void*);
     void* (*hs_method_f5626ea6)(void*);
+    void* (*hs_method_7c29fc8d)(void*, void*);
     void* (*hs_get_cacc8bf8)(void*);
     void* (*hs_method_fae31fef)(void*);
     void* (*hs_method_c5763602)(void*);
@@ -1518,6 +1620,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_248f911d)(void*);
     void* (*hs_method_fd2c6829)(void*);
     void* (*hs_method_f6d0c948)(void*);
+    void* (*hs_method_d78897a4)(void*, void*);
     void* (*hs_get_1cf6aa8a)(void*);
     void* (*hs_method_cee384cf)(void*);
     void* (*hs_method_d193e007)(void*);
@@ -1531,6 +1634,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1f1e6a67)(void*);
     void* (*hs_method_c65440bf)(void*);
     void* (*hs_method_fcfa3776)(void*);
+    void* (*hs_method_23d560d5)(void*, void*);
     void* (*hs_get_d0dd454d)(void*);
     void* (*hs_method_06916959)(void*);
     void* (*hs_method_db678896)(void*);
@@ -1544,6 +1648,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a51d53e8)(void*);
     void* (*hs_method_cbb8ad6a)(void*);
     void* (*hs_method_2f4da82e)(void*);
+    void* (*hs_method_449a45fa)(void*, void*);
     void* (*hs_get_76a26102)(void*);
     void* (*hs_method_4035b2fa)(void*);
     void* (*hs_method_836cf0b4)(void*);
@@ -1557,6 +1662,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b9e17145)(void*);
     void* (*hs_method_dc99a04e)(void*);
     void* (*hs_method_8053f5fd)(void*);
+    void* (*hs_method_61d81d74)(void*, void*);
     void* (*hs_get_a680020b)(void*);
     void* (*hs_method_2df7ee42)(void*);
     void* (*hs_method_2cfa49d6)(void*);
@@ -1570,6 +1676,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b7fb5acb)(void*);
     void* (*hs_method_671d7fd1)(void*);
     void* (*hs_method_680cf407)(void*);
+    void* (*hs_method_13a69512)(void*, void*);
     void (*hs_destroy_031465ff)(void*);
     void* (*hs_create_da530921)(void*);
     void* (*hs_get_1b7b75e1)(void*);
@@ -1585,6 +1692,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b6bec3ce)(void*);
     void* (*hs_method_e89b4b36)(void*);
     void* (*hs_method_efc80e1e)(void*);
+    void* (*hs_method_b12ed80f)(void*, void*);
     void* (*hs_get_52b2f140)(void*);
     void* (*hs_method_9a799c28)(void*);
     void* (*hs_method_93caa398)(void*);
@@ -1598,6 +1706,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d9722d05)(void*);
     void* (*hs_method_de125ec8)(void*);
     void* (*hs_method_8b68bbba)(void*);
+    void* (*hs_method_48e1c423)(void*, void*);
     void (*hs_destroy_8d908b30)(void*);
     void* (*hs_create_ba1ac832)(void*);
     void* (*hs_get_7fa10893)(void*);
@@ -1643,6 +1752,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9cdd4bc5)(void*);
     void* (*hs_method_702ac0f7)(void*);
     void* (*hs_method_d471e1d8)(void*);
+    void* (*hs_method_671e6e5d)(void*, void*);
     void* (*hs_get_4b3b50de)(void*);
     void* (*hs_method_e5995983)(void*);
     void* (*hs_method_fabcf03b)(void*);
@@ -1656,6 +1766,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f7eb0321)(void*);
     void* (*hs_method_276b3920)(void*);
     void* (*hs_method_bd39519a)(void*);
+    void* (*hs_method_b4960e46)(void*, void*);
     void* (*hs_get_fbaa9371)(void*);
     void* (*hs_method_d719741a)(void*);
     void* (*hs_method_83df4491)(void*);
@@ -1669,6 +1780,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c5157a23)(void*);
     void* (*hs_method_761563e9)(void*);
     void* (*hs_method_b354a44a)(void*);
+    void* (*hs_method_7fe3ad3f)(void*, void*);
     void* (*hs_get_707cd925)(void*);
     void* (*hs_method_379ed806)(void*);
     void* (*hs_method_18e1c09d)(void*);
@@ -1682,6 +1794,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8525b962)(void*);
     void* (*hs_method_418224f2)(void*);
     void* (*hs_method_ac99768c)(void*);
+    void* (*hs_method_f64a236d)(void*, void*);
     void* (*hs_get_b48f93f7)(void*);
     void* (*hs_method_8d493f27)(void*);
     void* (*hs_method_a0005172)(void*);
@@ -1695,6 +1808,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_158c98be)(void*);
     void* (*hs_method_491b6b9e)(void*);
     void* (*hs_method_9e5d9858)(void*);
+    void* (*hs_method_e412ff1a)(void*, void*);
     void* (*hs_get_da8a0611)(void*);
     void* (*hs_method_284d10b7)(void*);
     void* (*hs_method_bb3c02d8)(void*);
@@ -1708,6 +1822,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b36af525)(void*);
     void* (*hs_method_fbb78680)(void*);
     void* (*hs_method_c3627595)(void*);
+    void* (*hs_method_230b9fbf)(void*, void*);
     void* (*hs_get_a239e0b2)(void*);
     void* (*hs_method_e42838af)(void*);
     void* (*hs_method_523b9000)(void*);
@@ -1721,6 +1836,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_cbfd189f)(void*);
     void* (*hs_method_f08a7e1c)(void*);
     void* (*hs_method_b56332c3)(void*);
+    void* (*hs_method_d2ddff3d)(void*, void*);
     void* (*hs_get_0a03b335)(void*);
     void* (*hs_method_697c99aa)(void*);
     void* (*hs_method_3eeefdd3)(void*);
@@ -1734,6 +1850,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_68ae4faf)(void*);
     void* (*hs_method_1e07c625)(void*);
     void* (*hs_method_4c09d555)(void*);
+    void* (*hs_method_d2a71105)(void*, void*);
     void* (*hs_get_1a07efc4)(void*);
     void* (*hs_method_350170c3)(void*);
     void* (*hs_method_fbc8a189)(void*);
@@ -1747,6 +1864,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_09ca8dd0)(void*);
     void* (*hs_method_76d2e961)(void*);
     void* (*hs_method_30af60d4)(void*);
+    void* (*hs_method_1a09269c)(void*, void*);
     void* (*hs_get_4bb69d65)(void*);
     void* (*hs_method_fc06d14f)(void*);
     void* (*hs_method_10e907eb)(void*);
@@ -1760,6 +1878,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_bc009410)(void*);
     void* (*hs_method_b4b2925f)(void*);
     void* (*hs_method_6b9f3348)(void*);
+    void* (*hs_method_e38a515d)(void*, void*);
     void* (*hs_get_8daa9d51)(void*);
     void* (*hs_method_05e6af9a)(void*);
     void* (*hs_method_574d85d5)(void*);
@@ -1773,6 +1892,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_720f1dea)(void*);
     void* (*hs_method_b1b9d62a)(void*);
     void* (*hs_method_75598584)(void*);
+    void* (*hs_method_d8913e8b)(void*, void*);
     void* (*hs_get_5a07e4be)(void*);
     void* (*hs_method_03a4dc08)(void*);
     void* (*hs_method_c8a0445b)(void*);
@@ -1786,6 +1906,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c2e144f2)(void*);
     void* (*hs_method_33f3b606)(void*);
     void* (*hs_method_286ee0a2)(void*);
+    void* (*hs_method_d934533e)(void*, void*);
     void (*hs_destroy_07e7e35f)(void*);
     void* (*hs_create_988bb92a)(void*);
     void* (*hs_get_99ec800f)(void*);
@@ -1801,6 +1922,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c6e8f4f4)(void*);
     void* (*hs_method_9672ab5c)(void*);
     void* (*hs_method_6dcefb16)(void*);
+    void* (*hs_method_2bbab20b)(void*, void*);
     void* (*hs_get_709f353f)(void*);
     void* (*hs_method_fabcab28)(void*);
     void* (*hs_method_15594652)(void*);
@@ -1814,6 +1936,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_bb1456c5)(void*);
     void* (*hs_method_5fa15cb8)(void*);
     void* (*hs_method_a5455fb8)(void*);
+    void* (*hs_method_4f74451e)(void*, void*);
     void* (*hs_get_c4ce11cc)(void*);
     void* (*hs_method_e0cfdebb)(void*);
     void* (*hs_method_38c52bfb)(void*);
@@ -1827,6 +1950,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_69886e9a)(void*);
     void* (*hs_method_9c1d841a)(void*);
     void* (*hs_method_472ab050)(void*);
+    void* (*hs_method_256e77c2)(void*, void*);
     void* (*hs_get_58ff5354)(void*);
     void* (*hs_method_bd34ac4f)(void*);
     void* (*hs_method_dea5b719)(void*);
@@ -1840,6 +1964,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_64e4dbfe)(void*);
     void* (*hs_method_b9236776)(void*);
     void* (*hs_method_188f1567)(void*);
+    void* (*hs_method_fe8cef35)(void*, void*);
     void* (*hs_get_404e3a51)(void*);
     void* (*hs_method_e2ebcdfd)(void*);
     void* (*hs_method_ce4ea8b2)(void*);
@@ -1853,6 +1978,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f9bb8859)(void*);
     void* (*hs_method_62bd0aea)(void*);
     void* (*hs_method_5857fcb7)(void*);
+    void* (*hs_method_8663f125)(void*, void*);
     void* (*hs_get_149626cf)(void*);
     void* (*hs_method_cfa43da5)(void*);
     void* (*hs_method_e43fa39c)(void*);
@@ -1866,6 +1992,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c5c46a23)(void*);
     void* (*hs_method_181d2cad)(void*);
     void* (*hs_method_95c5ce7d)(void*);
+    void* (*hs_method_45cf16de)(void*, void*);
     void* (*hs_get_75592e79)(void*);
     void* (*hs_method_b3b010f3)(void*);
     void* (*hs_method_688b4ed4)(void*);
@@ -1879,6 +2006,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_82e64eae)(void*);
     void* (*hs_method_dce1a84e)(void*);
     void* (*hs_method_610f79e3)(void*);
+    void* (*hs_method_2a469ae5)(void*, void*);
     void* (*hs_get_1d1d93fb)(void*);
     void* (*hs_method_fd18c12e)(void*);
     void* (*hs_method_413384dd)(void*);
@@ -1892,6 +2020,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_87814769)(void*);
     void* (*hs_method_32f487ba)(void*);
     void* (*hs_method_7bc896ff)(void*);
+    void* (*hs_method_d60706b6)(void*, void*);
     void* (*hs_get_ff970500)(void*);
     void* (*hs_method_5d3c5450)(void*);
     void* (*hs_method_f1f3e857)(void*);
@@ -1905,6 +2034,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_865c097e)(void*);
     void* (*hs_method_3248a122)(void*);
     void* (*hs_method_5a683c3d)(void*);
+    void* (*hs_method_037284da)(void*, void*);
     void* (*hs_get_18e05857)(void*);
     void* (*hs_method_5433d277)(void*);
     void* (*hs_method_9c71f824)(void*);
@@ -1918,6 +2048,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_5941bad6)(void*);
     void* (*hs_method_424054ea)(void*);
     void* (*hs_method_06dc60b7)(void*);
+    void* (*hs_method_4de0f757)(void*, void*);
     void (*hs_destroy_8b9e84df)(void*);
     void* (*hs_create_27275eef)(void*);
     void* (*hs_get_d029faa9)(void*);
@@ -1947,6 +2078,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3452b328)(void*);
     void* (*hs_method_78084cf4)(void*);
     void* (*hs_method_247b1c6a)(void*);
+    void* (*hs_method_92f38d3c)(void*, void*);
     void* (*hs_get_7eb267ce)(void*);
     void* (*hs_method_585483b8)(void*);
     void* (*hs_method_a8d8bf42)(void*);
@@ -1960,6 +2092,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_8c000bfc)(void*);
     void* (*hs_method_f39db33a)(void*);
     void* (*hs_method_66a216ad)(void*);
+    void* (*hs_method_514aff9d)(void*, void*);
     void* (*hs_get_39089d97)(void*);
     void* (*hs_method_467c8f41)(void*);
     void* (*hs_method_7bbfb07a)(void*);
@@ -1973,6 +2106,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b88649c0)(void*);
     void* (*hs_method_1dbe2373)(void*);
     void* (*hs_method_7de7050f)(void*);
+    void* (*hs_method_e1249d41)(void*, void*);
     void (*hs_destroy_c8197551)(void*);
     void* (*hs_create_8258b924)(void*);
     void* (*hs_get_b383a19e)(void*);
@@ -2002,6 +2136,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_800aca94)(void*);
     void* (*hs_method_c3abeb76)(void*);
     void* (*hs_method_d0753048)(void*);
+    void* (*hs_method_558fdba5)(void*, void*);
     void* (*hs_get_1ef1fd50)(void*);
     void* (*hs_method_77587278)(void*);
     void* (*hs_method_e263a34d)(void*);
@@ -2015,6 +2150,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3f5d278e)(void*);
     void* (*hs_method_b1eeb0ac)(void*);
     void* (*hs_method_6e754daa)(void*);
+    void* (*hs_method_085ce8fa)(void*, void*);
     void* (*hs_get_13fd3b9e)(void*);
     void* (*hs_method_f9de482a)(void*);
     void* (*hs_method_626f1a19)(void*);
@@ -2028,6 +2164,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9d8009ff)(void*);
     void* (*hs_method_e9e15d65)(void*);
     void* (*hs_method_1e6722f9)(void*);
+    void* (*hs_method_b39c2b04)(void*, void*);
     void* (*hs_get_6c4fcb21)(void*);
     void* (*hs_method_46eef98e)(void*);
     void* (*hs_method_d946e944)(void*);
@@ -2041,6 +2178,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e3d35a1c)(void*);
     void* (*hs_method_08b52ee8)(void*);
     void* (*hs_method_369b6bd1)(void*);
+    void* (*hs_method_94ab459f)(void*, void*);
     void* (*hs_get_ab8819b5)(void*);
     void* (*hs_method_8fe304c3)(void*);
     void* (*hs_method_1d9c439e)(void*);
@@ -2054,6 +2192,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e8745cfc)(void*);
     void* (*hs_method_1707bff2)(void*);
     void* (*hs_method_da9e742b)(void*);
+    void* (*hs_method_24725036)(void*, void*);
     void* (*hs_get_96e582ed)(void*);
     void* (*hs_method_09d2c4e1)(void*);
     void* (*hs_method_1e2e3de9)(void*);
@@ -2067,6 +2206,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6bcceaba)(void*);
     void* (*hs_method_886964a4)(void*);
     void* (*hs_method_9ff3a65b)(void*);
+    void* (*hs_method_b79b225f)(void*, void*);
     void* (*hs_get_075b4065)(void*);
     void* (*hs_method_4690e487)(void*);
     void* (*hs_method_8391c6b1)(void*);
@@ -2080,6 +2220,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_30abf942)(void*);
     void* (*hs_method_1fa57622)(void*);
     void* (*hs_method_f90fb80f)(void*);
+    void* (*hs_method_b8b8c737)(void*, void*);
     void* (*hs_get_eb53e8af)(void*);
     void* (*hs_method_60aff261)(void*);
     void* (*hs_method_b1a7a5f3)(void*);
@@ -2093,6 +2234,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6103ff25)(void*);
     void* (*hs_method_40bc1d68)(void*);
     void* (*hs_method_bb0a68de)(void*);
+    void* (*hs_method_893ea364)(void*, void*);
     void* (*hs_get_3cfb6c6c)(void*);
     void* (*hs_method_7e05b261)(void*);
     void* (*hs_method_71f8bcc8)(void*);
@@ -2106,6 +2248,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9b6a6915)(void*);
     void* (*hs_method_303d81f4)(void*);
     void* (*hs_method_2b8d20d1)(void*);
+    void* (*hs_method_845852ee)(void*, void*);
     void (*hs_destroy_aab0cf0a)(void*);
     void* (*hs_create_002c9b8f)(void*);
     void* (*hs_get_922b5d10)(void*);
@@ -2121,6 +2264,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6edad6db)(void*);
     void* (*hs_method_354ff47f)(void*);
     void* (*hs_method_0061669a)(void*);
+    void* (*hs_method_7ab7c7ab)(void*, void*);
     void* (*hs_method_6611e613)(void*, void*);
     void* (*hs_get_077599c1)(void*);
     void* (*hs_method_a5857fd8)(void*);
@@ -2135,6 +2279,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f21c0d96)(void*);
     void* (*hs_method_fb5e1d83)(void*);
     void* (*hs_method_b1e07e2d)(void*);
+    void* (*hs_method_da098aa3)(void*, void*);
     void* (*hs_get_ee3249da)(void*);
     void* (*hs_method_cee8bd71)(void*);
     void* (*hs_method_23ed747f)(void*);
@@ -2148,6 +2293,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_721cb29e)(void*);
     void* (*hs_method_64f26669)(void*);
     void* (*hs_method_fd3d7935)(void*);
+    void* (*hs_method_c4dc7b61)(void*, void*);
     void* (*hs_get_b0db205a)(void*);
     void* (*hs_method_82325949)(void*);
     void* (*hs_method_b0684ffc)(void*);
@@ -2161,6 +2307,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6fa5b5d3)(void*);
     void* (*hs_method_e240fb2f)(void*);
     void* (*hs_method_354503b0)(void*);
+    void* (*hs_method_bdee7c37)(void*, void*);
     void* (*hs_get_24b405c2)(void*);
     void* (*hs_method_6c063faf)(void*);
     void* (*hs_method_89e2925a)(void*);
@@ -2174,6 +2321,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f6bd78f0)(void*);
     void* (*hs_method_88597aca)(void*);
     void* (*hs_method_da1158c1)(void*);
+    void* (*hs_method_8d2f1505)(void*, void*);
     void* (*hs_get_33a7587f)(void*);
     void* (*hs_method_0729bc63)(void*);
     void* (*hs_method_3d601268)(void*);
@@ -2187,6 +2335,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0ce9535a)(void*);
     void* (*hs_method_964f560e)(void*);
     void* (*hs_method_65fef167)(void*);
+    void* (*hs_method_c649837b)(void*, void*);
     void* (*hs_get_d81a4db0)(void*);
     void* (*hs_method_aeeb9296)(void*);
     void* (*hs_method_45b7afa9)(void*);
@@ -2200,6 +2349,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_41239c80)(void*);
     void* (*hs_method_cd9e76f0)(void*);
     void* (*hs_method_35b7e53b)(void*);
+    void* (*hs_method_8949d3e3)(void*, void*);
     void* (*hs_get_9e2c0385)(void*);
     void* (*hs_method_ed549e24)(void*);
     void* (*hs_method_e0a76f16)(void*);
@@ -2213,6 +2363,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_14065e31)(void*);
     void* (*hs_method_12ca3f7b)(void*);
     void* (*hs_method_3dbe4903)(void*);
+    void* (*hs_method_81e94141)(void*, void*);
     void* (*hs_get_e526f6d4)(void*);
     void* (*hs_method_1b85e226)(void*);
     void* (*hs_method_8d01ef29)(void*);
@@ -2226,6 +2377,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_fd58ad49)(void*);
     void* (*hs_method_31ed5de7)(void*);
     void* (*hs_method_cde52fbc)(void*);
+    void* (*hs_method_0c8ec460)(void*, void*);
     void* (*hs_get_3dfc42b0)(void*);
     void* (*hs_method_970d1228)(void*);
     void* (*hs_method_0b2e05ce)(void*);
@@ -2239,6 +2391,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_33944f46)(void*);
     void* (*hs_method_09ddf6dd)(void*);
     void* (*hs_method_1837328f)(void*);
+    void* (*hs_method_f92788e6)(void*, void*);
     void* (*hs_get_b80a3c45)(void*);
     void* (*hs_method_439ccd18)(void*);
     void* (*hs_method_9fa6087e)(void*);
@@ -2252,6 +2405,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_5359c3c2)(void*);
     void* (*hs_method_b24b4293)(void*);
     void* (*hs_method_d5a0f8a5)(void*);
+    void* (*hs_method_b6f0d28f)(void*, void*);
     void* (*hs_get_947656c0)(void*);
     void* (*hs_method_40b28637)(void*);
     void* (*hs_method_4b4f6b38)(void*);
@@ -2265,6 +2419,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_6a32b851)(void*);
     void* (*hs_method_01bb78a4)(void*);
     void* (*hs_method_c7ad5442)(void*);
+    void* (*hs_method_aca9a0f3)(void*, void*);
     void* (*hs_get_246f806b)(void*);
     void* (*hs_method_06800c0a)(void*);
     void* (*hs_method_1ce84c59)(void*);
@@ -2278,6 +2433,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_40105f7a)(void*);
     void* (*hs_method_2664a641)(void*);
     void* (*hs_method_fd92363e)(void*);
+    void* (*hs_method_2c979ce3)(void*, void*);
     void (*hs_destroy_7e4624ac)(void*);
     void* (*hs_create_26a4254b)(void*);
     void* (*hs_get_bf3d3526)(void*);
@@ -2296,6 +2452,7 @@ struct HosihikariBindingTableV1 {
     void (*hs_set_ref_f8cfb9e4)(void*, const char*, std::size_t);
     void* (*hs_method_8edfad34)(void*);
     void* (*hs_method_52937c63)(void*);
+    HosihikariStringView (*hs_method_1256f922)(void*, void*);
     void* (*hs_get_23fc071e)(void*);
     void* (*hs_method_ba80e46f)(void*);
     void* (*hs_method_09f4bacb)(void*);
@@ -2309,6 +2466,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_31844d68)(void*);
     void* (*hs_method_005b8dca)(void*);
     void* (*hs_method_09492b71)(void*);
+    void* (*hs_method_341a0c6b)(void*, void*);
     void* (*hs_get_5a69b84a)(void*);
     void* (*hs_method_a83aee9a)(void*);
     void* (*hs_method_97ccc35d)(void*);
@@ -2322,6 +2480,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d7b87a73)(void*);
     void* (*hs_method_7f079658)(void*);
     void* (*hs_method_a0b629c8)(void*);
+    void* (*hs_method_0510feb7)(void*, void*);
     void* (*hs_get_d95d6cab)(void*);
     void* (*hs_method_489f9ac0)(void*);
     void* (*hs_method_07741982)(void*);
@@ -2335,6 +2494,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a8522993)(void*);
     void* (*hs_method_8d36fdad)(void*);
     void* (*hs_method_ff3b2aa1)(void*);
+    void* (*hs_method_68b7a77a)(void*, void*);
     void* (*hs_get_01b1a3c7)(void*);
     void* (*hs_method_d0075d51)(void*);
     void* (*hs_method_89d907e7)(void*);
@@ -2348,6 +2508,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_33d3b64f)(void*);
     void* (*hs_method_d9e9411c)(void*);
     void* (*hs_method_4b05015b)(void*);
+    void* (*hs_method_ec13f5b3)(void*, void*);
     void* (*hs_get_c08d9506)(void*);
     void* (*hs_method_bb29200f)(void*);
     void* (*hs_method_958cbd7d)(void*);
@@ -2361,6 +2522,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c97dbdb6)(void*);
     void* (*hs_method_7b28e794)(void*);
     void* (*hs_method_938c4df2)(void*);
+    void* (*hs_method_ae4d1d4e)(void*, void*);
     void* (*hs_get_57bc5fa0)(void*);
     void* (*hs_method_373fde03)(void*);
     void* (*hs_method_6e4842a8)(void*);
@@ -2374,6 +2536,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d20e4b3e)(void*);
     void* (*hs_method_b4d8d9b1)(void*);
     void* (*hs_method_c044049f)(void*);
+    void* (*hs_method_d721f193)(void*, void*);
     void* (*hs_get_b6e54c0d)(void*);
     void* (*hs_method_46b941a5)(void*);
     void* (*hs_method_82381e8b)(void*);
@@ -2387,6 +2550,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f152fd53)(void*);
     void* (*hs_method_4d42b658)(void*);
     void* (*hs_method_a097722f)(void*);
+    void* (*hs_method_b865530d)(void*, void*);
     void* (*hs_get_913d174e)(void*);
     void* (*hs_method_0724ee6c)(void*);
     void* (*hs_method_11d5b2b6)(void*);
@@ -2400,6 +2564,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_dc736468)(void*);
     void* (*hs_method_69f374a9)(void*);
     void* (*hs_method_87fcec49)(void*);
+    void* (*hs_method_5fdc1040)(void*, void*);
     void* (*hs_get_86503f45)(void*);
     void* (*hs_method_cc09372c)(void*);
     void* (*hs_method_eb31acca)(void*);
@@ -2413,6 +2578,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_23d65f0b)(void*);
     void* (*hs_method_ee156a7c)(void*);
     void* (*hs_method_e978a6ab)(void*);
+    void* (*hs_method_b50950ac)(void*, void*);
     void (*hs_destroy_e42621cb)(void*);
     void* (*hs_create_e1958d05)(void*);
     void* (*hs_get_4a661a30)(void*);
@@ -2442,6 +2608,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_224d5639)(void*);
     void* (*hs_method_743c45dd)(void*);
     void* (*hs_method_7db6f037)(void*);
+    void* (*hs_method_9505c210)(void*, void*);
     void* (*hs_get_38ba2da4)(void*);
     void* (*hs_method_e9176049)(void*);
     void* (*hs_method_eca327fa)(void*);
@@ -2455,6 +2622,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_ef085e97)(void*);
     void* (*hs_method_bc4c1a8a)(void*);
     void* (*hs_method_7ed47ee6)(void*);
+    void* (*hs_method_d74aad80)(void*, void*);
     void* (*hs_get_8abfbe39)(void*);
     void* (*hs_method_76c5d62d)(void*);
     void* (*hs_method_98a7b876)(void*);
@@ -2468,6 +2636,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9e15076c)(void*);
     void* (*hs_method_8635cdf2)(void*);
     void* (*hs_method_42d6f7ed)(void*);
+    void* (*hs_method_b34fd24d)(void*, void*);
     void* (*hs_get_c985247e)(void*);
     void* (*hs_method_3eab680c)(void*);
     void* (*hs_method_c2e7e05c)(void*);
@@ -2481,6 +2650,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_9fa251f6)(void*);
     void* (*hs_method_37397878)(void*);
     void* (*hs_method_ab636dba)(void*);
+    void* (*hs_method_e835f8d1)(void*, void*);
     void* (*hs_get_47fe46b9)(void*);
     void* (*hs_method_43b9546a)(void*);
     void* (*hs_method_c2017c10)(void*);
@@ -2494,6 +2664,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1c49c7ee)(void*);
     void* (*hs_method_fffdcf5c)(void*);
     void* (*hs_method_57dfddae)(void*);
+    void* (*hs_method_9d2198b4)(void*, void*);
     void* (*hs_get_976e8f16)(void*);
     void* (*hs_method_5d3636d8)(void*);
     void* (*hs_method_8fe804cd)(void*);
@@ -2507,6 +2678,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3b927dc1)(void*);
     void* (*hs_method_f96b8b41)(void*);
     void* (*hs_method_3c941c31)(void*);
+    void* (*hs_method_534f92cf)(void*, void*);
     void* (*hs_get_d3711ca6)(void*);
     void* (*hs_method_1a05e8e2)(void*);
     void* (*hs_method_589e2c29)(void*);
@@ -2520,6 +2692,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_b289c2e5)(void*);
     void* (*hs_method_72e58746)(void*);
     void* (*hs_method_5d4488b0)(void*);
+    void* (*hs_method_a4a67cc5)(void*, void*);
     void* (*hs_get_8dba4a83)(void*);
     void* (*hs_method_7bc43e7d)(void*);
     void* (*hs_method_544a20db)(void*);
@@ -2533,6 +2706,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_70bca9e9)(void*);
     void* (*hs_method_553c9fda)(void*);
     void* (*hs_method_bd7965e3)(void*);
+    void* (*hs_method_eb89d009)(void*, void*);
     void* (*hs_get_d5c04b80)(void*);
     void* (*hs_method_4eef680a)(void*);
     void* (*hs_method_00674954)(void*);
@@ -2546,6 +2720,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_533c88a7)(void*);
     void* (*hs_method_a8fae5dc)(void*);
     void* (*hs_method_10153007)(void*);
+    void* (*hs_method_3ac19a80)(void*, void*);
     void* (*hs_get_c826400a)(void*);
     void* (*hs_method_c9b4004f)(void*);
     void* (*hs_method_9989b88a)(void*);
@@ -2559,6 +2734,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_3d95799f)(void*);
     void* (*hs_method_93387a4e)(void*);
     void* (*hs_method_a3879cf2)(void*);
+    void* (*hs_method_07295c26)(void*, void*);
     void* (*hs_get_382b309b)(void*);
     void* (*hs_method_613a5e1b)(void*);
     void* (*hs_method_7fa35988)(void*);
@@ -2572,6 +2748,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_ecb03ae5)(void*);
     void* (*hs_method_664528b8)(void*);
     void* (*hs_method_e86d2098)(void*);
+    void* (*hs_method_70d0e321)(void*, void*);
     void* (*hs_get_fa1f3263)(void*);
     void* (*hs_method_08432ed5)(void*);
     void* (*hs_method_7b057258)(void*);
@@ -2585,6 +2762,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_fafff8ff)(void*);
     void* (*hs_method_4acd30b2)(void*);
     void* (*hs_method_fd68f388)(void*);
+    void* (*hs_method_09326301)(void*, void*);
     void* (*hs_get_cc3cba02)(void*);
     void* (*hs_method_030672de)(void*);
     void* (*hs_method_343615c1)(void*);
@@ -2598,6 +2776,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a4b7bf10)(void*);
     void* (*hs_method_15be989f)(void*);
     void* (*hs_method_d143a3f4)(void*);
+    void* (*hs_method_134a435e)(void*, void*);
     void* (*hs_get_f45097d9)(void*);
     void* (*hs_method_913368df)(void*);
     void* (*hs_method_d3b3f156)(void*);
@@ -2611,6 +2790,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7c2db32d)(void*);
     void* (*hs_method_503ee879)(void*);
     void* (*hs_method_e3166499)(void*);
+    void* (*hs_method_37eb5c1c)(void*, void*);
     void* (*hs_get_b28b829c)(void*);
     void* (*hs_method_1f987356)(void*);
     void* (*hs_method_ed21c1f0)(void*);
@@ -2624,6 +2804,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_82cbc141)(void*);
     void* (*hs_method_efb71005)(void*);
     void* (*hs_method_2cfddd43)(void*);
+    void* (*hs_method_92777be2)(void*, void*);
     void* (*hs_get_44f29626)(void*);
     void* (*hs_method_21315804)(void*);
     void* (*hs_method_c1919c1f)(void*);
@@ -2637,6 +2818,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_32a9e22e)(void*);
     void* (*hs_method_2fc1586e)(void*);
     void* (*hs_method_5a7dee02)(void*);
+    void* (*hs_method_6a7cd4cc)(void*, void*);
     void* (*hs_get_5e920391)(void*);
     void* (*hs_method_e7f71d82)(void*);
     void* (*hs_method_36f94065)(void*);
@@ -2650,6 +2832,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_54fa3d94)(void*);
     void* (*hs_method_1cb08adc)(void*);
     void* (*hs_method_f3d883b3)(void*);
+    void* (*hs_method_7e6943f0)(void*, void*);
     void* (*hs_get_b22795ca)(void*);
     void* (*hs_method_06cea72d)(void*);
     void* (*hs_method_3fe5264c)(void*);
@@ -2663,6 +2846,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_44e24092)(void*);
     void* (*hs_method_bc832aee)(void*);
     void* (*hs_method_6aaf7160)(void*);
+    void* (*hs_method_a2bdc840)(void*, void*);
     void* (*hs_get_0a688e9f)(void*);
     void* (*hs_method_b3c57f76)(void*);
     void* (*hs_method_8ad2cc34)(void*);
@@ -2676,6 +2860,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_48ae856d)(void*);
     void* (*hs_method_637d3339)(void*);
     void* (*hs_method_3aab7345)(void*);
+    void* (*hs_method_cde1fd96)(void*, void*);
     void* (*hs_get_c6668831)(void*);
     void* (*hs_method_8601f01e)(void*);
     void* (*hs_method_ba8df4ac)(void*);
@@ -2689,6 +2874,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c90193b1)(void*);
     void* (*hs_method_b7c22684)(void*);
     void* (*hs_method_eea0ef91)(void*);
+    void* (*hs_method_2a184143)(void*, void*);
     void* (*hs_get_403e694b)(void*);
     void* (*hs_method_b31fd8ce)(void*);
     void* (*hs_method_de883968)(void*);
@@ -2702,6 +2888,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_914b79a9)(void*);
     void* (*hs_method_910f8177)(void*);
     void* (*hs_method_8e9a99d0)(void*);
+    void* (*hs_method_a2515ec2)(void*, void*);
     void* (*hs_get_bfd734c9)(void*);
     void* (*hs_method_0841fd8b)(void*);
     void* (*hs_method_7258a9d0)(void*);
@@ -2715,6 +2902,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_61e53caf)(void*);
     void* (*hs_method_e2f0aaef)(void*);
     void* (*hs_method_37046eff)(void*);
+    void* (*hs_method_987082fa)(void*, void*);
     void* (*hs_get_cb1d7a1c)(void*);
     void* (*hs_method_c912e3ba)(void*);
     void* (*hs_method_db4e62b3)(void*);
@@ -2728,6 +2916,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_ddf8749a)(void*);
     void* (*hs_method_afdf64bb)(void*);
     void* (*hs_method_8b87744b)(void*);
+    void* (*hs_method_1a01b0ec)(void*, void*);
     void* (*hs_get_2e81262a)(void*);
     void* (*hs_method_5241cb55)(void*);
     void* (*hs_method_702eae66)(void*);
@@ -2741,6 +2930,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_63674a55)(void*);
     void* (*hs_method_216137f1)(void*);
     void* (*hs_method_05f60955)(void*);
+    void* (*hs_method_2366a756)(void*, void*);
     void* (*hs_get_651caf5c)(void*);
     void* (*hs_method_6e66d1e0)(void*);
     void* (*hs_method_76bf7d47)(void*);
@@ -2754,6 +2944,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_43d79ee9)(void*);
     void* (*hs_method_f178fe79)(void*);
     void* (*hs_method_56ee3942)(void*);
+    void* (*hs_method_397aaec3)(void*, void*);
     void* (*hs_get_bbed9049)(void*);
     void* (*hs_method_a18a6dd3)(void*);
     void* (*hs_method_308be356)(void*);
@@ -2767,6 +2958,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_461c209b)(void*);
     void* (*hs_method_8bfbcd29)(void*);
     void* (*hs_method_491fd7f2)(void*);
+    void* (*hs_method_faf9486e)(void*, void*);
     void* (*hs_get_4ad5493c)(void*);
     void* (*hs_method_f48f46e8)(void*);
     void* (*hs_method_f2a6da26)(void*);
@@ -2780,6 +2972,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_34721dd9)(void*);
     void* (*hs_method_67e5c962)(void*);
     void* (*hs_method_91f1aa61)(void*);
+    void* (*hs_method_932695bf)(void*, void*);
     void* (*hs_get_4345bdeb)(void*);
     void* (*hs_method_8175da8e)(void*);
     void* (*hs_method_b631b3fc)(void*);
@@ -2793,6 +2986,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_87fc258a)(void*);
     void* (*hs_method_f3984f41)(void*);
     void* (*hs_method_b7e65aed)(void*);
+    void* (*hs_method_a690f98b)(void*, void*);
     void* (*hs_get_be342ba9)(void*);
     HosihikariArrayView (*hs_method_12465134)(void*);
     HosihikariArrayView (*hs_method_1e919a1c)(void*);
@@ -2806,6 +3000,7 @@ struct HosihikariBindingTableV1 {
     HosihikariArrayView (*hs_method_d2172a18)(void*);
     void* (*hs_method_ccf33e78)(void*);
     void* (*hs_method_76585082)(void*);
+    HosihikariArrayView (*hs_method_6c296d53)(void*, void*);
     void* (*hs_get_cbad0219)(void*);
     void* (*hs_method_7f7e4ab3)(void*);
     void* (*hs_method_491777ee)(void*);
@@ -2819,6 +3014,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_889afdd1)(void*);
     void* (*hs_method_f9c5dc87)(void*);
     void* (*hs_method_90d0a5ff)(void*);
+    void* (*hs_method_d8d81aa7)(void*, void*);
     void* (*hs_get_2053ad10)(void*);
     HosihikariArrayView (*hs_method_2e4d78d7)(void*);
     HosihikariArrayView (*hs_method_d1af69ce)(void*);
@@ -2832,6 +3028,7 @@ struct HosihikariBindingTableV1 {
     HosihikariArrayView (*hs_method_be5136ae)(void*);
     void* (*hs_method_da3cef0b)(void*);
     void* (*hs_method_e54236ae)(void*);
+    HosihikariArrayView (*hs_method_eb9cb3bf)(void*, void*);
     void* (*hs_get_f23aea8f)(void*);
     void* (*hs_method_8ecf6c52)(void*);
     void* (*hs_method_bfdf73e2)(void*);
@@ -2845,6 +3042,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_910de465)(void*);
     void* (*hs_method_85180231)(void*);
     void* (*hs_method_e579284d)(void*);
+    void* (*hs_method_965cdb65)(void*, void*);
     void* (*hs_get_22566b1b)(void*);
     void* (*hs_method_fb99ad7a)(void*);
     void* (*hs_method_6148a214)(void*);
@@ -2858,6 +3056,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a6f5e64f)(void*);
     void* (*hs_method_bacb51a3)(void*);
     void* (*hs_method_9c1a12ab)(void*);
+    void* (*hs_method_20c0b145)(void*, void*);
     void* (*hs_get_16ac02c5)(void*);
     void* (*hs_method_4a96ef9d)(void*);
     void* (*hs_method_3e1aaf54)(void*);
@@ -2871,6 +3070,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e5a9d7a8)(void*);
     void* (*hs_method_c5e56fe1)(void*);
     void* (*hs_method_5114bc3f)(void*);
+    void* (*hs_method_b6ef3517)(void*, void*);
     void* (*hs_get_c8712a94)(void*);
     void* (*hs_method_c958041a)(void*);
     void* (*hs_method_ce243f2c)(void*);
@@ -2884,6 +3084,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_f2c94803)(void*);
     void* (*hs_method_53709e36)(void*);
     void* (*hs_method_b97c32e4)(void*);
+    void* (*hs_method_8f7d229f)(void*, void*);
     void* (*hs_get_7de80fca)(void*);
     void* (*hs_method_0b2c3a8c)(void*);
     void* (*hs_method_410cf7e8)(void*);
@@ -2897,6 +3098,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_70ffd5a4)(void*);
     void* (*hs_method_66744b24)(void*);
     void* (*hs_method_553b06d4)(void*);
+    void* (*hs_method_015d797e)(void*, void*);
     void* (*hs_get_470dcfbc)(void*);
     void* (*hs_method_59156a5a)(void*);
     void* (*hs_method_1ff74a5b)(void*);
@@ -2910,6 +3112,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_33d1ec92)(void*);
     void* (*hs_method_11e19798)(void*);
     void* (*hs_method_250c9aa8)(void*);
+    void* (*hs_method_c3ddbc8f)(void*, void*);
     void* (*hs_get_fa01ba3e)(void*);
     void* (*hs_method_a04d08a5)(void*);
     void* (*hs_method_7cdb548f)(void*);
@@ -2923,6 +3126,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_1fa76635)(void*);
     void* (*hs_method_31909c6c)(void*);
     void* (*hs_method_e9f41bc9)(void*);
+    void* (*hs_method_55dc9099)(void*, void*);
     void* (*hs_get_9465e9d8)(void*);
     void* (*hs_method_a6482143)(void*);
     void* (*hs_method_e8f02eb3)(void*);
@@ -2936,6 +3140,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7a855d63)(void*);
     void* (*hs_method_c0b8d982)(void*);
     void* (*hs_method_df830ad6)(void*);
+    void* (*hs_method_59efcf95)(void*, void*);
     void (*hs_destroy_7db8ff81)(void*);
     void* (*hs_create_5b38ecc1)(void*);
     void* (*hs_get_a6dbd15f)(void*);
@@ -2951,6 +3156,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_4d0a24d9)(void*);
     void* (*hs_method_f7a6c33d)(void*);
     void* (*hs_method_416d49fe)(void*);
+    void* (*hs_method_ef33040c)(void*, void*);
     void (*hs_destroy_5d367d95)(void*);
     void* (*hs_create_3a4c9c26)(void*);
     void* (*hs_get_833056b7)(void*);
@@ -2980,6 +3186,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_eab099e1)(void*);
     void* (*hs_method_97e03fa8)(void*);
     void* (*hs_method_b4c66906)(void*);
+    void* (*hs_method_2867657c)(void*, void*);
     void* (*hs_get_ba043dac)(void*);
     void* (*hs_method_eb350981)(void*);
     void* (*hs_method_1682f1f1)(void*);
@@ -2993,6 +3200,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_88da666e)(void*);
     void* (*hs_method_18449394)(void*);
     void* (*hs_method_74783e29)(void*);
+    void* (*hs_method_3cb81aef)(void*, void*);
     void* (*hs_get_959087ee)(void*);
     void* (*hs_method_5a529f7c)(void*);
     void* (*hs_method_75afc690)(void*);
@@ -3006,6 +3214,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_582ebec9)(void*);
     void* (*hs_method_f096c979)(void*);
     void* (*hs_method_dfcf024c)(void*);
+    void* (*hs_method_20482413)(void*, void*);
     void* (*hs_get_1d81178b)(void*);
     void* (*hs_method_8edd6a48)(void*);
     void* (*hs_method_d358a088)(void*);
@@ -3019,6 +3228,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7d390580)(void*);
     void* (*hs_method_6468411a)(void*);
     void* (*hs_method_1e65305a)(void*);
+    void* (*hs_method_ef589258)(void*, void*);
     void* (*hs_get_7fcce884)(void*);
     void* (*hs_method_04163804)(void*);
     void* (*hs_method_e661d932)(void*);
@@ -3032,6 +3242,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_a8eaf57b)(void*);
     void* (*hs_method_5cf01989)(void*);
     void* (*hs_method_e58afb41)(void*);
+    void* (*hs_method_9ca794e3)(void*, void*);
     void* (*hs_get_d5eb1feb)(void*);
     void* (*hs_method_2087ca48)(void*);
     void* (*hs_method_aa3a09f6)(void*);
@@ -3045,6 +3256,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_5b0afbbf)(void*);
     void* (*hs_method_134a01fa)(void*);
     void* (*hs_method_219d0932)(void*);
+    void* (*hs_method_5b82ef3d)(void*, void*);
     void* (*hs_get_e0c04149)(void*);
     void* (*hs_method_981efe31)(void*);
     void* (*hs_method_768d7655)(void*);
@@ -3058,6 +3270,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_01fa6cb1)(void*);
     void* (*hs_method_dca17875)(void*);
     void* (*hs_method_ed523a6e)(void*);
+    void* (*hs_method_3a9cc1c1)(void*, void*);
     void* (*hs_get_0f3442f7)(void*);
     void* (*hs_method_6005dc70)(void*);
     void* (*hs_method_a9c5dc0b)(void*);
@@ -3071,6 +3284,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_e2306f44)(void*);
     void* (*hs_method_ebd85cf4)(void*);
     void* (*hs_method_13277350)(void*);
+    void* (*hs_method_3924ff15)(void*, void*);
     void* (*hs_get_d9e7d587)(void*);
     void* (*hs_method_bbb9eeeb)(void*);
     void* (*hs_method_e0a6225e)(void*);
@@ -3084,6 +3298,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_0809dce8)(void*);
     void* (*hs_method_d0b166d6)(void*);
     void* (*hs_method_18cc93ce)(void*);
+    void* (*hs_method_87af2dae)(void*, void*);
     void* (*hs_get_4efa5a68)(void*);
     void* (*hs_method_e804c472)(void*);
     void* (*hs_method_2fe674e4)(void*);
@@ -3097,6 +3312,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_2b454743)(void*);
     void* (*hs_method_ee401e20)(void*);
     void* (*hs_method_ae363dfe)(void*);
+    void* (*hs_method_2dfe37a1)(void*, void*);
     void (*hs_destroy_537cd008)(void*);
     void* (*hs_create_a6dcc663)(void*);
     void* (*hs_get_f822f722)(void*);
@@ -3115,6 +3331,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7f3b3297)(void*);
     void* (*hs_method_8a4e2366)(void*);
     void* (*hs_method_a6751a43)(void*);
+    void* (*hs_method_1ecbb132)(void*, void*);
     void* (*hs_get_a9bb8f00)(void*);
     std::int64_t (*hs_method_760834e8)(void*);
     std::int64_t (*hs_method_9053b63c)(void*);
@@ -3128,6 +3345,7 @@ struct HosihikariBindingTableV1 {
     std::int64_t (*hs_method_f8a8930e)(void*);
     void* (*hs_method_e690b31f)(void*);
     void* (*hs_method_d509e2c0)(void*);
+    std::int64_t (*hs_method_b3463dce)(void*, void*);
     void* (*hs_get_d898b382)(void*);
     std::int64_t (*hs_method_7d57d85c)(void*);
     std::int64_t (*hs_method_4b280060)(void*);
@@ -3141,6 +3359,7 @@ struct HosihikariBindingTableV1 {
     std::int64_t (*hs_method_314964e6)(void*);
     void* (*hs_method_3cbc5da1)(void*);
     void* (*hs_method_3bf88a93)(void*);
+    std::int64_t (*hs_method_3286e0dc)(void*, void*);
     void* (*hs_get_194a09a8)(void*);
     std::int64_t (*hs_method_16593b83)(void*);
     std::int64_t (*hs_method_4f64a053)(void*);
@@ -3154,6 +3373,7 @@ struct HosihikariBindingTableV1 {
     std::int64_t (*hs_method_994ece3b)(void*);
     void* (*hs_method_607dd204)(void*);
     void* (*hs_method_5543d14f)(void*);
+    std::int64_t (*hs_method_30f02361)(void*, void*);
     void (*hs_destroy_bc3ac26a)(void*);
     void* (*hs_create_aa323320)(void*);
     void* (*hs_get_354db36f)(void*);
@@ -3169,6 +3389,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_94a40de9)(void*);
     void* (*hs_method_8c738270)(void*);
     void* (*hs_method_486bc5a8)(void*);
+    void* (*hs_method_84aeddfc)(void*, void*);
     void (*hs_destroy_2e4c0a29)(void*);
     void* (*hs_create_fbda3b30)(void*);
     void* (*hs_get_0a6d3cbe)(void*);
@@ -3184,6 +3405,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_c1b71c01)(void*);
     void* (*hs_method_0ae0abcc)(void*);
     void* (*hs_method_c27e8577)(void*);
+    void* (*hs_method_4a5cbe70)(void*, void*);
     void* (*hs_get_415b322b)(void*);
     void* (*hs_method_5631eeaf)(void*);
     void* (*hs_method_1134c9e5)(void*);
@@ -3197,6 +3419,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_d7168f49)(void*);
     void* (*hs_method_4fc70ae2)(void*);
     void* (*hs_method_57075786)(void*);
+    void* (*hs_method_e49002ca)(void*, void*);
     void* (*hs_get_41c3b456)(void*);
     void* (*hs_method_1f4cf011)(void*);
     void* (*hs_method_ab07d7c4)(void*);
@@ -3210,6 +3433,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_41001238)(void*);
     void* (*hs_method_2be1beba)(void*);
     void* (*hs_method_7470fec6)(void*);
+    void* (*hs_method_f45da228)(void*, void*);
     void* (*hs_get_2b393808)(void*);
     void* (*hs_method_977d54fb)(void*);
     void* (*hs_method_cf1bbd11)(void*);
@@ -3223,6 +3447,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_04046b73)(void*);
     void* (*hs_method_677df252)(void*);
     void* (*hs_method_50363979)(void*);
+    void* (*hs_method_90285297)(void*, void*);
     void* (*hs_get_0f42833f)(void*);
     void* (*hs_method_055ced82)(void*);
     void* (*hs_method_69d90934)(void*);
@@ -3236,6 +3461,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_7533bfeb)(void*);
     void* (*hs_method_39f48c62)(void*);
     void* (*hs_method_5e1145a7)(void*);
+    void* (*hs_method_9528365a)(void*, void*);
     void (*hs_destroy_3ba13a23)(void*);
     void* (*hs_get_800ad99a)(void*);
     void (*hs_destroy_1a794718)(void*);
@@ -3735,6 +3961,7 @@ struct HosihikariBindingTableV1 {
     void* (*hs_method_01d3c2c9)(void*);
     void* (*hs_method_c50ef6b2)(void*);
     void* (*hs_method_23b3117c)(void*);
+    void* (*hs_method_533352a5)(void*, void*);
     void* (*hs_method_532356ed)(void*);
     void (*hs_method_c0fd1b7f)(void*, void*, void*);
     void (*hs_destroy_03243fc6)(void*);
