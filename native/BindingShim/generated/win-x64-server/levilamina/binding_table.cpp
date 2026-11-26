@@ -429,6 +429,16 @@ template <class T>
     return std::weak_ptr<T>(hs_shared_from_handle<T>(handle));
 }
 
+[[maybe_unused]] std::weak_ptr<ll::mod::Mod> hs_weak_mod_from_handle(HosihikariSharedHandle handle)
+{
+    if (handle.holder == nullptr) { return {}; }
+    if (static_cast<hs_shared_holder_base*>(handle.holder)->hs_type() == hs_type_tag<ll::mod::Mod>())
+    {
+        return hs_weak_from_handle<ll::mod::Mod>(handle);
+    }
+    return hs_weak_from_handle<ll::mod::NativeMod>(handle);
+}
+
 template <class T>
 [[maybe_unused]] Bedrock::NonOwnerPointer<T> hs_non_owner_from_handle(HosihikariSharedHandle handle)
 {
@@ -61095,7 +61105,7 @@ catch (...)
 static void* hs_method_d854facb(void* hs_self, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<void*>(new ll::command::RuntimeOverload(static_cast<ll::command::CommandHandle*>(hs_self)->runtimeOverload(hs_weak_from_handle<ll::mod::Mod>(mod))));
+    return static_cast<void*>(new ll::command::RuntimeOverload(static_cast<ll::command::CommandHandle*>(hs_self)->runtimeOverload(hs_weak_mod_from_handle(mod))));
 }
 catch (std::exception const& hs_error)
 {
@@ -61193,7 +61203,7 @@ catch (...)
 static void* hs_method_650fa79f(void* hs_self, const char* name_data, std::size_t name_size, const char* description_data, std::size_t description_size, std::uint8_t requirement, void* flag, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::CommandRegistrar*>(hs_self)->getOrCreateCommand(std::basic_string<char>(name_data, name_size), std::basic_string<char>(description_data, description_size), static_cast<CommandPermissionLevel>(requirement), *static_cast<CommandFlag*>(flag), hs_weak_from_handle<ll::mod::Mod>(mod))));
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ll::command::CommandRegistrar*>(hs_self)->getOrCreateCommand(std::basic_string<char>(name_data, name_size), std::basic_string<char>(description_data, description_size), static_cast<CommandPermissionLevel>(requirement), *static_cast<CommandFlag*>(flag), hs_weak_mod_from_handle(mod))));
 }
 catch (std::exception const& hs_error)
 {
@@ -74582,7 +74592,7 @@ struct hs_cb_closure_hs_create_28da94b8_cb0
 static void* hs_create_28da94b8(void* fn_invoke, void* fn_userData, void* fn_release, std::int32_t priority, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return new ll::event::DynamicListener(std::function<void (CompoundTag &)>(hs_cb_closure_hs_create_28da94b8_cb0{std::make_shared<hs_cb_state_hs_create_28da94b8_cb0>(reinterpret_cast<hs_cb_invoke_hs_create_28da94b8_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_create_28da94b8_cb0>(fn_release))}), static_cast<ll::event::EventPriority>(priority), hs_weak_from_handle<ll::mod::Mod>(mod));
+    return new ll::event::DynamicListener(std::function<void (CompoundTag &)>(hs_cb_closure_hs_create_28da94b8_cb0{std::make_shared<hs_cb_state_hs_create_28da94b8_cb0>(reinterpret_cast<hs_cb_invoke_hs_create_28da94b8_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_create_28da94b8_cb0>(fn_release))}), static_cast<ll::event::EventPriority>(priority), hs_weak_mod_from_handle(mod));
 }
 catch (std::exception const& hs_error)
 {
@@ -74634,7 +74644,7 @@ struct hs_cb_closure_hs_method_deeb082b_cb0
 static HosihikariSharedHandle hs_method_deeb082b(void* fn_invoke, void* fn_userData, void* fn_release, std::int32_t priority, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return hs_make_shared_handle(ll::event::DynamicListener::create(std::function<void (CompoundTag &)>(hs_cb_closure_hs_method_deeb082b_cb0{std::make_shared<hs_cb_state_hs_method_deeb082b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_deeb082b_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_deeb082b_cb0>(fn_release))}), static_cast<ll::event::EventPriority>(priority), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return hs_make_shared_handle(ll::event::DynamicListener::create(std::function<void (CompoundTag &)>(hs_cb_closure_hs_method_deeb082b_cb0{std::make_shared<hs_cb_state_hs_method_deeb082b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_deeb082b_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_deeb082b_cb0>(fn_release))}), static_cast<ll::event::EventPriority>(priority), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -76833,7 +76843,7 @@ static HosihikariSharedHandle hs_director_6fec08f6(std::int32_t priority, Hosihi
         void (*hs_release)(void*);
 
         hs_director(std::int32_t priority, HosihikariSharedHandle mod, void* invoke, void* userData, void* release)
-            : ll::event::ListenerBase(static_cast<ll::event::EventPriority>(priority), hs_weak_from_handle<ll::mod::Mod>(mod)), hs_invoke(reinterpret_cast<hs_invoke_type>(invoke)), hs_userData(userData), hs_release(reinterpret_cast<void (*)(void*)>(release))
+            : ll::event::ListenerBase(static_cast<ll::event::EventPriority>(priority), hs_weak_mod_from_handle(mod)), hs_invoke(reinterpret_cast<hs_invoke_type>(invoke)), hs_userData(userData), hs_release(reinterpret_cast<void (*)(void*)>(release))
         {
         }
 
@@ -89807,7 +89817,7 @@ catch (...)
 static std::uint64_t hs_method_2e560fe8(void* hs_self, HosihikariSharedHandle mod, std::int32_t type) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->eraseOnModCallback(hs_weak_from_handle<ll::mod::Mod>(mod), static_cast<ll::mod::ModManagerRegistry::ModCallbackType>(type)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->eraseOnModCallback(hs_weak_mod_from_handle(mod), static_cast<ll::mod::ModManagerRegistry::ModCallbackType>(type)));
 }
 catch (std::exception const& hs_error)
 {
@@ -89844,7 +89854,7 @@ struct hs_cb_closure_hs_method_5eeef485_cb1
 static std::uint64_t hs_method_5eeef485(void* hs_self, std::int32_t type, void* fn_invoke, void* fn_userData, void* fn_release, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnMod(static_cast<ll::mod::ModManagerRegistry::ModCallbackType>(type), std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_5eeef485_cb1{std::make_shared<hs_cb_state_hs_method_5eeef485_cb1>(reinterpret_cast<hs_cb_invoke_hs_method_5eeef485_cb1>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_5eeef485_cb1>(fn_release))}), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnMod(static_cast<ll::mod::ModManagerRegistry::ModCallbackType>(type), std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_5eeef485_cb1{std::make_shared<hs_cb_state_hs_method_5eeef485_cb1>(reinterpret_cast<hs_cb_invoke_hs_method_5eeef485_cb1>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_5eeef485_cb1>(fn_release))}), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -89881,7 +89891,7 @@ struct hs_cb_closure_hs_method_47e2d849_cb0
 static std::uint64_t hs_method_47e2d849(void* hs_self, void* fn_invoke, void* fn_userData, void* fn_release, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModDisable(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_47e2d849_cb0{std::make_shared<hs_cb_state_hs_method_47e2d849_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_47e2d849_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_47e2d849_cb0>(fn_release))}), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModDisable(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_47e2d849_cb0{std::make_shared<hs_cb_state_hs_method_47e2d849_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_47e2d849_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_47e2d849_cb0>(fn_release))}), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -89918,7 +89928,7 @@ struct hs_cb_closure_hs_method_4618a626_cb0
 static std::uint64_t hs_method_4618a626(void* hs_self, void* fn_invoke, void* fn_userData, void* fn_release, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModEnable(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_4618a626_cb0{std::make_shared<hs_cb_state_hs_method_4618a626_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_4618a626_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_4618a626_cb0>(fn_release))}), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModEnable(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_4618a626_cb0{std::make_shared<hs_cb_state_hs_method_4618a626_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_4618a626_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_4618a626_cb0>(fn_release))}), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -89955,7 +89965,7 @@ struct hs_cb_closure_hs_method_d20e0d20_cb0
 static std::uint64_t hs_method_d20e0d20(void* hs_self, void* fn_invoke, void* fn_userData, void* fn_release, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModLoad(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_d20e0d20_cb0{std::make_shared<hs_cb_state_hs_method_d20e0d20_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_d20e0d20_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_d20e0d20_cb0>(fn_release))}), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModLoad(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_d20e0d20_cb0{std::make_shared<hs_cb_state_hs_method_d20e0d20_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_d20e0d20_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_d20e0d20_cb0>(fn_release))}), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -89992,7 +90002,7 @@ struct hs_cb_closure_hs_method_ea621a8b_cb0
 static std::uint64_t hs_method_ea621a8b(void* hs_self, void* fn_invoke, void* fn_userData, void* fn_release, HosihikariSharedHandle mod) try
 {
     clearLastError();
-    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModUnload(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_ea621a8b_cb0{std::make_shared<hs_cb_state_hs_method_ea621a8b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_ea621a8b_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_ea621a8b_cb0>(fn_release))}), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<std::uint64_t>(static_cast<ll::mod::ModManagerRegistry*>(hs_self)->executeOnModUnload(std::function<void (std::basic_string_view<char>)>(hs_cb_closure_hs_method_ea621a8b_cb0{std::make_shared<hs_cb_state_hs_method_ea621a8b_cb0>(reinterpret_cast<hs_cb_invoke_hs_method_ea621a8b_cb0>(fn_invoke), fn_userData, reinterpret_cast<hs_cb_release_hs_method_ea621a8b_cb0>(fn_release))}), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
@@ -90749,7 +90759,7 @@ catch (...)
 static bool hs_method_1be370c9(void* hs_self, const char* name_data, std::size_t name_size, std::uint64_t id, void* handler, std::uint8_t side, HosihikariSharedHandle mod, bool handler_hasValue) try
 {
     clearLastError();
-    return static_cast<bool>(static_cast<ll::network::PacketRegistrar*>(hs_self)->registerHandler(std::basic_string_view<char>(name_data, name_size), static_cast<std::uint64_t>(id), (handler_hasValue ? optional_ref<ll::network::IPacketHandler>{static_cast<ll::network::IPacketHandler*>(handler)} : optional_ref<ll::network::IPacketHandler>{}), static_cast<ll::network::PacketSide>(side), hs_weak_from_handle<ll::mod::Mod>(mod)));
+    return static_cast<bool>(static_cast<ll::network::PacketRegistrar*>(hs_self)->registerHandler(std::basic_string_view<char>(name_data, name_size), static_cast<std::uint64_t>(id), (handler_hasValue ? optional_ref<ll::network::IPacketHandler>{static_cast<ll::network::IPacketHandler*>(handler)} : optional_ref<ll::network::IPacketHandler>{}), static_cast<ll::network::PacketSide>(side), hs_weak_mod_from_handle(mod)));
 }
 catch (std::exception const& hs_error)
 {
