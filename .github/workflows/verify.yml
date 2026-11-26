@@ -44,4 +44,4 @@ jobs:
         run: dotnet run --project Binding.Generator/src/Hosihikari.Binding.Generator/Hosihikari.Binding.Generator.csproj -c Release -- validate-coverage coverage/summary.json coverage/manifest.jsonl
 
       - name: Formatting
-        run: dotnet format Hosihikari.Binding.LeviLamina.slnx --verify-no-changes
+        run: dotnet format Hosihikari.Binding.LeviLamina.slnx --verify-no-changes --include src tests
