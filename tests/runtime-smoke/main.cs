@@ -56,6 +56,7 @@ public sealed class ShimSmokePlugin : IPlugin
     private static readonly ModCallbackInvoke ModCallback = OnModCallback;
     private static readonly LogCallbackInvoke LogCallback = OnLogCallback;
     private static readonly ListenerInvoke ListenerCallback = OnListenerEvent;
+    private static readonly ListenerInvoke TickDispatchCallback = OnTickDispatch;
     private static readonly ListenerRelease ListenerReleaseCallback = OnListenerRelease;
     private static readonly PacketHandlerInvoke PacketHandlerCallback = OnPacket;
     private static readonly HookValue HookDetourDelegate = OnHookDetour;
@@ -77,6 +78,15 @@ public sealed class ShimSmokePlugin : IPlugin
         var eventView = Event.Borrow(eventHandle);
         _listenerMessage = eventView.TryAsConsoleOutputtedEvent()?.message();
     }
+
+    private static int _tickDispatchCount;
+
+    /// <summary>
+    /// The server, not the shim, publishes a level tick every frame, so a callback here proves
+    /// the carrier's own dispatch reaches a director made through the binding.
+    /// </summary>
+    private static void OnTickDispatch(nint userData, nint eventHandle) =>
+        Interlocked.Increment(ref _tickDispatchCount);
 
     private static void OnListenerRelease(nint userData) => _listenerReleased = true;
 
@@ -323,6 +333,63 @@ public sealed class ShimSmokePlugin : IPlugin
                     log.AppendLine(
                         $"director.release={(_listenerReleased && listenerRemoved ? "ok" : "failed")}"
                     );
+                }
+
+                // Register for a carrier-raised event and wait: a callback here means a real
+                // dispatch reached a director the binding made. The same listener also gets one
+                // hand publish afterwards, which separates "wiring is wrong" from "the carrier
+                // never raised it".
+                using (var dispatchId = EventIdView.Create(ServerLevelTickEvent.eventId().Name))
+                {
+                    var dispatchListener = ListenerBase.CreateDirector(
+                        0,
+                        mod,
+                        (nint)Marshal.GetFunctionPointerForDelegate(TickDispatchCallback),
+                        0,
+                        0
+                    );
+                    var dispatchAdded = dispatchId is not null && eventBus.addListener(dispatchListener, dispatchId!);
+                    // A tick is ~50 ms; allow a second before calling it a miss.
+                    for (var wait = 0; wait < 100 && Volatile.Read(ref _tickDispatchCount) == 0; wait++)
+                    {
+                        Thread.Sleep(10);
+                    }
+
+                    var dispatchRegistered = dispatchId is not null && eventBus.hasEvent(dispatchId!);
+                    var dispatchCount = dispatchId is null ? 0 : eventBus.getListenerCount(dispatchId);
+                    // Attached at all (the EmptyEventId overload asks every stream) and to this
+                    // id specifically. The director comes back as a raw shared handle, so the
+                    // listener's own id is only reachable through the base view of it.
+                    var dispatchBase = ListenerBase.Borrow(dispatchListener!.Target);
+                    var attachedAny = eventBus.hasListener(dispatchBase.getId());
+                    var attachedHere =
+                        dispatchId is not null && eventBus.hasListener(dispatchBase.getId(), dispatchId!);
+                    log.AppendLine(
+                        $"carrier.dispatch.registered={dispatchRegistered},listeners={dispatchCount},attached={attachedAny}/{attachedHere}"
+                    );
+                    // The carrier passed this one on its own already; remember that before the
+                    // manual replay clears the counter.
+                    var raisedByCarrier = Volatile.Read(ref _tickDispatchCount) > 0;
+                    Interlocked.Exchange(ref _tickDispatchCount, 0);
+                    // Hand publish with the listener still attached. The same director shape was
+                    // already exercised above, so a callback here means the wiring holds while
+                    // the absence of a carrier callback means the server stayed idle.
+                    using (var replay = ConsoleOutputtedEvent.Create("hosihikari-replay", false))
+                    {
+                        eventBus.publish(replay.AsEvent()!, dispatchId!);
+                    }
+
+                    var raisedByReplay = Volatile.Read(ref _tickDispatchCount) > 0;
+                    // The listener has to be attached to this id and the id has to exist; whether
+                    // the server also raised it is recorded but not required, because an idle
+                    // playerless server does not run `_subTick`.
+                    var dispatchWired = dispatchAdded && dispatchRegistered && dispatchCount > 0 && raisedByReplay;
+                    log.AppendLine($"carrier.dispatch={(dispatchWired ? "ok" : "failed")}");
+                    log.AppendLine(
+                        $"carrier.dispatch.byCarrier={(raisedByCarrier ? "yes" : "no")},byReplay={(raisedByReplay ? "yes" : "no")}"
+                    );
+                    eventBus.removeListener(dispatchListener);
+                    dispatchListener?.Dispose();
                 }
 
                 var packetRegistrar = PacketRegistrar.getInstance();
