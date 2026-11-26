@@ -47,7 +47,9 @@ def main() -> int:
     source = (SHIM / "binding_table.cpp").read_text(encoding="utf-8")
     functions = header.count("(*hs_")
     if functions != provenance["functions"]:
-        fail(f"shim table has {functions} functions, provenance says {provenance['functions']}")
+        fail(
+            f"shim table has {functions} functions, provenance says {provenance['functions']}"
+        )
     if functions < baseline["functions"]:
         fail("BindingShim function count fell below baseline")
     if f"std::uint32_t{{{provenance['tableVersion']}}}" not in source:
@@ -63,7 +65,10 @@ def main() -> int:
     if len(generated_files) < 2:
         fail("generated Interop sources are missing")
 
-    if not (SHIM / "binding_table.cpp").is_file() or not (SHIM / "binding_table.h").is_file():
+    if (
+        not (SHIM / "binding_table.cpp").is_file()
+        or not (SHIM / "binding_table.h").is_file()
+    ):
         fail("BindingShim generated sources are missing")
 
     hash_manifest = COVERAGE / "generated.sha256"
@@ -79,13 +84,17 @@ def main() -> int:
         entries[relative] = digest
 
     expected_paths = {path.relative_to(ROOT).as_posix() for path in generated_files}
-    expected_paths.update(path.relative_to(ROOT).as_posix() for path in SHIM.iterdir() if path.is_file())
+    expected_paths.update(
+        path.relative_to(ROOT).as_posix() for path in SHIM.iterdir() if path.is_file()
+    )
     expected_paths.add("coverage/manifest.jsonl")
     expected_paths.add("coverage/summary.json")
     if set(entries) != expected_paths:
         missing = expected_paths - set(entries)
         extra = set(entries) - expected_paths
-        fail(f"generated.sha256 path set mismatch (missing={sorted(missing)}, extra={sorted(extra)})")
+        fail(
+            f"generated.sha256 path set mismatch (missing={sorted(missing)}, extra={sorted(extra)})"
+        )
 
     for relative, digest in entries.items():
         path = ROOT / relative

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,7 @@ using Hosihikari.Binding.LeviLamina.Interop.ll.memory;
 using Hosihikari.Binding.LeviLamina.Interop.ll.mod;
 using Hosihikari.Binding.LeviLamina.Interop.ll.network;
 using Hosihikari.Binding.LeviLamina.Interop.ll.thread;
+using Microsoft.Extensions.Logging;
 using LlEventId = Hosihikari.Binding.LeviLamina.Interop.ll.@event.EventId;
 using LlHashFunctions = Hosihikari.Binding.LeviLamina.Interop.ll.hash_utils.Functions;
 using LlReflectionFunctions = Hosihikari.Binding.LeviLamina.Interop.ll.reflection.Functions;
@@ -41,7 +41,12 @@ public sealed class ShimSmokePlugin : IPlugin
     private delegate void ListenerRelease(nint userData);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    private delegate void PacketHandlerInvoke(nint userData, nint netId, nint callback, nint packet);
+    private delegate void PacketHandlerInvoke(
+        nint userData,
+        nint netId,
+        nint callback,
+        nint packet
+    );
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate bool HookValue();
@@ -60,9 +65,7 @@ public sealed class ShimSmokePlugin : IPlugin
     private static bool _listenerReleased;
     private static SharedHandle? _packetDirector;
 
-    private static void OnModCallback(nint userData, nint data, nuint size)
-    {
-    }
+    private static void OnModCallback(nint userData, nint data, nuint size) { }
 
     private static void OnLogCallback(nint userData, nint data, nuint size)
     {
@@ -77,11 +80,10 @@ public sealed class ShimSmokePlugin : IPlugin
 
     private static void OnListenerRelease(nint userData) => _listenerReleased = true;
 
-    private static void OnPacket(nint userData, nint netId, nint callback, nint packet)
-    {
-    }
+    private static void OnPacket(nint userData, nint netId, nint callback, nint packet) { }
 
     private static bool OnHookDetour() => _hookDetourValue;
+
     private static int _callbackCount;
     private static bool _callbackReleased;
 
@@ -105,7 +107,10 @@ public sealed class ShimSmokePlugin : IPlugin
 
         try
         {
-            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Binding.LeviLamina.Shim.dll");
+            var shimPath = Path.Combine(
+                _context.PackageDirectory,
+                "Hosihikari.Binding.LeviLamina.Shim.dll"
+            );
             NativeMethods.Load(shimPath);
             log.AppendLine("load=ok");
 
@@ -125,7 +130,8 @@ public sealed class ShimSmokePlugin : IPlugin
                 log.AppendLine($"version.multi={versionMulti.to_string()}");
             }
 
-            var hashesOk = LlHashFunctions.doHash("abc") == 0xe71fa2190541574bUL
+            var hashesOk =
+                LlHashFunctions.doHash("abc") == 0xe71fa2190541574bUL
                 && LlHashFunctions.doHash2("abc") == 0x18fffffffe7b6e1cUL
                 && LlHashFunctions.doHash3("abc") == 0x000000000b885c8bUL;
             log.AppendLine($"function.hashes={(hashesOk ? "ok" : "failed")}");
@@ -137,18 +143,18 @@ public sealed class ShimSmokePlugin : IPlugin
             {
                 target.operator_assign_43d0519c(source);
                 var assigned = target.toString();
-                log.AppendLine($"assignment.operator={(assigned == "beta" ? "ok" : $"unexpected:{assigned}")}");
+                log.AppendLine(
+                    $"assignment.operator={(assigned == "beta" ? "ok" : $"unexpected:{assigned}")}"
+                );
             }
 
             using var error = Error.Create();
             log.AppendLine($"error.bool={error.operator_bool()}");
             log.AppendLine($"error.message={error.message()}");
-            error.log(
-                (nint)Marshal.GetFunctionPointerForDelegate(LogCallback),
-                0,
-                0,
-                "en");
-            log.AppendLine($"function_ref.log={(_logText == "success" ? "ok" : $"unexpected:{_logText}")}");
+            error.log((nint)Marshal.GetFunctionPointerForDelegate(LogCallback), 0, 0, "en");
+            log.AppendLine(
+                $"function_ref.log={(_logText == "success" ? "ok" : $"unexpected:{_logText}")}"
+            );
             log.AppendLine("error.dispose=ok");
 
             using (var pauser = GlobalThreadPauser.Create())
@@ -170,7 +176,8 @@ public sealed class ShimSmokePlugin : IPlugin
             executor.execute(
                 (nint)Marshal.GetFunctionPointerForDelegate(Callback),
                 GCHandle.ToIntPtr(state),
-                (nint)Marshal.GetFunctionPointerForDelegate(Release));
+                (nint)Marshal.GetFunctionPointerForDelegate(Release)
+            );
             log.AppendLine($"callback.count={Volatile.Read(ref _callbackCount)}");
             log.AppendLine($"callback.release={_callbackReleased}");
             executor.Dispose();
@@ -179,10 +186,14 @@ public sealed class ShimSmokePlugin : IPlugin
             var registry = LoggerRegistry.getInstance();
             using (var logger = registry.getOrCreate("hosihikari-smoke"))
             {
-                log.AppendLine($"shared.target={(logger is not null && logger.Target != 0 ? "ok" : "failed")}");
+                log.AppendLine(
+                    $"shared.target={(logger is not null && logger.Target != 0 ? "ok" : "failed")}"
+                );
                 using (var sameLogger = registry.tryGet("hosihikari-smoke"))
                 {
-                    log.AppendLine($"shared.same={(sameLogger is not null && logger is not null && sameLogger.Target == logger.Target ? "ok" : "failed")}");
+                    log.AppendLine(
+                        $"shared.same={(sameLogger is not null && logger is not null && sameLogger.Target == logger.Target ? "ok" : "failed")}"
+                    );
                 }
 
                 var title = logger is null ? "<null>" : new Logger(logger.Target).getTitle();
@@ -191,27 +202,40 @@ public sealed class ShimSmokePlugin : IPlugin
 
             log.AppendLine("shared.dispose=ok");
 
-            var commandRegistrar = Hosihikari.Binding.LeviLamina.Interop.ll.command.CommandRegistrar.getInstance(false);
+            var commandRegistrar =
+                Hosihikari.Binding.LeviLamina.Interop.ll.command.CommandRegistrar.getInstance(
+                    false
+                );
             var registered = commandRegistrar.tryRegisterRuntimeEnum(
                 "hosihikari_smoke_enum",
                 new[]
                 {
                     new KeyValuePair<string, ulong>("one", 1),
                     new KeyValuePair<string, ulong>("two", 2),
-                });
+                }
+            );
             var added = commandRegistrar.addRuntimeEnumValues(
                 "hosihikari_smoke_enum",
-                new[] { new KeyValuePair<string, ulong>("three", 3) });
+                new[] { new KeyValuePair<string, ulong>("three", 3) }
+            );
             log.AppendLine($"command_enum.pairs={(registered && added ? "ok" : "failed")}");
 
-            var intParser = Hosihikari.Binding.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
+            var intParser =
+                Hosihikari.Binding.LeviLamina.Interop.ll.command.ParamTraitsBase_int_.parseFn();
             log.AppendLine($"member_function_pointer.parseFn={(intParser != 0 ? "ok" : "failed")}");
 
             var hookOk = false;
-            if (NativeLibrary.TryLoad("LeviLamina.dll", out var llModule)
-                && NativeLibrary.TryGetExport(llModule, "?shouldHookSuspendThreads@memory@ll@@YA_NXZ", out var hookTarget))
+            if (
+                NativeLibrary.TryLoad("LeviLamina.dll", out var llModule)
+                && NativeLibrary.TryGetExport(
+                    llModule,
+                    "?shouldHookSuspendThreads@memory@ll@@YA_NXZ",
+                    out var hookTarget
+                )
+            )
             {
-                var baselineSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var baselineSuspend =
+                    Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 _hookDetourValue = !baselineSuspend;
                 var detour = Marshal.GetFunctionPointerForDelegate(HookDetourDelegate);
                 var originalSlot = Marshal.AllocHGlobal(IntPtr.Size);
@@ -221,15 +245,24 @@ public sealed class ShimSmokePlugin : IPlugin
                     detour,
                     originalSlot,
                     (int)Hosihikari.Binding.LeviLamina.Interop.ll.memory.HookPriority.Normal,
-                    false);
-                var detouredSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                    false
+                );
+                var detouredSuspend =
+                    Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 var original = Marshal.ReadIntPtr(originalSlot);
-                var originalSuspend = original != IntPtr.Zero
+                var originalSuspend =
+                    original != IntPtr.Zero
                     && Marshal.GetDelegateForFunctionPointer<HookValue>(original)();
-                var unhooked = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.unhook(hookTarget, detour, false);
-                var restoredSuspend = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
+                var unhooked = Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.unhook(
+                    hookTarget,
+                    detour,
+                    false
+                );
+                var restoredSuspend =
+                    Hosihikari.Binding.LeviLamina.Interop.ll.memory.Functions.shouldHookSuspendThreads();
                 Marshal.FreeHGlobal(originalSlot);
-                hookOk = original != IntPtr.Zero
+                hookOk =
+                    original != IntPtr.Zero
                     && detouredSuspend == !baselineSuspend
                     && originalSuspend == baselineSuspend
                     && unhooked
@@ -242,7 +275,11 @@ public sealed class ShimSmokePlugin : IPlugin
             using (var mod = modRegistry.getMod("hosihikari"))
             {
                 var callbackId = modRegistry.executeOnModLoad(
-                    (nint)Marshal.GetFunctionPointerForDelegate(ModCallback), 0, 0, mod);
+                    (nint)Marshal.GetFunctionPointerForDelegate(ModCallback),
+                    0,
+                    0,
+                    mod
+                );
                 var erased = callbackId != 0 && modRegistry.eraseOnModCallback(callbackId);
                 log.AppendLine($"weak_ptr.mod={(mod is not null && erased ? "ok" : "failed")}");
                 using var commandFlag = CommandFlag.Create(128);
@@ -251,7 +288,8 @@ public sealed class ShimSmokePlugin : IPlugin
                     "smoke",
                     0,
                     commandFlag,
-                    mod);
+                    mod
+                );
                 log.AppendLine($"command.create={(commandHandle.Handle != 0 ? "ok" : "failed")}");
 
                 using (var overload = commandHandle.runtimeOverload(mod))
@@ -272,14 +310,19 @@ public sealed class ShimSmokePlugin : IPlugin
                         mod,
                         (nint)Marshal.GetFunctionPointerForDelegate(ListenerCallback),
                         0,
-                        (nint)Marshal.GetFunctionPointerForDelegate(ListenerReleaseCallback));
+                        (nint)Marshal.GetFunctionPointerForDelegate(ListenerReleaseCallback)
+                    );
                     var listenerAdded = eventBus.addListener(listener, eventIdView);
                     log.AppendLine($"director.add={(listenerAdded ? "ok" : "failed")}");
                     eventBus.publish(eventView, eventIdView);
-                    log.AppendLine($"director.callback={(_listenerMessage == "hosihikari-event" ? "ok" : $"unexpected:{_listenerMessage}")}");
+                    log.AppendLine(
+                        $"director.callback={(_listenerMessage == "hosihikari-event" ? "ok" : $"unexpected:{_listenerMessage}")}"
+                    );
                     var listenerRemoved = eventBus.removeListener(listener);
                     listener?.Dispose();
-                    log.AppendLine($"director.release={(_listenerReleased && listenerRemoved ? "ok" : "failed")}");
+                    log.AppendLine(
+                        $"director.release={(_listenerReleased && listenerRemoved ? "ok" : "failed")}"
+                    );
                 }
 
                 var packetRegistrar = PacketRegistrar.getInstance();
@@ -287,25 +330,33 @@ public sealed class ShimSmokePlugin : IPlugin
                 var packetDirector = IPacketHandler.CreateDirector(
                     (nint)Marshal.GetFunctionPointerForDelegate(PacketHandlerCallback),
                     0,
-                    0);
+                    0
+                );
                 _packetDirector = packetDirector;
-                var packetRegistered = packetDirector is not null
+                var packetRegistered =
+                    packetDirector is not null
                     && packetRegistrar.registerHandler(
                         "hosihikari-smoke",
                         packetHandlerId,
                         IPacketHandler.Borrow(packetDirector.Target),
                         3,
-                        null);
+                        null
+                    );
                 var registeredHandler = packetRegistrar.getHandler(packetHandlerId, 3);
-                log.AppendLine($"packet_handler.register={(packetRegistered && registeredHandler is not null && registeredHandler.Handle == packetDirector!.Target ? "ok" : "failed")}");
+                log.AppendLine(
+                    $"packet_handler.register={(packetRegistered && registeredHandler is not null && registeredHandler.Handle == packetDirector!.Target ? "ok" : "failed")}"
+                );
             }
 
-            var playerInfo = Hosihikari.Binding.LeviLamina.Interop.ll.service.PlayerInfo.getInstance();
+            var playerInfo =
+                Hosihikari.Binding.LeviLamina.Interop.ll.service.PlayerInfo.getInstance();
             if (playerInfo.Handle != 0)
             {
                 var missingByName = playerInfo.fromName("hosihikari-missing-player");
                 var missingByXuid = playerInfo.fromXuid("0");
-                log.AppendLine($"optional_ref.missing={(missingByName is null && missingByXuid is null ? "ok" : "unexpected")}");
+                log.AppendLine(
+                    $"optional_ref.missing={(missingByName is null && missingByXuid is null ? "ok" : "unexpected")}"
+                );
             }
             else
             {
@@ -326,7 +377,9 @@ public sealed class ShimSmokePlugin : IPlugin
 
                 if (!expectedError)
                 {
-                    throw new InvalidOperationException("expected setJson to report a native error.");
+                    throw new InvalidOperationException(
+                        "expected setJson to report a native error."
+                    );
                 }
 
                 log.AppendLine("expected.error=caught");
@@ -359,7 +412,5 @@ public sealed class ShimSmokePlugin : IPlugin
 
     public PluginHookResult OnDisable() => PluginHookResult.Allow();
 
-    public void OnUnload()
-    {
-    }
+    public void OnUnload() { }
 }

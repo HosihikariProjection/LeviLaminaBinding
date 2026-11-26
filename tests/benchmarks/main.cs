@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,9 +6,10 @@ using System.IO;
 using System.Text;
 using Hosihikari;
 using Hosihikari.Binding.LeviLamina.Interop;
-using Hosihikari.Binding.LeviLamina.Interop.ll.io;
 using Hosihikari.Binding.LeviLamina.Interop.ll.command;
 using Hosihikari.Binding.LeviLamina.Interop.ll.hash_utils;
+using Hosihikari.Binding.LeviLamina.Interop.ll.io;
+using Microsoft.Extensions.Logging;
 using LlEventId = Hosihikari.Binding.LeviLamina.Interop.ll.@event.EventId;
 using LlVersion = Hosihikari.Binding.LeviLamina.Interop.ll.data.Version;
 
@@ -27,7 +27,8 @@ public sealed class ShimBenchmarkPlugin : IPlugin
         string name,
         int iterations,
         int warmup,
-        Action action)
+        Action action
+    )
     {
         for (var index = 0; index < warmup; index++)
         {
@@ -45,7 +46,8 @@ public sealed class ShimBenchmarkPlugin : IPlugin
         var allocated = GC.GetAllocatedBytesForCurrentThread() - allocatedBefore;
         var nanoseconds = (double)elapsed / Stopwatch.Frequency * 1_000_000_000 / iterations;
         var bytes = (double)allocated / iterations;
-        output.Append(name)
+        output
+            .Append(name)
             .Append('=')
             .Append(nanoseconds.ToString("F2", CultureInfo.InvariantCulture))
             .Append(" ns/op, ")
@@ -63,7 +65,10 @@ public sealed class ShimBenchmarkPlugin : IPlugin
 
         try
         {
-            var shimPath = Path.Combine(_context.PackageDirectory, "Hosihikari.Binding.LeviLamina.Shim.dll");
+            var shimPath = Path.Combine(
+                _context.PackageDirectory,
+                "Hosihikari.Binding.LeviLamina.Shim.dll"
+            );
             NativeMethods.Load(shimPath);
             log.AppendLine("load=ok");
 
@@ -73,24 +78,60 @@ public sealed class ShimBenchmarkPlugin : IPlugin
             var baseView = id.AsHashedIdBase();
             using var combiner = HashCombiner.Create(123);
 
-            RunBenchmark(log, "field.version.major", 500_000, 10_000, () => _intSink = version.major);
+            RunBenchmark(
+                log,
+                "field.version.major",
+                500_000,
+                10_000,
+                () => _intSink = version.major
+            );
             RunBenchmark(log, "field.eventid.name", 500_000, 10_000, () => _stringSink = id.name);
             RunBenchmark(log, "field.hashedid.hash", 500_000, 10_000, () => _sink = baseView.hash);
-            RunBenchmark(log, "method.version.is_identical", 500_000, 10_000, () => _boolSink = version.isIdenticalTo(sameVersion));
-            RunBenchmark(log, "method.hashcombiner.hash", 500_000, 10_000, () => _sink = combiner.hash());
-            RunBenchmark(log, "string.version.valid", 200_000, 10_000, () => _boolSink = LlVersion.valid("1.2.3"));
-            RunBenchmark(log, "string.version.to_string", 200_000, 10_000, () => _stringSink = version.to_string());
+            RunBenchmark(
+                log,
+                "method.version.is_identical",
+                500_000,
+                10_000,
+                () => _boolSink = version.isIdenticalTo(sameVersion)
+            );
+            RunBenchmark(
+                log,
+                "method.hashcombiner.hash",
+                500_000,
+                10_000,
+                () => _sink = combiner.hash()
+            );
+            RunBenchmark(
+                log,
+                "string.version.valid",
+                200_000,
+                10_000,
+                () => _boolSink = LlVersion.valid("1.2.3")
+            );
+            RunBenchmark(
+                log,
+                "string.version.to_string",
+                200_000,
+                10_000,
+                () => _stringSink = version.to_string()
+            );
 
             var registry = LoggerRegistry.getInstance();
             using (var logger = registry.getOrCreate("hosihikari-benchmark"))
             {
                 if (logger is not null)
                 {
-                    RunBenchmark(log, "shared.try_get", 200_000, 5_000, () =>
-                    {
-                        using var handle = registry.tryGet("hosihikari-benchmark");
-                        _sink ^= (ulong)(handle?.Target ?? 0);
-                    });
+                    RunBenchmark(
+                        log,
+                        "shared.try_get",
+                        200_000,
+                        5_000,
+                        () =>
+                        {
+                            using var handle = registry.tryGet("hosihikari-benchmark");
+                            _sink ^= (ulong)(handle?.Target ?? 0);
+                        }
+                    );
                 }
             }
 
@@ -100,10 +141,19 @@ public sealed class ShimBenchmarkPlugin : IPlugin
                 new KeyValuePair<string, ulong>("one", 1),
                 new KeyValuePair<string, ulong>("two", 2),
             };
-            RunBenchmark(log, "vector.enum_register", 20_000, 1_000, () =>
-            {
-                _boolSink = commandRegistrar.tryRegisterRuntimeEnum("hosihikari-benchmark-enum", enumPairs);
-            });
+            RunBenchmark(
+                log,
+                "vector.enum_register",
+                20_000,
+                1_000,
+                () =>
+                {
+                    _boolSink = commandRegistrar.tryRegisterRuntimeEnum(
+                        "hosihikari-benchmark-enum",
+                        enumPairs
+                    );
+                }
+            );
 
             log.AppendLine("result=OK");
         }
@@ -120,7 +170,5 @@ public sealed class ShimBenchmarkPlugin : IPlugin
 
     public PluginHookResult OnDisable() => PluginHookResult.Allow();
 
-    public void OnUnload()
-    {
-    }
+    public void OnUnload() { }
 }
