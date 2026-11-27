@@ -98,6 +98,8 @@
 #include "mc/platform/UUID.h"
 #include "mc/deps/shared_types/legacy/LevelSoundEvent.h"
 #include "mc/network/GamePublishSetting.h"
+#include "mc/world/actor/ActorEvent.h"
+#include "mc/world/level/GameType.h"
 #include "mc/world/level/ILevel.h"
 #include "mc/deps/core/math/Matrix.h"
 #include "mc/world/phys/rope/RopeSystem.h"
@@ -106,19 +108,26 @@
 #include "mc/world/level/dimension/DimensionType.h"
 #include "mc/world/actor/ActorFlags.h"
 #include "mc/deps/core/utility/optional_ref.h"
+#include "mc/deps/input/InputMode.h"
 #include "mc/deps/shared_types/legacy/EquipmentSlot.h"
 #include "mc/deps/shared_types/legacy/actor/ArmorSlot.h"
+#include "mc/deps/shared_types/v1_26_20/block/MaterialType.h"
+#include "mc/input/NewInteractionModel.h"
 #include "mc/platform/brstd/bitset.h"
 #include "mc/server/commands/CommandPermissionLevel.h"
 #include "mc/world/actor/ActorType.h"
 #include "mc/world/actor/ActorDamageSource.h"
 #include "mc/world/item/HandSlot.h"
 #include "mc/world/item/ItemStack.h"
+#include "mc/world/actor/ActorSwingSource.h"
+#include "mc/world/actor/ArmorMaterialType.h"
 #include "mc/world/actor/Mob.h"
 #include "mc/util/VariantParameterList.h"
+#include "mc/world/actor/ActorResetRule.h"
 #include "mc/world/actor/ActorTerrainInterlockData.h"
 #include "mc/world/actor/ActorVersion.h"
 #include "mc/world/actor/SynchedActorDataEntityWrapper.h"
+#include "mc/world/item/ItemUseMethod.h"
 #include "mc/world/actor/Actor.h"
 #include "ll/api/memory/Symbol.h"
 #include "ll/api/memory/Signature.h"
@@ -174,7 +183,9 @@
 #include "mc/network/NetworkPeer.h"
 #include "mc/deps/core/timing/Stopwatch.h"
 #include "mc/world/PlayerUIContainer.h"
+#include "mc/world/actor/bhave/BehaviorStatus.h"
 #include "mc/world/actor/player/AbilitiesIndex.h"
+#include "mc/world/actor/player/BedSleepingResult.h"
 #include "mc/world/actor/player/PlayerItemInUse.h"
 #include "mc/world/inventory/FurnaceOptions.h"
 #include "mc/world/inventory/InventoryOptions.h"
@@ -834,6 +845,2021 @@ catch (...)
 {
     setLastError("unknown native exception");
     return nullptr;
+}
+
+static void hs_method_4c46f45f(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->_doInitialMove();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_d5528ec6(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->_serverInitItemStackIds();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_1c9ed74e(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->_shouldProvideFeedbackOnArmorSet(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), *static_cast<const ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_78e22516(void* hs_self, std::uint8_t handSlot, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->_shouldProvideFeedbackOnHandContainerItemSet(static_cast<HandSlot>(handSlot), *static_cast<const ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_d2f63c2a(void* hs_self, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->add(*static_cast<ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_3f571f19(void* hs_self, void* tag) try
+{
+    clearLastError();
+    static_cast<Actor const*>(hs_self)->addAdditionalSaveData(*static_cast<CompoundTag*>(tag));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_d53f84c3(void* hs_self, void* passenger) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->addPassenger(*static_cast<Actor*>(passenger));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_50861b1b(void* hs_self, void* snapshotEntity, void* originalSnapshotEntity) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->applySnapshot(*static_cast<const EntityContext*>(snapshotEntity), *static_cast<const MovementDataExtractionUtility::SnapshotAccessor*>(originalSnapshotEntity));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_18f4a165(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->baseTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_cad77604(void* hs_self, void* source, void* blocker) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->blockedByShield(*static_cast<const ActorDamageSource*>(source), *static_cast<Actor*>(blocker));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_1543bd83(void* hs_self, void* passenger) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canAddPassenger(*static_cast<Actor*>(passenger)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_b961f4f2(void* hs_self, std::uint32_t id) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canBeAffected(static_cast<unsigned int>(id)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_ab2faeb2(void* hs_self, void* effect) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canBeAffectedByArrow(*static_cast<const MobEffectInstance*>(effect)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9bd986e5(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canBePulledIntoVehicle());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_2a99afcb(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canChangeDimensionsUsingPortal());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_068ac829(void* hs_self, void* block) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canDestroyBlock(*static_cast<const Block*>(block)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e1f72ba7(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->canDisableShield());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_17316ee0(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canInteractWithOtherEntitiesInGame());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_d37e676b(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canObstructSpawningAndBlockPlacement());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_3c066f53(void* hs_self, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canPickupItem(*static_cast<const ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_48246d3e(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canPowerJump());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e674c026(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canShowNameTag());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_8da4dff2(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->canSynchronizeNewEntity());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static float hs_method_83ad92f1(void* hs_self, float distance, float multiplier, void* source) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor*>(hs_self)->causeFallDamageToActor(static_cast<float>(distance), static_cast<float>(multiplier), *static_cast<ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void hs_method_7be0f5c2(void* hs_self, void* toId) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->changeDimension(*static_cast<DimensionType*>(toId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_399d8cab(void* hs_self, void* arg0) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->changeDimension(*static_cast<const ChangeDimensionPacket*>(arg0));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_6ff09753(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->consumeTotem());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_1dd5c4d8(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->despawn();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_70180f93(void* hs_self, void* source) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->die(*static_cast<const ActorDamageSource*>(source));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_be6c89aa(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->doEnterWaterSplashEffect();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3e6a38c5(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->doExitWaterSplashEffect();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b819b0eb(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->doWaterSplashEffect();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_28a790f0(void* hs_self, void* item, bool randomly) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->drop(*static_cast<const ItemStack*>(item), static_cast<const bool>(randomly)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_92aeb828(void* hs_self, std::int32_t itemId) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->feed(static_cast<int>(itemId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void* hs_method_86d13877(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Actor const*>(hs_self)->getActorRendererId()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::uint32_t hs_method_7968e3e8(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint32_t>(static_cast<Actor const*>(hs_self)->getAmbientSound());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void* hs_method_48ec3e85(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Actor*>(hs_self)->getAnimationComponent()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static float hs_method_5cc7f7c0(void* hs_self, std::int32_t slot, std::int32_t channelRGBA) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getArmorColorInSlot(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), static_cast<int>(channelRGBA)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static std::int32_t hs_method_47128d2f(void* hs_self, std::int32_t slot) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Actor const*>(hs_self)->getArmorMaterialTypeInSlot(static_cast<SharedTypes::Legacy::ArmorSlot>(slot)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static std::int32_t hs_method_4252e10a(void* hs_self, std::int32_t slot) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Actor const*>(hs_self)->getArmorTextureIndexInSlot(static_cast<SharedTypes::Legacy::ArmorSlot>(slot)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static std::int32_t hs_method_e7676742(void* hs_self, void* block) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Actor const*>(hs_self)->getBlockDamageCause(*static_cast<const Block*>(block)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static float hs_method_4a143664(void* hs_self, float a, void* region) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getBrightness(static_cast<float>(a), *static_cast<const IConstBlockSource*>(region)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_07a30010(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Actor const*>(hs_self)->getCarriedItem()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::uint8_t hs_method_78c53595(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint8_t>(static_cast<Actor const*>(hs_self)->getCommandPermissionLevel());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void* hs_method_3788dc7b(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new ActorUniqueID(static_cast<Actor const*>(hs_self)->getControllingPlayer()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::int32_t hs_method_e8d73c0c(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Actor const*>(hs_self)->getDeathTime());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void hs_method_9c81814c(void* hs_self, const HosihikariStringView* outputInfo_data, std::size_t outputInfo_count) try
+{
+    clearLastError();
+    auto hs_arg0 = hs_make_string_vector(outputInfo_data, outputInfo_count);
+    static_cast<Actor*>(hs_self)->getDebugText(hs_arg0);
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static HosihikariStringView hs_method_e62c0764(void* hs_self) try
+{
+    clearLastError();
+    auto result = static_cast<Actor const*>(hs_self)->getEntityLocNameString();
+    g_stringResult.assign(result.data(), result.size());
+    return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariStringView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariStringView{nullptr, 0};
+}
+
+static void* hs_method_acd01685(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Actor const*>(hs_self)->getEquippedTotem()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static HosihikariStringView hs_method_7afa7412(void* hs_self, const char* kind_data, std::size_t kind_size, std::uint32_t mode, std::int32_t scheme) try
+{
+    clearLastError();
+    auto result = static_cast<Actor const*>(hs_self)->getExitTip(std::basic_string<char>(kind_data, kind_size), static_cast<InputMode>(mode), static_cast<NewInteractionModel>(scheme));
+    g_stringResult.assign(result.data(), result.size());
+    return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariStringView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariStringView{nullptr, 0};
+}
+
+static float hs_method_0b15f6be(void* hs_self, float a) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getInterpolatedBodyRot(static_cast<float>(a)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static float hs_method_755d48b3(void* hs_self, float a) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getInterpolatedBodyYaw(static_cast<float>(a)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static float hs_method_f714f9c5(void* hs_self, float a) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getInterpolatedHeadRot(static_cast<float>(a)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_2c833860(void* hs_self, bool* hs_hasValue) try
+{
+    clearLastError();
+    auto result = static_cast<Actor const*>(hs_self)->getLastDeathDimension();
+    *hs_hasValue = result.has_value();
+    if (!result) { return nullptr; }
+    return static_cast<void*>(new DimensionType(std::move(*result)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+
+static void* hs_method_727d5c16(void* hs_self, bool* hs_hasValue) try
+{
+    clearLastError();
+    auto result = static_cast<Actor const*>(hs_self)->getLastDeathPos();
+    *hs_hasValue = result.has_value();
+    if (!result) { return nullptr; }
+    return static_cast<void*>(new BlockPos(std::move(*result)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+
+static void* hs_method_bb11832b(void* hs_self, std::uint8_t liquidType) try
+{
+    clearLastError();
+    return static_cast<void*>(new AABB(static_cast<Actor const*>(hs_self)->getLiquidAABB(static_cast<const SharedTypes::v1_26_20::MaterialType>(liquidType))));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static float hs_method_2b5d91a8(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getMapDecorationRotation());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_138da495(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new mce::Color(static_cast<Actor const*>(hs_self)->getNameTagTextColor()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::int32_t hs_method_5b975219(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Actor*>(hs_self)->getOwnerEntityType());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static float hs_method_6d64b70f(void* hs_self, void* passenger) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getPassengerYRotation(*static_cast<const Actor*>(passenger)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static float hs_method_57a0a884(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getShadowRadius());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_7dee9327(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new ActorUniqueID(static_cast<Actor const*>(hs_self)->getSourceUniqueID()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static float hs_method_7250aaa5(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Actor const*>(hs_self)->getYawSpeedInDegreesPerSecond());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void hs_method_6fdd8dac(void* hs_self, std::uint8_t eventId, std::int32_t data) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->handleEntityEvent(static_cast<ActorEvent>(eventId), static_cast<int>(data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b99172bf(void* hs_self, void* portalPos) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->handleInsidePortal(*static_cast<const BlockPos*>(portalPos));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_4a0b6d7d(void* hs_self, void* name) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->hasComponent(*static_cast<const HashedString*>(name)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_db651f45(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->hasDiedBefore());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_5cc1b04b(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->inCaravan());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_64dbade4(void* hs_self, std::uint8_t method, void* params) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->initializeComponents(static_cast<ActorInitializationMethod>(method), *static_cast<const VariantParameterList*>(params));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_19860043(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isAlive());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_d65398a0(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isBlocking());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9689772c(void* hs_self, void* source) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isDamageBlocked(*static_cast<const ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_4c001ffd(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isEnchanted());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e02b2730(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isFireImmune());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_c5d1a6bf(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isImmobile());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_7834af48(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isInvisible());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_cf987d90(void* hs_self, void* source) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isInvulnerableTo(*static_cast<const ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_f0ae4c0d(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isOnFire());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_7f3896ed(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isSilentObserver());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9504529e(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isSleeping());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9e011135(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isSurfaceMob());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_80828a66(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isTargetable());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_3e586150(void* hs_self, void* attacker) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->isValidTarget(static_cast<Actor*>(attacker)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_81dc4199(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->kill();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_90338e4e(void* hs_self, void* delta) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->lerpMotion(*static_cast<const Vec3*>(delta));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_621d0e7a(void* hs_self, void* tag, void* dataLoadHelper) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->load(*static_cast<const CompoundTag*>(tag), *static_cast<DataLoadHelper*>(dataLoadHelper)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_8bc1c4e1(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->normalTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_481745db(void* hs_self, void* effect) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onEffectRemoved(*static_cast<MobEffectInstance*>(effect));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_30424ed0(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onFailedTame();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_a16d2634(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onLightningHit();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_23663267(void* hs_self, void* source) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onPush(*static_cast<Actor*>(source));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_ac64bf31(void* hs_self, std::int32_t dataId) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onSynchedDataUpdate(static_cast<int>(dataId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_cd737a89(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->onTame();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3a521cc8(void* hs_self, void* player) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->openContainerComponent(*static_cast<Player*>(player));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9ce9dc6a(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->outOfWorld();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3867de9c(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->passengerTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_995810ae(void* hs_self, void* target, float arg1) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->performRangedAttack(*static_cast<Actor*>(target), static_cast<float>(arg1));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_094f6edc(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->playAmbientSound();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_4d0814c6(void* hs_self, void* player) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->playerTouch(*static_cast<Player*>(player));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void* hs_method_91df9e55(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Actor const*>(hs_self)->queryEntityRenderer()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void hs_method_8bc10e53(void* hs_self, void* tag, void* dataLoadHelper) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->readAdditionalSaveData(*static_cast<const CompoundTag*>(tag), *static_cast<DataLoadHelper*>(dataLoadHelper));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9f6adbae(void* hs_self, std::uint8_t arg0, void* arg1) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->reloadComponents(static_cast<ActorInitializationMethod>(arg0), *static_cast<const VariantParameterList*>(arg1));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_580e7255(void* hs_self, std::uint8_t method, void* params) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->reloadHardcoded(static_cast<ActorInitializationMethod>(method), *static_cast<const VariantParameterList*>(params));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_c9e71e05(void* hs_self, std::uint8_t method) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->reloadHardcodedClient(static_cast<ActorInitializationMethod>(method));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f6b36b54(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->remove();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_ba866ed3(void* hs_self, void* options) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->renderDebugServerState(*static_cast<const IOptionsReader*>(options));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_8105c0cc(void* hs_self, std::uint8_t resetRule) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->resetUserPos(static_cast<ActorResetRule>(resetRule));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_4a54adef(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->sendMotionPacketIfNeeded();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_55fa4e22(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setArmor(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), *static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3e352dcb(void* hs_self, std::int32_t aux) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setAuxValue(static_cast<int>(aux));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_c1d2bb97(void* hs_self, void* item) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setCarriedItem(*static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_0458225c(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setEquippedSlot(static_cast<SharedTypes::Legacy::EquipmentSlot>(slot), *static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_1e67654b(void* hs_self, void* item) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setOffhandSlot(*static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_6311c216(void* hs_self, void* ownerId) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setOwner(*static_cast<const ActorUniqueID*>(ownerId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_68de274c(void* hs_self, bool value) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setSitting(static_cast<bool>(value));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_138c74f8(void* hs_self, bool val) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setSleeping(static_cast<bool>(val));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_588b2b85(void* hs_self, bool value) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setSneaking(static_cast<bool>(value));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_7b31251c(void* hs_self, bool value) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setStanding(static_cast<bool>(value));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_a739beb1(void* hs_self, void* entity) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->setTarget(static_cast<Actor*>(entity));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_1b21d768(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor const*>(hs_self)->shouldDropDeathLoot());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_8b4221fa(void* hs_self, void* vehicle, bool forceRiding) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->startRiding(*static_cast<Actor*>(vehicle), static_cast<bool>(forceRiding)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_88f688af(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->startSwimming();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_024379e2(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->stopSwimming();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_97d97b98(void* hs_self, std::uint8_t swingSource, std::uint8_t handSlot) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Actor*>(hs_self)->swing(static_cast<ActorSwingSource>(swingSource), static_cast<HandSlot>(handSlot)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_4944d222(void* hs_self, void* item, std::int32_t itemUseMethod, bool consumeItem) try
+{
+    clearLastError();
+    static_cast<Actor*>(hs_self)->useItem(*static_cast<ItemStackBase*>(item), static_cast<ItemUseMethod>(itemUseMethod), static_cast<bool>(consumeItem));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
 }
 
 static bool hs_method_c95b30fc(void* hs_self) try
@@ -4988,6 +7014,2030 @@ catch (...)
     return nullptr;
 }
 
+static HosihikariSharedHandle hs_method_744b9039(void* hs_self, void* mainChunkSource) try
+{
+    clearLastError();
+    return hs_make_shared_handle(static_cast<Player*>(hs_self)->_createChunkSource(*static_cast<ChunkSource*>(mainChunkSource)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariSharedHandle{nullptr, nullptr, nullptr};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariSharedHandle{nullptr, nullptr, nullptr};
+}
+
+static void hs_method_49673363(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->_fireDimensionChanged();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b42df059(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->_serverInitItemStackIds();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_725e91b0(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->_shouldProvideFeedbackOnArmorSet(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), *static_cast<const ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_20ae99b0(void* hs_self, std::uint8_t handSlot, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->_shouldProvideFeedbackOnHandContainerItemSet(static_cast<HandSlot>(handSlot), *static_cast<const ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e8a2da11(void* hs_self, void* item) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->add(*static_cast<ItemStack*>(item)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_02fd88b6(void* hs_self, void* entityTag) try
+{
+    clearLastError();
+    static_cast<Player const*>(hs_self)->addAdditionalSaveData(*static_cast<CompoundTag*>(entityTag));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_54458a77(void* hs_self, std::int32_t xp) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->addExperience(static_cast<int>(xp));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_8abf1f3a(void* hs_self, std::int32_t levels) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->addLevels(static_cast<int>(levels));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_7e4ab6a1(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->aiStep();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_c2ccac40(void* hs_self, void* passenger) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canAddPassenger(*static_cast<Actor*>(passenger)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_057ee718(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canBePulledIntoVehicle());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e0bb04dd(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canChangeDimensionsUsingPortal());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_2b8ffb03(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canExistWhenDisallowMob());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_762860bf(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canInteractWithOtherEntitiesInGame());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_ead40654(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->canObstructSpawningAndBlockPlacement());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_26a6c588(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->canStartSleepInBed());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static float hs_method_052cc802(void* hs_self, float distance, float multiplier, void* source) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player*>(hs_self)->causeFallDamageToActor(static_cast<float>(distance), static_cast<float>(multiplier), *static_cast<ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void hs_method_9d3db24f(void* hs_self, void* dimension) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->changeDimensionWithCredits(*static_cast<DimensionType*>(dimension));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_376625e7(void* hs_self, void* d) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->checkMovementStats(*static_cast<const Vec3*>(d));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_dc106afc(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->clearVanishEnchantedItemsOnDeath();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_a4ecc617(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->consumeTotem());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_da9b845a(void* hs_self, void* target, float damageDealtToTarget) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->damageCarriedItemOnAttack(*static_cast<Actor*>(target), static_cast<float>(damageDealtToTarget));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_36fd9a02(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->deleteContainerManager();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_385ea9a3(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->destroyRegion();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_48c709ce(void* hs_self, void* source) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->die(*static_cast<const ActorDamageSource*>(source));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_40e51038(void* hs_self, const char* author_data, std::size_t author_size, const char* message_data, std::size_t message_size, const char* filteredMessage_data, std::size_t filteredMessage_size, bool filteredMessage_hasValue) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->displayChatMessage(std::basic_string<char>(author_data, author_size), std::basic_string<char>(message_data, message_size), (filteredMessage_hasValue ? std::optional<std::basic_string<char>>{std::basic_string<char>(filteredMessage_data, filteredMessage_size)} : std::nullopt));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_bfe71f2b(void* hs_self, void* textObject, const char* fromXuid_data, std::size_t fromXuid_size, const char* fromPlatformId_data, std::size_t fromPlatformId_size) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->displayTextObjectMessage(*static_cast<const TextObjectRoot*>(textObject), std::basic_string<char>(fromXuid_data, fromXuid_size), std::basic_string<char>(fromPlatformId_data, fromPlatformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_299a62f1(void* hs_self, void* resolvedTextObject, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->displayTextObjectWhisperMessage(*static_cast<const ResolvedTextObject*>(resolvedTextObject), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_bd84f907(void* hs_self, const char* message_data, std::size_t message_size, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->displayTextObjectWhisperMessage(std::basic_string<char>(message_data, message_size), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2c2d6043(void* hs_self, const char* author_data, std::size_t author_size, const char* message_data, std::size_t message_size, const char* filteredMessage_data, std::size_t filteredMessage_size, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size, bool filteredMessage_hasValue) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->displayWhisperMessage(std::basic_string<char>(author_data, author_size), std::basic_string<char>(message_data, message_size), (filteredMessage_hasValue ? std::optional<std::basic_string<char>>{std::basic_string<char>(filteredMessage_data, filteredMessage_size)} : std::nullopt), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f6142abf(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->doEnterWaterSplashEffect();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2dffde0c(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->doExitWaterSplashEffect();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_7a14ec6e(void* hs_self, void* item, bool randomly) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->drop(*static_cast<const ItemStack*>(item), static_cast<const bool>(randomly)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_d4f86f91(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->dropEquipmentOnDeath();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e87f56c1(void* hs_self, void* source) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->dropEquipmentOnDeath(*static_cast<const ActorDamageSource*>(source));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_398f7f4a(void* hs_self, void* target, std::int32_t particleCount) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->emitCriticalHitParticles(*static_cast<const Actor*>(target), static_cast<int>(particleCount));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_dd7e58c7(void* hs_self, std::int32_t itemId) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->feed(static_cast<int>(itemId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void* hs_method_bf1d613f(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player const*>(hs_self)->getActorRendererId()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static HosihikariArrayView hs_method_f14753a8(void* hs_self) try
+{
+    clearLastError();
+    thread_local std::vector<void*> hs_arrayResult;
+    auto result = static_cast<Player const*>(hs_self)->getAllEquipment();
+    hs_arrayResult.clear();
+    hs_arrayResult.reserve(result.size());
+    for (auto const& item : result) { hs_arrayResult.push_back(const_cast<void*>(static_cast<void const*>(item))); }
+    return HosihikariArrayView{hs_arrayResult.data(), hs_arrayResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariArrayView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariArrayView{nullptr, 0};
+}
+
+static HosihikariArrayView hs_method_d88da4f0(void* hs_self) try
+{
+    clearLastError();
+    thread_local std::vector<void*> hs_arrayResult;
+    auto result = static_cast<Player const*>(hs_self)->getAllHandEquipment();
+    hs_arrayResult.clear();
+    hs_arrayResult.reserve(result.size());
+    for (auto const& item : result) { hs_arrayResult.push_back(const_cast<void*>(static_cast<void const*>(item))); }
+    return HosihikariArrayView{hs_arrayResult.data(), hs_arrayResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariArrayView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariArrayView{nullptr, 0};
+}
+
+static void* hs_method_ec379e72(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player*>(hs_self)->getAnimationComponent()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_47e846a4(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player const*>(hs_self)->getCarriedItem()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::uint8_t hs_method_adaa71d9(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint8_t>(static_cast<Player const*>(hs_self)->getCommandPermissionLevel());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void* hs_method_648a90bf(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new HashedString(static_cast<Player const*>(hs_self)->getCurrentStructureFeature()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_43c4244b(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player const*>(hs_self)->getEquippedTotem()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_d36510b1(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(static_cast<Player const*>(hs_self)->getEventing()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::int32_t hs_method_32752843(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Player const*>(hs_self)->getItemUseDuration());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static float hs_method_d22cbd29(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player const*>(hs_self)->getItemUseIntervalProgress());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static float hs_method_590a818f(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player const*>(hs_self)->getItemUseStartupProgress());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_82bf2187(void* hs_self, bool* hs_hasValue) try
+{
+    clearLastError();
+    auto result = static_cast<Player const*>(hs_self)->getLastDeathDimension();
+    *hs_hasValue = result.has_value();
+    if (!result) { return nullptr; }
+    return static_cast<void*>(new DimensionType(std::move(*result)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+
+static void* hs_method_ef9ce8e8(void* hs_self, bool* hs_hasValue) try
+{
+    clearLastError();
+    auto result = static_cast<Player const*>(hs_self)->getLastDeathPos();
+    *hs_hasValue = result.has_value();
+    if (!result) { return nullptr; }
+    return static_cast<void*>(new BlockPos(std::move(*result)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    if (hs_hasValue) { *hs_hasValue = false; }
+    return nullptr;
+}
+
+static float hs_method_95a58b42(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player const*>(hs_self)->getMapDecorationRotation());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static std::uint8_t hs_method_67f17ad1(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint8_t>(static_cast<Player const*>(hs_self)->getMaxChunkBuildRadius());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void* hs_method_1067adea(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player const*>(hs_self)->getMovementSettings()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_4ae43ed4(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new mce::Color(static_cast<Player const*>(hs_self)->getNameTagTextColor()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static HosihikariStringView hs_method_3c8bc98b(void* hs_self) try
+{
+    clearLastError();
+    auto result = static_cast<Player const*>(hs_self)->getPlayFabId();
+    g_stringResult.assign(result.data(), result.size());
+    return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariStringView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariStringView{nullptr, 0};
+}
+
+static float hs_method_2e48c950(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player const*>(hs_self)->getShadowRadius());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static float hs_method_ac6ccdf2(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<float>(static_cast<Player const*>(hs_self)->getSpeed());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0.0f;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0.0f;
+}
+
+static void* hs_method_465ddf6e(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<Player const*>(hs_self)->getTickingOffsets()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::uint32_t hs_method_d3946ad6(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint32_t>(static_cast<Player const*>(hs_self)->getUserId());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static HosihikariStringView hs_method_ea0a96ed(void* hs_self) try
+{
+    clearLastError();
+    auto result = static_cast<Player const*>(hs_self)->getXuid();
+    g_stringResult.assign(result.data(), result.size());
+    return HosihikariStringView{g_stringResult.data(), g_stringResult.size()};
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return HosihikariStringView{nullptr, 0};
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return HosihikariStringView{nullptr, 0};
+}
+
+static void hs_method_3f7ed814(void* hs_self, std::uint8_t id, std::int32_t data) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->handleEntityEvent(static_cast<ActorEvent>(id), static_cast<int>(data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_d2fa37a1(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->hasDiedBefore());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_6aef95d5(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->initHUDContainerManager();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_b055c8ad(void* hs_self, void* actor) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->isActorRelevant(*static_cast<const Actor*>(actor)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_98c91c53(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isAutoJumpEnabled());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_3a320afc(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isBlocking());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_d1a8d63a(void* hs_self, void* source) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isDamageBlocked(*static_cast<const ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_38599e52(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isFireImmune());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_e2e38c99(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isImmobile());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_00dcdd5e(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->isInTrialMode());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_1751a661(void* hs_self, void* source) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isInvulnerableTo(*static_cast<const ActorDamageSource*>(source)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_813f6ea9(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isLoading());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_4885cb98(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isPlayerInitialized());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_4ececeb4(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isSilentObserver());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_80ab377c(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isSimulated());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9324a80d(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->isSleeping());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_95fb93f4(void* hs_self, void* spawnPosition, void* dimensionType) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->moveSpawnView(*static_cast<const Vec3*>(spawnPosition), *static_cast<DimensionType*>(dimensionType));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_0db5e913(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->moveView();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_7bf169e4(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->normalTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b68b5775(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->onLinkedSlotsChanged();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3f663605(void* hs_self, void* pos, void* rot, float yHeadRot) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->onMovePlayerPacketNormal(*static_cast<const Vec3*>(pos), *static_cast<const Vec2*>(rot), static_cast<float>(yHeadRot));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2ea365a5(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->onSuspension();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_888332af(void* hs_self, std::int32_t dataId) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->onSynchedDataUpdate(static_cast<int>(dataId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_309fbe7e(void* hs_self, std::int32_t arg0, bool arg1, std::int32_t arg2, void* arg3) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openBook(static_cast<int>(arg0), static_cast<bool>(arg1), static_cast<int>(arg2), static_cast<BlockActor*>(arg3));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_21fed472(void* hs_self, void* arg0, bool arg1) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openChalkboard(*static_cast<ChalkboardBlockActor*>(arg0), static_cast<bool>(arg1));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f76a4f34(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openInventory();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_03c010ed(void* hs_self, HosihikariSharedHandle npc) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openNpcInteractScreen(hs_shared_from_handle<INpcDialogueData>(npc));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2ef5ea91(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openPortfolio();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9d73b896(void* hs_self, void* position, bool isFrontSide) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openSign(*static_cast<const BlockPos*>(position), static_cast<bool>(isFrontSide));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_00fe1c9e(void* hs_self, void* uniqueID, bool useNewScreen) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->openTrading(*static_cast<const ActorUniqueID*>(uniqueID), static_cast<bool>(useNewScreen));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_120d2aec(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->passengerTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_373e6215(void* hs_self, const char* arg0_data, std::size_t arg0_size, bool arg1) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->playEmote(std::basic_string<char>(arg0_data, arg0_size), static_cast<const bool>(arg1));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_c6dc4041(void* hs_self, void* mainChunkSource) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->prepareRegion(*static_cast<ChunkSource*>(mainChunkSource));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_aece1b38(void* hs_self, void* tag, void* dataLoadHelper) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->readAdditionalSaveData(*static_cast<const CompoundTag*>(tag), *static_cast<DataLoadHelper*>(dataLoadHelper));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_fa69f443(void* hs_self, std::uint8_t method, void* params) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->reloadHardcoded(static_cast<ActorInitializationMethod>(method), *static_cast<const VariantParameterList*>(params));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_ea8cd8be(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->remove();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_872e6705(void* hs_self, void* arg0) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->requestMissingSubChunk(*static_cast<const SubChunkPos*>(arg0));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_fd102561(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->resetRot();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_039c57c9(void* hs_self, std::uint8_t resetRule) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->resetUserPos(static_cast<ActorResetRule>(resetRule));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9005bea3(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->respawn();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_635c280a(void* hs_self, bool shouldSelectSlot) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->sendInventory(static_cast<bool>(shouldSelectSlot));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e5ea7c07(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->sendMotionPacketIfNeeded();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_aa17a5b0(void* hs_self, void* packet) try
+{
+    clearLastError();
+    static_cast<Player const*>(hs_self)->sendNetworkPacket(*static_cast<Packet*>(packet));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3f7ada33(void* hs_self, void* newAbilities) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setAbilities(*static_cast<const LayeredAbilities*>(newAbilities));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9b38a1ea(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setArmor(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), *static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_a2081a52(void* hs_self, const char* arg0_data, std::size_t arg0_size, std::int32_t arg1) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setBehaviorCommandStatus(std::basic_string<char>(arg0_data, arg0_size), static_cast<BehaviorStatus>(arg1));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_8f72965d(void* hs_self, void* item) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setCarriedItem(*static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_51aba777(void* hs_self, void* item) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setOffhandSlot(*static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e14b14a9(void* hs_self, std::int32_t gameType) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setPlayerGameType(static_cast<GameType>(gameType));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f29a2c90(void* hs_self, bool arg0) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setRemotePlayerTicked(static_cast<bool>(arg0));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_5dcc03fb(void* hs_self, bool val) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setSleeping(static_cast<bool>(val));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f7197be5(void* hs_self, float _speed) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->setSpeed(static_cast<float>(_speed));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_ae8b392d(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player const*>(hs_self)->shouldDropDeathLoot());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_89df0fa9(void* hs_self, void* vehicle, bool forceRiding) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<Player*>(hs_self)->startRiding(*static_cast<Actor*>(vehicle), static_cast<bool>(forceRiding)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static std::int32_t hs_method_6093240c(void* hs_self, void* bedPos, bool setsRespawn, float sleepOffset) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<Player*>(hs_self)->startSleepInBed(*static_cast<const BlockPos*>(bedPos), static_cast<bool>(setsRespawn), static_cast<float>(sleepOffset)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void hs_method_de45b86b(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->startSwimming();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_cf8934ce(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->stopLoading();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_72e0b6b0(void* hs_self, bool forcefulWakeUp, bool updateLevelList) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->stopSleepInBed(static_cast<bool>(forcefulWakeUp), static_cast<bool>(updateLevelList));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_965b1377(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->stopSwimming();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2ae15127(void* hs_self) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->suspendRegion();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_71b6a8ac(void* hs_self, void* pos, bool shouldStopRiding, std::int32_t cause, std::int32_t sourceEntityType, bool keepVelocity) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->teleportTo(*static_cast<const Vec3*>(pos), static_cast<bool>(shouldStopRiding), static_cast<int>(cause), static_cast<int>(sourceEntityType), static_cast<bool>(keepVelocity));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_635bd01f(void* hs_self, void* arg0) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->tickWorld(*static_cast<const Tick*>(arg0));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_913e1726(void* hs_self, void* instance, std::int32_t itemUseMethod, bool consumeItem) try
+{
+    clearLastError();
+    static_cast<Player*>(hs_self)->useItem(*static_cast<ItemStackBase*>(instance), static_cast<ItemUseMethod>(itemUseMethod), static_cast<bool>(consumeItem));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
 static bool hs_method_c0bb8194(void* hs_self, void* item) try
 {
     clearLastError();
@@ -8568,6 +12618,902 @@ catch (...)
 {
     setLastError("unknown native exception");
     return nullptr;
+}
+
+static std::int32_t hs_method_fb37a36b(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::int32_t>(static_cast<ServerPlayer const*>(hs_self)->_getSpawnChunkLimit());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void hs_method_2583d54e(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->_serverInitItemStackIds();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_c8777961(void* hs_self, void* position, float minDistance) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->_updateChunkPublisherView(*static_cast<const Vec3*>(position), static_cast<float>(minDistance));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_0f589f04(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->aiStep();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_7cc8ecad(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->canChangeDimensionsUsingPortal());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_5dcfb7e9(void* hs_self, void* toId) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->changeDimension(*static_cast<DimensionType*>(toId));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_609b44e5(void* hs_self, void* dimension) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->changeDimensionWithCredits(*static_cast<DimensionType*>(dimension));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_1fc7e483(void* hs_self, void* d) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->checkMovementStats(*static_cast<const Vec3*>(d));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b463c06f(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->clearVanishEnchantedItemsOnDeath();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_93bb54ac(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->destroyEditorPlayer();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_48f5f814(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->destroyRegion();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_0ad35574(void* hs_self, void* source) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->die(*static_cast<const ActorDamageSource*>(source));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_f225432f(void* hs_self, void* textObject, const char* fromXuid_data, std::size_t fromXuid_size, const char* fromPlatformId_data, std::size_t fromPlatformId_size) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->displayTextObjectMessage(*static_cast<const TextObjectRoot*>(textObject), std::basic_string<char>(fromXuid_data, fromXuid_size), std::basic_string<char>(fromPlatformId_data, fromPlatformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_b9e8445c(void* hs_self, void* textObject, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->displayTextObjectWhisperMessage(*static_cast<const ResolvedTextObject*>(textObject), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e0bb285e(void* hs_self, const char* message_data, std::size_t message_size, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->displayTextObjectWhisperMessage(std::basic_string<char>(message_data, message_size), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_90a4ed6b(void* hs_self, const char* author_data, std::size_t author_size, const char* message_data, std::size_t message_size, const char* filteredMessage_data, std::size_t filteredMessage_size, const char* xuid_data, std::size_t xuid_size, const char* platformId_data, std::size_t platformId_size, bool filteredMessage_hasValue) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->displayWhisperMessage(std::basic_string<char>(author_data, author_size), std::basic_string<char>(message_data, message_size), (filteredMessage_hasValue ? std::optional<std::basic_string<char>>{std::basic_string<char>(filteredMessage_data, filteredMessage_size)} : std::nullopt), std::basic_string<char>(xuid_data, xuid_size), std::basic_string<char>(platformId_data, platformId_size));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_fa825ff8(void* hs_self, void* arg0) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->frameUpdate(*static_cast<FrameUpdateContextBase*>(arg0));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void* hs_method_ac7ba325(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new ActorUniqueID(static_cast<ServerPlayer const*>(hs_self)->getControllingPlayer()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void* hs_method_3965fb1c(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<void*>(new HashedString(static_cast<ServerPlayer const*>(hs_self)->getCurrentStructureFeature()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static std::uint8_t hs_method_c16a5a21(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<std::uint8_t>(static_cast<ServerPlayer const*>(hs_self)->getMaxChunkBuildRadius());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return 0;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return 0;
+}
+
+static void* hs_method_8436d26e(void* hs_self) try
+{
+    clearLastError();
+    return const_cast<void*>(static_cast<void const*>(&static_cast<ServerPlayer*>(hs_self)->getPlayerEventCoordinator()));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return nullptr;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return nullptr;
+}
+
+static void hs_method_99a8645c(void* hs_self, std::uint8_t id, std::int32_t data) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->handleEntityEvent(static_cast<ActorEvent>(id), static_cast<int>(data));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_87f9a5a4(void* hs_self, void* actor) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer*>(hs_self)->isActorRelevant(*static_cast<const Actor*>(actor)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_5bd5a1e0(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->isExternalCommunicationAllowed());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_76a4c3db(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->isLoading());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_a6e662bd(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->isPlayerInitialized());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_d673e00e(void* hs_self) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->isTeacher());
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_9e74306e(void* hs_self, void* attacker) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer const*>(hs_self)->isValidTarget(static_cast<Actor*>(attacker)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static bool hs_method_adf192f7(void* hs_self, void* tag, void* dataLoadHelper) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer*>(hs_self)->load(*static_cast<const CompoundTag*>(tag), *static_cast<DataLoadHelper*>(dataLoadHelper)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
+}
+
+static void hs_method_1d5f58cb(void* hs_self, void* spawnPosition, void* dimension) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->moveSpawnView(*static_cast<const Vec3*>(spawnPosition), *static_cast<DimensionType*>(dimension));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_4d0e412a(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->moveView();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_97e62f70(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->normalTick();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_c3a2ffc9(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->onLinkedSlotsChanged();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e89567bb(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->onSuspension();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_2a844f10(void* hs_self, std::int32_t arg0, bool arg1, std::int32_t arg2, void* lectern) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openBook(static_cast<int>(arg0), static_cast<bool>(arg1), static_cast<int>(arg2), static_cast<BlockActor*>(lectern));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_7513d529(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openInventory();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e2de2a77(void* hs_self, HosihikariSharedHandle npc) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openNpcInteractScreen(hs_shared_from_handle<INpcDialogueData>(npc));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_986a7225(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openPortfolio();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_a5f1af41(void* hs_self, void* position, bool isFrontSide) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openSign(*static_cast<const BlockPos*>(position), static_cast<bool>(isFrontSide));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e44dc4ad(void* hs_self, void* uniqueID, bool useNewScreen) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->openTrading(*static_cast<const ActorUniqueID*>(uniqueID), static_cast<bool>(useNewScreen));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_cd642562(void* hs_self, void* mainChunkSource) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->prepareRegion(*static_cast<ChunkSource*>(mainChunkSource));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3ada6ffe(void* hs_self, void* menu) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->refreshContainer(*static_cast<IContainerManager*>(menu));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_fe56d7f6(void* hs_self) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->respawn();
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_0af3de82(void* hs_self, std::uint8_t armorSlots) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->sendArmor(std::bitset<5>(armorSlots));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_1419f655(void* hs_self, std::uint8_t damagedSlots) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->sendArmorDamage(std::bitset<5>(damagedSlots));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_29dc9360(void* hs_self, bool shouldSelectSlot) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->sendInventory(static_cast<bool>(shouldSelectSlot));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_70c3d600(void* hs_self, void* transaction) try
+{
+    clearLastError();
+    static_cast<ServerPlayer const*>(hs_self)->sendInventoryTransaction(*static_cast<const InventoryTransaction*>(transaction));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_3a522b09(void* hs_self, void* packet) try
+{
+    clearLastError();
+    static_cast<ServerPlayer const*>(hs_self)->sendNetworkPacket(*static_cast<Packet*>(packet));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_a33838ed(void* hs_self, std::int32_t armorSlot, void* item) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->setArmor(static_cast<const SharedTypes::Legacy::ArmorSlot>(armorSlot), *static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_8797cb38(void* hs_self, void* menu, std::int32_t id, std::int32_t value) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->setContainerData(*static_cast<IContainerManager*>(menu), static_cast<int>(id), static_cast<int>(value));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_591d7bc7(void* hs_self, std::int32_t slot, void* item) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->setDamagedArmor(static_cast<SharedTypes::Legacy::ArmorSlot>(slot), *static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_350b229b(void* hs_self, void* item) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->setOffhandSlot(*static_cast<const ItemStack*>(item));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_9f933001(void* hs_self, std::int32_t gameType) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->setPlayerGameType(static_cast<GameType>(gameType));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_e4f1d711(void* hs_self, void* menu, void* container, std::int32_t slot, void* oldItem, void* newItem, bool isResultSlot) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->slotChanged(*static_cast<IContainerManager*>(menu), *static_cast<Container*>(container), static_cast<int>(slot), *static_cast<const ItemStack*>(oldItem), *static_cast<const ItemStack*>(newItem), static_cast<bool>(isResultSlot));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static void hs_method_6340c902(void* hs_self, bool forcefulWakeUp, bool updateLevelList) try
+{
+    clearLastError();
+    static_cast<ServerPlayer*>(hs_self)->stopSleepInBed(static_cast<bool>(forcefulWakeUp), static_cast<bool>(updateLevelList));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return;
+}
+
+static bool hs_method_3429c22b(void* hs_self, std::uint8_t swingSource, std::uint8_t handSlot) try
+{
+    clearLastError();
+    return static_cast<bool>(static_cast<ServerPlayer*>(hs_self)->swing(static_cast<ActorSwingSource>(swingSource), static_cast<HandSlot>(handSlot)));
+}
+catch (std::exception const& hs_error)
+{
+    setLastError(hs_error.what());
+    return false;
+}
+catch (...)
+{
+    setLastError("unknown native exception");
+    return false;
 }
 
 static std::uint32_t hs_get_6fb77198(void* hs_self) try
@@ -107608,6 +112554,131 @@ const HosihikariBindingTableV1 kTable{
     &hs_get_fc449c2f,
     &hs_get_9d87d392,
     &hs_get_1d34ec28,
+    &hs_method_4c46f45f,
+    &hs_method_d5528ec6,
+    &hs_method_1c9ed74e,
+    &hs_method_78e22516,
+    &hs_method_d2f63c2a,
+    &hs_method_3f571f19,
+    &hs_method_d53f84c3,
+    &hs_method_50861b1b,
+    &hs_method_18f4a165,
+    &hs_method_cad77604,
+    &hs_method_1543bd83,
+    &hs_method_b961f4f2,
+    &hs_method_ab2faeb2,
+    &hs_method_9bd986e5,
+    &hs_method_2a99afcb,
+    &hs_method_068ac829,
+    &hs_method_e1f72ba7,
+    &hs_method_17316ee0,
+    &hs_method_d37e676b,
+    &hs_method_3c066f53,
+    &hs_method_48246d3e,
+    &hs_method_e674c026,
+    &hs_method_8da4dff2,
+    &hs_method_83ad92f1,
+    &hs_method_7be0f5c2,
+    &hs_method_399d8cab,
+    &hs_method_6ff09753,
+    &hs_method_1dd5c4d8,
+    &hs_method_70180f93,
+    &hs_method_be6c89aa,
+    &hs_method_3e6a38c5,
+    &hs_method_b819b0eb,
+    &hs_method_28a790f0,
+    &hs_method_92aeb828,
+    &hs_method_86d13877,
+    &hs_method_7968e3e8,
+    &hs_method_48ec3e85,
+    &hs_method_5cc7f7c0,
+    &hs_method_47128d2f,
+    &hs_method_4252e10a,
+    &hs_method_e7676742,
+    &hs_method_4a143664,
+    &hs_method_07a30010,
+    &hs_method_78c53595,
+    &hs_method_3788dc7b,
+    &hs_method_e8d73c0c,
+    &hs_method_9c81814c,
+    &hs_method_e62c0764,
+    &hs_method_acd01685,
+    &hs_method_7afa7412,
+    &hs_method_0b15f6be,
+    &hs_method_755d48b3,
+    &hs_method_f714f9c5,
+    &hs_method_2c833860,
+    &hs_method_727d5c16,
+    &hs_method_bb11832b,
+    &hs_method_2b5d91a8,
+    &hs_method_138da495,
+    &hs_method_5b975219,
+    &hs_method_6d64b70f,
+    &hs_method_57a0a884,
+    &hs_method_7dee9327,
+    &hs_method_7250aaa5,
+    &hs_method_6fdd8dac,
+    &hs_method_b99172bf,
+    &hs_method_4a0b6d7d,
+    &hs_method_db651f45,
+    &hs_method_5cc1b04b,
+    &hs_method_64dbade4,
+    &hs_method_19860043,
+    &hs_method_d65398a0,
+    &hs_method_9689772c,
+    &hs_method_4c001ffd,
+    &hs_method_e02b2730,
+    &hs_method_c5d1a6bf,
+    &hs_method_7834af48,
+    &hs_method_cf987d90,
+    &hs_method_f0ae4c0d,
+    &hs_method_7f3896ed,
+    &hs_method_9504529e,
+    &hs_method_9e011135,
+    &hs_method_80828a66,
+    &hs_method_3e586150,
+    &hs_method_81dc4199,
+    &hs_method_90338e4e,
+    &hs_method_621d0e7a,
+    &hs_method_8bc1c4e1,
+    &hs_method_481745db,
+    &hs_method_30424ed0,
+    &hs_method_a16d2634,
+    &hs_method_23663267,
+    &hs_method_ac64bf31,
+    &hs_method_cd737a89,
+    &hs_method_3a521cc8,
+    &hs_method_9ce9dc6a,
+    &hs_method_3867de9c,
+    &hs_method_995810ae,
+    &hs_method_094f6edc,
+    &hs_method_4d0814c6,
+    &hs_method_91df9e55,
+    &hs_method_8bc10e53,
+    &hs_method_9f6adbae,
+    &hs_method_580e7255,
+    &hs_method_c9e71e05,
+    &hs_method_f6b36b54,
+    &hs_method_ba866ed3,
+    &hs_method_8105c0cc,
+    &hs_method_4a54adef,
+    &hs_method_55fa4e22,
+    &hs_method_3e352dcb,
+    &hs_method_c1d2bb97,
+    &hs_method_0458225c,
+    &hs_method_1e67654b,
+    &hs_method_6311c216,
+    &hs_method_68de274c,
+    &hs_method_138c74f8,
+    &hs_method_588b2b85,
+    &hs_method_7b31251c,
+    &hs_method_a739beb1,
+    &hs_method_1b21d768,
+    &hs_method_8b4221fa,
+    &hs_method_88f688af,
+    &hs_method_024379e2,
+    &hs_method_97d97b98,
+    &hs_method_4944d222,
     &hs_method_c95b30fc,
     &hs_method_6eff8eab,
     &hs_method_5c814c60,
@@ -107867,6 +112938,131 @@ const HosihikariBindingTableV1 kTable{
     &hs_get_e464893d,
     &hs_get_03c74f8d,
     &hs_cast_b11212ac,
+    &hs_method_744b9039,
+    &hs_method_49673363,
+    &hs_method_b42df059,
+    &hs_method_725e91b0,
+    &hs_method_20ae99b0,
+    &hs_method_e8a2da11,
+    &hs_method_02fd88b6,
+    &hs_method_54458a77,
+    &hs_method_8abf1f3a,
+    &hs_method_7e4ab6a1,
+    &hs_method_c2ccac40,
+    &hs_method_057ee718,
+    &hs_method_e0bb04dd,
+    &hs_method_2b8ffb03,
+    &hs_method_762860bf,
+    &hs_method_ead40654,
+    &hs_method_26a6c588,
+    &hs_method_052cc802,
+    &hs_method_9d3db24f,
+    &hs_method_376625e7,
+    &hs_method_dc106afc,
+    &hs_method_a4ecc617,
+    &hs_method_da9b845a,
+    &hs_method_36fd9a02,
+    &hs_method_385ea9a3,
+    &hs_method_48c709ce,
+    &hs_method_40e51038,
+    &hs_method_bfe71f2b,
+    &hs_method_299a62f1,
+    &hs_method_bd84f907,
+    &hs_method_2c2d6043,
+    &hs_method_f6142abf,
+    &hs_method_2dffde0c,
+    &hs_method_7a14ec6e,
+    &hs_method_d4f86f91,
+    &hs_method_e87f56c1,
+    &hs_method_398f7f4a,
+    &hs_method_dd7e58c7,
+    &hs_method_bf1d613f,
+    &hs_method_f14753a8,
+    &hs_method_d88da4f0,
+    &hs_method_ec379e72,
+    &hs_method_47e846a4,
+    &hs_method_adaa71d9,
+    &hs_method_648a90bf,
+    &hs_method_43c4244b,
+    &hs_method_d36510b1,
+    &hs_method_32752843,
+    &hs_method_d22cbd29,
+    &hs_method_590a818f,
+    &hs_method_82bf2187,
+    &hs_method_ef9ce8e8,
+    &hs_method_95a58b42,
+    &hs_method_67f17ad1,
+    &hs_method_1067adea,
+    &hs_method_4ae43ed4,
+    &hs_method_3c8bc98b,
+    &hs_method_2e48c950,
+    &hs_method_ac6ccdf2,
+    &hs_method_465ddf6e,
+    &hs_method_d3946ad6,
+    &hs_method_ea0a96ed,
+    &hs_method_3f7ed814,
+    &hs_method_d2fa37a1,
+    &hs_method_6aef95d5,
+    &hs_method_b055c8ad,
+    &hs_method_98c91c53,
+    &hs_method_3a320afc,
+    &hs_method_d1a8d63a,
+    &hs_method_38599e52,
+    &hs_method_e2e38c99,
+    &hs_method_00dcdd5e,
+    &hs_method_1751a661,
+    &hs_method_813f6ea9,
+    &hs_method_4885cb98,
+    &hs_method_4ececeb4,
+    &hs_method_80ab377c,
+    &hs_method_9324a80d,
+    &hs_method_95fb93f4,
+    &hs_method_0db5e913,
+    &hs_method_7bf169e4,
+    &hs_method_b68b5775,
+    &hs_method_3f663605,
+    &hs_method_2ea365a5,
+    &hs_method_888332af,
+    &hs_method_309fbe7e,
+    &hs_method_21fed472,
+    &hs_method_f76a4f34,
+    &hs_method_03c010ed,
+    &hs_method_2ef5ea91,
+    &hs_method_9d73b896,
+    &hs_method_00fe1c9e,
+    &hs_method_120d2aec,
+    &hs_method_373e6215,
+    &hs_method_c6dc4041,
+    &hs_method_aece1b38,
+    &hs_method_fa69f443,
+    &hs_method_ea8cd8be,
+    &hs_method_872e6705,
+    &hs_method_fd102561,
+    &hs_method_039c57c9,
+    &hs_method_9005bea3,
+    &hs_method_635c280a,
+    &hs_method_e5ea7c07,
+    &hs_method_aa17a5b0,
+    &hs_method_3f7ada33,
+    &hs_method_9b38a1ea,
+    &hs_method_a2081a52,
+    &hs_method_8f72965d,
+    &hs_method_51aba777,
+    &hs_method_e14b14a9,
+    &hs_method_f29a2c90,
+    &hs_method_5dcc03fb,
+    &hs_method_f7197be5,
+    &hs_method_ae8b392d,
+    &hs_method_89df0fa9,
+    &hs_method_6093240c,
+    &hs_method_de45b86b,
+    &hs_method_cf8934ce,
+    &hs_method_72e0b6b0,
+    &hs_method_965b1377,
+    &hs_method_2ae15127,
+    &hs_method_71b6a8ac,
+    &hs_method_635bd01f,
+    &hs_method_913e1726,
     &hs_method_c0bb8194,
     &hs_method_1e2c389b,
     &hs_method_1042ce11,
@@ -108090,6 +113286,62 @@ const HosihikariBindingTableV1 kTable{
     &hs_get_9d72f44b,
     &hs_destroy_c572456f,
     &hs_cast_65bc0bd4,
+    &hs_method_fb37a36b,
+    &hs_method_2583d54e,
+    &hs_method_c8777961,
+    &hs_method_0f589f04,
+    &hs_method_7cc8ecad,
+    &hs_method_5dcfb7e9,
+    &hs_method_609b44e5,
+    &hs_method_1fc7e483,
+    &hs_method_b463c06f,
+    &hs_method_93bb54ac,
+    &hs_method_48f5f814,
+    &hs_method_0ad35574,
+    &hs_method_f225432f,
+    &hs_method_b9e8445c,
+    &hs_method_e0bb285e,
+    &hs_method_90a4ed6b,
+    &hs_method_fa825ff8,
+    &hs_method_ac7ba325,
+    &hs_method_3965fb1c,
+    &hs_method_c16a5a21,
+    &hs_method_8436d26e,
+    &hs_method_99a8645c,
+    &hs_method_87f9a5a4,
+    &hs_method_5bd5a1e0,
+    &hs_method_76a4c3db,
+    &hs_method_a6e662bd,
+    &hs_method_d673e00e,
+    &hs_method_9e74306e,
+    &hs_method_adf192f7,
+    &hs_method_1d5f58cb,
+    &hs_method_4d0e412a,
+    &hs_method_97e62f70,
+    &hs_method_c3a2ffc9,
+    &hs_method_e89567bb,
+    &hs_method_2a844f10,
+    &hs_method_7513d529,
+    &hs_method_e2de2a77,
+    &hs_method_986a7225,
+    &hs_method_a5f1af41,
+    &hs_method_e44dc4ad,
+    &hs_method_cd642562,
+    &hs_method_3ada6ffe,
+    &hs_method_fe56d7f6,
+    &hs_method_0af3de82,
+    &hs_method_1419f655,
+    &hs_method_29dc9360,
+    &hs_method_70c3d600,
+    &hs_method_3a522b09,
+    &hs_method_a33838ed,
+    &hs_method_8797cb38,
+    &hs_method_591d7bc7,
+    &hs_method_350b229b,
+    &hs_method_9f933001,
+    &hs_method_e4f1d711,
+    &hs_method_6340c902,
+    &hs_method_3429c22b,
     &hs_get_6fb77198,
     &hs_set_6fb77198,
     &hs_get_53de0b7f,

@@ -40,109 +40,317 @@ public sealed unsafe partial class ServerPlayer : global::System.IDisposable
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public int __getSpawnChunkLimit() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public int __getSpawnChunkLimit()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_fb37a36b((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void __serverInitItemStackIds() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void __serverInitItemStackIds()
+    {
+        NativeMethods.TablePtr->C0.hs_method_2583d54e((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void __updateChunkPublisherView(nint position, float minDistance) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void __updateChunkPublisherView(global::Hosihikari.Binding.LeviLamina.Interop.Vec3 position, float minDistance)
+    {
+        NativeMethods.TablePtr->C0.hs_method_c8777961((void*)__hosihikari_shim_handle, (void*)position.Handle, minDistance);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: vector parameter type 'ChunkPos' is not supported.", false)]
     public void _addChunksToQueue(nint chunkPostions, bool isBiomeUpdate) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: vector parameter type 'ChunkPos' is not supported.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _aiStep() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _aiStep()
+    {
+        NativeMethods.TablePtr->C0.hs_method_0f589f04((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _canChangeDimensionsUsingPortal() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _canChangeDimensionsUsingPortal()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_7cc8ecad((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _changeDimension(nint toId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _changeDimension(global::Hosihikari.Binding.LeviLamina.Interop.DimensionType toId)
+    {
+        NativeMethods.TablePtr->C0.hs_method_5dcfb7e9((void*)__hosihikari_shim_handle, (void*)toId.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _changeDimensionWithCredits(nint dimension) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _changeDimensionWithCredits(global::Hosihikari.Binding.LeviLamina.Interop.DimensionType dimension)
+    {
+        NativeMethods.TablePtr->C0.hs_method_609b44e5((void*)__hosihikari_shim_handle, (void*)dimension.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _checkMovementStats(nint d) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _checkMovementStats(global::Hosihikari.Binding.LeviLamina.Interop.Vec3 d)
+    {
+        NativeMethods.TablePtr->C0.hs_method_1fc7e483((void*)__hosihikari_shim_handle, (void*)d.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _clearVanishEnchantedItemsOnDeath() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _clearVanishEnchantedItemsOnDeath()
+    {
+        NativeMethods.TablePtr->C0.hs_method_b463c06f((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value record parameter 'SyncedClientOptionsComponent' is not a known bindable declaration.", false)]
     public nint _ctor(nint level, nint packetSender, nint network, nint clientCacheMirror, nint playerGameType, bool isHostingPlayer, nint owner, nint subid, nint onPlayerLoadedCallback, nint uuid, nint deviceId, nint authType, nint authInfo, int maxChunkRadius, bool enableItemStackNetManager, nint entityContext, nint platformType, nint inputMode, nint clientOptions) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value record parameter 'SyncedClientOptionsComponent' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _destroyEditorPlayer() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _destroyEditorPlayer()
+    {
+        NativeMethods.TablePtr->C0.hs_method_93bb54ac((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _destroyRegion() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _destroyRegion()
+    {
+        NativeMethods.TablePtr->C0.hs_method_48f5f814((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _die(nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _die(global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
+    {
+        NativeMethods.TablePtr->C0.hs_method_0ad35574((void*)__hosihikari_shim_handle, (void*)source.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _displayTextObjectMessage(nint textObject, nint fromXuid, nint fromPlatformId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _displayTextObjectMessage(nint textObject, string fromXuid, string fromPlatformId)
+    {
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(fromXuid);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(fromXuid, __hs_stringBytes1);
+        var __hs_stringByteCount2 = global::System.Text.Encoding.UTF8.GetByteCount(fromPlatformId);
+        scoped global::System.Span<byte> __hs_stringBytes2;
+        if (__hs_stringByteCount2 <= 256)
+        {
+            __hs_stringBytes2 = stackalloc byte[__hs_stringByteCount2 == 0 ? 1 : __hs_stringByteCount2];
+        }
+        else
+        {
+            __hs_stringBytes2 = new byte[__hs_stringByteCount2];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(fromPlatformId, __hs_stringBytes2);
+        fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+        {
+            fixed (byte* __hs_stringData2 = __hs_stringBytes2)
+            {
+                NativeMethods.TablePtr->C0.hs_method_f225432f((void*)__hosihikari_shim_handle, (void*)textObject, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2);
+            }
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _displayTextObjectWhisperMessage_b9e8445c(nint textObject, nint xuid, nint platformId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _displayTextObjectWhisperMessage(nint textObject, string xuid, string platformId)
+    {
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(xuid);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(xuid, __hs_stringBytes1);
+        var __hs_stringByteCount2 = global::System.Text.Encoding.UTF8.GetByteCount(platformId);
+        scoped global::System.Span<byte> __hs_stringBytes2;
+        if (__hs_stringByteCount2 <= 256)
+        {
+            __hs_stringBytes2 = stackalloc byte[__hs_stringByteCount2 == 0 ? 1 : __hs_stringByteCount2];
+        }
+        else
+        {
+            __hs_stringBytes2 = new byte[__hs_stringByteCount2];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(platformId, __hs_stringBytes2);
+        fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+        {
+            fixed (byte* __hs_stringData2 = __hs_stringBytes2)
+            {
+                NativeMethods.TablePtr->C0.hs_method_b9e8445c((void*)__hosihikari_shim_handle, (void*)textObject, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2);
+            }
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _displayTextObjectWhisperMessage_e0bb285e(nint message, nint xuid, nint platformId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _displayTextObjectWhisperMessage(string message, string xuid, string platformId)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(message);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(message, __hs_stringBytes0);
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(xuid);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(xuid, __hs_stringBytes1);
+        var __hs_stringByteCount2 = global::System.Text.Encoding.UTF8.GetByteCount(platformId);
+        scoped global::System.Span<byte> __hs_stringBytes2;
+        if (__hs_stringByteCount2 <= 256)
+        {
+            __hs_stringBytes2 = stackalloc byte[__hs_stringByteCount2 == 0 ? 1 : __hs_stringByteCount2];
+        }
+        else
+        {
+            __hs_stringBytes2 = new byte[__hs_stringByteCount2];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(platformId, __hs_stringBytes2);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+            {
+                fixed (byte* __hs_stringData2 = __hs_stringBytes2)
+                {
+                    NativeMethods.TablePtr->C0.hs_method_e0bb285e((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2);
+                }
+            }
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _displayWhisperMessage(nint author, nint message, nint filteredMessage, nint xuid, nint platformId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _displayWhisperMessage(string author, string message, string? filteredMessage, string xuid, string platformId)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(author);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(author, __hs_stringBytes0);
+        var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(message);
+        scoped global::System.Span<byte> __hs_stringBytes1;
+        if (__hs_stringByteCount1 <= 256)
+        {
+            __hs_stringBytes1 = stackalloc byte[__hs_stringByteCount1 == 0 ? 1 : __hs_stringByteCount1];
+        }
+        else
+        {
+            __hs_stringBytes1 = new byte[__hs_stringByteCount1];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(message, __hs_stringBytes1);
+        var __hs_stringByteCount2 = global::System.Text.Encoding.UTF8.GetByteCount(filteredMessage ?? string.Empty);
+        scoped global::System.Span<byte> __hs_stringBytes2;
+        if (__hs_stringByteCount2 <= 256)
+        {
+            __hs_stringBytes2 = stackalloc byte[__hs_stringByteCount2 == 0 ? 1 : __hs_stringByteCount2];
+        }
+        else
+        {
+            __hs_stringBytes2 = new byte[__hs_stringByteCount2];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(filteredMessage ?? string.Empty, __hs_stringBytes2);
+        var __hs_stringByteCount3 = global::System.Text.Encoding.UTF8.GetByteCount(xuid);
+        scoped global::System.Span<byte> __hs_stringBytes3;
+        if (__hs_stringByteCount3 <= 256)
+        {
+            __hs_stringBytes3 = stackalloc byte[__hs_stringByteCount3 == 0 ? 1 : __hs_stringByteCount3];
+        }
+        else
+        {
+            __hs_stringBytes3 = new byte[__hs_stringByteCount3];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(xuid, __hs_stringBytes3);
+        var __hs_stringByteCount4 = global::System.Text.Encoding.UTF8.GetByteCount(platformId);
+        scoped global::System.Span<byte> __hs_stringBytes4;
+        if (__hs_stringByteCount4 <= 256)
+        {
+            __hs_stringBytes4 = stackalloc byte[__hs_stringByteCount4 == 0 ? 1 : __hs_stringByteCount4];
+        }
+        else
+        {
+            __hs_stringBytes4 = new byte[__hs_stringByteCount4];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(platformId, __hs_stringBytes4);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            fixed (byte* __hs_stringData1 = __hs_stringBytes1)
+            {
+                fixed (byte* __hs_stringData2 = __hs_stringBytes2)
+                {
+                    fixed (byte* __hs_stringData3 = __hs_stringBytes3)
+                    {
+                        fixed (byte* __hs_stringData4 = __hs_stringBytes4)
+                        {
+                            NativeMethods.TablePtr->C0.hs_method_90a4ed6b((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, __hs_stringData1, (nuint)__hs_stringByteCount1, __hs_stringData2, (nuint)__hs_stringByteCount2, __hs_stringData3, (nuint)__hs_stringByteCount3, __hs_stringData4, (nuint)__hs_stringByteCount4, filteredMessage is not null);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _frameUpdate(nint arg0) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _frameUpdate(nint arg0)
+    {
+        NativeMethods.TablePtr->C0.hs_method_fa825ff8((void*)__hosihikari_shim_handle, (void*)arg0);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public nint _getControllingPlayer() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? _getControllingPlayer()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ac7ba325((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public nint _getCurrentStructureFeature() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? _getCurrentStructureFeature()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3965fb1c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'Bedrock::NonOwnerPointer<Editor::IEditorPlayer>' is not a known bindable declaration.", false)]
     public nint _getEditorPlayer() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'Bedrock::NonOwnerPointer<Editor::IEditorPlayer>' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public byte _getMaxChunkBuildRadius() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public byte _getMaxChunkBuildRadius()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_c16a5a21((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: optional return type 'PlayerPartyInfo' is not a known bindable declaration.", false)]
     public nint _getPartyInfo_UNTRUSTED() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: optional return type 'PlayerPartyInfo' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public nint _getPlayerEventCoordinator() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public nint? _getPlayerEventCoordinator()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8436d26e((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _handleEntityEvent(nint id, int data) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _handleEntityEvent(byte id, int data)
+    {
+        NativeMethods.TablePtr->C0.hs_method_99a8645c((void*)__hosihikari_shim_handle, id, data);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void _hurtArmorSlots(nint source, int dmg, nint hurtSlots) =>
@@ -152,149 +360,183 @@ public sealed unsafe partial class ServerPlayer : global::System.IDisposable
     public void _initializeComponents(nint method, nint @params) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isActorRelevant(nint actor) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isActorRelevant(global::Hosihikari.Binding.LeviLamina.Interop.Actor actor)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_87f9a5a4((void*)__hosihikari_shim_handle, (void*)actor.Handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isExternalCommunicationAllowed() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isExternalCommunicationAllowed()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_5bd5a1e0((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isLoading() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isLoading()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_76a4c3db((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isPlayerInitialized() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isPlayerInitialized()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_a6e662bd((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isTeacher() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isTeacher()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_d673e00e((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _isValidTarget(nint attacker) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _isValidTarget(global::Hosihikari.Binding.LeviLamina.Interop.Actor? attacker)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_9e74306e((void*)__hosihikari_shim_handle, (void*)(attacker?.Handle ?? 0)) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void _knockback(nint source, float damage, float xd, float zd, nint parameters) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _load(nint tag, nint dataLoadHelper) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _load(nint tag, nint dataLoadHelper)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_adf192f7((void*)__hosihikari_shim_handle, (void*)tag, (void*)dataLoadHelper) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _moveSpawnView(nint spawnPosition, nint dimension) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _moveSpawnView(global::Hosihikari.Binding.LeviLamina.Interop.Vec3 spawnPosition, global::Hosihikari.Binding.LeviLamina.Interop.DimensionType dimension)
+    {
+        NativeMethods.TablePtr->C0.hs_method_1d5f58cb((void*)__hosihikari_shim_handle, (void*)spawnPosition.Handle, (void*)dimension.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _moveView() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _moveView()
+    {
+        NativeMethods.TablePtr->C0.hs_method_4d0e412a((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _normalTick() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _normalTick()
+    {
+        NativeMethods.TablePtr->C0.hs_method_97e62f70((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _onLinkedSlotsChanged() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _onLinkedSlotsChanged()
+    {
+        NativeMethods.TablePtr->C0.hs_method_c3a2ffc9((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _onSuspension() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _onSuspension()
+    {
+        NativeMethods.TablePtr->C0.hs_method_e89567bb((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openBook(int arg0, bool arg1, int arg2, nint lectern) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openBook(int arg0, bool arg1, int arg2, nint lectern)
+    {
+        NativeMethods.TablePtr->C0.hs_method_2a844f10((void*)__hosihikari_shim_handle, arg0, arg1, arg2, (void*)lectern);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openInventory() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openInventory()
+    {
+        NativeMethods.TablePtr->C0.hs_method_7513d529((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openNpcInteractScreen(nint npc) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openNpcInteractScreen(global::Hosihikari.Binding.Abi.SharedHandle? npc)
+    {
+        NativeMethods.TablePtr->C0.hs_method_e2de2a77((void*)__hosihikari_shim_handle, npc?.ToNative() ?? default(global::Hosihikari.Binding.Abi.SharedHandleData));
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openPortfolio() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openPortfolio()
+    {
+        NativeMethods.TablePtr->C0.hs_method_986a7225((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openSign(nint position, bool isFrontSide) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openSign(global::Hosihikari.Binding.LeviLamina.Interop.BlockPos position, bool isFrontSide)
+    {
+        NativeMethods.TablePtr->C0.hs_method_a5f1af41((void*)__hosihikari_shim_handle, (void*)position.Handle, isFrontSide);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _openTrading(nint uniqueID, bool useNewScreen) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _openTrading(global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID uniqueID, bool useNewScreen)
+    {
+        NativeMethods.TablePtr->C0.hs_method_e44dc4ad((void*)__hosihikari_shim_handle, (void*)uniqueID.Handle, useNewScreen);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _prepareRegion(nint mainChunkSource) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _prepareRegion(nint mainChunkSource)
+    {
+        NativeMethods.TablePtr->C0.hs_method_cd642562((void*)__hosihikari_shim_handle, (void*)mainChunkSource);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _refreshContainer(nint menu) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _refreshContainer(nint menu)
+    {
+        NativeMethods.TablePtr->C0.hs_method_3ada6ffe((void*)__hosihikari_shim_handle, (void*)menu);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _respawn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _respawn()
+    {
+        NativeMethods.TablePtr->C0.hs_method_fe56d7f6((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _sendArmor(nint armorSlots) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _sendArmor(byte armorSlots)
+    {
+        NativeMethods.TablePtr->C0.hs_method_0af3de82((void*)__hosihikari_shim_handle, armorSlots);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _sendArmorDamage(nint damagedSlots) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _sendArmorDamage(byte damagedSlots)
+    {
+        NativeMethods.TablePtr->C0.hs_method_1419f655((void*)__hosihikari_shim_handle, damagedSlots);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: unique_ptr parameter pointee 'ComplexInventoryTransaction' has no generated wrapper.", false)]
     public void _sendComplexInventoryTransaction(nint transaction) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: unique_ptr parameter pointee 'ComplexInventoryTransaction' has no generated wrapper.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _sendInventory(bool shouldSelectSlot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _sendInventory(bool shouldSelectSlot)
+    {
+        NativeMethods.TablePtr->C0.hs_method_29dc9360((void*)__hosihikari_shim_handle, shouldSelectSlot);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _sendInventoryTransaction(nint transaction) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _sendInventoryTransaction(nint transaction)
+    {
+        NativeMethods.TablePtr->C0.hs_method_70c3d600((void*)__hosihikari_shim_handle, (void*)transaction);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _sendNetworkPacket(nint packet) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _sendNetworkPacket(nint packet)
+    {
+        NativeMethods.TablePtr->C0.hs_method_3a522b09((void*)__hosihikari_shim_handle, (void*)packet);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _setArmor(nint armorSlot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _setArmor(int armorSlot, nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_a33838ed((void*)__hosihikari_shim_handle, armorSlot, (void*)item);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _setContainerData(nint menu, int id, int value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _setContainerData(nint menu, int id, int value)
+    {
+        NativeMethods.TablePtr->C0.hs_method_8797cb38((void*)__hosihikari_shim_handle, (void*)menu, id, value);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _setDamagedArmor(nint slot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _setDamagedArmor(int slot, nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_591d7bc7((void*)__hosihikari_shim_handle, slot, (void*)item);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _setOffhandSlot(nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _setOffhandSlot(nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_350b229b((void*)__hosihikari_shim_handle, (void*)item);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _setPlayerGameType(nint gameType) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _setPlayerGameType(int gameType)
+    {
+        NativeMethods.TablePtr->C0.hs_method_9f933001((void*)__hosihikari_shim_handle, gameType);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _slotChanged(nint menu, nint container, int slot, nint oldItem, nint newItem, bool isResultSlot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _slotChanged(nint menu, nint container, int slot, nint oldItem, nint newItem, bool isResultSlot)
+    {
+        NativeMethods.TablePtr->C0.hs_method_e4f1d711((void*)__hosihikari_shim_handle, (void*)menu, (void*)container, slot, (void*)oldItem, (void*)newItem, isResultSlot);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public void _stopSleepInBed(bool forcefulWakeUp, bool updateLevelList) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public void _stopSleepInBed(bool forcefulWakeUp, bool updateLevelList)
+    {
+        NativeMethods.TablePtr->C0.hs_method_6340c902((void*)__hosihikari_shim_handle, forcefulWakeUp, updateLevelList);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.", false)]
-    public bool _swing(nint swingSource, nint handSlot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier exports only the virtual form of this member; call it through the vtable.");
+    public bool _swing(byte swingSource, byte handSlot)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_3429c22b((void*)__hosihikari_shim_handle, swingSource, handSlot) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the constructor is not exported by the carrier.", false)]
     public static ServerPlayer Create() =>
