@@ -4,7 +4,9 @@ param(
     [string]$LeviLaminaRoot = "",
     [string]$GeneratorRoot = "",
     [string]$Output = "artifacts/regenerated",
-    [string]$AbiRoot = ""
+    [string]$AbiRoot = "",
+    # The check relinks, which is slow; a surface that is knowingly mid-change can skip it.
+    [switch]$SkipUnexportedCheck
 )
 if ([string]::IsNullOrWhiteSpace($LeviLaminaRoot)) {
     $LeviLaminaRoot = Join-Path $PSScriptRoot "..\..\Third\LeviLamina"
@@ -123,4 +125,16 @@ if ($Summary.declarations.bound -lt $Baseline.declarationsBound -or
 }
 
 Write-Output "Regenerated: $Functions functions, $($Summary.declarations.bound) bound declarations, $($Summary.members.bound) bound members."
+
+# The unexported list decides which members are refused. If the carrier moved under it the
+# surface still emits, then fails to link — often several commits later, because the list is
+# only consulted for members that reach the link. Check it here, where the emitter that could
+# still be re-run sits.
+if (-not $SkipUnexportedCheck) {
+    & (Join-Path $PSScriptRoot "check-unexported.ps1") -LeviLaminaRoot $LeviLaminaRoot
+    if ($LASTEXITCODE -ne 0) {
+        throw "The unexported list is out of date; re-run with -Update to fold the link result in, then regenerate."
+    }
+}
+
 Write-Output "Review the diff, then run scripts/verify_generated.py."
