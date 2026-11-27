@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerUseItemEvent : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static PlayerUseItemEvent? Create(nint player, nint item)
+    public static PlayerUseItemEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint item)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_c3b58558((void*)player, (void*)item);
+        var handle = NativeMethods.TablePtr->C0.hs_create_c3b58558((void*)player.Handle, (void*)item);
         if (handle == null)
         {
             NativeMethods.GetLastError();

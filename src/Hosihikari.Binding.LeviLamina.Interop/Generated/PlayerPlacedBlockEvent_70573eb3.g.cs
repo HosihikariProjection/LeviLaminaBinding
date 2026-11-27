@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerPlacedBlockEvent : global::System.IDisp
         return __hs_handle;
     }
 
-    public static PlayerPlacedBlockEvent? Create(nint player, nint pos, nint placedBlock)
+    public static PlayerPlacedBlockEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.BlockPos pos, nint placedBlock)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_862e9a50((void*)player, (void*)pos, (void*)placedBlock);
+        var handle = NativeMethods.TablePtr->C0.hs_create_862e9a50((void*)player.Handle, (void*)pos.Handle, (void*)placedBlock);
         if (handle == null)
         {
             NativeMethods.GetLastError();

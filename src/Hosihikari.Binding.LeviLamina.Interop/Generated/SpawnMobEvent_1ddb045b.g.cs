@@ -89,11 +89,16 @@ public sealed unsafe partial class SpawnMobEvent
         NativeMethods.TablePtr->C0.hs_method_33b65dc1((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint? spawner()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Actor? spawner()
     {
         var __hs_hasValue = false;
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3884abba((void*)__hosihikari_shim_handle, &__hs_hasValue);
-        return __hs_hasValue ? (nint)__hs_handle : null;
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            if (!__hs_hasValue) { return null; }
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Actor((nint)__hs_handle, false);
     }
 
     public nint? surface()

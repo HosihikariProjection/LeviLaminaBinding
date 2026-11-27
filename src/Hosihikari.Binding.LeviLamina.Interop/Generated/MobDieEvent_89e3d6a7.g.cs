@@ -40,9 +40,9 @@ public sealed unsafe partial class MobDieEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static MobDieEvent? Create(nint mob, nint source)
+    public static MobDieEvent? Create(nint mob, global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_cf30b76c((void*)mob, (void*)source);
+        var handle = NativeMethods.TablePtr->C0.hs_create_cf30b76c((void*)mob, (void*)source.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -57,7 +57,7 @@ public sealed unsafe partial class MobDieEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_8639c6b6((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint? source()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource? source()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0ce4260f((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -65,7 +65,7 @@ public sealed unsafe partial class MobDieEvent : global::System.IDisposable
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()

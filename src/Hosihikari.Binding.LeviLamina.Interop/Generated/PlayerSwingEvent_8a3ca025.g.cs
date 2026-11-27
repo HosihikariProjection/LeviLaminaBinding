@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerSwingEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PlayerSwingEvent? Create(nint player)
+    public static PlayerSwingEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_aeaa51e7((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_aeaa51e7((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

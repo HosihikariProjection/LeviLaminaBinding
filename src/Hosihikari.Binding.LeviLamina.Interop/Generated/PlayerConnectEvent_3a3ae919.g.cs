@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerConnectEvent : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static PlayerConnectEvent? Create(nint networkIdentifier, nint connectionRequest, nint player)
+    public static PlayerConnectEvent? Create(nint networkIdentifier, nint connectionRequest, global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_ba32fdb7((void*)networkIdentifier, (void*)connectionRequest, (void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_ba32fdb7((void*)networkIdentifier, (void*)connectionRequest, (void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

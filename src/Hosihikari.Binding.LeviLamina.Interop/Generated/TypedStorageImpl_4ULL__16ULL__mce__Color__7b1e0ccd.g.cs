@@ -65,7 +65,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
         return (nint)__hs_handle;
     }
 
-    public nint? get_0ba4e2d9()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? get_0ba4e2d9()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0ba4e2d9((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -73,7 +73,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
     public nint? get_c91d870f()
@@ -87,7 +87,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
         return (nint)__hs_handle;
     }
 
-    public nint? get_1600c21d()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? get_1600c21d()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1600c21d((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -95,10 +95,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
-    public nint? operator_const_mce__Color__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_const_mce__Color__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_45543b37((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -106,10 +106,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
-    public nint? operator_mce__Color__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_mce__Color__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f3fc2723((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -117,7 +117,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_bc070025()
@@ -131,7 +131,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_7020d04a()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_multiply_7020d04a()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7020d04a((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -139,7 +139,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_a75a83a6()
@@ -153,7 +153,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_1720ff1a()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_multiply_1720ff1a()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1720ff1a((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -161,10 +161,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___834989ea()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_operator___834989ea()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_834989ea((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -172,10 +172,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___7130b870()
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_operator___7130b870()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7130b870((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -183,10 +183,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
-    public nint? operator_assign_f38d9296(nint u)
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? operator_assign_f38d9296(nint u)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f38d9296((void*)__hosihikari_shim_handle, (void*)u);
         if (__hs_handle == null)
@@ -194,7 +194,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__16ULL__mce__Color_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]

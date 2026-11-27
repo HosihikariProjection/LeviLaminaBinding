@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerDestroyBlockEvent : global::System.IDis
         return __hs_handle;
     }
 
-    public static PlayerDestroyBlockEvent? Create(nint player, nint pos)
+    public static PlayerDestroyBlockEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.BlockPos pos)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_f57920b1((void*)player, (void*)pos);
+        var handle = NativeMethods.TablePtr->C0.hs_create_f57920b1((void*)player.Handle, (void*)pos.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -52,7 +52,7 @@ public sealed unsafe partial class PlayerDestroyBlockEvent : global::System.IDis
         return new PlayerDestroyBlockEvent((nint)handle);
     }
 
-    public nint? pos()
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? pos()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2868ebd6((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -60,7 +60,7 @@ public sealed unsafe partial class PlayerDestroyBlockEvent : global::System.IDis
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle, false);
     }
 
     public void serialize(nint arg0)

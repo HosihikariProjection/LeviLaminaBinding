@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerSprintingEvent : global::System.IDispos
         return __hs_handle;
     }
 
-    public static PlayerSprintingEvent? Create(nint player)
+    public static PlayerSprintingEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_717b133c((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_717b133c((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

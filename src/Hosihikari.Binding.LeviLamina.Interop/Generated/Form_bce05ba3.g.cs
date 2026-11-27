@@ -40,7 +40,7 @@ public sealed unsafe partial class Form
         return __hs_handle;
     }
 
-    public static bool sendRawTo(nint player, string formData, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public static bool sendRawTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player, string formData, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(formData);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -55,11 +55,11 @@ public sealed unsafe partial class Form
         global::System.Text.Encoding.UTF8.GetBytes(formData, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            return NativeMethods.TablePtr->C0.hs_method_48b727ed((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_48b727ed((void*)player.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
         }
     }
 
-    public static bool sendRawUpdate(nint player, string formData, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public static bool sendRawUpdate(global::Hosihikari.Binding.LeviLamina.Interop.Player player, string formData, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(formData);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -74,7 +74,7 @@ public sealed unsafe partial class Form
         global::System.Text.Encoding.UTF8.GetBytes(formData, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            return NativeMethods.TablePtr->C0.hs_method_d54e9c3a((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
+            return NativeMethods.TablePtr->C0.hs_method_d54e9c3a((void*)player.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
         }
     }
 

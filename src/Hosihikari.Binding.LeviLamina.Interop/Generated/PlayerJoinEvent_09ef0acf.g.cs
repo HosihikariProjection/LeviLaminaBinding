@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerJoinEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PlayerJoinEvent? Create(nint player)
+    public static PlayerJoinEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_b3fffb1b((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_b3fffb1b((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

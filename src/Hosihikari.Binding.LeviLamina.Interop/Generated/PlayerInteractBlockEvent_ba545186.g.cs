@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
         return __hs_handle;
     }
 
-    public static PlayerInteractBlockEvent? Create(nint player, nint item, nint blockPos, nint face, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 clickPos, nint? block)
+    public static PlayerInteractBlockEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint item, global::Hosihikari.Binding.LeviLamina.Interop.BlockPos blockPos, nint face, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 clickPos, nint? block)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_9cac68c5((void*)player, (void*)item, (void*)blockPos, (void*)face, (void*)clickPos.Handle, (void*)(block ?? 0), block is not null);
+        var handle = NativeMethods.TablePtr->C0.hs_create_9cac68c5((void*)player.Handle, (void*)item, (void*)blockPos.Handle, (void*)face, (void*)clickPos.Handle, (void*)(block ?? 0), block is not null);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -59,7 +59,7 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
         return __hs_hasValue ? (nint)__hs_handle : null;
     }
 
-    public nint? blockPos()
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? blockPos()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_006a3ef8((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -67,7 +67,7 @@ public sealed unsafe partial class PlayerInteractBlockEvent : global::System.IDi
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.Vec3? clickPos()

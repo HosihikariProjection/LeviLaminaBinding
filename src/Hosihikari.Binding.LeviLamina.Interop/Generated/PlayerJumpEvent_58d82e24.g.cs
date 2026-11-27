@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerJumpEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PlayerJumpEvent? Create(nint player, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 fromPos, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 toPos)
+    public static PlayerJumpEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 fromPos, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 toPos)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_6c718692((void*)player, (void*)fromPos.Handle, (void*)toPos.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_6c718692((void*)player.Handle, (void*)fromPos.Handle, (void*)toPos.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

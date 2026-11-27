@@ -6,8 +6,8 @@ namespace Hosihikari.Binding.LeviLamina.Interop.ll.ui;
 
 public static unsafe partial class Functions
 {
-    public static void closeScreen(nint player)
+    public static void closeScreen(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        NativeMethods.TablePtr->C0.hs_function_67ee9f34((void*)player);
+        NativeMethods.TablePtr->C0.hs_function_67ee9f34((void*)player.Handle);
     }
 }

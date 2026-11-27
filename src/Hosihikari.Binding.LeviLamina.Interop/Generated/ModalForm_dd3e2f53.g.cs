@@ -120,14 +120,14 @@ public sealed unsafe partial class ModalForm : global::System.IDisposable
         }
     }
 
-    public bool sendTo(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public bool sendTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        return NativeMethods.TablePtr->C0.hs_method_3fad9683((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_3fad9683((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
     }
 
-    public bool sendUpdate(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public bool sendUpdate(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        return NativeMethods.TablePtr->C0.hs_method_337e43e5((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_337e43e5((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease) != 0;
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.ModalForm? setContent(string content)

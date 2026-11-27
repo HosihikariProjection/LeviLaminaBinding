@@ -40,7 +40,7 @@ public sealed unsafe partial class PlayerPlaceBlockEvent
         return __hs_handle;
     }
 
-    public nint? pos()
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? pos()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_1903f7b8((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -48,7 +48,7 @@ public sealed unsafe partial class PlayerPlaceBlockEvent
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle, false);
     }
 
     public void serialize(nint arg0)

@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerDisconnectEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    public static PlayerDisconnectEvent? Create(nint player)
+    public static PlayerDisconnectEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_936569b7((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_936569b7((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

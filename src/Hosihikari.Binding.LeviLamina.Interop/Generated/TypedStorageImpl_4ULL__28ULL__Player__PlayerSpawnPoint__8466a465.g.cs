@@ -65,7 +65,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
         return (nint)__hs_handle;
     }
 
-    public nint? get_d5395eb6()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? get_d5395eb6()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_d5395eb6((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -73,7 +73,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
     public nint? get_222897f9()
@@ -87,7 +87,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
         return (nint)__hs_handle;
     }
 
-    public nint? get_258fb540()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? get_258fb540()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_258fb540((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -95,10 +95,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
-    public nint? operator_Player__PlayerSpawnPoint__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_Player__PlayerSpawnPoint__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a1e57d62((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -106,10 +106,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
-    public nint? operator_const_Player__PlayerSpawnPoint__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_const_Player__PlayerSpawnPoint__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_e67eafc1((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -117,7 +117,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_5ac7d1f3()
@@ -131,7 +131,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_d76285a0()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_multiply_d76285a0()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_d76285a0((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -139,7 +139,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_9903fa4e()
@@ -153,7 +153,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_3f450394()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_multiply_3f450394()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3f450394((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -161,10 +161,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___17e66555()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_operator___17e66555()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_17e66555((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -172,10 +172,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___490edd9a()
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_operator___490edd9a()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_490edd9a((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -183,10 +183,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
-    public nint? operator_assign_6bbdca88(nint u)
+    public global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint? operator_assign_6bbdca88(nint u)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_6bbdca88((void*)__hosihikari_shim_handle, (void*)u);
         if (__hs_handle == null)
@@ -194,7 +194,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__28ULL__Player__PlayerS
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.Player_Nested.PlayerSpawnPoint((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]

@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerRightClickEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    public static PlayerRightClickEvent? Create(nint player)
+    public static PlayerRightClickEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_5766ad9a((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_5766ad9a((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

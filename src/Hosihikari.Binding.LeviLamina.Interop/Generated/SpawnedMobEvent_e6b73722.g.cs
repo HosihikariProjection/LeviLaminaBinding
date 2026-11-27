@@ -40,9 +40,9 @@ public sealed unsafe partial class SpawnedMobEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static SpawnedMobEvent? Create(nint? mob, nint blockSource, nint identifier, nint? spawner, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 pos, nint naturalSpawn, nint surface, nint fromSpawner)
+    public static SpawnedMobEvent? Create(nint? mob, nint blockSource, nint identifier, global::Hosihikari.Binding.LeviLamina.Interop.Actor? spawner, global::Hosihikari.Binding.LeviLamina.Interop.Vec3 pos, nint naturalSpawn, nint surface, nint fromSpawner)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_6f129826((void*)(mob ?? 0), (void*)blockSource, (void*)identifier, (void*)(spawner ?? 0), (void*)pos.Handle, (void*)naturalSpawn, (void*)surface, (void*)fromSpawner, mob is not null, spawner is not null);
+        var handle = NativeMethods.TablePtr->C0.hs_create_6f129826((void*)(mob ?? 0), (void*)blockSource, (void*)identifier, (void*)(spawner?.Handle ?? 0), (void*)pos.Handle, (void*)naturalSpawn, (void*)surface, (void*)fromSpawner, mob is not null, spawner is not null);
         if (handle == null)
         {
             NativeMethods.GetLastError();

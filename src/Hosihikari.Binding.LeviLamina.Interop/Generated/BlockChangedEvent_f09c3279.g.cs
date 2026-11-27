@@ -40,9 +40,9 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return __hs_handle;
     }
 
-    public static BlockChangedEvent? Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, nint pos)
+    public static BlockChangedEvent? Create(nint blockSource, nint layer, nint previousBlock, nint newBlock, global::Hosihikari.Binding.LeviLamina.Interop.BlockPos pos)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_17b1672c((void*)blockSource, (void*)layer, (void*)previousBlock, (void*)newBlock, (void*)pos);
+        var handle = NativeMethods.TablePtr->C0.hs_create_17b1672c((void*)blockSource, (void*)layer, (void*)previousBlock, (void*)newBlock, (void*)pos.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -74,7 +74,7 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
         return (nint)__hs_handle;
     }
 
-    public nint? pos()
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? pos()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ae68cfcd((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -82,7 +82,7 @@ public sealed unsafe partial class BlockChangedEvent : global::System.IDisposabl
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle, false);
     }
 
     public nint? previousBlock()

@@ -65,7 +65,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
         return (nint)__hs_handle;
     }
 
-    public nint? get_96f44769()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? get_96f44769()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_96f44769((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -73,7 +73,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
     public nint? get_1bc7f6f0()
@@ -87,7 +87,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
         return (nint)__hs_handle;
     }
 
-    public nint? get_9be7ca88()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? get_9be7ca88()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_9be7ca88((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -95,10 +95,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
-    public nint? operator_AABB__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_AABB__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4f2dff02((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -106,10 +106,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
-    public nint? operator_const_AABB__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_const_AABB__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_6029745c((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -117,7 +117,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_0b3bf685()
@@ -131,7 +131,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_8f5f1b68()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_multiply_8f5f1b68()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_8f5f1b68((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -139,7 +139,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_0fb6b17c()
@@ -153,7 +153,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_f49d6b6c()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_multiply_f49d6b6c()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f49d6b6c((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -161,10 +161,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___990252e1()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_operator___990252e1()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_990252e1((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -172,10 +172,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___428eb2eb()
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_operator___428eb2eb()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_428eb2eb((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -183,10 +183,10 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
-    public nint? operator_assign_24792d02(nint u)
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? operator_assign_24792d02(nint u)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_24792d02((void*)__hosihikari_shim_handle, (void*)u);
         if (__hs_handle == null)
@@ -194,7 +194,7 @@ public sealed unsafe partial class TypedStorageImpl_4ULL__24ULL__AABB_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]

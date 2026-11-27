@@ -40,9 +40,9 @@ public sealed unsafe partial class FireSpreadEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static FireSpreadEvent? Create(nint blockSource, nint pos)
+    public static FireSpreadEvent? Create(nint blockSource, global::Hosihikari.Binding.LeviLamina.Interop.BlockPos pos)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_d0b03a42((void*)blockSource, (void*)pos);
+        var handle = NativeMethods.TablePtr->C0.hs_create_d0b03a42((void*)blockSource, (void*)pos.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -52,7 +52,7 @@ public sealed unsafe partial class FireSpreadEvent : global::System.IDisposable
         return new FireSpreadEvent((nint)handle);
     }
 
-    public nint? pos()
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? pos()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_298a3c45((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -60,7 +60,7 @@ public sealed unsafe partial class FireSpreadEvent : global::System.IDisposable
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle, false);
     }
 
     public void serialize(nint arg0)

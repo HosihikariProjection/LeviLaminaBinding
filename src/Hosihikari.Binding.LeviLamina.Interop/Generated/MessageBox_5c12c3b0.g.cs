@@ -40,9 +40,9 @@ public sealed unsafe partial class MessageBox : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static MessageBox? Create(nint player, global::Hosihikari.Binding.LeviLamina.Interop.Variant_d6da2e34 title)
+    public static MessageBox? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.Variant_d6da2e34 title)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_4d9dff1c((void*)player, (void*)title.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_4d9dff1c((void*)player.Handle, (void*)title.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

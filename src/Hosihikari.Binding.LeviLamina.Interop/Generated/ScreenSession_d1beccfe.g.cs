@@ -52,7 +52,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         return new ScreenSession((nint)handle);
     }
 
-    public static ScreenSession? Create(nint player, string screenId)
+    public static ScreenSession? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, string screenId)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -67,7 +67,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            var handle = NativeMethods.TablePtr->C0.hs_create_c6d32a52((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1);
+            var handle = NativeMethods.TablePtr->C0.hs_create_c6d32a52((void*)player.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1);
             if (handle == null)
             {
                 NativeMethods.GetLastError();
@@ -78,7 +78,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         }
     }
 
-    public static ScreenSession? Create(nint player, string screenId, global::Hosihikari.Binding.LeviLamina.Interop.ll.ui.NoInstanceIdTag arg2)
+    public static ScreenSession? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, string screenId, global::Hosihikari.Binding.LeviLamina.Interop.ll.ui.NoInstanceIdTag arg2)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -93,7 +93,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            var handle = NativeMethods.TablePtr->C0.hs_create_05c5bcf4((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)arg2.Handle);
+            var handle = NativeMethods.TablePtr->C0.hs_create_05c5bcf4((void*)player.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, (void*)arg2.Handle);
             if (handle == null)
             {
                 NativeMethods.GetLastError();
@@ -104,7 +104,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         }
     }
 
-    public static ScreenSession? Create(nint player, string screenId, uint instanceId)
+    public static ScreenSession? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, string screenId, uint instanceId)
     {
         var __hs_stringByteCount1 = global::System.Text.Encoding.UTF8.GetByteCount(screenId);
         scoped global::System.Span<byte> __hs_stringBytes1;
@@ -119,7 +119,7 @@ public sealed unsafe partial class ScreenSession : global::System.IDisposable
         global::System.Text.Encoding.UTF8.GetBytes(screenId, __hs_stringBytes1);
         fixed (byte* __hs_stringData1 = __hs_stringBytes1)
         {
-            var handle = NativeMethods.TablePtr->C0.hs_create_bc5536be((void*)player, __hs_stringData1, (nuint)__hs_stringByteCount1, instanceId);
+            var handle = NativeMethods.TablePtr->C0.hs_create_bc5536be((void*)player.Handle, __hs_stringData1, (nuint)__hs_stringByteCount1, instanceId);
             if (handle == null)
             {
                 NativeMethods.GetLastError();

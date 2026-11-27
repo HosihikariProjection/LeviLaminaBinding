@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerSneakingEvent : global::System.IDisposa
         return __hs_handle;
     }
 
-    public static PlayerSneakingEvent? Create(nint player)
+    public static PlayerSneakingEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_460d149f((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_460d149f((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

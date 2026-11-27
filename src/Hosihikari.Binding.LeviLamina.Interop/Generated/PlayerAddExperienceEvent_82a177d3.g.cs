@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerAddExperienceEvent : global::System.IDi
         return __hs_handle;
     }
 
-    public static PlayerAddExperienceEvent? Create(nint player, nint exp)
+    public static PlayerAddExperienceEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint exp)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_5fc9b3fd((void*)player, (void*)exp);
+        var handle = NativeMethods.TablePtr->C0.hs_create_5fc9b3fd((void*)player.Handle, (void*)exp);
         if (handle == null)
         {
             NativeMethods.GetLastError();

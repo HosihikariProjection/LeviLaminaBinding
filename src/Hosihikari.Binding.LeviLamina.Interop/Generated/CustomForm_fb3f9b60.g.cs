@@ -40,9 +40,9 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static CustomForm? Create(nint player, global::Hosihikari.Binding.LeviLamina.Interop.Variant_d6da2e34 title)
+    public static CustomForm? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.Variant_d6da2e34 title)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_9b58a241((void*)player, (void*)title.Handle);
+        var handle = NativeMethods.TablePtr->C0.hs_create_9b58a241((void*)player.Handle, (void*)title.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

@@ -231,9 +231,9 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         }
     }
 
-    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.SimpleForm? sendTo(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.SimpleForm? sendTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a8874cbb((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_a8874cbb((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
         if (__hs_handle == null)
         {
             NativeMethods.GetLastError();
@@ -242,9 +242,9 @@ public sealed unsafe partial class SimpleForm : global::System.IDisposable
         return new global::Hosihikari.Binding.LeviLamina.Interop.ll.form.SimpleForm((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.SimpleForm? sendUpdate(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.SimpleForm? sendUpdate(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ae16a484((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ae16a484((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
         if (__hs_handle == null)
         {
             NativeMethods.GetLastError();

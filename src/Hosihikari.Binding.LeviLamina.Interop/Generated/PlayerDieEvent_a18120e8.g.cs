@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerDieEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static PlayerDieEvent? Create(nint player, nint source)
+    public static PlayerDieEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_bc51dfaa((void*)player, (void*)source);
+        var handle = NativeMethods.TablePtr->C0.hs_create_bc51dfaa((void*)player.Handle, (void*)source.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -57,7 +57,7 @@ public sealed unsafe partial class PlayerDieEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_87387cf1((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint? source()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource? source()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_32fdf504((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -65,7 +65,7 @@ public sealed unsafe partial class PlayerDieEvent : global::System.IDisposable
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()

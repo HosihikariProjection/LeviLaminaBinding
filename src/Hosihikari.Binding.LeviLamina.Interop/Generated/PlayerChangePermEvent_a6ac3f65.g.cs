@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerChangePermEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    public static PlayerChangePermEvent? Create(nint player, nint newPerm)
+    public static PlayerChangePermEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint newPerm)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_c819891c((void*)player, (void*)newPerm);
+        var handle = NativeMethods.TablePtr->C0.hs_create_c819891c((void*)player.Handle, (void*)newPerm);
         if (handle == null)
         {
             NativeMethods.GetLastError();

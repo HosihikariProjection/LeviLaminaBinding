@@ -62,24 +62,24 @@ public sealed unsafe partial class Packet : global::System.IDisposable
         get => NativeMethods.TablePtr->C0.hs_get_dce6b8e0();
     }
 
-    public bool canSendTo_73f4a348(nint identifier)
+    public bool canSendTo(nint identifier)
     {
         return NativeMethods.TablePtr->C0.hs_method_73f4a348((void*)__hosihikari_shim_handle, (void*)identifier) != 0;
     }
 
-    public bool canSendTo_9975f4b5(nint player)
+    public bool canSendTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        return NativeMethods.TablePtr->C0.hs_method_9975f4b5((void*)__hosihikari_shim_handle, (void*)player) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_9975f4b5((void*)__hosihikari_shim_handle, (void*)player.Handle) != 0;
     }
 
-    public static bool canSendTo_e2780e10(ulong runtimeId, nint identifier)
+    public static bool canSendTo(ulong runtimeId, nint identifier)
     {
         return NativeMethods.TablePtr->C0.hs_method_e2780e10(runtimeId, (void*)identifier) != 0;
     }
 
-    public static bool canSendTo_8ab50873(ulong runtimeId, nint player)
+    public static bool canSendTo(ulong runtimeId, global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        return NativeMethods.TablePtr->C0.hs_method_8ab50873(runtimeId, (void*)player) != 0;
+        return NativeMethods.TablePtr->C0.hs_method_8ab50873(runtimeId, (void*)player.Handle) != 0;
     }
 
     public bool canSendToServer()
@@ -129,19 +129,19 @@ public sealed unsafe partial class Packet : global::System.IDisposable
     public nint read(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
-    public void sendTo(nint actor, nint? except)
+    public void sendTo(global::Hosihikari.Binding.LeviLamina.Interop.Actor actor, global::Hosihikari.Binding.LeviLamina.Interop.Player? except)
     {
-        NativeMethods.TablePtr->C0.hs_method_5741a673((void*)__hosihikari_shim_handle, (void*)actor, (void*)(except ?? 0), except is not null);
+        NativeMethods.TablePtr->C0.hs_method_5741a673((void*)__hosihikari_shim_handle, (void*)actor.Handle, (void*)(except?.Handle ?? 0), except is not null);
     }
 
-    public void sendTo(nint pos, global::Hosihikari.Binding.LeviLamina.Interop.DimensionType dimId, nint? except)
+    public void sendTo(global::Hosihikari.Binding.LeviLamina.Interop.BlockPos pos, global::Hosihikari.Binding.LeviLamina.Interop.DimensionType dimId, global::Hosihikari.Binding.LeviLamina.Interop.Player? except)
     {
-        NativeMethods.TablePtr->C0.hs_method_3d1e2b3c((void*)__hosihikari_shim_handle, (void*)pos, (void*)dimId.Handle, (void*)(except ?? 0), except is not null);
+        NativeMethods.TablePtr->C0.hs_method_3d1e2b3c((void*)__hosihikari_shim_handle, (void*)pos.Handle, (void*)dimId.Handle, (void*)(except?.Handle ?? 0), except is not null);
     }
 
-    public void sendTo(nint player)
+    public void sendTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        NativeMethods.TablePtr->C0.hs_method_acfa9263((void*)__hosihikari_shim_handle, (void*)player);
+        NativeMethods.TablePtr->C0.hs_method_acfa9263((void*)__hosihikari_shim_handle, (void*)player.Handle);
     }
 
     public void sendToClient(nint identifier, byte clientId)

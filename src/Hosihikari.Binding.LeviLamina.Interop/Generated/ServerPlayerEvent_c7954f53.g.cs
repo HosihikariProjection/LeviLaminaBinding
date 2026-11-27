@@ -40,7 +40,7 @@ public sealed unsafe partial class ServerPlayerEvent
         return __hs_handle;
     }
 
-    public nint? self()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer? self()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_da3af522((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -48,7 +48,7 @@ public sealed unsafe partial class ServerPlayerEvent
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ServerPlayer((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()

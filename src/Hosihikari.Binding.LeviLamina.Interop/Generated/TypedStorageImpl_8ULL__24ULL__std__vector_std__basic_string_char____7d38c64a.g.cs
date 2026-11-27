@@ -4,7 +4,7 @@
 
 namespace Hosihikari.Binding.LeviLamina.Interop.ll;
 
-public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___
+public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___ : global::System.IDisposable
 {
     private nint __hosihikari_shim_handle;
     private readonly bool _ownsHandle;
@@ -40,9 +40,17 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_std
         return __hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
-    public static TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___ Create_fe82084b(nint other) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has no accessible destructor.");
+    public static TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___? Create_fe82084b(nint other)
+    {
+        var handle = NativeMethods.TablePtr->C0.hs_create_fe82084b((void*)other);
+        if (handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+
+        return new TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___((nint)handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move constructors are not projected.", false)]
     public static TypedStorageImpl_8ULL__24ULL__std__vector_std__basic_string_char___ Create_dd87017c(nint other) =>
@@ -201,7 +209,17 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__24ULL__std__vector_std
     public nint operator_assign_ae6d0402(nint u) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: template move assignment operators are not projected.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the class has no accessible destructor.", false)]
-    public void Destroy() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the class has no accessible destructor.");
+
+    public void Dispose()
+    {
+        if (__hosihikari_shim_handle != 0)
+        {
+            if (_ownsHandle)
+            {
+                NativeMethods.TablePtr->C0.hs_destroy_7d38c64a((void*)__hosihikari_shim_handle);
+            }
+
+            __hosihikari_shim_handle = 0;
+        }
+    }
 }

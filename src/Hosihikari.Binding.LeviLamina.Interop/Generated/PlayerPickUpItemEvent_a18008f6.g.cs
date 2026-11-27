@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerPickUpItemEvent : global::System.IDispo
         return __hs_handle;
     }
 
-    public static PlayerPickUpItemEvent? Create(nint player, nint itemActor, nint orgCount, nint favoredSlot)
+    public static PlayerPickUpItemEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint itemActor, nint orgCount, nint favoredSlot)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_15b0298b((void*)player, (void*)itemActor, (void*)orgCount, (void*)favoredSlot);
+        var handle = NativeMethods.TablePtr->C0.hs_create_15b0298b((void*)player.Handle, (void*)itemActor, (void*)orgCount, (void*)favoredSlot);
         if (handle == null)
         {
             NativeMethods.GetLastError();

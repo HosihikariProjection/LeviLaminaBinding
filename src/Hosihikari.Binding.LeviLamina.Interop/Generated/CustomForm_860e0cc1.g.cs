@@ -480,9 +480,9 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
     }
 
-    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.CustomForm? sendTo(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.CustomForm? sendTo(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_fe47f6f6((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_fe47f6f6((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
         if (__hs_handle == null)
         {
             NativeMethods.GetLastError();
@@ -491,9 +491,9 @@ public sealed unsafe partial class CustomForm : global::System.IDisposable
         return new global::Hosihikari.Binding.LeviLamina.Interop.ll.form.CustomForm((nint)__hs_handle, false);
     }
 
-    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.CustomForm? sendUpdate(nint player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
+    public global::Hosihikari.Binding.LeviLamina.Interop.ll.form.CustomForm? sendUpdate(global::Hosihikari.Binding.LeviLamina.Interop.Player player, nint callbackInvoke, nint callbackUserData, nint callbackRelease)
     {
-        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7ae2e0a5((void*)__hosihikari_shim_handle, (void*)player, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7ae2e0a5((void*)__hosihikari_shim_handle, (void*)player.Handle, (void*)callbackInvoke, (void*)callbackUserData, (void*)callbackRelease);
         if (__hs_handle == null)
         {
             NativeMethods.GetLastError();

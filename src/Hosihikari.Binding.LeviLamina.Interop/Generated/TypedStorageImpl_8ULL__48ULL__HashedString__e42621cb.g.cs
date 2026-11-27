@@ -73,7 +73,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
         return (nint)__hs_handle;
     }
 
-    public nint? get_ad14425c()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? get_ad14425c()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ad14425c((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -81,7 +81,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
     public nint? get_a5234a8d()
@@ -95,7 +95,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
         return (nint)__hs_handle;
     }
 
-    public nint? get_7b5b031b()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? get_7b5b031b()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7b5b031b((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -103,10 +103,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
-    public nint? operator_HashedString__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_HashedString__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0b734dd6((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -114,10 +114,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
-    public nint? operator_const_HashedString__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_const_HashedString__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0178afc0((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -125,7 +125,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_0bb4e652()
@@ -139,7 +139,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_626813c6()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_multiply_626813c6()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_626813c6((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -147,7 +147,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_6417b6a8()
@@ -161,7 +161,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_36ed12e8()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_multiply_36ed12e8()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_36ed12e8((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -169,10 +169,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___599ee5cd()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_operator___599ee5cd()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_599ee5cd((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -180,10 +180,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___67c7f61e()
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_operator___67c7f61e()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_67c7f61e((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -191,10 +191,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
-    public nint? operator_assign_7fbe4675(nint u)
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? operator_assign_7fbe4675(nint u)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7fbe4675((void*)__hosihikari_shim_handle, (void*)u);
         if (__hs_handle == null)
@@ -202,7 +202,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__48ULL__HashedString_ :
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]

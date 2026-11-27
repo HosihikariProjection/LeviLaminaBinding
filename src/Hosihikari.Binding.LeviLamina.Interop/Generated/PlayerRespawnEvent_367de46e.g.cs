@@ -40,9 +40,9 @@ public sealed unsafe partial class PlayerRespawnEvent : global::System.IDisposab
         return __hs_handle;
     }
 
-    public static PlayerRespawnEvent? Create(nint player)
+    public static PlayerRespawnEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_69cf4f0e((void*)player);
+        var handle = NativeMethods.TablePtr->C0.hs_create_69cf4f0e((void*)player.Handle);
         if (handle == null)
         {
             NativeMethods.GetLastError();

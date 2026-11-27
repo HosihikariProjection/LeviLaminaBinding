@@ -65,7 +65,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
         return (nint)__hs_handle;
     }
 
-    public nint? get_5a4097db()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? get_5a4097db()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_5a4097db((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -73,7 +73,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
     public nint? get_9aa1f013()
@@ -87,7 +87,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
         return (nint)__hs_handle;
     }
 
-    public nint? get_f392b5a8()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? get_f392b5a8()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f392b5a8((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -95,10 +95,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
-    public nint? operator_ActorUniqueID__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_ActorUniqueID__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_0deb9255((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -106,10 +106,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
-    public nint? operator_const_ActorUniqueID__()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_const_ActorUniqueID__()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_7acc83b2((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -117,7 +117,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_7b499a44()
@@ -131,7 +131,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_688ef1dc()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_multiply_688ef1dc()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_688ef1dc((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -139,7 +139,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
     public nint? operator_multiply_f6e5564f()
@@ -153,7 +153,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
         return (nint)__hs_handle;
     }
 
-    public nint? operator_multiply_eab099e1()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_multiply_eab099e1()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_eab099e1((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -161,10 +161,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___97e03fa8()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_operator___97e03fa8()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_97e03fa8((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -172,10 +172,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
-    public nint? operator_operator___b4c66906()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_operator___b4c66906()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_b4c66906((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -183,10 +183,10 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
-    public nint? operator_assign_2867657c(nint u)
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? operator_assign_2867657c(nint u)
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2867657c((void*)__hosihikari_shim_handle, (void*)u);
         if (__hs_handle == null)
@@ -194,7 +194,7 @@ public sealed unsafe partial class TypedStorageImpl_8ULL__8ULL__ActorUniqueID_
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle, false);
     }
 
     [global::System.Obsolete("BindingShim cannot project this member: template move assignment operators are not projected.", false)]

@@ -40,9 +40,9 @@ public sealed unsafe partial class ActorHurtEvent : global::System.IDisposable
         return __hs_handle;
     }
 
-    public static ActorHurtEvent? Create(nint actor, nint source, nint damage)
+    public static ActorHurtEvent? Create(global::Hosihikari.Binding.LeviLamina.Interop.Actor actor, global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source, nint damage)
     {
-        var handle = NativeMethods.TablePtr->C0.hs_create_f0aef57e((void*)actor, (void*)source, (void*)damage);
+        var handle = NativeMethods.TablePtr->C0.hs_create_f0aef57e((void*)actor.Handle, (void*)source.Handle, (void*)damage);
         if (handle == null)
         {
             NativeMethods.GetLastError();
@@ -73,7 +73,7 @@ public sealed unsafe partial class ActorHurtEvent : global::System.IDisposable
         NativeMethods.TablePtr->C0.hs_method_01d9dc64((void*)__hosihikari_shim_handle, (void*)arg0);
     }
 
-    public nint? source()
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource? source()
     {
         var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ad20e91a((void*)__hosihikari_shim_handle);
         if (__hs_handle == null)
@@ -81,7 +81,7 @@ public sealed unsafe partial class ActorHurtEvent : global::System.IDisposable
             NativeMethods.GetLastError();
             return null;
         }
-        return (nint)__hs_handle;
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource((nint)__hs_handle, false);
     }
 
     public global::Hosihikari.Binding.LeviLamina.Interop.ll.@event.ActorEvent? AsActorEvent()
