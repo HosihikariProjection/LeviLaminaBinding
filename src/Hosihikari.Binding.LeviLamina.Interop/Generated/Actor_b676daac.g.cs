@@ -846,9 +846,10 @@ public sealed unsafe partial class Actor
     public bool _applyPendingPropertyChanges() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void _doInitialMove() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void _doInitialMove()
+    {
+        NativeMethods.TablePtr->C0.hs_method_9cbc4c1b((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint _drop_c4e7248b(nint item, bool randomly) =>
@@ -886,9 +887,10 @@ public sealed unsafe partial class Actor
     public void _sendDirtyActorData() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void _serverInitItemStackIds() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void _serverInitItemStackIds()
+    {
+        NativeMethods.TablePtr->C0.hs_method_b56f1fac((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void _setActorTypeId(nint type) =>
@@ -910,33 +912,38 @@ public sealed unsafe partial class Actor
     public void _setupServerAnimationComponent() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool _shouldProvideFeedbackOnArmorSet(nint slot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool _shouldProvideFeedbackOnArmorSet(int slot, nint item)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_f2a45b6d((void*)__hosihikari_shim_handle, slot, (void*)item) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool _shouldProvideFeedbackOnHandContainerItemSet(nint handSlot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool _shouldProvideFeedbackOnHandContainerItemSet(byte handSlot, nint item)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_165ac5b1((void*)__hosihikari_shim_handle, handSlot, (void*)item) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void _updateComposition(bool reload) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool add(nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool add(nint item)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cbf6034f((void*)__hosihikari_shim_handle, (void*)item) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void addAdditionalSaveData(nint tag) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void addAdditionalSaveData(nint tag)
+    {
+        NativeMethods.TablePtr->C0.hs_method_37406623((void*)__hosihikari_shim_handle, (void*)tag);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void addEffect(nint effect) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void addPassenger(nint passenger) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void addPassenger(global::Hosihikari.Binding.LeviLamina.Interop.Actor passenger)
+    {
+        NativeMethods.TablePtr->C0.hs_method_7d5e8e1e((void*)__hosihikari_shim_handle, (void*)passenger.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool addTag(nint tag) =>
@@ -946,21 +953,24 @@ public sealed unsafe partial class Actor
     public void applyOnBornPropertyChanges() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void applySnapshot(nint snapshotEntity, nint originalSnapshotEntity) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void applySnapshot(nint snapshotEntity, nint originalSnapshotEntity)
+    {
+        NativeMethods.TablePtr->C0.hs_method_313266af((void*)__hosihikari_shim_handle, (void*)snapshotEntity, (void*)originalSnapshotEntity);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
     public nint attack(nint target, nint cause) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void baseTick() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void baseTick()
+    {
+        NativeMethods.TablePtr->C0.hs_method_9875c7c6((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void blockedByShield(nint source, nint blocker) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void blockedByShield(global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source, global::Hosihikari.Binding.LeviLamina.Interop.Actor blocker)
+    {
+        NativeMethods.TablePtr->C0.hs_method_685ea86e((void*)__hosihikari_shim_handle, (void*)source.Handle, (void*)blocker.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: mutable string references require symbol dispatch.", false)]
     public void buildDebugGroupInfo(nint @out) =>
@@ -974,66 +984,77 @@ public sealed unsafe partial class Actor
     public void burn(int damage, bool inFire) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canAddPassenger(nint passenger) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canAddPassenger(global::Hosihikari.Binding.LeviLamina.Interop.Actor passenger)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cafbcc71((void*)__hosihikari_shim_handle, (void*)passenger.Handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool canAttack(nint entity) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canBeAffected(uint id) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canBeAffected(uint id)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_565af1bf((void*)__hosihikari_shim_handle, id) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canBeAffectedByArrow(nint effect) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canBeAffectedByArrow(nint effect)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_573ce42b((void*)__hosihikari_shim_handle, (void*)effect) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canBePulledIntoVehicle() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canBePulledIntoVehicle()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_b90dbaa4((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool canBeginOrContinueClimbingLadder() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canChangeDimensionsUsingPortal() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canChangeDimensionsUsingPortal()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_3ee081b9((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canDestroyBlock(nint block) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canDestroyBlock(nint block)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_719374b5((void*)__hosihikari_shim_handle, (void*)block) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canDisableShield() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canDisableShield()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_2f3d9396((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool canFly()
     {
         return NativeMethods.TablePtr->C0.hs_method_c95b30fc((void*)__hosihikari_shim_handle) != 0;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canInteractWithOtherEntitiesInGame() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canInteractWithOtherEntitiesInGame()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_83fe6b94((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool canMate(nint partner) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canObstructSpawningAndBlockPlacement() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canObstructSpawningAndBlockPlacement()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_a4e09519((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canPickupItem(nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canPickupItem(nint item)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_a100bf8f((void*)__hosihikari_shim_handle, (void*)item) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canPowerJump() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canPowerJump()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cd647a54((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool canReceiveMobEffectsFromGameplay() =>
@@ -1047,28 +1068,32 @@ public sealed unsafe partial class Actor
     public bool canSeeDaylight() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canShowNameTag() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canShowNameTag()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_b0b8a97f((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool canSynchronizeNewEntity() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool canSynchronizeNewEntity()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cb689e32((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float causeFallDamageToActor(float distance, float multiplier, nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float causeFallDamageToActor(float distance, float multiplier, global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_050e2a81((void*)__hosihikari_shim_handle, distance, multiplier, (void*)source.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void celebrateHunt(int duration, bool special) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void changeDimension_8ad50b0b(nint toId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void changeDimension(global::Hosihikari.Binding.LeviLamina.Interop.DimensionType toId)
+    {
+        NativeMethods.TablePtr->C0.hs_method_8ad50b0b((void*)__hosihikari_shim_handle, (void*)toId.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void changeDimension_1c7dedbb(nint arg0) =>
+    public void changeDimension(nint arg0) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
@@ -1103,9 +1128,10 @@ public sealed unsafe partial class Actor
     public void consumeItem(nint itemActor, int count) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool consumeTotem() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool consumeTotem()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_56f67b61((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'UpdateEquipPacket' is not a known bindable declaration.", false)]
     public nint createUpdateEquipPacket(int containerID) =>
@@ -1119,13 +1145,15 @@ public sealed unsafe partial class Actor
     public void deregisterTagsFromLevelCache() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void despawn() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void despawn()
+    {
+        NativeMethods.TablePtr->C0.hs_method_136ab154((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void die(nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void die(global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
+    {
+        NativeMethods.TablePtr->C0.hs_method_34512764((void*)__hosihikari_shim_handle, (void*)source.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public float distanceSqrToBlockPosCenter(nint pos) =>
@@ -1151,25 +1179,29 @@ public sealed unsafe partial class Actor
         return NativeMethods.TablePtr->C0.hs_method_f1463f7a((void*)__hosihikari_shim_handle, (void*)pos.Handle);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void doEnterWaterSplashEffect() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void doEnterWaterSplashEffect()
+    {
+        NativeMethods.TablePtr->C0.hs_method_155e9f30((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void doExitWaterSplashEffect() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void doExitWaterSplashEffect()
+    {
+        NativeMethods.TablePtr->C0.hs_method_9a4b5646((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
     public nint doFireHurt(int amount) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void doWaterSplashEffect() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void doWaterSplashEffect()
+    {
+        NativeMethods.TablePtr->C0.hs_method_1da01bf3((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool drop(nint item, nint randomly) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool drop(nint item, bool randomly)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_f4905b13((void*)__hosihikari_shim_handle, (void*)item, randomly) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void dropTowards(nint item, nint towards) =>
@@ -1218,9 +1250,10 @@ public sealed unsafe partial class Actor
     public void exitVehicle(bool exitFromPassenger, bool actorIsBeingDestroyed, bool wasEjectedByActivatorRail) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void feed(int itemId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void feed(int itemId)
+    {
+        NativeMethods.TablePtr->C0.hs_method_9c3b90d0((void*)__hosihikari_shim_handle, itemId);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint fetchFishingHook() =>
@@ -1245,21 +1278,36 @@ public sealed unsafe partial class Actor
     public nint getActorIdentifier() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getActorRendererId() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? getActorRendererId()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_51ce6231((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getAllEffects() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getAmbientSound() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public uint getAmbientSound()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_5f0e1146((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getAnimationComponent() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public nint? getAnimationComponent()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_2d8ce31c((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
     public nint? getArmor(int slot)
     {
@@ -1272,17 +1320,20 @@ public sealed unsafe partial class Actor
         return (nint)__hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getArmorColorInSlot(nint slot, int channelRGBA) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getArmorColorInSlot(int slot, int channelRGBA)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_ed5a182a((void*)__hosihikari_shim_handle, slot, channelRGBA);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getArmorMaterialTypeInSlot(nint slot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public int getArmorMaterialTypeInSlot(int slot)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_e97f8189((void*)__hosihikari_shim_handle, slot);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public int getArmorTextureIndexInSlot(nint slot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public int getArmorTextureIndexInSlot(int slot)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_4005e6a9((void*)__hosihikari_shim_handle, slot);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'Vec3' has no accessible destructor.", false)]
     public nint getAttachPos(nint location, float alpha) =>
@@ -1296,9 +1347,10 @@ public sealed unsafe partial class Actor
     public nint getAttributes() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'gsl::not_null<const BaseAttributeMap *>' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getBlockDamageCause(nint block) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public int getBlockDamageCause(nint block)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_f033ca15((void*)__hosihikari_shim_handle, (void*)block);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getBlockPosCurrentlyStandingOn(nint actor) =>
@@ -1308,13 +1360,21 @@ public sealed unsafe partial class Actor
     public static nint getBlocksCurrentlyStandingOn(nint aabb, nint region, float ignoreGapBelow, nint other) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getBrightness(float a, nint region) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getBrightness(float a, nint region)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_8d6a011d((void*)__hosihikari_shim_handle, a, (void*)region);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getCarriedItem() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public nint? getCarriedItem()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_40ea8612((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getCarriedItemInSlotPreferredBy(nint item) =>
@@ -1324,25 +1384,56 @@ public sealed unsafe partial class Actor
     public int getChestSlots() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getCommandPermissionLevel() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public byte getCommandPermissionLevel()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_19b8d997((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getControllingPlayer() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? getControllingPlayer()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_897e584f((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public float getCurrentSwimAmount() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public int getDeathTime() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public int getDeathTime()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_90c1da3a((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void getDebugText(nint outputInfo) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void getDebugText(string[] outputInfo)
+    {
+        var __hs_vectorItems0 = outputInfo ?? global::System.Array.Empty<string>();
+        var __hs_vectorCount0 = __hs_vectorItems0.Length;
+        var __hs_vectorByteTotal0 = 0;
+        for (var __hs_i0 = 0; __hs_i0 < __hs_vectorCount0; __hs_i0++) { __hs_vectorByteTotal0 += global::System.Text.Encoding.UTF8.GetByteCount(__hs_vectorItems0[__hs_i0] ?? string.Empty); }
+        scoped global::System.Span<byte> __hs_vectorArena0;
+        if (__hs_vectorByteTotal0 <= 1024) { __hs_vectorArena0 = stackalloc byte[__hs_vectorByteTotal0 == 0 ? 1 : __hs_vectorByteTotal0]; } else { __hs_vectorArena0 = new byte[__hs_vectorByteTotal0]; }
+        scoped global::System.Span<global::Hosihikari.Binding.Abi.StringView> __hs_vectorViews0;
+        if (__hs_vectorCount0 <= 64) { __hs_vectorViews0 = stackalloc global::Hosihikari.Binding.Abi.StringView[__hs_vectorCount0 == 0 ? 1 : __hs_vectorCount0]; } else { __hs_vectorViews0 = new global::Hosihikari.Binding.Abi.StringView[__hs_vectorCount0]; }
+        fixed (byte* __hs_vectorArenaPtr0 = __hs_vectorArena0)
+        fixed (global::Hosihikari.Binding.Abi.StringView* __hs_vectorData0 = __hs_vectorViews0)
+        {
+            var __hs_vectorOffset0 = 0;
+            for (var __hs_i0 = 0; __hs_i0 < __hs_vectorCount0; __hs_i0++)
+            {
+                var __hs_item0 = __hs_vectorItems0[__hs_i0] ?? string.Empty;
+                var __hs_length0 = global::System.Text.Encoding.UTF8.GetByteCount(__hs_item0);
+                global::System.Text.Encoding.UTF8.GetBytes(__hs_item0, __hs_vectorArena0.Slice(__hs_vectorOffset0, __hs_length0));
+                __hs_vectorData0[__hs_i0] = new global::Hosihikari.Binding.Abi.StringView { Data = __hs_vectorArenaPtr0 + __hs_vectorOffset0, Size = (nuint)__hs_length0 };
+                __hs_vectorOffset0 += __hs_length0;
+            }
+            NativeMethods.TablePtr->C0.hs_method_d03d7ecb((void*)__hosihikari_shim_handle, __hs_vectorData0, (nuint)(outputInfo?.Length ?? 0));
+        }
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getDimension() =>
@@ -1397,9 +1488,11 @@ public sealed unsafe partial class Actor
         return (nint)__hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getEntityLocNameString() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public string getEntityLocNameString()
+    {
+        var __hs_view = NativeMethods.TablePtr->C0.hs_method_dd044206((void*)__hosihikari_shim_handle);
+        return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getEntityTypeId() =>
@@ -1428,13 +1521,36 @@ public sealed unsafe partial class Actor
         return (nint)__hs_handle;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getEquippedTotem() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public nint? getEquippedTotem()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_6aeb1c51((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return (nint)__hs_handle;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getExitTip(nint kind, nint mode, nint scheme) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public string getExitTip(string kind, uint mode, int scheme)
+    {
+        var __hs_stringByteCount0 = global::System.Text.Encoding.UTF8.GetByteCount(kind);
+        scoped global::System.Span<byte> __hs_stringBytes0;
+        if (__hs_stringByteCount0 <= 256)
+        {
+            __hs_stringBytes0 = stackalloc byte[__hs_stringByteCount0 == 0 ? 1 : __hs_stringByteCount0];
+        }
+        else
+        {
+            __hs_stringBytes0 = new byte[__hs_stringByteCount0];
+        }
+        global::System.Text.Encoding.UTF8.GetBytes(kind, __hs_stringBytes0);
+        fixed (byte* __hs_stringData0 = __hs_stringBytes0)
+        {
+            var __hs_view = NativeMethods.TablePtr->C0.hs_method_34c8d5f0((void*)__hosihikari_shim_handle, __hs_stringData0, (nuint)__hs_stringByteCount0, mode, scheme);
+            return global::System.Text.Encoding.UTF8.GetString(__hs_view.Data, checked((int)__hs_view.Size));
+        }
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'Vec3' has no accessible destructor.", false)]
     public nint getEyePos() =>
@@ -1488,17 +1604,20 @@ public sealed unsafe partial class Actor
     public nint getInteraction(nint player, nint location, nint handSlot) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getInterpolatedBodyRot(float a) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getInterpolatedBodyRot(float a)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_1e5adcb3((void*)__hosihikari_shim_handle, a);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getInterpolatedBodyYaw(float a) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getInterpolatedBodyYaw(float a)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_fbcbfbc4((void*)__hosihikari_shim_handle, a);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getInterpolatedHeadRot(float a) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getInterpolatedHeadRot(float a)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_41c31ecb((void*)__hosihikari_shim_handle, a);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: by-value return type 'Vec3' has no accessible destructor.", false)]
     public nint getInterpolatedPosition(float a) =>
@@ -1520,13 +1639,29 @@ public sealed unsafe partial class Actor
     public nint getItemInHandSlot(nint slot) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getLastDeathDimension() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.DimensionType? getLastDeathDimension()
+    {
+        var __hs_hasValue = false;
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_87929aba((void*)__hosihikari_shim_handle, &__hs_hasValue);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            if (!__hs_hasValue) { return null; }
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.DimensionType((nint)__hs_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getLastDeathPos() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.BlockPos? getLastDeathPos()
+    {
+        var __hs_hasValue = false;
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_3ad3b733((void*)__hosihikari_shim_handle, &__hs_hasValue);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            if (!__hs_hasValue) { return null; }
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.BlockPos((nint)__hs_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getLeashHolder() =>
@@ -1551,17 +1686,25 @@ public sealed unsafe partial class Actor
     public nint getLinks() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: vector return type 'ActorLink' is not supported.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getLiquidAABB(nint liquidType) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.AABB? getLiquidAABB(byte liquidType)
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_5cff327b((void*)__hosihikari_shim_handle, liquidType);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.AABB((nint)__hs_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getLootTable() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getMapDecorationRotation() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getMapDecorationRotation()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_0abd5316((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public int getMarkVariant() =>
@@ -1584,9 +1727,16 @@ public sealed unsafe partial class Actor
     public nint getNameTag() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getNameTagTextColor() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.mce.Color? getNameTagTextColor()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_4c126758((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.mce.Color((nint)__hs_handle);
+    }
 
     public nint? getOffhandSlot()
     {
@@ -1615,9 +1765,10 @@ public sealed unsafe partial class Actor
     public nint getOwner() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getOwnerEntityType() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public int getOwnerEntityType()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_1417c656((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getOwnerId() =>
@@ -1627,9 +1778,10 @@ public sealed unsafe partial class Actor
     public int getPassengerIndex(nint passenger) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getPassengerYRotation(nint passenger) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getPassengerYRotation(global::Hosihikari.Binding.LeviLamina.Interop.Actor passenger)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cf51e33a((void*)__hosihikari_shim_handle, (void*)passenger.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public nint getPlayerOwner() =>
@@ -1689,13 +1841,21 @@ public sealed unsafe partial class Actor
     public nint getRuntimeID() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: by-value return type 'ActorRuntimeID' is not a known bindable declaration.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getShadowRadius() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getShadowRadius()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_7e9b723a((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint getSourceUniqueID() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID? getSourceUniqueID()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_ecccccfa((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID((nint)__hs_handle);
+    }
 
     public bool getStatusFlag(int flag)
     {
@@ -1748,21 +1908,24 @@ public sealed unsafe partial class Actor
     public float getYHeadRot() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public float getYawSpeedInDegreesPerSecond() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public float getYawSpeedInDegreesPerSecond()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_611ef7d1((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void handleEntityEvent(nint eventId, int data) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void handleEntityEvent(byte eventId, int data)
+    {
+        NativeMethods.TablePtr->C0.hs_method_3be10b7b((void*)__hosihikari_shim_handle, eventId, data);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void handleFallDamage(float fallDistance, float multiplier, nint source) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void handleInsidePortal(nint portalPos) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void handleInsidePortal(global::Hosihikari.Binding.LeviLamina.Interop.BlockPos portalPos)
+    {
+        NativeMethods.TablePtr->C0.hs_method_2ae581ca((void*)__hosihikari_shim_handle, (void*)portalPos.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void handleLeftoverFallDamage(float damage, nint source) =>
@@ -1777,13 +1940,15 @@ public sealed unsafe partial class Actor
         return NativeMethods.TablePtr->C0.hs_method_515c6978((void*)__hosihikari_shim_handle, category) != 0;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool hasComponent(nint name) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool hasComponent(global::Hosihikari.Binding.LeviLamina.Interop.HashedString name)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_e8fee72d((void*)__hosihikari_shim_handle, (void*)name.Handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool hasDiedBefore() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool hasDiedBefore()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_a815fb25((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool hasDimension() =>
@@ -1842,9 +2007,10 @@ public sealed unsafe partial class Actor
         return NativeMethods.TablePtr->C0.hs_method_5fe9b05b((void*)__hosihikari_shim_handle, damage, cause, (void*)(attacker?.Handle ?? 0), attacker is not null) != 0;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool inCaravan() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool inCaravan()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_5acacdb4((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool inDownwardFlowingLiquid() =>
@@ -1854,9 +2020,10 @@ public sealed unsafe partial class Actor
     public void initParams(nint @params) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void initializeComponents(nint method, nint @params) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void initializeComponents(byte method, nint @params)
+    {
+        NativeMethods.TablePtr->C0.hs_method_2cf3c688((void*)__hosihikari_shim_handle, method, (void*)@params);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isActorLocationInMaterial(nint actorLocation, nint type) =>
@@ -1866,9 +2033,10 @@ public sealed unsafe partial class Actor
     public bool isAdventure() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isAlive() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isAlive()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_9b500aaa((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isAngry() =>
@@ -1878,9 +2046,10 @@ public sealed unsafe partial class Actor
     public bool isBaby() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isBlocking() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isBlocking()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_04c53628((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isClientSide()
     {
@@ -1896,9 +2065,10 @@ public sealed unsafe partial class Actor
     public bool isCreative() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isDamageBlocked(nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isDamageBlocked(global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_2f7b84aa((void*)__hosihikari_shim_handle, (void*)source.Handle) != 0;
+    }
 
     public bool isDancing()
     {
@@ -1914,13 +2084,15 @@ public sealed unsafe partial class Actor
     public bool isDoorOpener() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isEnchanted() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isEnchanted()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_efa53188((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isFireImmune() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isFireImmune()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_15b06a11((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isGliding()
     {
@@ -1936,9 +2108,10 @@ public sealed unsafe partial class Actor
     public bool isImmersedInWater() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isImmobile() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isImmobile()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_c50cf10c((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isInClouds() =>
@@ -1989,13 +2162,15 @@ public sealed unsafe partial class Actor
     public bool isInvertedHealAndHarm() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isInvisible() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isInvisible()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_1fc75758((void*)__hosihikari_shim_handle) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isInvulnerableTo(nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isInvulnerableTo(global::Hosihikari.Binding.LeviLamina.Interop.ActorDamageSource source)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_20c5ef7d((void*)__hosihikari_shim_handle, (void*)source.Handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isJumping() =>
@@ -2018,9 +2193,10 @@ public sealed unsafe partial class Actor
         return NativeMethods.TablePtr->C0.hs_method_b269f421((void*)__hosihikari_shim_handle) != 0;
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isOnFire() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isOnFire()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_cc8daf21((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isOnGround()
     {
@@ -2061,9 +2237,10 @@ public sealed unsafe partial class Actor
     public bool isSilent() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isSilentObserver() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isSilentObserver()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_2b005f10((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isSimulatedPlayer()
     {
@@ -2074,9 +2251,10 @@ public sealed unsafe partial class Actor
     public bool isSitting() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isSleeping() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isSleeping()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_d6826d8a((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isSneaking()
     {
@@ -2096,9 +2274,10 @@ public sealed unsafe partial class Actor
     public bool isStanding() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isSurfaceMob() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isSurfaceMob()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_f78e0d11((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isSurvival() =>
@@ -2113,9 +2292,10 @@ public sealed unsafe partial class Actor
     public bool isTame() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isTargetable() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isTargetable()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_bfdf784d((void*)__hosihikari_shim_handle) != 0;
+    }
 
     public bool isTouchingDamageBlock()
     {
@@ -2139,9 +2319,10 @@ public sealed unsafe partial class Actor
     public bool isUseNewTradeScreen() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool isValidTarget(nint attacker) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool isValidTarget(global::Hosihikari.Binding.LeviLamina.Interop.Actor? attacker)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_2f214e81((void*)__hosihikari_shim_handle, (void*)(attacker?.Handle ?? 0)) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool isWearingLeatherArmor() =>
@@ -2151,17 +2332,19 @@ public sealed unsafe partial class Actor
     public bool isWorldBuilder() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void kill() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void kill()
+    {
+        NativeMethods.TablePtr->C0.hs_method_f2a6bb33((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void killed(nint entity) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void lerpMotion(nint delta) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void lerpMotion(global::Hosihikari.Binding.LeviLamina.Interop.Vec3 delta)
+    {
+        NativeMethods.TablePtr->C0.hs_method_101d6f5c((void*)__hosihikari_shim_handle, (void*)delta.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void lerpTo(nint pos, nint rot, float headYaw, int steps) =>
@@ -2171,9 +2354,10 @@ public sealed unsafe partial class Actor
     public void lerpTo(nint pos, nint rot, int steps) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool load(nint tag, nint dataLoadHelper) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool load(nint tag, nint dataLoadHelper)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_32e6c40c((void*)__hosihikari_shim_handle, (void*)tag, (void*)dataLoadHelper) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: vector parameter type 'ActorLink' is not supported.", false)]
     public void loadLinks(nint entityTag, nint links, nint dataLoadHelper) =>
@@ -2737,65 +2921,77 @@ public sealed unsafe partial class Actor
     public void moveTo(nint pos, nint rot) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void normalTick() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void normalTick()
+    {
+        NativeMethods.TablePtr->C0.hs_method_28460406((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool onClimbableBlock() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onEffectRemoved(nint effect) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onEffectRemoved(nint effect)
+    {
+        NativeMethods.TablePtr->C0.hs_method_4a2603d2((void*)__hosihikari_shim_handle, (void*)effect);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void onEffectUpdated(nint effect) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onFailedTame() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onFailedTame()
+    {
+        NativeMethods.TablePtr->C0.hs_method_d673d368((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onLightningHit() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onLightningHit()
+    {
+        NativeMethods.TablePtr->C0.hs_method_bcf074a8((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onPush(nint source) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onPush(global::Hosihikari.Binding.LeviLamina.Interop.Actor source)
+    {
+        NativeMethods.TablePtr->C0.hs_method_02e5cfa7((void*)__hosihikari_shim_handle, (void*)source.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onSynchedDataUpdate(int dataId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onSynchedDataUpdate(int dataId)
+    {
+        NativeMethods.TablePtr->C0.hs_method_9c749c77((void*)__hosihikari_shim_handle, dataId);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void onTame() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void onTame()
+    {
+        NativeMethods.TablePtr->C0.hs_method_ebafaf9b((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void openContainerComponent(nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void openContainerComponent(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
+    {
+        NativeMethods.TablePtr->C0.hs_method_945c0f0e((void*)__hosihikari_shim_handle, (void*)player.Handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void outOfWorld() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void outOfWorld()
+    {
+        NativeMethods.TablePtr->C0.hs_method_e79e5810((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void passengerTick() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void passengerTick()
+    {
+        NativeMethods.TablePtr->C0.hs_method_f690d2bf((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void performRangedAttack(nint target, float arg1) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void performRangedAttack(global::Hosihikari.Binding.LeviLamina.Interop.Actor target, float arg1)
+    {
+        NativeMethods.TablePtr->C0.hs_method_e39fae66((void*)__hosihikari_shim_handle, (void*)target.Handle, arg1);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void pickUpItem(nint itemActor, int count) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void playAmbientSound() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void playAmbientSound()
+    {
+        NativeMethods.TablePtr->C0.hs_method_b6199d46((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void playSound(nint region, nint type, nint pos, int data) =>
@@ -2809,9 +3005,10 @@ public sealed unsafe partial class Actor
     public void playSynchronizedSound_b26f23e6(nint soundEvent, nint pos, int data, bool isGlobal, nint primaryLocalPlayer) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void playerTouch(nint player) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void playerTouch(global::Hosihikari.Binding.LeviLamina.Interop.Player player)
+    {
+        NativeMethods.TablePtr->C0.hs_method_bb4a1b90((void*)__hosihikari_shim_handle, (void*)player.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void positionPassenger(nint passenger) =>
@@ -2833,13 +3030,21 @@ public sealed unsafe partial class Actor
     public void pushOutOfBlocks(nint vec) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public nint queryEntityRenderer() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public global::Hosihikari.Binding.LeviLamina.Interop.HashedString? queryEntityRenderer()
+    {
+        var __hs_handle = NativeMethods.TablePtr->C0.hs_method_f60edb6e((void*)__hosihikari_shim_handle);
+        if (__hs_handle == null)
+        {
+            NativeMethods.GetLastError();
+            return null;
+        }
+        return new global::Hosihikari.Binding.LeviLamina.Interop.HashedString((nint)__hs_handle, false);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void readAdditionalSaveData(nint tag, nint dataLoadHelper) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void readAdditionalSaveData(nint tag, nint dataLoadHelper)
+    {
+        NativeMethods.TablePtr->C0.hs_method_25e195a8((void*)__hosihikari_shim_handle, (void*)tag, (void*)dataLoadHelper);
+    }
 
     public void refresh()
     {
@@ -2850,21 +3055,25 @@ public sealed unsafe partial class Actor
     public void reload() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void reloadComponents(nint arg0, nint arg1) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void reloadComponents(byte arg0, nint arg1)
+    {
+        NativeMethods.TablePtr->C0.hs_method_c7dcbda9((void*)__hosihikari_shim_handle, arg0, (void*)arg1);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void reloadHardcoded(nint method, nint @params) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void reloadHardcoded(byte method, nint @params)
+    {
+        NativeMethods.TablePtr->C0.hs_method_cc6e023c((void*)__hosihikari_shim_handle, method, (void*)@params);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void reloadHardcodedClient(nint method) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void reloadHardcodedClient(byte method)
+    {
+        NativeMethods.TablePtr->C0.hs_method_01bd02d7((void*)__hosihikari_shim_handle, method);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void remove() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void remove()
+    {
+        NativeMethods.TablePtr->C0.hs_method_076d4454((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void removeAllEffects() =>
@@ -2882,41 +3091,47 @@ public sealed unsafe partial class Actor
     public bool removeTag(nint tag) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void renderDebugServerState(nint options) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void renderDebugServerState(nint options)
+    {
+        NativeMethods.TablePtr->C0.hs_method_95c533df((void*)__hosihikari_shim_handle, (void*)options);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void resetUserPos(nint resetRule) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void resetUserPos(byte resetRule)
+    {
+        NativeMethods.TablePtr->C0.hs_method_7836cf80((void*)__hosihikari_shim_handle, resetRule);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool save(nint entityTag) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void sendMotionPacketIfNeeded() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void sendMotionPacketIfNeeded()
+    {
+        NativeMethods.TablePtr->C0.hs_method_abfc59af((void*)__hosihikari_shim_handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setActorRendererId(nint actorRendererId) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setArmor(nint slot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setArmor(int slot, nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_bd4f8dd4((void*)__hosihikari_shim_handle, slot, (void*)item);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setAuxValue(int aux) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setAuxValue(int aux)
+    {
+        NativeMethods.TablePtr->C0.hs_method_077be9f4((void*)__hosihikari_shim_handle, aux);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setBaseDefinition(nint sourceId, bool clearDefs, bool update) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setCarriedItem(nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setCarriedItem(nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_a31f176a((void*)__hosihikari_shim_handle, (void*)item);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setDead(bool isDead) =>
@@ -2926,9 +3141,10 @@ public sealed unsafe partial class Actor
     public void setDimension(nint weakDimension) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setEquippedSlot(nint slot, nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setEquippedSlot(int slot, nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_4d6a9438((void*)__hosihikari_shim_handle, slot, (void*)item);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setFallDistance(float distance) =>
@@ -2981,18 +3197,20 @@ public sealed unsafe partial class Actor
     public void setNameTag(nint name) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setOffhandSlot(nint item) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setOffhandSlot(nint item)
+    {
+        NativeMethods.TablePtr->C0.hs_method_90d119de((void*)__hosihikari_shim_handle, (void*)item);
+    }
 
     public void setOnFire(int time, bool hasEffect)
     {
         NativeMethods.TablePtr->C0.hs_method_1654f15c((void*)__hosihikari_shim_handle, time, hasEffect);
     }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setOwner(nint ownerId) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setOwner(global::Hosihikari.Binding.LeviLamina.Interop.ActorUniqueID ownerId)
+    {
+        NativeMethods.TablePtr->C0.hs_method_260020ca((void*)__hosihikari_shim_handle, (void*)ownerId.Handle);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setPersistent() =>
@@ -3010,21 +3228,25 @@ public sealed unsafe partial class Actor
     public void setScoreTag(nint score) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setSitting(bool value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setSitting(bool value)
+    {
+        NativeMethods.TablePtr->C0.hs_method_9d997108((void*)__hosihikari_shim_handle, value);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setSleeping(bool val) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setSleeping(bool val)
+    {
+        NativeMethods.TablePtr->C0.hs_method_d530c3cd((void*)__hosihikari_shim_handle, val);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setSneaking(bool value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setSneaking(bool value)
+    {
+        NativeMethods.TablePtr->C0.hs_method_97c4c2d0((void*)__hosihikari_shim_handle, value);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setStanding(bool value) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setStanding(bool value)
+    {
+        NativeMethods.TablePtr->C0.hs_method_cb3c3feb((void*)__hosihikari_shim_handle, value);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setStrength(int strength) =>
@@ -3034,9 +3256,10 @@ public sealed unsafe partial class Actor
     public void setStrengthMax(int strength) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void setTarget(nint entity) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void setTarget(global::Hosihikari.Binding.LeviLamina.Interop.Actor? entity)
+    {
+        NativeMethods.TablePtr->C0.hs_method_46768dee((void*)__hosihikari_shim_handle, (void*)(entity?.Handle ?? 0));
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void setUniqueID(nint id) =>
@@ -3050,9 +3273,10 @@ public sealed unsafe partial class Actor
     public void setYHeadRotations(float yHeadRot, float oldYHeadRot) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool shouldDropDeathLoot() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool shouldDropDeathLoot()
+    {
+        return NativeMethods.TablePtr->C0.hs_method_fe81f83c((void*)__hosihikari_shim_handle) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public bool shouldOrphan(nint source) =>
@@ -3070,13 +3294,15 @@ public sealed unsafe partial class Actor
     public void spawnTrailBubbles() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool startRiding(nint vehicle, bool forceRiding) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool startRiding(global::Hosihikari.Binding.LeviLamina.Interop.Actor vehicle, bool forceRiding)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_568a2266((void*)__hosihikari_shim_handle, (void*)vehicle.Handle, forceRiding) != 0;
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void startSwimming() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void startSwimming()
+    {
+        NativeMethods.TablePtr->C0.hs_method_d7c65a1a((void*)__hosihikari_shim_handle);
+    }
 
     public void stopFire()
     {
@@ -3087,13 +3313,15 @@ public sealed unsafe partial class Actor
     public void stopRiding(bool exitFromPassenger, bool actorIsBeingDestroyed, bool switchingVehicles, bool isBeingTeleported) =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void stopSwimming() =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void stopSwimming()
+    {
+        NativeMethods.TablePtr->C0.hs_method_dc5d83d3((void*)__hosihikari_shim_handle);
+    }
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public bool swing(nint swingSource, nint handSlot) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public bool swing(byte swingSource, byte handSlot)
+    {
+        return NativeMethods.TablePtr->C0.hs_method_d2099e0e((void*)__hosihikari_shim_handle, swingSource, handSlot) != 0;
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void synchronousSetSize(float w, float h) =>
@@ -3185,9 +3413,10 @@ public sealed unsafe partial class Actor
     public void updateWaterState() =>
         throw new global::System.NotSupportedException("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.");
 
-    [global::System.Obsolete("BindingShim cannot project this member: the member is not exported by the carrier.", false)]
-    public void useItem(nint item, nint itemUseMethod, bool consumeItem) =>
-        throw new global::System.NotSupportedException("BindingShim cannot project this member: the member is not exported by the carrier.");
+    public void useItem(nint item, int itemUseMethod, bool consumeItem)
+    {
+        NativeMethods.TablePtr->C0.hs_method_e659ea33((void*)__hosihikari_shim_handle, (void*)item, itemUseMethod, consumeItem);
+    }
 
     [global::System.Obsolete("BindingShim cannot project this member: the carrier declares this member but the export set does not carry it.", false)]
     public void wobble() =>
